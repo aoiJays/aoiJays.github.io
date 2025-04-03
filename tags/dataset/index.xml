@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Dataset on BiribiriBird</title>
+        <link>http://localhost:8272/tags/dataset/</link>
+        <description>Recent content in Dataset on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Thu, 03 Apr 2025 15:10:53 +0800</lastBuildDate><atom:link href="http://localhost:8272/tags/dataset/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>FineWeb-Edu-Chinese数据集论文记录</title>
+        <link>http://localhost:8272/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/</link>
+        <pubDate>Thu, 03 Apr 2025 15:10:53 +0800</pubDate>
+        
+        <guid>http://localhost:8272/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/</guid>
+        <description></description>
+        </item>
+        
+    </channel>
+</rss>
