@@ -2,17 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Categories on BiribiriBird</title>
-        <link>http://localhost:8272/categories/</link>
+        <link>https://example.com/categories/</link>
         <description>Recent content in Categories on BiribiriBird</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Example Person</copyright>
-        <lastBuildDate>Thu, 03 Apr 2025 13:57:51 +0800</lastBuildDate><atom:link href="http://localhost:8272/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 03 Apr 2025 15:10:53 +0800</lastBuildDate><atom:link href="https://example.com/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>语料质量检测</title>
+        <link>https://example.com/categories/%E8%AF%AD%E6%96%99%E8%B4%A8%E9%87%8F%E6%A3%80%E6%B5%8B/</link>
+        <pubDate>Thu, 03 Apr 2025 15:10:53 +0800</pubDate>
+        
+        <guid>https://example.com/categories/%E8%AF%AD%E6%96%99%E8%B4%A8%E9%87%8F%E6%A3%80%E6%B5%8B/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>Blog</title>
-        <link>http://localhost:8272/categories/blog/</link>
+        <link>https://example.com/categories/blog/</link>
         <pubDate>Thu, 03 Apr 2025 13:57:51 +0800</pubDate>
         
-        <guid>http://localhost:8272/categories/blog/</guid>
+        <guid>https://example.com/categories/blog/</guid>
         <description></description>
         </item>
         

@@ -2,33 +2,65 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Tags on BiribiriBird</title>
-        <link>http://localhost:8272/tags/</link>
+        <link>https://example.com/tags/</link>
         <description>Recent content in Tags on BiribiriBird</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Example Person</copyright>
-        <lastBuildDate>Thu, 03 Apr 2025 13:57:51 +0800</lastBuildDate><atom:link href="http://localhost:8272/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 03 Apr 2025 15:10:53 +0800</lastBuildDate><atom:link href="https://example.com/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Dataset</title>
+        <link>https://example.com/tags/dataset/</link>
+        <pubDate>Thu, 03 Apr 2025 15:10:53 +0800</pubDate>
+        
+        <guid>https://example.com/tags/dataset/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Paper</title>
+        <link>https://example.com/tags/paper/</link>
+        <pubDate>Thu, 03 Apr 2025 15:10:53 +0800</pubDate>
+        
+        <guid>https://example.com/tags/paper/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>LLM</title>
+        <link>https://example.com/tags/llm/</link>
+        <pubDate>Thu, 03 Apr 2025 15:06:24 +0800</pubDate>
+        
+        <guid>https://example.com/tags/llm/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Reward Model</title>
+        <link>https://example.com/tags/reward-model/</link>
+        <pubDate>Thu, 03 Apr 2025 15:06:24 +0800</pubDate>
+        
+        <guid>https://example.com/tags/reward-model/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>Blog</title>
-        <link>http://localhost:8272/tags/blog/</link>
+        <link>https://example.com/tags/blog/</link>
         <pubDate>Thu, 03 Apr 2025 13:57:51 +0800</pubDate>
         
-        <guid>http://localhost:8272/tags/blog/</guid>
+        <guid>https://example.com/tags/blog/</guid>
         <description></description>
         </item>
         <item>
         <title>Github</title>
-        <link>http://localhost:8272/tags/github/</link>
+        <link>https://example.com/tags/github/</link>
         <pubDate>Thu, 03 Apr 2025 13:57:51 +0800</pubDate>
         
-        <guid>http://localhost:8272/tags/github/</guid>
+        <guid>https://example.com/tags/github/</guid>
         <description></description>
         </item>
         <item>
         <title>Hugo</title>
-        <link>http://localhost:8272/tags/hugo/</link>
+        <link>https://example.com/tags/hugo/</link>
         <pubDate>Thu, 03 Apr 2025 13:57:51 +0800</pubDate>
         
-        <guid>http://localhost:8272/tags/hugo/</guid>
+        <guid>https://example.com/tags/hugo/</guid>
         <description></description>
         </item>
         

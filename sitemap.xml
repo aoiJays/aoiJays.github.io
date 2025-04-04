@@ -2,43 +2,67 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:8272/</loc>
+    <loc>https://example.com/</loc>
+    <lastmod>2025-04-03T15:10:53+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/categories/</loc>
+    <lastmod>2025-04-03T15:10:53+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/tags/dataset/</loc>
+    <lastmod>2025-04-03T15:10:53+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/</loc>
+    <lastmod>2025-04-03T15:10:53+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/tags/paper/</loc>
+    <lastmod>2025-04-03T15:10:53+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/post/</loc>
+    <lastmod>2025-04-03T15:10:53+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/tags/</loc>
+    <lastmod>2025-04-03T15:10:53+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/categories/%E8%AF%AD%E6%96%99%E8%B4%A8%E9%87%8F%E6%A3%80%E6%B5%8B/</loc>
+    <lastmod>2025-04-03T15:10:53+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/p/fineweb%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/</loc>
+    <lastmod>2025-04-03T15:10:42+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/p/critiq-%E5%B7%A5%E4%BD%9C%E6%96%87%E6%A1%A3/</loc>
+    <lastmod>2025-04-03T15:06:24+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/tags/llm/</loc>
+    <lastmod>2025-04-03T15:06:24+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/tags/reward-model/</loc>
+    <lastmod>2025-04-03T15:06:24+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/categories/blog/</loc>
     <lastmod>2025-04-03T13:57:51+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:8272/categories/blog/</loc>
+    <loc>https://example.com/tags/blog/</loc>
     <lastmod>2025-04-03T13:57:51+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:8272/tags/blog/</loc>
+    <loc>https://example.com/tags/github/</loc>
     <lastmod>2025-04-03T13:57:51+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:8272/categories/</loc>
+    <loc>https://example.com/tags/hugo/</loc>
     <lastmod>2025-04-03T13:57:51+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:8272/tags/github/</loc>
+    <loc>https://example.com/p/read-me/</loc>
     <lastmod>2025-04-03T13:57:51+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:8272/tags/hugo/</loc>
-    <lastmod>2025-04-03T13:57:51+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:8272/post/</loc>
-    <lastmod>2025-04-03T13:57:51+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:8272/p/read-me/</loc>
-    <lastmod>2025-04-03T13:57:51+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:8272/tags/</loc>
-    <lastmod>2025-04-03T13:57:51+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:8272/archives/</loc>
+    <loc>https://example.com/archives/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:8272/page/</loc>
+    <loc>https://example.com/page/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:8272/about-me/</loc>
+    <loc>https://example.com/about-me/</loc>
   </url><url>
-    <loc>http://localhost:8272/plan/</loc>
+    <loc>https://example.com/plan/</loc>
   </url><url>
-    <loc>http://localhost:8272/search/</loc>
+    <loc>https://example.com/search/</loc>
   </url>
 </urlset>
