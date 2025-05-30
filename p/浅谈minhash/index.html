@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
-    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+    <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="浅谈MinHash\r常用于网页、文本去重\n前置知识\rn-gram\r通过分词将文本分解为连续的n个单词或字符序列 例如：\n1 &#34;This is an example sentence for n-gram extraction.&#34; 表示为3-gram：\n1 2 3 4 5 6 (&#39;This&#39;, &#39;is&#39;, &#39;an&#39;) (&#39;is&#39;, &#39;an&#39;, &#39;example&#39;) (&#39;an&#39;, &#39;example&#39;, &#39;sentence&#39;) (&#39;example&#39;, &#39;sentence&#39;, &#39;for&#39;) (&#39;sentence&#39;, &#39;for&#39;, &#39;n-gram&#39;) (&#39;for&#39;, &#39;n-gram&#39;, &#39;extraction&#39;) 按照此方式可以将一段文本表示成一个n元组序列，每个元组可以考虑到一定的上下文\n">
 <title>浅谈MinHash</title>
 
-<link rel='canonical' href='http://localhost:1313/p/%E6%B5%85%E8%B0%88minhash/'>
+<link rel='canonical' href='https://example.com/p/%E6%B5%85%E8%B0%88minhash/'>
 
 <link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="浅谈MinHash">
 <meta property='og:description' content="浅谈MinHash\r常用于网页、文本去重\n前置知识\rn-gram\r通过分词将文本分解为连续的n个单词或字符序列 例如：\n1 &#34;This is an example sentence for n-gram extraction.&#34; 表示为3-gram：\n1 2 3 4 5 6 (&#39;This&#39;, &#39;is&#39;, &#39;an&#39;) (&#39;is&#39;, &#39;an&#39;, &#39;example&#39;) (&#39;an&#39;, &#39;example&#39;, &#39;sentence&#39;) (&#39;example&#39;, &#39;sentence&#39;, &#39;for&#39;) (&#39;sentence&#39;, &#39;for&#39;, &#39;n-gram&#39;) (&#39;for&#39;, &#39;n-gram&#39;, &#39;extraction&#39;) 按照此方式可以将一段文本表示成一个n元组序列，每个元组可以考虑到一定的上下文\n">
-<meta property='og:url' content='http://localhost:1313/p/%E6%B5%85%E8%B0%88minhash/'>
+<meta property='og:url' content='https://example.com/p/%E6%B5%85%E8%B0%88minhash/'>
 <meta property='og:site_name' content='BiribiriBird'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='MinHash' /><meta property='article:tag' content='文本去重' /><meta property='article:tag' content='n-gram' /><meta property='article:tag' content='算法' /><meta property='article:published_time' content='2025-04-07T16:31:31&#43;08:00'/><meta property='article:modified_time' content='2025-04-07T16:31:31&#43;08:00'/>
 <meta name="twitter:title" content="浅谈MinHash">
@@ -672,7 +672,7 @@ $$<p>实际操作中略微复杂，会更偏向于使用随机打乱的方法</p
                 src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
                 
                 >
-            </script><script type="text/javascript" src="/ts/main.4e45f04f1c3c275be5ba1deb0f27a396ad4c213b265556682c9225711437abe2.js" defer></script>
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
 <script>
     (function () {
         const customFont = document.createElement('link');

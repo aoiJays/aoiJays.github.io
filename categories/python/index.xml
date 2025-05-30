@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Python on BiribiriBird</title>
-        <link>http://localhost:1313/categories/python/</link>
+        <link>https://example.com/categories/python/</link>
         <description>Recent content in Python on BiribiriBird</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Example Person</copyright>
-        <lastBuildDate>Wed, 28 May 2025 16:38:32 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/python/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 28 May 2025 16:38:32 +0800</lastBuildDate><atom:link href="https://example.com/categories/python/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Python_rookie 扫盲</title>
-        <link>http://localhost:1313/p/python_rookie-%E6%89%AB%E7%9B%B2/</link>
+        <link>https://example.com/p/python_rookie-%E6%89%AB%E7%9B%B2/</link>
         <pubDate>Wed, 28 May 2025 16:38:32 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/python_rookie-%E6%89%AB%E7%9B%B2/</guid>
+        <guid>https://example.com/p/python_rookie-%E6%89%AB%E7%9B%B2/</guid>
         <description>&lt;p&gt;[TOC]&lt;/p&gt;
 &lt;h2 id=&#34;深浅拷贝&#34;&gt;深浅拷贝
 &lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;

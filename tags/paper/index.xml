@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Paper on BiribiriBird</title>
-        <link>http://localhost:1313/tags/paper/</link>
+        <link>https://example.com/tags/paper/</link>
         <description>Recent content in Paper on BiribiriBird</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Example Person</copyright>
-        <lastBuildDate>Thu, 03 Apr 2025 15:10:53 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/paper/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 03 Apr 2025 15:10:53 +0800</lastBuildDate><atom:link href="https://example.com/tags/paper/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>FineWeb-Edu-Chinese数据集论文记录</title>
-        <link>http://localhost:1313/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/</link>
+        <link>https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/</link>
         <pubDate>Thu, 03 Apr 2025 15:10:53 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/</guid>
+        <guid>https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/</guid>
         <description>&lt;h1 id=&#34;opencsg-chinese-corpus-a-series-of-highquality-chinese-datasets-for-llm-training&#34;&gt;OPENCSG CHINESE CORPUS A SERIES OF HIGHQUALITY CHINESE DATASETS FOR LLM TRAINING
 &lt;/h1&gt;&lt;blockquote&gt;
 &lt;p&gt;Dataset：https://huggingface.co/collections/opencsg/chinese-fineweb-66cfed105f502ece8f29643e&lt;/p&gt;
@@ -34,10 +34,10 @@
 &lt;/li&gt;
 &lt;li&gt;中文数据相对匮乏，整合了&lt;strong&gt;多个开源中文语料库&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404183728532.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404183728532.png&#34;
 	width=&#34;529&#34;
 	height=&#34;341&#34;
-	srcset=&#34;http://localhost:1313/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404183728532_hu_6b5bf4328244d6a6.png 480w, http://localhost:1313/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404183728532_hu_91007c4b67850578.png 1024w&#34;
+	srcset=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404183728532_hu_6b5bf4328244d6a6.png 480w, https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404183728532_hu_91007c4b67850578.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20250404183728532&#34;
@@ -52,10 +52,10 @@
 &lt;p&gt;These datasets were selected for their &lt;strong&gt;diversity&lt;/strong&gt; and their &lt;strong&gt;educational and technical relevance.&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;由上述语料库构建了Original Data Pool&lt;/p&gt;
 &lt;p&gt;首先从&lt;strong&gt;教育相关性的方向&lt;/strong&gt;进行过滤：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404183829384.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404183829384.png&#34;
 	width=&#34;1465&#34;
 	height=&#34;248&#34;
-	srcset=&#34;http://localhost:1313/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404183829384_hu_947dd572a0ee599a.png 480w, http://localhost:1313/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404183829384_hu_78e526a76edc6a51.png 1024w&#34;
+	srcset=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404183829384_hu_947dd572a0ee599a.png 480w, https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404183829384_hu_78e526a76edc6a51.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20250404183829384&#34;
@@ -72,10 +72,10 @@
 &lt;li&gt;使用这些打分数据，微调&lt;code&gt;bge-rerank-zh&lt;/code&gt;，添加一个线性回归层，得到一个&lt;code&gt;filter&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;利用&lt;code&gt;filter&lt;/code&gt;排除&lt;strong&gt;所有语料库中&lt;/strong&gt;分数低于3的数据&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404185932046.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404185932046.png&#34;
 	width=&#34;833&#34;
 	height=&#34;204&#34;
-	srcset=&#34;http://localhost:1313/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404185932046_hu_a9e1485c883dde75.png 480w, http://localhost:1313/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404185932046_hu_867ca48d44c08947.png 1024w&#34;
+	srcset=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404185932046_hu_a9e1485c883dde75.png 480w, https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404185932046_hu_867ca48d44c08947.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20250404185932046&#34;
@@ -126,10 +126,10 @@
 &lt;li&gt;进一步扩展了语料库，添加了这个那个和那个……数据集&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;Qwen2.5-14b-instruct&lt;/code&gt;更换了&lt;code&gt;Qwen2-7b-instruct&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404184549881.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404184549881.png&#34;
 	width=&#34;757&#34;
 	height=&#34;455&#34;
-	srcset=&#34;http://localhost:1313/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404184549881_hu_4ba66c4a7deb409d.png 480w, http://localhost:1313/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404184549881_hu_7bc36cccbc484b47.png 1024w&#34;
+	srcset=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404184549881_hu_4ba66c4a7deb409d.png 480w, https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404184549881_hu_7bc36cccbc484b47.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20250404184549881&#34;
@@ -171,10 +171,10 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;打分的分布如下，最终选择3以上的数据：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404190613997.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404190613997.png&#34;
 	width=&#34;750&#34;
 	height=&#34;556&#34;
-	srcset=&#34;http://localhost:1313/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404190613997_hu_c9dbc47b61605e6f.png 480w, http://localhost:1313/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404190613997_hu_a1660813e643fed0.png 1024w&#34;
+	srcset=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404190613997_hu_c9dbc47b61605e6f.png 480w, https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404190613997_hu_a1660813e643fed0.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;image-20250404190613997&#34;
@@ -258,10 +258,10 @@
         </item>
         <item>
         <title>FineWeb数据集论文记录</title>
-        <link>http://localhost:1313/p/fineweb%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/</link>
+        <link>https://example.com/p/fineweb%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/</link>
         <pubDate>Thu, 03 Apr 2025 15:10:42 +0800</pubDate>
         
-        <guid>http://localhost:1313/p/fineweb%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/</guid>
+        <guid>https://example.com/p/fineweb%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/</guid>
         <description>&lt;h2 id=&#34;the-fineweb-datasets-decanting-the-web-for-the-finest-text-data-at-scale&#34;&gt;The FineWeb Datasets Decanting the Web for the Finest Text Data at Scale
 &lt;/h2&gt;&lt;p&gt;[&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2406.17557&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;2406.17557] The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale&lt;/a&gt;&lt;/p&gt;
