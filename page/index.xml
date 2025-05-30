@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Pages on BiribiriBird</title>
+        <link>http://localhost:1313/page/</link>
+        <description>Recent content in Pages on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Tue, 28 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/page/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Archives</title>
+        <link>http://localhost:1313/archives/</link>
+        <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/archives/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>About me</title>
+        <link>http://localhost:1313/about-me/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/about-me/</guid>
+        <description>&lt;p&gt;你好！我是BiribiriBird！又名Neworld1111、AoiJays（超多id&lt;/p&gt;
+&lt;p&gt;本科就读于：东华大学&lt;/p&gt;
+&lt;p&gt;前ACM选手&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;第46届ICPC国际大学生程序设计竞赛 亚洲区决赛（西安）&lt;strong&gt;铜牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第47届ICPC国际大学生程序设计竞赛 亚洲区域赛（沈阳）&lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第47届ICPC国际大学生程序设计竞赛 亚洲区域赛（合肥）&lt;strong&gt;铜牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第48届ICPC国际大学生程序设计竞赛 亚洲区域赛（南京）&lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第48届ICPC国际大学生程序设计竞赛 亚洲区域赛（杭州）&lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;2022年中国大学生程序设计竞赛广州站 &lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;2023年中国大学生程序设计竞赛秦皇岛站 &lt;strong&gt;铜牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;2023年中国大学生程序设计竞赛深圳站 &lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;正在积极准备研0&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Plan</title>
+        <link>http://localhost:1313/plan/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/plan/</guid>
+        <description>&lt;p&gt;目前正在推进的任务：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 毕业设计&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 开题&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 中期&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 论文初稿&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 盲审&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 完结&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; ECNU语料组&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 指标提取&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Reward Model训练&lt;/li&gt;
+&lt;li&gt;未完待续&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>Search</title>
+        <link>http://localhost:1313/search/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/search/</guid>
+        <description></description>
+        </item>
+        
+    </channel>
+</rss>
