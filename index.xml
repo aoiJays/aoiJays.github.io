@@ -2151,6 +2151,8 @@ $$&lt;p&gt;实际操作中略微复杂，会更偏向于使用随机打乱的方
 &lt;li&gt;第47届ICPC国际大学生程序设计竞赛 亚洲区域赛（合肥）&lt;strong&gt;铜牌&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;第48届ICPC国际大学生程序设计竞赛 亚洲区域赛（南京）&lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;第48届ICPC国际大学生程序设计竞赛 亚洲区域赛（杭州）&lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第49届ICPC国际大学生程序设计竞赛 亚洲区域赛（沈阳）&lt;strong&gt;铜牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第49届ICPC国际大学生程序设计竞赛 亚洲区决赛（西安）&lt;strong&gt;铜牌&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;2022年中国大学生程序设计竞赛广州站 &lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;2023年中国大学生程序设计竞赛秦皇岛站 &lt;strong&gt;铜牌&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;2023年中国大学生程序设计竞赛深圳站 &lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
@@ -2164,24 +2166,59 @@ $$&lt;p&gt;实际操作中略微复杂，会更偏向于使用随机打乱的方
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
         <guid>https://example.com/plan/</guid>
-        <description>&lt;p&gt;目前正在推进的任务：&lt;/p&gt;
+        <description>&lt;h2 id=&#34;科研经历&#34;&gt;科研经历
+&lt;/h2&gt;&lt;h3 id=&#34;cv&#34;&gt;CV
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;东华大学CSCV实验室（2024.2-2024.7）
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 毕业设计&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 开题&lt;/li&gt;
-&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 中期&lt;/li&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 论文初稿&lt;/li&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 盲审&lt;/li&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 完结&lt;/li&gt;
+&lt;li&gt;寒假开始看3DGS的paper，但是寒假后被告知相关科研已结束&lt;/li&gt;
+&lt;li&gt;被安排自己去弄CUDA核心加速，但是完全走歪路且没有指导，我也不知道我在做什么&lt;/li&gt;
+&lt;li&gt;跑路，组会确实对我没有任何意义&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; ECNU语料组&lt;/p&gt;
+&lt;li&gt;机械式指针仪表读数（2024.9 - 2025.6）
 &lt;ul&gt;
-&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 指标提取&lt;/li&gt;
-&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Reward Model训练&lt;/li&gt;
-&lt;li&gt;未完待续&lt;/li&gt;
+&lt;li&gt;直接当毕业设计做，同时是一个研究生组的横向&lt;/li&gt;
+&lt;li&gt;被论文极大误导，传统视觉方法早死了，踩入惊天大坑&lt;/li&gt;
+&lt;li&gt;毕设最后改成系统而非研究，根本做不出来&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;大语言模型&#34;&gt;大语言模型
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;中国教育大模型（2025.2 - ）
+&lt;ul&gt;
+&lt;li&gt;非常好，真的学到东西了，正在上海创智学院干活&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;学习计划&#34;&gt;学习计划
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Python进阶
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 装饰器 2025.6.1&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 面向对象 2025.6.3&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 迭代器 2025.6.5&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 线程、进程、协程 2025.6.7&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 大作业：网络爬虫 2025.6.9&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 李沐论文精读（一周2节 经典内容需要复现）
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1H44y1t75x/?share_source=copy_web&amp;amp;vd_source=851f6c160a023ef64eb8f646d0577da9&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;如何读论文【论文精读·1】&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 大规模语言模型：从理论到实践
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;a class=&#34;link&#34; href=&#34;https://intro-llm.github.io/chapter/LLM-TAP-v2.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LLM-TAP-v2.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; HZWER博客
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/690270763&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt; 大模型01 转行笔记 - 从苏神博客了解 transformer - 知乎&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
