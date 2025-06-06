@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Pages on BiribiriBird</title>
+        <link>https://example.com/page/</link>
+        <description>Recent content in Pages on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Tue, 28 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/page/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Archives</title>
+        <link>https://example.com/archives/</link>
+        <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+        
+        <guid>https://example.com/archives/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>About me</title>
+        <link>https://example.com/about-me/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://example.com/about-me/</guid>
+        <description>&lt;p&gt;你好！我是BiribiriBird！又名Neworld1111、AoiJays（超多id&lt;/p&gt;
+&lt;p&gt;本科就读于：东华大学&lt;/p&gt;
+&lt;p&gt;前ACM选手&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;第46届ICPC国际大学生程序设计竞赛 亚洲区决赛（西安）&lt;strong&gt;铜牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第47届ICPC国际大学生程序设计竞赛 亚洲区域赛（沈阳）&lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第47届ICPC国际大学生程序设计竞赛 亚洲区域赛（合肥）&lt;strong&gt;铜牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第48届ICPC国际大学生程序设计竞赛 亚洲区域赛（南京）&lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第48届ICPC国际大学生程序设计竞赛 亚洲区域赛（杭州）&lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第49届ICPC国际大学生程序设计竞赛 亚洲区域赛（沈阳）&lt;strong&gt;铜牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第49届ICPC国际大学生程序设计竞赛 亚洲区决赛（西安）&lt;strong&gt;铜牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;2022年中国大学生程序设计竞赛广州站 &lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;2023年中国大学生程序设计竞赛秦皇岛站 &lt;strong&gt;铜牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;2023年中国大学生程序设计竞赛深圳站 &lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;正在积极准备研0&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Plan</title>
+        <link>https://example.com/plan/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://example.com/plan/</guid>
+        <description>&lt;h2 id=&#34;科研经历&#34;&gt;科研经历
+&lt;/h2&gt;&lt;h3 id=&#34;cv&#34;&gt;CV
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;东华大学CSCV实验室（2024.2-2024.7）
+&lt;ul&gt;
+&lt;li&gt;寒假开始看3DGS的paper，但是寒假后被告知相关科研已结束&lt;/li&gt;
+&lt;li&gt;被安排自己去弄CUDA核心加速，但是完全走歪路且没有指导，我也不知道我在做什么&lt;/li&gt;
+&lt;li&gt;跑路，组会确实对我没有任何意义&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;机械式指针仪表读数（2024.9 - 2025.6）
+&lt;ul&gt;
+&lt;li&gt;直接当毕业设计做，同时是一个研究生组的横向&lt;/li&gt;
+&lt;li&gt;被论文极大误导，传统视觉方法早死了，踩入惊天大坑&lt;/li&gt;
+&lt;li&gt;毕设最后改成系统而非研究，根本做不出来&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;大语言模型&#34;&gt;大语言模型
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;中国教育大模型（2025.2 - ）
+&lt;ul&gt;
+&lt;li&gt;非常好，真的学到东西了，正在上海创智学院干活&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;学习计划&#34;&gt;学习计划
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Python进阶
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 装饰器 2025.6.1&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 面向对象 2025.6.3&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 迭代器 2025.6.5&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 线程、进程、协程 2025.6.7&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 大作业：网络爬虫 2025.6.9&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 数据清洗论文（一周2篇）
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; [&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2104.08758&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2104.08758] Documenting Large Webtext Corpora: A Case Study on the Colossal Clean Crawled Corpus&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; [&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2312.01700&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2312.01700] Data Management For Training Large Language Models: A Survey&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 李沐论文精读（一周2节 经典内容需要复现）
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1H44y1t75x/?share_source=copy_web&amp;amp;vd_source=851f6c160a023ef64eb8f646d0577da9&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;如何读论文【论文精读·1】&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 大规模语言模型：从理论到实践
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;a class=&#34;link&#34; href=&#34;https://intro-llm.github.io/chapter/LLM-TAP-v2.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LLM-TAP-v2.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; HZWER博客
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/690270763&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt; 大模型01 转行笔记 - 从苏神博客了解 transformer - 知乎&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>Search</title>
+        <link>https://example.com/search/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://example.com/search/</guid>
+        <description></description>
+        </item>
+        
+    </channel>
+</rss>

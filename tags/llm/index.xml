@@ -1,0 +1,1640 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>LLM on BiribiriBird</title>
+        <link>https://example.com/tags/llm/</link>
+        <description>Recent content in LLM on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Fri, 06 Jun 2025 13:12:32 +0800</lastBuildDate><atom:link href="https://example.com/tags/llm/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>大语言模型数据清洗 · 论文笔记（二）</title>
+        <link>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/</link>
+        <pubDate>Fri, 06 Jun 2025 13:12:32 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1 id=&#34;the-pile-an-800gb-dataset-of-diverse-text-for-language-modeling&#34;&gt;The Pile: An 800GB Dataset of Diverse Text for Language Modeling
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2101.00027&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;arXiv 2101.00027 The Pile: An 800GB Dataset of Diverse Text for Language Modeling&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/EleutherAI/the-pile&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Github EleutherAI/the-pile&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通过合成多个数据集，提升多样性，提升大规模语言模型的跨领域通用知识与下游任务泛化能力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;稍微看偏了，paper更多的精华在如何去衡量数据集对模型性能的提升水平&lt;/p&gt;
+&lt;p&gt;和清洗关系不大&lt;/p&gt;
+&lt;h2 id=&#34;the-pile-datasets&#34;&gt;The Pile Datasets
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;由22个部分组成&lt;/li&gt;
+&lt;li&gt;由于不同数据集存在差异（维基百科质量更高），因此进行了加权处理
+&lt;ul&gt;
+&lt;li&gt;权重越高，被使用的概率越高（更可能被重复使用次数）&lt;/li&gt;
+&lt;li&gt;例如维基百科重复采用3次&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;部分表格：&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Dataset Name&lt;/th&gt;
+          &lt;th&gt;Raw Size (before sampling)&lt;/th&gt;
+          &lt;th&gt;Weight (%)&lt;/th&gt;
+          &lt;th&gt;Epochs&lt;/th&gt;
+          &lt;th&gt;Effective Size&lt;/th&gt;
+          &lt;th&gt;Mean Document Size&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Pile-CC&lt;/td&gt;
+          &lt;td&gt;227.12 GiB&lt;/td&gt;
+          &lt;td&gt;18.11%&lt;/td&gt;
+          &lt;td&gt;1.0&lt;/td&gt;
+          &lt;td&gt;227.12 GiB&lt;/td&gt;
+          &lt;td&gt;4.33 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;PubMed Central&lt;/td&gt;
+          &lt;td&gt;90.27 GiB&lt;/td&gt;
+          &lt;td&gt;14.40%&lt;/td&gt;
+          &lt;td&gt;2.0&lt;/td&gt;
+          &lt;td&gt;180.55 GiB&lt;/td&gt;
+          &lt;td&gt;30.55 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Books3&lt;/td&gt;
+          &lt;td&gt;100.96 GiB&lt;/td&gt;
+          &lt;td&gt;12.07%&lt;/td&gt;
+          &lt;td&gt;1.5&lt;/td&gt;
+          &lt;td&gt;151.44 GiB&lt;/td&gt;
+          &lt;td&gt;538.36 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;OpenWebText2&lt;/td&gt;
+          &lt;td&gt;62.77 GiB&lt;/td&gt;
+          &lt;td&gt;10.01%&lt;/td&gt;
+          &lt;td&gt;2.0&lt;/td&gt;
+          &lt;td&gt;125.54 GiB&lt;/td&gt;
+          &lt;td&gt;3.85 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;ArXiv&lt;/td&gt;
+          &lt;td&gt;56.21 GiB&lt;/td&gt;
+          &lt;td&gt;8.96%&lt;/td&gt;
+          &lt;td&gt;2.0&lt;/td&gt;
+          &lt;td&gt;112.42 GiB&lt;/td&gt;
+          &lt;td&gt;46.61 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Github&lt;/td&gt;
+          &lt;td&gt;95.16 GiB&lt;/td&gt;
+          &lt;td&gt;7.59%&lt;/td&gt;
+          &lt;td&gt;1.0&lt;/td&gt;
+          &lt;td&gt;95.16 GiB&lt;/td&gt;
+          &lt;td&gt;5.25 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;FreeLaw&lt;/td&gt;
+          &lt;td&gt;51.15 GiB&lt;/td&gt;
+          &lt;td&gt;6.12%&lt;/td&gt;
+          &lt;td&gt;1.5&lt;/td&gt;
+          &lt;td&gt;76.73 GiB&lt;/td&gt;
+          &lt;td&gt;15.06 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;StackExchange&lt;/td&gt;
+          &lt;td&gt;32.20 GiB&lt;/td&gt;
+          &lt;td&gt;5.13%&lt;/td&gt;
+          &lt;td&gt;2.0&lt;/td&gt;
+          &lt;td&gt;64.39 GiB&lt;/td&gt;
+          &lt;td&gt;2.16 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;USPTO Backgrounds&lt;/td&gt;
+          &lt;td&gt;22.90 GiB&lt;/td&gt;
+          &lt;td&gt;3.65%&lt;/td&gt;
+          &lt;td&gt;2.0&lt;/td&gt;
+          &lt;td&gt;45.81 GiB&lt;/td&gt;
+          &lt;td&gt;4.08 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;PubMed Abstracts&lt;/td&gt;
+          &lt;td&gt;19.26 GiB&lt;/td&gt;
+          &lt;td&gt;3.07%&lt;/td&gt;
+          &lt;td&gt;2.0&lt;/td&gt;
+          &lt;td&gt;38.53 GiB&lt;/td&gt;
+          &lt;td&gt;1.30 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Gutenberg (PG-19)&lt;/td&gt;
+          &lt;td&gt;10.88 GiB&lt;/td&gt;
+          &lt;td&gt;2.17%&lt;/td&gt;
+          &lt;td&gt;2.5&lt;/td&gt;
+          &lt;td&gt;27.19 GiB&lt;/td&gt;
+          &lt;td&gt;398.73 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;OpenSubtitles&lt;/td&gt;
+          &lt;td&gt;12.98 GiB&lt;/td&gt;
+          &lt;td&gt;1.55%&lt;/td&gt;
+          &lt;td&gt;1.5&lt;/td&gt;
+          &lt;td&gt;19.47 GiB&lt;/td&gt;
+          &lt;td&gt;30.48 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Wikipedia (en)&lt;/td&gt;
+          &lt;td&gt;6.38 GiB&lt;/td&gt;
+          &lt;td&gt;1.53%&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;3.0&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;19.13 GiB&lt;/td&gt;
+          &lt;td&gt;1.11 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Raw Size：采样前的大小&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Weight ：采样后的大小占比&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Epochs：被采样次数&lt;/p&gt;
+&lt;p&gt;Effective Size：采样后的有效大小&lt;/p&gt;
+&lt;p&gt;Mean Document Size：平均文档大小&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;部分数据已被发布者清洗的很好，只进行了最小程度的预处理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;pile-cc&#34;&gt;Pile-CC
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;由CC数据集清洗得到&lt;/li&gt;
+&lt;li&gt;使用justText清洗raw HTTP responses including page HTML，相比于&lt;code&gt;.WET&lt;/code&gt;的纯文本效果更好&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;others&#34;&gt;Others
+&lt;/h3&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;分类&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;来源&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;学术文献&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;ArXiv、PubMed Central、NIH ExPorter&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;图书与出版物&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;Books3、Project Gutenberg (PG-19)、BookCorpus2&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;代码与技术文档&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;GitHub、StackExchange&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;法律与政府文件&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;FreeLaw、USPTO Backgrounds&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;多语言与翻译文本&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;EuroParl、OpenSubtitles&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;社交与对话数据&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;HackerNews、Ubuntu IRC、Enron Emails&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;特殊领域数据&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;DeepMind Mathematics、PhilPapers（哲学）、YouTube字幕&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;网络爬取内容&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;Pile-CC（新构建的Clean Common Crawl子集）&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;benchmarking-language-models-with-the-pile&#34;&gt;Benchmarking Language Models with the Pile
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;可以训练数据，同时因为涉及领域广泛，也可以基准测试&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;划分为训练集、验证集、测试集（$0.1%$测试集+验证集，虽然比例很低但是仍各自超过1G）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;尽管去重，但是肯定还是存在重复&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;paper中首选了BPB作为评测指标：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;输入：负对数似然损失（Negative Log-Likelihood Loss）&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;模型在测试数据上输出一个损失值 $L$，表示其预测能力。&lt;/li&gt;
+&lt;li&gt;越低的 $L$ 表示模型越能准确预测下一个词。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;转换为 BPB：&lt;/strong&gt;（bits per UTF-8 encoded byte）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用公式将损失 $L$ 转换为每字节的比特数&lt;/li&gt;
+&lt;/ul&gt;
+$$
+    BPB = \frac{L_T}{L_B}\log_2 e^L = \frac{L_T}{L_B}\times \frac{L}{\ln2}
+    $$&lt;ul&gt;
+&lt;li&gt;其中：
+&lt;ul&gt;
+&lt;li&gt;$L_T$：数据集以 token 为单位的长度&lt;/li&gt;
+&lt;li&gt;$L_B$：数据集以 UTF-8 编码字节为单位的长度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;和困惑度有一点相似，用于衡量模型对数据的压缩效率或预测能力&lt;/p&gt;
+&lt;p&gt;与Bits per Character (bpc)不同的一点，字符不是一个很好的定义（Unicode 中字符的界定可能复杂（例如组合字符、emoji 等），导致统计不一致。）&lt;/p&gt;
+&lt;p&gt;同时bpb不受到分词的影响，UTF-8的字节定义是准确的，适合基于不同模型、分词进行比较&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;指标&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;优点&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;缺点&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;适用场景&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;Bits per Byte&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;分词无关、字节标准明确&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;对非字节级任务不直观&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;跨模型比较、数据压缩评估&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;Bits per Char&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;更贴近人类理解&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Unicode 字符定义模糊&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;字符级生成任务（需统一字符定义）&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;Perplexity&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;直接反映预测不确定性&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;依赖分词、数值范围不稳定&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;单一模型调参、生成质量评估&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;更加完整的解释&#34;&gt;更加完整的解释
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;自信息：指的是当我们接收到一个消息时所获得的信息量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在信息论中，自信息衡量一个事件携带的信息量，由概率$p$决定。&lt;/p&gt;
+$$
+I(p) = -\log_2(p)
+$$&lt;p&gt;为了编码这一事件，我们选择霍夫曼编码这类最优编码，同时为了最小化平均码长：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;高频事件：分配短码&lt;/li&gt;
+&lt;li&gt;低频事件：分配长码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;如果事件 $A$ 的概率  $p = 1/2$ ，则  $I(A) = -\log_2(1/2) = 1$  比特。这表示需要用 1 位二进制码（如 &lt;code&gt;0&lt;/code&gt; 或 &lt;code&gt;1&lt;/code&gt;）编码。
+-   如果事件  $B$  的概率  $p = 1/8$ ，则  $I(B) = -\log_2(1/8) = 3$  比特。需要用 3 位二进制码（如 &lt;code&gt;000&lt;/code&gt; 到 &lt;code&gt;111&lt;/code&gt; 之一）编码。&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+$$
+L = -\ln p
+$$&lt;p&gt;
+一般使用的是自然对数，同时其恰好表示了概率为$p$的事件的信息量（单位为纳特（底数取e））&lt;/p&gt;
+$$
+Bits = I(p) = -\log_2(p) =-\frac{\ln p}{\ln 2} =\frac{L}{\ln 2}
+$$&lt;p&gt;
+&lt;strong&gt;同时，模型的损失是基于token计算的，即每个token的预测损失&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;所以这里的单位是：Bits per token&lt;/p&gt;
+$$
+bpb =  \frac{L_T}{L_B}\times \frac{L}{\ln2}
+$$&lt;p&gt;
+这样就得到了：Bits per Byte，消除了分词器、语种编码等其他影响，可以直接衡量模型输出的质量&lt;/p&gt;
+&lt;h2 id=&#34;评测&#34;&gt;评测
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;然后paper实验验证了一下用训练集训练过的模型会更nb&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;通过分析哪些Pile子数据集的表现最差，就知道模型的训练数据分布在这块比较浅，就可以使用pile这块数据集进行补充&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为了探索哪些数据集是模型表现较差的，显然不能直接使用困惑度进行比较（数据集熵值不一样）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;结构化的数据（熵值低）困惑度天然会比非结构化的更低&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;困惑度可以用于衡量一个数据集是否更接近另一个数据集&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如CCNet，在维基百科内训练一个模型，计算其他数据集的困惑度&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;所以如果要比较的话，可以通过模型的损失值，拟合得越好，说明训练数据中包含了这部分，否则就是缺失&lt;/p&gt;
+&lt;p&gt;如果钱多的话，当然是直接把所有数据集用模型train一下，看看损失值，与没有train过的原模型（GPT-3），在测试集上比一下Loss&lt;/p&gt;
+&lt;p&gt;paper这里钱不够，改用了GPT2做了一个trick：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;首先需要知道GPT3比GPT2强多少&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;参考数据集：OWT2（与GPT训练数据高度相似的一个数据集）&lt;/li&gt;
+&lt;li&gt;用原生的GPT3和在Pile训练的GPT2进行比较&lt;/li&gt;
+&lt;li&gt;得到一个基准差值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+L^{GPT-3}_{OWT2} - L^{GPT-2-Pile}_{OWT2}
+$$&lt;ul&gt;
+&lt;li&gt;
+$$
+L^{GPT-3}_{TargetSet} - L^{GPT-2-Pile}_{TargetSet}
+$$&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;两个值作差：大概能衡量出在目标数据集上的提升水平&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250606162030021.png&#34;
+	width=&#34;1172&#34;
+	height=&#34;571&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250606162030021_hu_c35f4776da27d503.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250606162030021_hu_a020da3b1c3d156d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;205&#34;
+		data-flex-basis=&#34;492px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Books3等数据集与GPT-3训练数据高度相似，因此不会有过多的提升（0）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;清洗&#34;&gt;清洗
+&lt;/h2&gt;&lt;p&gt;看不动了，以后再说，整理一下清洗的东西：&lt;/p&gt;
+&lt;h3 id=&#34;c1-pile-ccclean-common-crawl&#34;&gt;C.1 Pile-CC（Clean Common Crawl）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Common Crawl 的 WARC 文件（2013–2020 年）。&lt;/li&gt;
+&lt;li&gt;提取工具
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;jusText&lt;/code&gt; 提取网页正文，去除菜单、页脚等模板文本。&lt;/li&gt;
+&lt;li&gt;对比了 &lt;code&gt;Trafilatura&lt;/code&gt;、&lt;code&gt;Newspaper&lt;/code&gt;、&lt;code&gt;Goose3&lt;/code&gt;、&lt;code&gt;DragNet&lt;/code&gt;，最终选择 &lt;code&gt;jusText&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;语言过滤
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;pycld2&lt;/code&gt; 检测网页语言，仅保留英文内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;质量控制
+&lt;ul&gt;
+&lt;li&gt;使用 FastText 分类器对 OpenWebText2 和 Common Crawl 进行分类，过滤低质量页面。&lt;/li&gt;
+&lt;li&gt;参数 α = 3，使用 Pareto 分布阈值进行过滤。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;去重
+&lt;ul&gt;
+&lt;li&gt;使用 MinHash LSH 算法在内存中进行文档级去重。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;其他说明
+&lt;ul&gt;
+&lt;li&gt;未使用 WET 文件，因其包含大量模板文本。&lt;/li&gt;
+&lt;li&gt;与 Brown et al. (2020) 类似，但只处理了部分 WARC 文件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c2-pubmed-centralpmc&#34;&gt;C.2 PubMed Central（PMC）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：美国国家生物技术信息中心（NCBI）提供。&lt;/li&gt;
+&lt;li&gt;格式转换
+&lt;ul&gt;
+&lt;li&gt;使用 Pandoc 将 JATS 格式转为 Markdown。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;清理步骤
+&lt;ul&gt;
+&lt;li&gt;删除以 &lt;code&gt;:::&lt;/code&gt; 开头的行（Pandoc 添加的 HTML 类标签）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c3-books3&#34;&gt;C.3 Books3
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：未具体说明，但为高质量书籍数据集。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;处理细节&lt;/strong&gt; ：无额外处理。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c4-openwebtext2owt2&#34;&gt;C.4 OpenWebText2（OWT2）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Reddit 提交链接。&lt;/li&gt;
+&lt;li&gt;处理步骤
+&lt;ul&gt;
+&lt;li&gt;提取 URL 及其元数据。&lt;/li&gt;
+&lt;li&gt;去除得分低于 3 的链接。&lt;/li&gt;
+&lt;li&gt;使用 Newspaper 抓取网页内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;去重
+&lt;ul&gt;
+&lt;li&gt;使用 DataSketch 库进行文档级 MinHash LSH 去重。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c5-arxiv&#34;&gt;C.5 ArXiv
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：arXiv.org 学术论文。&lt;/li&gt;
+&lt;li&gt;处理步骤
+&lt;ul&gt;
+&lt;li&gt;转换为纯文本。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;去重
+&lt;ul&gt;
+&lt;li&gt;使用与验证/测试集对比的方法去重。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c6-github&#34;&gt;C.6 GitHub
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：GitHub 上的开源项目。&lt;/li&gt;
+&lt;li&gt;获取方式
+&lt;ul&gt;
+&lt;li&gt;收集星标数 &amp;gt; 100 的仓库。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;提取内容
+&lt;ul&gt;
+&lt;li&gt;提取可用于语言建模的文本（代码、README、注释等）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;限制条件
+&lt;ul&gt;
+&lt;li&gt;单个仓库克隆和提取时间不超过 300 秒。&lt;/li&gt;
+&lt;li&gt;文件大小上限为 100KB（避免大文件中的重复自动生成内容）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c7-freelaw&#34;&gt;C.7 FreeLaw
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：法律数据库。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;未提供详细清洗步骤。&lt;/li&gt;
+&lt;li&gt;数据来自已有结构化格式，可能已做过预处理。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c8-stack-exchange&#34;&gt;C.8 Stack Exchange
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Stack Overflow 等问答网站。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;提取问题、回答、评论。&lt;/li&gt;
+&lt;li&gt;按照层级结构组织。&lt;/li&gt;
+&lt;li&gt;保留 &lt;code&gt;/me&lt;/code&gt; 类型的动作描述，删除系统消息。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c9-uspto-backgrounds&#34;&gt;C.9 USPTO Backgrounds
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：美国专利商标局（USPTO）公开数据。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;处理 XML 格式的专利文件。&lt;/li&gt;
+&lt;li&gt;提取“Background”部分内容。&lt;/li&gt;
+&lt;li&gt;处理不同格式变化（APS → XML）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c10-pubmed-abstracts&#34;&gt;C.10 PubMed Abstracts
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：PubMed 数据库摘要。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;排除缺失或格式错误的条目。&lt;/li&gt;
+&lt;li&gt;合并标题和摘要，去除版权信息。&lt;/li&gt;
+&lt;li&gt;排除已在 PMC 中出现的内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c11-project-gutenbergpg-19&#34;&gt;C.11 Project Gutenberg（PG-19）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：古登堡计划电子书。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;处理方式&lt;/strong&gt; ：无额外处理。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c12-opensubtitles&#34;&gt;C.12 OpenSubtitles
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Tiedemann (2016) 提供的英文字幕数据。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;提取 XML 文件中的字幕文本。&lt;/li&gt;
+&lt;li&gt;忽略元数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c13-wikipedia-en&#34;&gt;C.13 Wikipedia (en)
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Wikipedia English dataset from TensorFlow Datasets。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;wikipedia/20200301.en&lt;/code&gt; 数据集。&lt;/li&gt;
+&lt;li&gt;在每篇文章开头添加标题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c14-deepmind-mathematicsdm-math&#34;&gt;C.14 DeepMind Mathematics（DM Math）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：DeepMind 数学数据集。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;包含 Easy、Medium、Hard 难度。&lt;/li&gt;
+&lt;li&gt;将每个题目拆分为 8 KiB 块。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c15-ubuntu-irc&#34;&gt;C.15 Ubuntu IRC
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Ubuntu IRC 日志（2004–2020）。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;删除系统消息（如加入、离开频道）。&lt;/li&gt;
+&lt;li&gt;保留 &lt;code&gt;/me&lt;/code&gt; 动作。&lt;/li&gt;
+&lt;li&gt;去除时间戳。&lt;/li&gt;
+&lt;li&gt;每周日志合并为一个文档，按日期分隔。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c16-bookcorpus2&#34;&gt;C.16 BookCorpus2
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：基于 Kobayashi (2018) 方法重新构建。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;收集更多书籍（共 17,868 本，原版为 11,038 本）。&lt;/li&gt;
+&lt;li&gt;使用修改后的 EPUB 解析器提取文本。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c17-europarl&#34;&gt;C.17 EuroParl
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：欧洲议会会议记录。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;已经是干净文本，无需额外清洗。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c18-hackernews&#34;&gt;C.18 HackerNews
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Hacker News 提交链接。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;提取文章标题、URL、子标题、作者。&lt;/li&gt;
+&lt;li&gt;按照评论层级组织内容。&lt;/li&gt;
+&lt;li&gt;使用 html2text 提取 HTML 文本。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c19-youtube-subtitles&#34;&gt;C.19 YouTube Subtitles
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：YouTube 视频字幕。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;三阶段构建：
+&lt;ol&gt;
+&lt;li&gt;GPT-3 生成搜索关键词。&lt;/li&gt;
+&lt;li&gt;下载相关视频。&lt;/li&gt;
+&lt;li&gt;提取字幕并按时间对齐。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;多语言字幕按分钟段落对齐，并标注语言。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c20-philpapers&#34;&gt;C.20 PhilPapers
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：PhilPapers 数据库（哲学论文）。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;使用 OAI-MPH 协议抓取元数据。&lt;/li&gt;
+&lt;li&gt;转换为纯文本。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c21-nih-exporter&#34;&gt;C.21 NIH ExPorter
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：NIH Grant Application 数据。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;合并 ExPORTER 和 CRISP 数据。&lt;/li&gt;
+&lt;li&gt;按申请 ID 去重。&lt;/li&gt;
+&lt;li&gt;删除空或太短的摘要。&lt;/li&gt;
+&lt;li&gt;去除行政模板内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c22-enron-emails&#34;&gt;C.22 Enron Emails
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Enron 公司邮件存档。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;mailparser&lt;/code&gt; 提取邮件正文作为文档。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>大语言模型数据清洗 · 论文笔记（一）</title>
+        <link>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/</link>
+        <pubDate>Fri, 06 Jun 2025 01:38:32 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/</guid>
+        <description>&lt;h2 id=&#34;ccnet-extracting-high-quality-monolingual-datasets-from-web-crawl-data&#34;&gt;CCNet: Extracting High Quality Monolingual Datasets from Web Crawl Data
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1911.00359&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ArXiv1911.00359 CCNet: Extracting High Quality Monolingual Datasets from Web Crawl Data&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/facebookresearch/cc_net&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Github facebookresearch/cc_net: Tools to download and cleanup Common Crawl data&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;概述&#34;&gt;概述
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;为保证数据质量，倾向于通过维基百科等高质量数据来源合成&lt;code&gt;ad-hoc datasets&lt;/code&gt;（专门构建的数据集），但是低资源语言不好做&lt;/li&gt;
+&lt;li&gt;paper从CC数据集出发，执行了FastText所提出的pipeline，但不同之处：
+&lt;ul&gt;
+&lt;li&gt;保留文档级别的结构，支持Bert等需要段落级别的模型训练
+&lt;ul&gt;
+&lt;li&gt;之前的方法切成单个句子，只关心局部上下文，切分成了n-gram&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;增加一个可选的&lt;strong&gt;单语言过滤&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;针对目标语言进行筛选&lt;/li&gt;
+&lt;li&gt;筛选出接近维基百科风格的文档
+&lt;ul&gt;
+&lt;li&gt;在目标语言的维基百科等语料上训练一个语言模型&lt;/li&gt;
+&lt;li&gt;通过困惑度进行文档打分，只保留那些 perplexity 较低的文档&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;与传统方法相比：
+&lt;ul&gt;
+&lt;li&gt;传统方法：多数只适用于英语的特殊方法，手动设置规则&lt;/li&gt;
+&lt;li&gt;paper：通用性强，适用于多种语言&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;method&#34;&gt;Method
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250605191955047.png&#34;
+	width=&#34;1142&#34;
+	height=&#34;594&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250605191955047_hu_c0a8034b02c0e136.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250605191955047_hu_f79931d4cc592469.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Figure 1&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;192&#34;
+		data-flex-basis=&#34;461px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;下载网页快照的.WET文件，为每个段落生成哈希值，转化为.bin的二进制文件&lt;/li&gt;
+&lt;li&gt;独立处理每个WET下的文档，通过哈希进行去重，识别语言，计算困惑度&lt;/li&gt;
+&lt;li&gt;按照语言和困惑度得分重新分组，保存为 JSON 格式的文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;预处理&#34;&gt;预处理
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;每个快照包含大约 20 到 30TB 的未压缩纯文本&lt;/li&gt;
+&lt;li&gt;将 WET 文件分组为每个 5GB 的分片（shard），转化为json格式&lt;/li&gt;
+&lt;li&gt;json中的每一条entry：记录了url、文本等信息，代表了一个网页的内容
+&lt;ul&gt;
+&lt;li&gt;文本中含有段落&lt;/li&gt;
+&lt;li&gt;所以这里的逻辑是：快照（.WET） &amp;gt; shard &amp;gt; entry &amp;gt; 段落&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;去重&#34;&gt;去重
+&lt;/h3&gt;&lt;p&gt;需要删除不同网页之间的重复段落（占了70%），为方便去重：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;标准化&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;字符全部小写&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;所有数字变成0&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;删除所有Unicode的Punctuation Marks（标点符号）、Accent Marks（重音符号），完成段落标准化&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;标点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;英文标点：&lt;code&gt;.,!?;:&amp;quot;&#39;()[]{}-–—…@#$%^&amp;amp;*&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;中文标点：&lt;code&gt;，。！？；：“”‘’（）【】《》……&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;法语标点：&lt;code&gt;«»&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;阿拉伯语标点：&lt;code&gt;،؛؟&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;日文标点：&lt;code&gt;、。，・「」『』&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Accent：表示发音变化或区分拼写&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;法语：&lt;code&gt;à, é, ô, ù, ç&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;西班牙语：&lt;code&gt;ñ, á, é&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;德语：&lt;code&gt;ä, ö, ü&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;波兰语：&lt;code&gt;ą, ę, ś, ź&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;希腊语：&lt;code&gt;ά, έ, ό&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;计算哈希
+&lt;ul&gt;
+&lt;li&gt;对每个shard的每个段落计算SHA哈希值（160位），保存为二进制文件&lt;code&gt;.bin&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;每个段落的前64位作为其id便于维护&lt;/li&gt;
+&lt;li&gt;对每个段落，查询处理过的**一些（见后文）**shard的二进制文件，若出现过则舍弃，否则保存在本shard二进制文件中&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;由于很多步骤都是独立的，因此支持并行&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于网页数据，需要去掉导航栏、cookie、联系信息等&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;语言识别&#34;&gt;语言识别
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;FastText模型，基于 Wikipedia、Tatoeba 和 SETimes 数据集进行训练&lt;/li&gt;
+&lt;li&gt;支持176种语言，为每一种语言输出0-1的置信度（总和为1）&lt;/li&gt;
+&lt;li&gt;若某语言得分超过0.5则进行确认，否则舍弃（无法识别语言）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;语言模型过滤&#34;&gt;语言模型过滤
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;对每种语言，训练了一个tokenizer和语言模型
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;KenLM 库&lt;/strong&gt;实现的5-gram模型（处理大量数据效率高）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;使用tokenizer对每一个entry进行分词，使用语言模型计算每个段落的困惑度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;消融实验&#34;&gt;消融实验
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;先去重再语言识别
+&lt;ul&gt;
+&lt;li&gt;可以去除一些英文的Cookie警告，防止误识别为英文&lt;/li&gt;
+&lt;li&gt;去重跨越的shard越多去除内容越多，去重效果越好，但是自然开销变大
+&lt;ul&gt;
+&lt;li&gt;选择50均衡了资源与性能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;最终数据集的指标&#34;&gt;最终数据集的指标
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;使用训练好的语言模型对段落进行困惑度（perplexity）评分，作为衡量文本质量的代理指标。&lt;/li&gt;
+&lt;li&gt;结果发现：
+&lt;ul&gt;
+&lt;li&gt;高质量内容（如新闻、写作规范的内容）通常位于数据集的“头部”（head）&lt;/li&gt;
+&lt;li&gt;含有关键词列表或与 Wikipedia 差异较大的口语化内容会落在“尾部”（tail）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;不同语言的困惑度分布差异较大，这主要是由于训练语言模型所使用的 Wikipedia 数据大小不同，而不是某些语言本身缺乏高质量内容。&lt;/li&gt;
+&lt;li&gt;因此，为每种语言设置了不同的困惑度阈值，将语料库划分为三个部分：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Head（头部）&lt;/strong&gt; ：高质量段落&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Middle（中部）&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tail（尾部）&lt;/strong&gt; ：较低质量段落&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为了验证数据集的质量，作者使用 fastText 和 BERT 模型进行实验：&lt;/p&gt;
+&lt;h4 id=&#34;fasttext-实验&#34;&gt;fastText 实验
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;对英语和波兰语的不同质量子集（head、mid、tail）训练词向量&lt;/li&gt;
+&lt;li&gt;在标准的类比任务数据集（Mikolov et al., 2013）上评估性能&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;结果表明&lt;/strong&gt; ：随着从 tail 到 head 的变化，模型性能逐步提升，说明基于困惑度的过滤方法能有效提升数据质量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;子集&lt;/th&gt;
+          &lt;th&gt;英语总分&lt;/th&gt;
+          &lt;th&gt;波兰语总分&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;head&lt;/td&gt;
+          &lt;td&gt;77.9&lt;/td&gt;
+          &lt;td&gt;65.3&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;mid&lt;/td&gt;
+          &lt;td&gt;74.2&lt;/td&gt;
+          &lt;td&gt;62.8&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;tail&lt;/td&gt;
+          &lt;td&gt;62.0&lt;/td&gt;
+          &lt;td&gt;59.9&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id=&#34;bert-实验&#34;&gt;BERT 实验
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;分别使用 Wikipedia 和 CCNet 提取的 head 数据训练 BERT-BASE 模型&lt;/li&gt;
+&lt;li&gt;训练语言包括：英语（en）、俄语（ru）、中文（zh）、乌尔都语（ur）&lt;/li&gt;
+&lt;li&gt;使用 XNLI 任务评估模型表现&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;语言&lt;/th&gt;
+          &lt;th&gt;Wikipedia 准确率&lt;/th&gt;
+          &lt;th&gt;CCNet 准确率&lt;/th&gt;
+          &lt;th&gt;提升幅度&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;en&lt;/td&gt;
+          &lt;td&gt;82.8&lt;/td&gt;
+          &lt;td&gt;85.0&lt;/td&gt;
+          &lt;td&gt;+2.2&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;ru&lt;/td&gt;
+          &lt;td&gt;73.3&lt;/td&gt;
+          &lt;td&gt;76.4&lt;/td&gt;
+          &lt;td&gt;+3.1&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;zh&lt;/td&gt;
+          &lt;td&gt;77.0&lt;/td&gt;
+          &lt;td&gt;77.9&lt;/td&gt;
+          &lt;td&gt;+0.9&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;ur&lt;/td&gt;
+          &lt;td&gt;57.3&lt;/td&gt;
+          &lt;td&gt;64.3&lt;/td&gt;
+          &lt;td&gt;+7.0 ✅（显著提升）&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;特别是对于低资源语言乌尔都语（ur），Wikipedia 数据太小导致模型几乎无效，而使用 CCNet 提取的数据训练后，准确率提升了 &lt;strong&gt;7 个百分点&lt;/strong&gt; ，证明了该数据集对低资源语言预训练的重要性。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;维基百科的数据不足，CCNet从CC中提取了高质量语言专用的数据，效果显著&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>大模型评估指南 · 2 自动化基准测试</title>
+        <link>https://example.com/p/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E6%8C%87%E5%8D%97-2-%E8%87%AA%E5%8A%A8%E5%8C%96%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95/</link>
+        <pubDate>Thu, 10 Apr 2025 15:20:18 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E6%8C%87%E5%8D%97-2-%E8%87%AA%E5%8A%A8%E5%8C%96%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;什么是自动化基准测试&#34;&gt;什么是自动化基准测试
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Automated Benchmarks&lt;/strong&gt;是一种通过标准化数据集和指标来量化评估模型性能的方法&lt;/p&gt;
+&lt;h3 id=&#34;核心组成&#34;&gt;&lt;strong&gt;核心组成&lt;/strong&gt;
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;数据集（a dataset, made of samples.）&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;包含输入样本（如问题、文本），部分附带参考答案（&amp;ldquo;黄金标准&amp;rdquo;）。&lt;/li&gt;
+&lt;li&gt;需覆盖多样场景，例如测试分类任务时需包含边缘案例&lt;code&gt;hard edge cases&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;评估指标（a metric）&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;根据模型输出打分，常见方式：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;生成式评估&lt;/strong&gt;：直接比对模型生成的文本（如翻译、问答）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;概率式评估&lt;/strong&gt;：通过模型对选项的log概率（如MCQA、困惑度）评分。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;关键特点&#34;&gt;&lt;strong&gt;关键特点&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;优点&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;一致性和可复现性&lt;/strong&gt;Consistency、reproducibility：相同测试多次运行结果稳定。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;低成本可扩展&lt;/strong&gt;：适合大规模模型评估。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;易解释&lt;/strong&gt;：如准确率、完全匹配等指标直观。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;局限性&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;复杂任务难量化&lt;/strong&gt;：例如“数学能力”需拆解为子任务（算术/逻辑等）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据污染风险&lt;/strong&gt;：公开数据集可能被模型训练时“见过”，导致分数虚高（过拟合）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;典型场景&#34;&gt;&lt;strong&gt;典型场景&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;测试模型在&lt;strong&gt;新数据&lt;/strong&gt;上的泛化能力（如训练时未接触的医疗垃圾邮件分类）。&lt;/li&gt;
+&lt;li&gt;避免过拟合：若模型仅死记训练数据（如学生背题），则测试失效。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;设计自动化评估方案&#34;&gt;设计自动化评估方案
+&lt;/h2&gt;&lt;h3 id=&#34;数据集&#34;&gt;数据集
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;it&amp;rsquo;s very important to keep in mind that &lt;strong&gt;your evaluation result will only be as good as your evaluation dataset.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;评估结果的质量完全取决于评估数据集的质量。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h4 id=&#34;已有的数据集&#34;&gt;已有的数据集
+&lt;/h4&gt;&lt;p&gt;检查创建过程&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;创建者：专家创建 &amp;gt; 有偿标注者创建 ~ 众包数据 &amp;gt; 公开平台野生数据集
+&lt;ul&gt;
+&lt;li&gt;注重&lt;code&gt;data card&lt;/code&gt;，标注者的人口统计信息可以帮助了解数据集的语言多样性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;是否经过审查（否则容易出现拼写错误、语法错误、荒谬答案）
+&lt;ul&gt;
+&lt;li&gt;标注意见一致&lt;/li&gt;
+&lt;li&gt;作者是否检查过&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;是否有明确的数据创建指南
+&lt;ul&gt;
+&lt;li&gt;确保数据具有一致性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;样本抽查：随机取50样本进行人工检查&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;质量
+&lt;ul&gt;
+&lt;li&gt;prompts清晰、无歧义&lt;/li&gt;
+&lt;li&gt;答案正确&lt;/li&gt;
+&lt;li&gt;是否缺失信息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;任务相关
+&lt;ul&gt;
+&lt;li&gt;与希望评估的任务类型一致&lt;/li&gt;
+&lt;li&gt;场景相关&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;确保总数据的数量符合要求&lt;/p&gt;
+&lt;h4 id=&#34;自行创建数据集&#34;&gt;自行创建数据集
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;聚合&lt;/strong&gt;：聚合不同来源的现有数据来评估任务相关能力。许多评估数据集（如MATH、LSAT等）就是通过聚合人类评估数据集构建的。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;人工标注&lt;/strong&gt;：见&lt;code&gt;human-evaluation/using-human-annotators&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;合成数据&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;LLM：可参考&lt;a class=&#34;link&#34; href=&#34;https://huggingface.co/blog/cosmopedia&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Cosmopedia: how to create large-scale synthetic data for pre-training Large Language Models&lt;/a&gt;，务必随后人工检查/过滤/验证数据集（遵循上述步骤）&lt;/li&gt;
+&lt;li&gt;基于规则的技术：如任务允许，这是获得近乎无限样本且避免污染的绝佳方式
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2312.14890&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;NPHardEval: Dynamic Benchmark on Reasoning Ability of Large Language Models via Complexity Classes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2309.17167&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;DyVal: Dynamic Evaluation of Large Language Models for Reasoning Tasks&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2309.17167https://arxiv.org/abs/2310.16049&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt; Article identifier not recognized&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;推理方法&#34;&gt;推理方法
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;生成模型：侧重生成连贯文本，其核心是预测下一个 token 的概率分布。&lt;/li&gt;
+&lt;li&gt;推理模型：通过引导模型输出中间思考步骤，再得出最终答案 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;对数概率推理log-probabilities&#34;&gt;对数概率推理log-probabilities
+&lt;/h4&gt;&lt;p&gt;适用于：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;封闭式&lt;/strong&gt;任务：多项选择题(MCQA, multi-choice question answer)、判断题&lt;/li&gt;
+&lt;li&gt;典型用例：知识问答测试、校准能力评估&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;原理：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将问题与选项拼接为固定模板（如&amp;quot;问题：&amp;hellip; 选项：A.xx B.xx&amp;hellip;&amp;quot;）&lt;/li&gt;
+&lt;li&gt;计算模型对每个选项首字母（如A/B/C）的预测概率&lt;/li&gt;
+&lt;li&gt;选择概率最高的选项作为答案&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;优势：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;快速计算（只需要1个token的输出）&lt;/li&gt;
+&lt;li&gt;避免生成无关内容&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;劣势：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;选项顺序有一定影响&lt;/li&gt;
+&lt;li&gt;高估小模型的能力、没有推理过程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;生成式推理generative&#34;&gt;生成式推理generative
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;开放式&lt;/strong&gt;任务：问答、文本创作、复杂推理&lt;/li&gt;
+&lt;li&gt;典型用例：聊天机器人、编程助手、论文润色&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;原理：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入问题或指令（如&amp;quot;解释相对论&amp;quot;）&lt;/li&gt;
+&lt;li&gt;模型自由生成完整文本回答&lt;/li&gt;
+&lt;li&gt;通过人工或自动指标（如ROUGE）评估质量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;优势：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;反映真实应用水平&lt;/li&gt;
+&lt;li&gt;支持多轮交互&lt;/li&gt;
+&lt;li&gt;展现逻辑链能力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;劣势：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;评估指标设计复杂&lt;/li&gt;
+&lt;li&gt;计算成本高（尤其长文本）&lt;/li&gt;
+&lt;li&gt;可能生成冗余/错误内容&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;综上：&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;维度&lt;/th&gt;
+          &lt;th&gt;对数概率推理优先&lt;/th&gt;
+          &lt;th&gt;生成式推理优先&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;任务类型&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;封闭式选择题&lt;/td&gt;
+          &lt;td&gt;开放式创作/推理&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;评估速度&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;需快速批量测试时&lt;/td&gt;
+          &lt;td&gt;可接受延迟的精细评估&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;模型规模&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;小模型（&amp;lt;10B参数）&lt;/td&gt;
+          &lt;td&gt;大模型（&amp;gt;50B参数）&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;资源限制&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;计算资源有限&lt;/td&gt;
+          &lt;td&gt;具备充足GPU显存&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;核心目标&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;测试知识准确性&lt;/td&gt;
+          &lt;td&gt;测试综合生成能力&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;提示词&#34;&gt;提示词
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;给模型传达了多少任务信息&lt;/li&gt;
+&lt;li&gt;信息的表达方式如何&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;MCQA 或 QA 的提示词通常包括以下部分：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;任务说明（可选）：介绍任务&lt;/li&gt;
+&lt;li&gt;上下文（context）：提供题目的背景信息
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;例：摘要任务中提供原始文本，信息抽取任务中提供源内容&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;问题本身&lt;/li&gt;
+&lt;li&gt;如果是多项选择题，附带选项&lt;/li&gt;
+&lt;li&gt;一些连接词，如 &lt;code&gt;Question&lt;/code&gt;、&lt;code&gt;Context&lt;/code&gt;、&lt;code&gt;Choice&lt;/code&gt; 等&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;注意事项：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;即使语义相同的小改动，也可能导致模型结果波动较大（&lt;code&gt;troubleshooting/troubleshooting-reproducibility&lt;/code&gt;）
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;缓解方式&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;更高成本：用不同提示格式重复评估&lt;/li&gt;
+&lt;li&gt;更低成本：对等难度样本使用不同提示模板&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;你可以为模型**提供示例（few-shot）**来帮助它理解格式，&lt;strong&gt;连接词&lt;/strong&gt;也很有帮助&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2407.07890&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt; Training on the Test Task Confounds Evaluation and Emergence&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;现在模型往往过拟合某些提示格式&lt;/p&gt;
+&lt;p&gt;在 Open LLM Leaderboard 2 中，发现 Llama 3.2 和 Qwen 2.5 在 few-shot 情境下甚至不再遵循提示格式&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;某些评估指标需要非常受限的输出格式（&lt;code&gt;general-knowledge/model-inference-and-evaluation&lt;/code&gt;）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;评估指标&#34;&gt;评估指标
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;对数概率评估：准确率
+&lt;ul&gt;
+&lt;li&gt;需要对长度做归一化（字符、token、PMI）&lt;/li&gt;
+&lt;li&gt;也可以用 perplexity（困惑度）、召回率、F1 等补充分析&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在计算对数概率时，长文本的&lt;strong&gt;累积概率值天然更大&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;若不归一化，模型可能因生成更长（或更短）的选项而获得不公平的优势。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;参考信息：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;对于多选题中选项仅为单个字符（A/B/C/D）时仍存在&lt;strong&gt;长文本影响&lt;/strong&gt;的原因及机制解析如下：&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;一影响来源&#34;&gt;一、&lt;strong&gt;影响来源&lt;/strong&gt;
+&lt;/h3&gt;&lt;p&gt;即使选项本身是单个字符，实际输入模型的完整文本包含&lt;strong&gt;题干+选项&lt;/strong&gt;的组合。例如：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;#34;问题：量子纠缠现象违背了哪个物理定律？选项：A.能量守恒 B.相对论 C.局域实在性 D.热力学第二定律&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;此时模型接收的输入是完整的文本序列，选项字符的预测概率会受到&lt;strong&gt;题干复杂度&lt;/strong&gt;和&lt;strong&gt;上下文语义关联强度&lt;/strong&gt;的影响。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;二具体影响机制&#34;&gt;二、&lt;strong&gt;具体影响机制&lt;/strong&gt;
+&lt;/h3&gt;&lt;h4 id=&#34;1-注意力稀释效应&#34;&gt;1. &lt;strong&gt;注意力稀释效应&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;长题干&lt;/strong&gt;导致模型在处理选项时注意力分散，尤其当题干包含复杂术语或长句时，模型可能无法精准捕捉关键信息与选项的关联。&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;示例&lt;/em&gt;：&lt;br&gt;
+题干若包含200个token的量子物理描述，模型在预测选项时，可能因前文信息过载而降低对正确选项字符的注意力权重。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;2-概率累积偏差&#34;&gt;2. &lt;strong&gt;概率累积偏差&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;对数概率计算基于&lt;strong&gt;完整输入序列&lt;/strong&gt;的联合概率如下，长题干会增加模型预测路径的分支数，导致选项字符的边际概率产生累积误差。&lt;/li&gt;
+&lt;/ul&gt;
+$$
+&gt;    \log P(\text{选项}| \text{题干}) = \sum_{i=1}^N \log P(\text{token}_i | \text{上下文}) 
+&gt;   $$&lt;h4 id=&#34;3-位置编码衰减&#34;&gt;3. &lt;strong&gt;位置编码衰减&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Transformer模型的位置编码对长序列末端的token（如选项字符）表征能力下降，可能削弱模型对选项的逻辑判断能力。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;三影响表现形式&#34;&gt;三、&lt;strong&gt;影响表现形式&lt;/strong&gt;
+&lt;/h3&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;影响维度&lt;/th&gt;
+          &lt;th&gt;具体表现&lt;/th&gt;
+          &lt;th&gt;示例场景&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;选项顺序偏差&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;模型对靠后选项（如D）的预测概率系统性偏低&lt;/td&gt;
+          &lt;td&gt;题干过长时，模型更倾向优先选项A/B&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;语义干扰&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;题干中的关键词与错误选项产生意外关联&lt;/td&gt;
+          &lt;td&gt;题干出现&amp;quot;热力学&amp;quot;导致错误选D的倾向&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;计算稳定性&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;长输入导致概率值波动增大，评估结果方差升高&lt;/td&gt;
+          &lt;td&gt;同一问题重复评估时准确率差异显著[1]&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;四解决方案&#34;&gt;四、&lt;strong&gt;解决方案&lt;/strong&gt;
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;输入标准化&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;统一题干长度（如截断至固定token数）&lt;/li&gt;
+&lt;li&gt;将选项提前插入题干中间位置（如&amp;quot;[选项：A/B/C/D] 问题：&amp;hellip;&amp;quot;）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;概率校准技术&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用温度缩放（Temperature Scaling）调整输出概率分布&lt;/li&gt;
+&lt;li&gt;对长题干任务单独训练校准层&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;评估指标改进&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;引入&lt;strong&gt;长度惩罚因子&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;采用动态加权注意力（Dynamic Weighted Attention）增强选项区域的关注度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+$$
+&gt;   \text{Score} = \frac{\log P(\text{选项})}{\sqrt{\text{题干token数}}}
+&gt;   $$&lt;hr&gt;
+&lt;h3 id=&#34;五实验验证案例&#34;&gt;五、&lt;strong&gt;实验验证案例&lt;/strong&gt;
+&lt;/h3&gt;&lt;p&gt;在MMLU基准测试中，将题干从50token增至300token后：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;模型对正确选项的平均概率下降12.7%&lt;/li&gt;
+&lt;li&gt;选项D的预测频率比短题干时降低9.3%&lt;br&gt;
+（数据来源：[4]）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这表明&lt;strong&gt;题干长度&lt;/strong&gt;与&lt;strong&gt;选项预测稳定性&lt;/strong&gt;存在显著负相关。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;点间互信息（PMI, Pointwise Mutual Information）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;计算方式：PMI = log(P(选项)) - log(P(基线))&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;基线通常为随机猜测概率（如四选一任务中，基线概率=0.25）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;适用场景&lt;/strong&gt;：多选题（MCQA）中量化选项间的相对置信度差异&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;示例：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;若选项A的预测概率为0.6，PMI = log(0.6) - log(0.25) ≈ 0.47&lt;/li&gt;
+&lt;li&gt;选项B的预测概率为0.3，PMI = log(0.3) - log(0.25) ≈ 0.04
+&lt;em&gt;结果&lt;/em&gt;：PMI明确显示A的置信度显著高于B 。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;生成式评估
+&lt;ul&gt;
+&lt;li&gt;是否要对生成内容做预处理、归一化
+&lt;ul&gt;
+&lt;li&gt;若归一化方式设计不当，可能导致不公平评分（详见 &lt;a class=&#34;link&#34; href=&#34;https://huggingface.co/blog/open-llm-leaderboard-drop&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Hugging Face 博文&lt;/a&gt;）&lt;/li&gt;
+&lt;li&gt;某些任务（如数学题）需要从&lt;strong&gt;格式化结果&lt;/strong&gt;中提取答案&lt;/li&gt;
+&lt;li&gt;若采用推理链（Chain of Thought）评估，也需移除中间推理部分，仅提取最终答案&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;与参考答案进行对比
+&lt;ul&gt;
+&lt;li&gt;精确匹配、前缀匹配&lt;/li&gt;
+&lt;li&gt;总结/翻译任务中的 ROUGE、BLEU、字符 N-Gram&lt;/li&gt;
+&lt;li&gt;参考 Hugging Face 提供的 &lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/lighteval&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;指标列表&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在选择指标时，请牢记你的任务目标。&lt;/p&gt;
+&lt;p&gt;如果是医疗、客服等高风险场景，你更应该关注模型的最差表现（例如错误回答、产生有害内容等）。&lt;/p&gt;
+&lt;p&gt;推荐阅读 &lt;a class=&#34;link&#34; href=&#34;https://ehudreiter.com/2024/07/10/challenges-in-evaluating-llms/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;这个博客&lt;/a&gt;，它进一步探讨了这一点。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>大模型评估指南 · 1 前言</title>
+        <link>https://example.com/p/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E6%8C%87%E5%8D%97-1-%E5%89%8D%E8%A8%80/</link>
+        <pubDate>Thu, 10 Apr 2025 15:11:40 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E6%8C%87%E5%8D%97-1-%E5%89%8D%E8%A8%80/</guid>
+        <description>&lt;p&gt;&lt;code&gt;evaluation-guidebook&lt;/code&gt;是一个关于大语言模型（LLM）评估的指南手册，为不同水平的用户提供了全面的评估知识和实用技巧，帮助用户确保 LLM 在特定任务上表现良好。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;仓库地址：&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;huggingface/evaluation-guidebook: Sharing both practical insights and theoretical knowledge about LLM evaluation that we gathered while managing the Open LLM Leaderboard and designing lighteval!&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;概述&#34;&gt;概述
+&lt;/h2&gt;&lt;p&gt;该指南手册涵盖了多种评估模型的方法，提供了设计自定义评估的指导，以及来自实践经验的技巧和窍门。无论是生产模型的使用者、研究人员还是爱好者，都能从中找到所需的信息。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;初学者&lt;/strong&gt;：建议从各章节的 &lt;code&gt;Basics&lt;/code&gt; 部分开始，同时可以在 &lt;code&gt;General knowledge&lt;/code&gt; 中找到关于重要 LLM 主题的解释，如模型推理和分词。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;高级用户&lt;/strong&gt;：可以重点关注 &lt;code&gt;Tips and Tricks&lt;/code&gt; 和 &lt;code&gt;Troubleshooting&lt;/code&gt; 章节，以及 &lt;code&gt;Designing&lt;/code&gt; 部分。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;目录结构&#34;&gt;目录结构
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;自动基准测试（Automatic benchmarks）
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook/blob/main/contents/automated-benchmarks/basics.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;基础（Basics）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook/blob/main/contents/automated-benchmarks/designing-your-automatic-evaluation.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;设计自动评估（Designing your automatic evaluation）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook/blob/main/contents/automated-benchmarks/some-evaluation-datasets.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;一些评估数据集（Some evaluation datasets）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook/blob/main/contents/automated-benchmarks/tips-and-tricks.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;技巧和窍门（Tips and tricks）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;人工评估（Human evaluation）
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook/blob/main/contents/human-evaluation/basics.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;基础（Basics）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook/blob/main/contents/human-evaluation/using-human-annotators.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;使用人类标注员（Using human annotators）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook/blob/main/contents/human-evaluation/tips-and-tricks.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;技巧和窍门（Tips and tricks）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;使用大语言模型作为评判者（LLM-as-a-judge）
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook/blob/main/contents/model-as-a-judge/basics.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;基础（Basics）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook/blob/main/contents/model-as-a-judge/getting-a-judge-llm.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;获取评判大语言模型（Getting a Judge-LLM）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook/blob/main/contents/model-as-a-judge/designing-your-evaluation-prompt.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;设计评估提示（Designing your evaluation prompt）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook/blob/main/contents/model-as-a-judge/evaluating-your-evaluator.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;评估评估器（Evaluating your evaluator）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook/blob/main/contents/model-as-a-judge/what-about-reward-models.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;奖励模型相关内容（What about reward models）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook/blob/main/contents/model-as-a-judge/tips-and-tricks.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;技巧和窍门（Tips and tricks）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;故障排除（Troubleshooting）
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook/blob/main/contents/troubleshooting/troubleshooting-inference.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;推理故障排除（Troubleshooting inference）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook/blob/main/contents/troubleshooting/troubleshooting-reproducibility.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;可重复性故障排除（Troubleshooting reproducibility）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;通用知识（General knowledge）
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook/blob/main/contents/general-knowledge/model-inference-and-evaluation.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;模型推理和评估（Model inference and evaluation）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook/blob/main/contents/general-knowledge/tokenization.md&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;分词（Tokenization）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;示例（Examples）
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/evaluation-guidebook/blob/main/contents/examples/comparing_task_formulations.ipynb&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;评估期间比较任务表述（Comparing task formulations during evaluation）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        <item>
+        <title>CritiQ 工作文档</title>
+        <link>https://example.com/p/critiq-%E5%B7%A5%E4%BD%9C%E6%96%87%E6%A1%A3/</link>
+        <pubDate>Thu, 03 Apr 2025 15:06:24 +0800</pubDate>
+        
+        <guid>https://example.com/p/critiq-%E5%B7%A5%E4%BD%9C%E6%96%87%E6%A1%A3/</guid>
+        <description>&lt;h1 id=&#34;critiq-记录&#34;&gt;CritiQ 记录
+&lt;/h1&gt;&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;目标&#34;&gt;目标
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;训练模型，由模型判断语料文本数据的质量（高/低），完成质量检测，帮助后续模型训练&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;训练数据准备&#34;&gt;训练数据准备
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;至少需要300正例+300负例，希望是人类专家的标注&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在训练数据不足1w的情况，使用CritiQ去做数据标注&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;传统训练都是训练集&amp;gt;测试集&lt;/p&gt;
+&lt;p&gt;这里是通过挖掘人类偏好，测试集合远大于训练集，使用训练集挖掘出来的指标，对测试集进行标注&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;当训练数据超过1w的时候，可以直接跳过这个部分去做分类模型训练&lt;/p&gt;
+&lt;h3 id=&#34;knowledge-base&#34;&gt;Knowledge Base
+&lt;/h3&gt;&lt;p&gt;对于数据质量评估，如果完全交由模型生成评估指标，从各个角度来说都很水&lt;/p&gt;
+&lt;p&gt;参考：&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2502.19279&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2502.19279] CritiQ: Mining Data Quality Criteria from Human Preferences&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;workflow：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从huggingface的数据集中寻找参考论文列表&lt;/li&gt;
+&lt;li&gt;从arxiv能找到的论文中爬取摘要&lt;/li&gt;
+&lt;li&gt;通过制作agent分析摘要，判断论文中是否有关于数据集评价等内容&lt;/li&gt;
+&lt;li&gt;提取评估指标&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;最后论文作者得到了一个370+数量的指标&lt;/p&gt;
+&lt;p&gt;根据不同的待测数据集，跑一遍，选择准确度较高的&lt;/p&gt;
+&lt;p&gt;数量不够让模型生成&lt;/p&gt;
+&lt;h2 id=&#34;training&#34;&gt;Training
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/KYLN24/CritiQ&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;github&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;环境&#34;&gt;环境
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;cuda 12.4 + torch 2.6 + Python3.10&lt;/p&gt;&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;conda create -n critiq_env &lt;span class=&#34;nv&#34;&gt;python&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;3.10 -y
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;conda activate critiq_env
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pip3 install torch torchvision torchaudio
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;python&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;c&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;import torch; print(&amp;#39;PyTorch版本:&amp;#39;, torch.__version__); print(&amp;#39;GPU可用:&amp;#39;, torch.cuda.is_available()); print(&amp;#39;GPU名称:&amp;#39;, torch.cuda.get_device_name(0) if torch.cuda.is_available() else &amp;#39;无可用GPU&amp;#39;)&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git clone https://github.com/KYLN24/CritiQ
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; CritiQ
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pip install -e &lt;span class=&#34;s2&#34;&gt;&amp;#34;.[vllm,train]&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;之后如果网络不太行，换一个源：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;os&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;environ&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;HF_ENDPOINT&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;https://hf-mirror.com&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;数据集&#34;&gt;数据集
+&lt;/h3&gt;&lt;p&gt;Pair Data格式如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;PairData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;TypedDict&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;str&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;B&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;str&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;answer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Literal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;A&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;B&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;训练数据格式（保存为&lt;code&gt;train_reward.jsonl&lt;/code&gt;）：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;A&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;金属的导热系数显著高于木材（铁约80 W/m·K vs 木材约0.1 W/m·K），根据傅里叶定律q=-k∇T，更高的导热系数导致更快的热传导速率，使手部热量迅速流失。&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;B&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;金属传热特别快，能迅速把你手上的热量带走，所以摸起来凉；木头传热慢，热量不容易流失，感觉就没那么凉。就像夏天坐金属凳子比坐木凳子感觉更凉快。&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;answer&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;B&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;A&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;由牛顿第一定律可知，物体保持原有运动状态。当汽车以加速度a减速时，乘客因惯性保持原速v，直到受到座椅摩擦力f=μN的作用才减速。&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;B&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;因为你的身体想保持原来的运动状态。车停了，但你的身体还在往前，所以会往前倾。就像跑步时突然停下，身体还会往前冲一样。&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;answer&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;B&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Reward模型输入格式（保存为&lt;code&gt;predict_reward.jsonl&lt;/code&gt;）：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;金属的导热系数显著高于木材（铁约80 W/m·K vs 木材约0.1 W/m·K），根据傅里叶定律q=-k∇T，更高的导热系数导致更快的热传导速率，使手部热量迅速流失。&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;金属传热特别快，能迅速把你手上的热量带走，所以摸起来凉；木头传热慢，热量不容易流失，感觉就没那么凉。就像夏天坐金属凳子比坐木凳子感觉更凉快。&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;由牛顿第一定律可知，物体保持原有运动状态。当汽车以加速度a减速时，乘客因惯性保持原速v，直到受到座椅摩擦力f=μN的作用才减速。&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;因为你的身体想保持原来的运动状态。车停了，但你的身体还在往前，所以会往前倾。就像跑步时突然停下，身体还会往前冲一样。&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;光从光密介质（水，n=1.33）进入光疏介质（空气，n≈1）时发生折射，根据斯涅尔定律n₁sinθ₁=n₂sinθ₂，折射角大于入射角导致视觉偏移。&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;因为光从水进入空气时会拐弯，让我们看到的位置和实际位置不一样，所以筷子看起来像是弯的。就像把吸管插进水里也会看起来弯折一样。&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;一共准备了137条数据：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-txt&#34; data-lang=&#34;txt&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;请生成100个初中物理现象问题与解答，要求：  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1. 每个问题包含两种回答：  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   - **A**：专业严谨的物理解释（含公式、原理名称、数据等）  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   - **B**：通俗易懂的讲解（用比喻、生活实例，语言口语化）  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   - **answer**：固定标注&amp;#34;B&amp;#34;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2. 数据格式：每行一个完整JSON对象，严格遵循以下结构：  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   {&amp;#34;A&amp;#34;: &amp;#34;...&amp;#34;, &amp;#34;B&amp;#34;: &amp;#34;...&amp;#34;, &amp;#34;answer&amp;#34;: &amp;#34;B&amp;#34;}  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3. 内容要求：  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   - 物理现象需贴近日常生活（如热学、光学、力学等）  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   - B回答必须正确且易于理解，避免专业术语  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   - 示例类比需直观（如&amp;#34;像磁铁吸住&amp;#34;&amp;#34;像气球爆炸&amp;#34;）  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4. 输出：直接给出结果，无需注释，禁止使用```包裹  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;示例格式：  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;{&amp;#34;A&amp;#34;: &amp;#34;金属导热系数较高（铁80 W/m·K），根据傅里叶定律q=-k∇T...&amp;#34;, &amp;#34;B&amp;#34;: &amp;#34;金属像‘传热快手’，迅速带走热量，所以摸起来更凉&amp;#34;, &amp;#34;answer&amp;#34;: &amp;#34;B&amp;#34;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;由模型生成&lt;/p&gt;
+&lt;p&gt;先做一个预测：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python ./critiq/scripts/reward_predict.py --model Qwen/Qwen2.5-1.5B-Instruct --data ./data/predict_reward.jsonl --output_dir ./output
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;输出结果在&lt;code&gt;output&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;金属的导热系数显著高于木材（铁约80 W/m·K vs 木材约0.1 W/m·K），根据傅里叶定律q=-k∇T，更高的导热系数导致更快的热传导速率，使手部热量迅速流失。&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;reward&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.9465966820716858&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;金属传热特别快，能迅速把你手上的热量带走，所以摸起来凉；木头传热慢，热量不容易流失，感觉就没那么凉。就像夏天坐金属凳子比坐木凳子感觉更凉快。&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;reward&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.9046503901481628&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;由牛顿第一定律可知，物体保持原有运动状态。当汽车以加速度a减速时，乘客因惯性保持原速v，直到受到座椅摩擦力f=μN的作用才减速。&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;reward&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.9736446738243103&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;因为你的身体想保持原来的运动状态。车停了，但你的身体还在往前，所以会往前倾。就像跑步时突然停下，身体还会往前冲一样。&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;reward&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.9664104580879211&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;光从光密介质（水，n=1.33）进入光疏介质（空气，n≈1）时发生折射，根据斯涅尔定律n₁sinθ₁=n₂sinθ₂，折射角大于入射角导致视觉偏移。&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;reward&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.9532749652862549&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;因为光从水进入空气时会拐弯，让我们看到的位置和实际位置不一样，所以筷子看起来像是弯的。就像把吸管插进水里也会看起来弯折一样。&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;reward&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.9845753908157349&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;给的分数都很高，因为两种风格的文本质量都不低&lt;/p&gt;
+&lt;p&gt;为了让模型出现人类的偏好，我们开始训练一下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python ./critiq/scripts/train_reward.py --data ./data/train_reward.jsonl --eval_steps 40
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;code&gt;eval_steps&lt;/code&gt;一定要开大一点……原代码是1，每一步保存一个模型，磁盘炸的很快&lt;/p&gt;
+&lt;p&gt;训练的模型保存路径：&lt;code&gt;&amp;lt;output_dir&amp;gt;/&amp;lt;job_name&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;我这里是&lt;code&gt;./output/tmp&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;再跑一下预测：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python ./critiq/scripts/reward_predict.py --model ./output/tmp/checkpoint-109 --data ./data/predict_reward.jsonl --output_dir ./output
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;还没fixed的bug：&lt;/p&gt;
+&lt;p&gt;predict不知道为什么给的结果永远是：0.9以上&lt;/p&gt;
+&lt;p&gt;我直接修改了train.py，训练完直接跑预测，结果是对的（&lt;/p&gt;&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;突然关水龙头像‘管道撞车’，水流‘刹车不及’撞出巨响&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;reward&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.9999999586005831&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;磁致伸缩ΔL/L≈10^-5（镍），逆效应用于超声换能器&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;reward&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;2.2827974365423323e-05&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;磁致伸缩材料像‘会呼吸的磁铁’，磁场一变就‘伸缩’&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;reward&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.9999999123574378&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;防晒霜氧化锌散射UV，粒径d≈20 nm最优&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;reward&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;1.568953403843032e-05&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;物理防晒像‘纳米镜子’，把紫外线‘弹弹球’般反射&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;reward&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.9999999918479713&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;橡皮船浮力F=ρgV，PVC材料ρ≈1.4 g/cm³&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;reward&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;1.0129980850990629e-05&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;充气船像‘塑料泡泡’，空气‘内胆’让它漂水面&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;reward&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.9999985406223194&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        </item>
+        
+    </channel>
+</rss>
