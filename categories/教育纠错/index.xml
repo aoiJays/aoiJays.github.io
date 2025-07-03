@@ -1,0 +1,808 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>教育纠错 on BiribiriBird</title>
+        <link>https://example.com/categories/%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99/</link>
+        <description>Recent content in 教育纠错 on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Thu, 03 Jul 2025 14:19:55 +0800</lastBuildDate><atom:link href="https://example.com/categories/%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>大语言模型教育纠错 · 论文笔记（二）</title>
+        <link>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/</link>
+        <pubDate>Thu, 03 Jul 2025 14:19:55 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1 id=&#34;distilling-chatgpt-for-explainable-automated-student-answer-assessment&#34;&gt;Distilling ChatGPT for Explainable Automated Student Answer Assessment
+&lt;/h1&gt;&lt;h2 id=&#34;preview&#34;&gt;Preview
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2305.12962&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2305.12962 Distilling ChatGPT for Explainable Automated Student Answer Assessment&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;argu使用bert模型分类器对学生打分不好（看不见过程、可信度低）&lt;/li&gt;
+&lt;li&gt;现存数据集只有分数标注、无cot标注&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;paper贡献&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;AERA 框架，ChatGPT蒸馏到更小的模型&lt;/li&gt;
+&lt;li&gt;两种ChatGPT自主优化推理的策略&lt;/li&gt;
+&lt;li&gt;实验与人工评估，无需外部标注数据，即可生成高质量评分依据&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;To the best of our knowledge, AERA is the pioneering framework that leverages ChatGPT to generate rationales for explainable student answer assessments using more compact language models.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250702161440387.png&#34;
+	width=&#34;1269&#34;
+	height=&#34;675&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250702161440387_hu_583905481911432d.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250702161440387_hu_467a6034f5765858.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;METHOD&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;188&#34;
+		data-flex-basis=&#34;451px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;我们的方法包含三个主要步骤：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;根据不同的推理难度级别&lt;strong&gt;设计多种提示模板&lt;/strong&gt;，指导 ChatGPT 在评估学生答案时同步生成评分依据&lt;/li&gt;
+&lt;li&gt;ChatGPT 可能无法准确评估所有学生答案。引入了依据与数据优化模块，旨在提升生成依据的质量和可用性&lt;/li&gt;
+&lt;li&gt;用于高效微调小型语言模型，从而为学生答案评估生成合理的解释依据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;method&#34;&gt;Method
+&lt;/h2&gt;&lt;p&gt;符号约定：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Q：问题&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;X：学生答案&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Y：分数&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;R：评分标准&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;r：评分原因&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;XY-&amp;gt;r：表示LLM通过学生答案和分数，生成评分原因&lt;/p&gt;
+&lt;h3 id=&#34;prompt&#34;&gt;Prompt
+&lt;/h3&gt;&lt;h4 id=&#34;simple&#34;&gt;Simple
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Question]: &amp;lt;Q&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Key Elements]: &amp;lt;K&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Rubric]: &amp;lt;R&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Student answer]: &amp;lt;Xi&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;What score should this Student answer get and why?
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;首先使用一个X-&amp;gt;Yr的简单模板，显然这个对模型的难度是最高的&lt;/p&gt;
+&lt;h4 id=&#34;complex&#34;&gt;Complex
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Question]: &amp;lt;Q&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Key Elements]: &amp;lt;K&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Rubric]: &amp;lt;R&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Student answer]: &amp;lt;Xi&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Carefully read the [Question], [Key Elements], and [Rubric], then compare [Student answer] with the [Key Elements], and apply the [Rubric] to derive the student score. Please be certain to spell out your reasoning so anyone can verify them. Spell out the [Key Elements] that the [Student answer] matches, and also spell out which rule in the [Rubric] is applied.
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;提高了提示词的细致程度，因此一定程度上降低了模型的难度&lt;/p&gt;
+&lt;h4 id=&#34;few-shotexample-instruction&#34;&gt;Few-Shot（Example Instruction）
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Question]: &amp;lt;Q&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Key Elements]: &amp;lt;K&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Rubric]: &amp;lt;R&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Student answer]: &amp;lt;x1&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[score and Rationale]: &amp;lt;y1, r1&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Student answer]: &amp;lt;Xi&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[score and Rationale]: &amp;lt;yi, ri&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;data--rationale-refinement&#34;&gt;Data &amp;amp; Rationale Refinement
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;模型的输出每次都有不确定性，为保证评估分数的合理性，本章节着重讨论了数据与理由Refinement模块&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;策略1fixing-wrongly-labelled-data&#34;&gt;策略1：Fixing Wrongly Labelled Data
+&lt;/h4&gt;&lt;p&gt;引用了&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2302.09664&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2302.09664 Semantic Uncertainty: Linguistic Invariances for Uncertainty Estimation in Natural Language Generation&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;采用该论文提到的LLMs语义置信区间来计算生成解释对应的&lt;strong&gt;评分不确定性&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;作者对同一个学生答案进行多次（或多次假设）评估，以观察其输出分布。&lt;/p&gt;
+&lt;p&gt;发现：分数相同的情况下，给出的理由在语义上是相似的&lt;/p&gt;
+&lt;p&gt;因此：将这些具有语义相似理由和相同预测分数的实例的&lt;strong&gt;概率&lt;/strong&gt;进行累加，从而得到该分数的总预测概率。&lt;/p&gt;
+$$
+p(\hat{y}_{i}|x_{i})=\sum_{\hat{y}_{i}\in S}p(\hat{y}_{i}|x_{i})
+$$&lt;p&gt;
+其中 $S$ 表示所有语义相似且预测分数相同的解释集合。&lt;/p&gt;
+&lt;p&gt;当ChatGPT高度自信时，打出的分数与人类标注的分数差值超过1时，认为人类错误&lt;/p&gt;
+&lt;p&gt;从而修正错误的标注数据集&lt;/p&gt;
+&lt;h4 id=&#34;策略2prompt-for-rationale-refinement&#34;&gt;策略2：Prompt for Rationale Refinement
+&lt;/h4&gt;&lt;p&gt;X-&amp;gt;Yr不行，得用XY-&amp;gt;r&lt;/p&gt;
+&lt;p&gt;希望模型围绕这个给定分数来构建合理且准确的理由&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Question]: &amp;lt;Q&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Key Elements]: &amp;lt;K&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Rubric]: &amp;lt;R&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Student answer]: &amp;lt;x1&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[score and Rationale]: &amp;lt;y1&amp;gt; &amp;lt;r1&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; ...(assessment examples)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Student answer]: &amp;lt;xE&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[score and Rationale]: &amp;lt;yE&amp;gt; &amp;lt;rE&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Student answer]: &amp;lt;xi&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[Score and Rationale]: &amp;lt;yi给定分数&amp;gt; &amp;lt;ri（留空）&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;distilling-student-model-for-efficient-rationale-generation&#34;&gt;Distilling Student Model for Efficient Rationale Generation
+&lt;/h3&gt;&lt;p&gt;上述策略生成的r，作为数据&lt;/p&gt;
+&lt;p&gt;使用了Simple Instruction进行微调X-&amp;gt;Yr&lt;/p&gt;
+&lt;p&gt;以实现可解释的学生答案评估&lt;/p&gt;
+&lt;h2 id=&#34;experimental&#34;&gt;Experimental
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Baseline
+&lt;ul&gt;
+&lt;li&gt;Bert微调X-&amp;gt;Y&lt;/li&gt;
+&lt;li&gt;Longformers微调X-&amp;gt;T&lt;/li&gt;
+&lt;li&gt;Longformers微调X-&amp;gt;T（携带问题、关键要素、评分标准作为附件信息）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;实验参数见附录&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250703151514480.png&#34;
+	width=&#34;1259&#34;
+	height=&#34;559&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250703151514480_hu_474c6c0432666c7.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250703151514480_hu_ccc6d6a8ea93635a.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Results&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;225&#34;
+		data-flex-basis=&#34;540px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;携带附加信息整体性能没有提升&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;模型可能参考虚假特征而非参考评分标准&lt;/li&gt;
+&lt;li&gt;仅基于学生答案进行训练时，&lt;strong&gt;采用能处理更长输入文本的模型&lt;/strong&gt;可以提升性能。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;提示词的优化确实提升了ChatGPT性能&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;paper提出的框架得到的微调模型在部分数据集上没能超过纯分类器（只打分不解释，指标肯定更好看），但是也有部分超过&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果只保留预测分数正确的理由子集（&amp;ldquo;Correct Score Only&amp;rdquo;），在某些数据集（#1、#5和#6）上性能会超过包含其他细化策略的情况&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;这种方法在数据量有限时（如数据集#2）可能不适用&lt;/li&gt;
+&lt;li&gt;消融实验证明：分别纳入“修正错误标签”（Fixing Wrong Labels）和“理由完善”（Rationale Refinement）两种策略后，数据集#2的性能由于&lt;strong&gt;数据可用性增加&lt;/strong&gt;而显著提升。
+&lt;ul&gt;
+&lt;li&gt;在数据集#1、#5和#6上观察到性能下降，这表明错误标记的数据或不准确的预测理由可能对整体性能产生负面影响&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;数据与理由完善的两个组件在框架中都至关重要，既能防止数据稀缺，又能有效减少噪声数据&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;参考阅读：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;论文的消融研究旨在评估数据与理由完善模块中各个组件的贡献。这里提到的“四个微调方案”通常指的是在Long T5模型微调的基础上，逐步引入或移除特定完善策略的配置。&lt;/p&gt;
+&lt;p&gt;具体来说，这些方案及其差异体现在：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;“Correct Score Only”&lt;/strong&gt; (仅保留正确分数的数据)：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;方案&lt;/strong&gt;：在这种配置下，只使用ChatGPT生成的理由中，其预测分数与真实人工标注分数完全匹配的那部分数据来微调Long T5模型。这意味着任何ChatGPT给出了错误分数（即便理由可能在某种程度上正确）的数据点都被排除。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;目的&lt;/strong&gt;：这是为了建立一个高置信度的基线，确保用于微调的数据本身质量很高（分数是正确的）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;差异&lt;/strong&gt;：这是最严格的数据筛选策略，数据量会相对减少。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;引入“Fixing Wrong Labels”&lt;/strong&gt; (修正错误标签)：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;方案&lt;/strong&gt;：在“Correct Score Only”的基础上，引入了利用LLM语义置信区间来识别并修正&lt;strong&gt;人工标注中潜在错误&lt;/strong&gt;的数据。这意味着即使ChatGPT最初给出的分数与人工标注不符，但如果ChatGPT对该评估高度自信（基于语义相似的理由），并且分数差异超过某个阈值（如1分），则认为可能是人工标注错了，并尝试修正。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;目的&lt;/strong&gt;：增加可用数据的数量，将部分原本被排除的“错误”数据点（因人工标注问题）重新纳入训练集。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;差异&lt;/strong&gt;：在数据筛选上比“Correct Score Only”更宽松，因为它试图“拯救”因人工错误导致的数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;引入“Rationale Refinement”&lt;/strong&gt; (理由完善)：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;方案&lt;/strong&gt;：在“Correct Score Only”的基础上，引入了利用“理由完善提示词”来优化ChatGPT生成的理由。即便ChatGPT最初生成的理由不够完美，但通过提供正确的学生答案分数作为先验知识，引导模型生成更精确、与分数更匹配的理由。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;目的&lt;/strong&gt;：提高理由本身的质量和准确性，使其更好地解释给定分数。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;差异&lt;/strong&gt;：关注的是理由内容的优化，而非分数的修正或数据量的增加。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;AERA完整方案&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;方案&lt;/strong&gt;：这是将“Fixing Wrong Labels”和“Rationale Refinement”这两个组件&lt;strong&gt;同时整合&lt;/strong&gt;进来的最终框架。它既尝试修正底层数据的问题，也优化了理由的质量。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;目的&lt;/strong&gt;：实现框架的整体最优性能，同时解决数据量和理由质量的问题。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;差异&lt;/strong&gt;：是前述组件的协同作用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;为什么证明两个组件在框架中都至关重要引入一个组件不是造成了性能损失吗&#34;&gt;为什么证明两个组件在框架中都至关重要（引入一个组件不是造成了性能损失吗）
+&lt;/h3&gt;&lt;p&gt;用户提出的问题非常关键，因为它指出了一个看似矛盾的地方：论文指出单独引入某个组件可能导致部分数据集的性能下降，但又强调两个组件都至关重要。这其中的考量是多方面的：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;数据稀缺性问题&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;“Correct Score Only”策略虽然能确保数据质量极高，但它会&lt;strong&gt;大幅减少可用数据的数量&lt;/strong&gt;。对于像数据集#2这样本身就数据量相对较小的场景，严格的“Correct Score Only”会导致模型训练数据不足，从而严重限制性能。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;引入“Fixing Wrong Labels”和“Rationale Refinement”的第一个关键作用在于&lt;/strong&gt;：它们能够将那些被“Correct Score Only”策略排除在外的数据（例如，因人工标注错误导致被误判为“错误”的数据，或ChatGPT最初理由不完美但分数可能正确的数据）重新纳入训练集。这在数据稀缺的情况下，&lt;strong&gt;极大地增加了可用于训练的数据量&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;因此，尽管单独引入这些策略在某些数据充足的场景下可能看不出明显优势甚至有轻微下降，但它们是&lt;strong&gt;防止数据稀缺、保证框架在各种数据集（特别是小数据集）上都能有效运行&lt;/strong&gt;的关键。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据噪声与质量权衡&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;论文也确实提到，当“Fixing Wrong Labels”和“Rationale Refinement”策略&lt;strong&gt;单独引入&lt;/strong&gt;时，在一些数据集（如#1、#5、#6）上观察到性能下降。这可能是因为：
+&lt;ul&gt;
+&lt;li&gt;“Fixing Wrong Labels”虽然修正了部分人工错误，但如果ChatGPT自身的判断并非100%完美，也可能引入新的噪声。&lt;/li&gt;
+&lt;li&gt;“Rationale Refinement”虽然提高了理由质量，但如果与原始数据的匹配度没有处理好，也可能导致一些复杂性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;这种“性能损失”实际上是引入更多数据和更复杂处理可能带来的副作用，表明&lt;strong&gt;单独的组件可能无法完美处理所有情况&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;两个组件的协同作用与整体重要性&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;论文强调两个组件都至关重要的原因在于它们的&lt;strong&gt;互补性和在整体框架中的协同作用&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;“Fixing Wrong Labels”&lt;/strong&gt; 主要解决的是&lt;strong&gt;底层数据质量和可用性&lt;/strong&gt;问题，它使得更多的数据点可以被信赖和使用，即使它们最初的人工标注存在问题。这扩展了训练数据的池子。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;“Rationale Refinement”&lt;/strong&gt; 主要解决的是&lt;strong&gt;生成理由的准确性和一致性问题&lt;/strong&gt;，它确保了那些被用于模型蒸馏的理由是高质量、高解释性的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;一个关注&lt;strong&gt;数据量的扩展和纠错&lt;/strong&gt;，另一个关注&lt;strong&gt;数据内容的优化&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;当两者结合在AERA的完整框架中时，它们能够&lt;strong&gt;更全面地应对真实世界数据存在的挑战&lt;/strong&gt;——既要处理数据稀缺和潜在的标注错误，又要确保用于训练“学生”模型的理由具有高质量和可解释性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;因此，即使单独引入某个组件在特定情况下未能带来普遍的性能提升甚至略有下降，但从&lt;strong&gt;应对不同数据集特性（尤其是数据量大小）和确保最终模型的可解释性与可靠性&lt;/strong&gt;的全局角度来看，这两个组件在AERA框架中都发挥着不可或缺的关键作用。它们的价值体现在&lt;strong&gt;提供了处理复杂数据和实现多任务（打分+理由生成）的鲁棒解决方案&lt;/strong&gt;。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;自己的想法：paper准确的发现影响性能的两个关键要素：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;数据集本身的错误&lt;/li&gt;
+&lt;li&gt;ChatGPT的错误&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;只解决一个问题反而会带来性能损失&lt;/p&gt;
+&lt;h2 id=&#34;appendix&#34;&gt;Appendix
+&lt;/h2&gt;&lt;p&gt;对于表格数据的处理：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;表格通过LLM变成文字描述&lt;/li&gt;
+&lt;li&gt;文字描述通过LLM复原表格，check一下是不是一样的&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>大语言模型教育纠错 · 论文笔记（零）</title>
+        <link>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E9%9B%B6/</link>
+        <pubDate>Mon, 30 Jun 2025 14:52:55 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E9%9B%B6/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1 id=&#34;temporal-consistency-for-llm-reasoning-process-error-identification&#34;&gt;Temporal Consistency for LLM Reasoning Process Error Identification
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2503.14495&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2503.14495 Temporal Consistency for LLM Reasoning Process Error Identification&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;无训练过程&lt;/li&gt;
+&lt;li&gt;纯迭代反思&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;应用领域主要是大模型自己的解题步骤的错误检测&lt;/p&gt;
+&lt;p&gt;算是一个比较通用的做法，数学题之外有分步性质的应该也ok&lt;/p&gt;
+&lt;p&gt;可以借鉴一下其&lt;strong&gt;Reflection&lt;/strong&gt;的方法&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;输入定义如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$P$：题目原文（例如数学问题）；&lt;/li&gt;
+&lt;li&gt;$S = [s_1, s_2, &amp;hellip;, s_n]$：模型生成的解题步骤，按步分段；&lt;/li&gt;
+&lt;li&gt;$L$：目标是预测哪一段 $s_i$ 是 &lt;strong&gt;首个错误步骤&lt;/strong&gt;（或无错误）；&lt;/li&gt;
+&lt;li&gt;$R_t$：第 $t$ 轮的模型判断（包含错误定位和解释）；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;总共准备了K个模型并行进行推理，对于单个模型需要做以下事情：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;给定题目、解题步骤、自己的上轮判断&lt;/li&gt;
+&lt;li&gt;模型需要结合该信息判断、解释&lt;/li&gt;
+&lt;li&gt;持续迭代&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对K个模型投票，票数最多的即为结果&lt;/p&gt;
+&lt;p&gt;设定的终止条件：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;单个模型连续$q$轮给出稳定结论&lt;/li&gt;
+&lt;li&gt;K个模型的过去$q$轮的主体结果投票比例不能下降&lt;/li&gt;
+&lt;li&gt;或者T轮迭代上限（防止死循环）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E9%9B%B6/assets/image-20250630152911616.png&#34;
+	width=&#34;1790&#34;
+	height=&#34;595&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E9%9B%B6/assets/image-20250630152911616_hu_d160ac2e2571813e.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E9%9B%B6/assets/image-20250630152911616_hu_970feda48933cee3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Pipeline&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;300&#34;
+		data-flex-basis=&#34;722px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;如图，三个模型进行迭代，最后得到一致的结果&lt;/p&gt;
+&lt;p&gt;下面两个模型一开始不能得到正确答案，但是经过迭代得到正确结果&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;实验结果：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E9%9B%B6/assets/image-20250630153824194.png&#34;
+	width=&#34;501&#34;
+	height=&#34;703&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E9%9B%B6/assets/image-20250630153824194_hu_1377b258bcc30ccd.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E9%9B%B6/assets/image-20250630153824194_hu_be26e3e2ea566e58.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Table&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;71&#34;
+		data-flex-basis=&#34;171px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;todo&#34;&gt;Todo
+&lt;/h1&gt;&lt;p&gt;2406.00755&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>大语言模型教育纠错 · 论文笔记（一）</title>
+        <link>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/</link>
+        <pubDate>Mon, 23 Jun 2025 15:13:55 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/</guid>
+        <description>&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2412.16838&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2412.16838 Ask-Before-Detection: Identifying and Mitigating Conformity Bias in LLM-Powered Error Detector for Math Word Problem Solutions&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;intro&#34;&gt;Intro
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;AED（Automatic Error Detection）
+&lt;ul&gt;
+&lt;li&gt;本文定义为：给定问题-解答的输入对，识别错误步骤以及错误类型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250623164618186.png&#34;
+	width=&#34;1119&#34;
+	height=&#34;594&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250623164618186_hu_529466cf46b0a084.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250623164618186_hu_44cdd8acc43cea4e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;188&#34;
+		data-flex-basis=&#34;452px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;如图，paper点出传统的方法使用可以对问题的&lt;strong&gt;常规解法&lt;/strong&gt;进行正确错误检测&lt;/p&gt;
+&lt;p&gt;但是单个问题的解法可以&lt;strong&gt;存在多个&lt;/strong&gt;，认为之前的做法泛用性较差&lt;/p&gt;
+&lt;p&gt;常规解法与非常规解法会产生7%的性能差距，先进的闭源模型也无法避免&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;LLM错误检测器表现&lt;code&gt;conformity bias&lt;/code&gt;（从众偏差）
+&lt;ul&gt;
+&lt;li&gt;倾向“遵循主流答案（训练中经常出现的）”而忽略可能也正确但不常见的其他解法&lt;/li&gt;
+&lt;li&gt;导致模型对标准答案的识别准确，却对非常规解法的识别薄弱&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;论文针对缓解模型的&lt;code&gt;conformity bias&lt;/code&gt;进行工作&lt;/p&gt;
+&lt;p&gt;提出AskBD框架，为每个Solution自适应生成参考答案（合适的参考答案能显著提升性能）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;直接调用模型，无微调，拓展性强&lt;/li&gt;
+&lt;li&gt;自适应方式高度契合给定Solution，降低Bias&lt;/li&gt;
+&lt;li&gt;框架可协同CoT技术增强性能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;preliminary-study&#34;&gt;Preliminary Study
+&lt;/h2&gt;&lt;p&gt;Paper构建了一个Alternative Solution数据集用于充分暴露模型的从众偏差效应，帮助进行后续的探索&lt;/p&gt;
+&lt;h3 id=&#34;automatic-solution-permutation&#34;&gt;Automatic Solution Permutation
+&lt;/h3&gt;&lt;p&gt;paper希望构建一个高质量的Alternative Solution数据集&lt;/p&gt;
+&lt;p&gt;给定问题和Solution，希望替换掉整个解决方案为Alternative Solution&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;低质量&lt;/strong&gt;：对常规Solution只是简单的&lt;strong&gt;语义替换&lt;/strong&gt;，并没有深层的逻辑变换&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250623172108657.png&#34;
+	width=&#34;1094&#34;
+	height=&#34;316&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250623172108657_hu_c5b1e501f2aed034.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250623172108657_hu_c24cb789034894c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;346&#34;
+		data-flex-basis=&#34;830px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ASP&lt;/strong&gt;（自动解法置换），如图，对应了Solution和数学表达式的关系，使用LLM prompt独立执行：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Extract：常规Solution -&amp;gt; 数学表达式，完成后需要执行运算，检查是否能够得到正确计算结果，否则剔除&lt;/li&gt;
+&lt;li&gt;Permute：因式分解、分配律，重新排列表达式（同样需要运算检验）&lt;/li&gt;
+&lt;li&gt;Explain：置换后的表达式输入到LLM，引导生成高质量Alternative Solution&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;paper采样GPT-4o，从GSM8K数据集抽取200组问答对，构建常规数据集D&lt;/p&gt;
+&lt;p&gt;对D中的每个样本，3次ASP生成3个Alternative Solution，由教育系研究生评审质量，选择三个之中最优的一个&lt;/p&gt;
+&lt;p&gt;完成替换数据集D&amp;rsquo;的制作&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;erroneous-solution-generation&#34;&gt;Erroneous Solution Generation
+&lt;/h3&gt;&lt;p&gt;需要将错误注入到D和D‘之中，生成测试样本&lt;/p&gt;
+&lt;p&gt;主要参考：&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2406.00755&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2406.00755 Evaluating Mathematical Reasoning of Large Language Models: A Focus on Error Identification and Correction&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;paper引入了四种错误：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\varepsilon_C$：calculation errors
+&lt;ul&gt;
+&lt;li&gt;Operands in expressions are correct but an error occurs in the calculated results.（表达式正确，计算结果出错）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Each gust blows the leaf forward 5 feet, so 11 gusts will blow it forward 5 ×11 = 50 feet. &lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;$\varepsilon_R$：reference errors
+&lt;ul&gt;
+&lt;li&gt;Expression are incorrectly referencing the question conditions or the results from prior steps.（错误引用了题目条件或之前的计算结果）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Each gust blows the leaf forward 5 feet, so 10 gusts will blow it forward 5 ×10 = 50 feet. &lt;/code&gt;（题目原条件是11，不是10）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;$\varepsilon_M$ ：missing steps
+&lt;ul&gt;
+&lt;li&gt;Operands or expressions in the step that lack of references or support from the question conditions or prior steps.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Each swirl after a gust blows it back 2 feet, so 11 swirls will blow it back 2 ×11 = 22feet. Step 2. After 11 gusts, the leaf has traveled 55 − 22 = 33 feet down the sidewalk.&lt;/code&gt;（缺少了得到55这个数字的计算过程）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;$\varepsilon_H$：hallucinations（幻觉）
+&lt;ul&gt;
+&lt;li&gt;Statements or operands in the listed expression are fabricated or inconsistent with the question’s conditions.（虚构或与条件不一致）&lt;/li&gt;
+&lt;li&gt;……&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;It is worth noting that this study specifically aims to explore conformity bias, and therefore, &lt;strong&gt;we do not include all possible error types.&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;针对D和D&amp;rsquo;的每个样本，随机错误步骤的位置编号，每个样本生成了四种不同错误类型的样本，总共2000条&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154336790.png&#34;
+	width=&#34;473&#34;
+	height=&#34;212&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154336790_hu_396c502f844b6a72.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154336790_hu_4f52005375b8ff83.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Table 5&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;223&#34;
+		data-flex-basis=&#34;535px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;analysis-and-findings&#34;&gt;Analysis and Findings
+&lt;/h3&gt;&lt;h4 id=&#34;conformity-bias-identification&#34;&gt;Conformity Bias Identification
+&lt;/h4&gt;&lt;p&gt;评估指标：The evaluation metric is the identification accuracy across both correct and erroneous solutions.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;需要识别错误位置、错误类型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Paper使用提示词进行纠错，明确LLM本题存在替代解法，强调所有合理解决方案应该被接受，并且明确定义错误类别&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Given the &amp;lt;question&amp;gt;, please judge whether each step in &amp;lt;solution&amp;gt; is correct. **During the judging process, you should know that the &amp;lt;question&amp;gt; does not always have only one standard solution, and any reasonable &amp;lt;solution&amp;gt; should be accepted. You should pay attention to both the expressions and the statements in each step, and take care about the logic consistency between different steps. Additionally, consider arithmetic expression equivalency and avoid rejecting solutions solely because they use equivalent expressions.**
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;In each step, if no errors are found, respond with Step X: &amp;lt;correct&amp;gt;. If you find that the operands in the listed expressions are correct but an error occurs in the calculated result, respond with Step X: &amp;lt;calculation error&amp;gt;. If you find statements or operands in the listed expression are incorrectly referencing the question conditions or the results from prior steps, respond with Step X: &amp;lt;reference error&amp;gt;. If you find operands or expressions in the step that is lack of references or support from the question conditions or prior steps, respond with Step X: &amp;lt;missing step&amp;gt;. If you find statements or operands in the listed expression are fabricated or inconsistent with the question’s conditions, respond with: Step X: &amp;lt;hallucination&amp;gt;. If an error is a follow-on issue due to mistakes in previous steps rather than an independent error, respond with: Step X: &amp;lt;secondary error&amp;gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;lt;question&amp;gt; [Question Text] &amp;lt;solution&amp;gt; [Solution Text]  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Now, please start to respond.
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;参与测试的LLM：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154400250.png&#34;
+	width=&#34;441&#34;
+	height=&#34;436&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154400250_hu_926cdad944d5de03.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154400250_hu_488d9a30ae5b5c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Table 6&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;101&#34;
+		data-flex-basis=&#34;242px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;平均错误检测准确率的测试结果：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154615400.png&#34;
+	width=&#34;423&#34;
+	height=&#34;305&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154615400_hu_e91b30da751b4c25.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154615400_hu_4a904fb7a1a5feee.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Table 1&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;138&#34;
+		data-flex-basis=&#34;332px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;证实了LLM在AED任务中存在明显的从众偏差&lt;/p&gt;
+&lt;h4 id=&#34;solution-likelihood-score-analysis&#34;&gt;Solution Likelihood Score Analysis
+&lt;/h4&gt;&lt;p&gt;对于当前问题$q$，我们可以计算LLM生成答案$s$的概率$P(s|q)$&lt;/p&gt;
+&lt;p&gt;我们可以把$s$拆分成多个token：$s_i$&lt;/p&gt;
+$$
+P(s|q) = P(s_1, s_2, ...,s_{|s|} | q)
+$$$$
+P(s|q) = P(s_1|q) \times P(s_2|q,s_1) \times P(s_3|q,s_1,s_2) \times ...
+$$$$
+\log P(s|q) = \sum_{i=1}^{|s|} \log P(s_i|q,s_1:s_{i-1})
+$$&lt;p&gt;
+这个值就是&lt;strong&gt;对数似然分数&lt;/strong&gt; （Log-Likelihood Score）&lt;/p&gt;
+&lt;p&gt;它衡量了模型在给定问题 &lt;em&gt;q&lt;/em&gt; 的情况下，对答案 &lt;em&gt;s&lt;/em&gt; 的“信任度”或理解程度&lt;/p&gt;
+$$
+\log L_{\theta}(s|q) = \frac{\log L_\theta(s|q)}{|s|}
+$$&lt;p&gt;
+其中$\theta$表示LLM的参数（闭源模型的似然分数无法获取，采取了开源模型的似然分数均值做伪指标）&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163200484.png&#34;
+	width=&#34;562&#34;
+	height=&#34;478&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163200484_hu_9a5549ae053eac12.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163200484_hu_cfa275c0f051adca.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Advance Model&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;117&#34;
+		data-flex-basis=&#34;282px&#34;
+	
+&gt; &lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163307581.png&#34;
+	width=&#34;564&#34;
+	height=&#34;480&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163307581_hu_49803f1626247f18.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163307581_hu_926314100216a0c1.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Base Model&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;117&#34;
+		data-flex-basis=&#34;282px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;同时喂入 了常规解法+替代解法，根据似然分数分成四个档进行对比&lt;/p&gt;
+&lt;p&gt;显然似然值越高，Acc越高&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163347218.png&#34;
+	width=&#34;577&#34;
+	height=&#34;482&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163347218_hu_f8a58aeee4e02655.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163347218_hu_3fada5ac724549e7.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Likehood Distribution&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;119&#34;
+		data-flex-basis=&#34;287px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;对于开源模型，替代解法的似然分数显然低于常规解法&lt;/p&gt;
+&lt;h4 id=&#34;reference-based-detection-findings&#34;&gt;Reference-based Detection Findings
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;不太可能直接提高替代Solution的似然值
+&lt;ul&gt;
+&lt;li&gt;通过改变数据集进行微调，但是无法解决根本问题，仍有可能碰见其他的未遇见情况&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;参考：&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2407.09136&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2407.09136 Stepwise Verification and Remediation of Student Reasoning Errors with Large Language Model Tutors&lt;/a&gt;，提出引入参考答案提升了常规解法的检测性能&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;将学生解题步骤与标准答案对齐&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;本paper尝试推广到替代解法，但是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;实际情况下，参考答案并不是总能获取&lt;/li&gt;
+&lt;li&gt;即便能够获取，一般也是常规解法的参考答案&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;paper采用了两条技术路线进行对比：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用常规解法作为参考答案&lt;/li&gt;
+&lt;li&gt;自适应使用对应解法作为参考答案（？细节不太清楚，后文兴许会说）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626171423880.png&#34;
+	width=&#34;458&#34;
+	height=&#34;343&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626171423880_hu_38c9f63332d673bf.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626171423880_hu_6c0b72c548df9ffd.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;常规解法作为参考答案&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;133&#34;
+		data-flex-basis=&#34;320px&#34;
+	
+&gt;  &lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626171459301.png&#34;
+	width=&#34;459&#34;
+	height=&#34;348&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626171459301_hu_a726c1661fa683e4.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626171459301_hu_a94969f7c01bb73c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;自适应选择参考答案&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;131&#34;
+		data-flex-basis=&#34;316px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;根据与前文提示词的测试结果进行对比，引入参考答案对两个数据集的&lt;strong&gt;acc都有显著的提升&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;但是使用常规解法做参考答案加剧了bias，而自适应选择明显缓解了bias&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;因此选择合适的参考答案是能起到关键作用的&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;method&#34;&gt;Method
+&lt;/h2&gt;&lt;p&gt;提出AskBD（Ask-Before-Detection）框架，在评分过程中为每个待评答案动态生成适配的参考解法&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626172743783.png&#34;
+	width=&#34;1227&#34;
+	height=&#34;482&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626172743783_hu_dcc20bd97ebdb160.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626172743783_hu_1c39f4b9cd82f898.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Pipeline&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;254&#34;
+		data-flex-basis=&#34;610px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;输入：问题文本$q$，解答文本$s$，LLM$f$，提示词$p$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Condition and question extractor(CQE)
+&lt;ul&gt;
+&lt;li&gt;从问题文本中抽取条件$q_c$和提问文本$q_i$&lt;/li&gt;
+&lt;li&gt;$(q_c, q_i) = f([p_{cqe}, q])$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Solution Step Inquirer(SSI)
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;为提高生成结果的稳定性，SSI 会先总结每个步骤的结论再构建对应问题。&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;将解答文本转化为分步骤问题列表文本$Q$，&lt;strong&gt;末尾附加提问文本$q_i$&lt;/strong&gt;，以确保生成的参考解答能够回应原始问题的核心任务。&lt;/li&gt;
+&lt;li&gt;$Q = [f([p_{ssi},s]), q_i]$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Step Question Responder (SQR)
+&lt;ul&gt;
+&lt;li&gt;通过条件文本总结$Q$中每个问题的答案，生成参考答案$r$&lt;/li&gt;
+&lt;li&gt;$r = f([p_{sqr},q_c, Q])$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Reference-Enhanced Grader (REG)
+&lt;ul&gt;
+&lt;li&gt;根据$q, s, r$生成错误位置$y_s$和错误类型$y_e$&lt;/li&gt;
+&lt;li&gt;$y=f([p_{reg},q,s,r])$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;输出：$y_s, y_e$&lt;/p&gt;
+&lt;h2 id=&#34;experiment&#34;&gt;Experiment
+&lt;/h2&gt;&lt;p&gt;实验目的是验证核心的三个问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;是否缓解从众偏差&lt;/li&gt;
+&lt;li&gt;是否有额外的性能优势&lt;/li&gt;
+&lt;li&gt;与CoT等推理技术的兼容性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;实验方法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;采用前文数据集，相同的10个LLM，用于对比前两个问题&lt;/li&gt;
+&lt;li&gt;整合了CoT技术，评估兼容性&lt;/li&gt;
+&lt;li&gt;所有实验分别实验三种不同的随机seed，报告平均错误检测准确率&lt;/li&gt;
+&lt;li&gt;前文测试和CoT方案作为两个baseline&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;CoT的提示词&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; Before the &amp;lt;response&amp;gt;, you should provide your step-by-step &amp;lt;thinking&amp;gt; about your judging process.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; &amp;lt;question&amp;gt; [Question Text] &amp;lt;solution&amp;gt; [Solution Text]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; Now, please start to think first and then respond.
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626175506489.png&#34;
+	width=&#34;884&#34;
+	height=&#34;476&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626175506489_hu_bb07b79c8d6c3c11.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626175506489_hu_5250d244aa5b549e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;实验结果&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;185&#34;
+		data-flex-basis=&#34;445px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;对于问题1&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;重点分析M0和M2在$\Delta$列的差距
+&lt;ul&gt;
+&lt;li&gt;Base版本的优化并不明显，认为是模型推理能力不足，限制了框架效用&lt;/li&gt;
+&lt;li&gt;对比M1与M2，CoT也有缓解Bias的能力，在多数Advance模型中，框架的优化能力强于CoT&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于问题2&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在D、D&amp;rsquo;列对比M2和M0
+&lt;ul&gt;
+&lt;li&gt;框架确实提升了acc性能&lt;/li&gt;
+&lt;li&gt;对比M1 M2，CoT也体现出了性能提升
+&lt;ul&gt;
+&lt;li&gt;在base模型中CoT技术更胜一筹&lt;/li&gt;
+&lt;li&gt;在Advance模型中框架更强（……）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;针对问题3&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;M3和M1对比，确实变强了&lt;/li&gt;
+&lt;li&gt;兼容性好&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;limitation&#34;&gt;Limitation
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;只考虑了四个错误类型，忽略了学生解答中那些更罕见却更具挑战性的错误类型&lt;/li&gt;
+&lt;li&gt;仅聚焦于数学应用题&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

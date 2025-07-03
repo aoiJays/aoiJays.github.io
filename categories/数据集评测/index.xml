@@ -1,0 +1,663 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>数据集评测 on BiribiriBird</title>
+        <link>https://example.com/categories/%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AF%84%E6%B5%8B/</link>
+        <description>Recent content in 数据集评测 on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Fri, 06 Jun 2025 13:12:32 +0800</lastBuildDate><atom:link href="https://example.com/categories/%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AF%84%E6%B5%8B/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>大语言模型数据清洗 · 论文笔记（二）</title>
+        <link>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/</link>
+        <pubDate>Fri, 06 Jun 2025 13:12:32 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1 id=&#34;the-pile-an-800gb-dataset-of-diverse-text-for-language-modeling&#34;&gt;The Pile: An 800GB Dataset of Diverse Text for Language Modeling
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2101.00027&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;arXiv 2101.00027 The Pile: An 800GB Dataset of Diverse Text for Language Modeling&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/EleutherAI/the-pile&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Github EleutherAI/the-pile&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通过合成多个数据集，提升多样性，提升大规模语言模型的跨领域通用知识与下游任务泛化能力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;稍微看偏了，paper更多的精华在如何去衡量数据集对模型性能的提升水平&lt;/p&gt;
+&lt;p&gt;和清洗关系不大&lt;/p&gt;
+&lt;h2 id=&#34;the-pile-datasets&#34;&gt;The Pile Datasets
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;由22个部分组成&lt;/li&gt;
+&lt;li&gt;由于不同数据集存在差异（维基百科质量更高），因此进行了加权处理
+&lt;ul&gt;
+&lt;li&gt;权重越高，被使用的概率越高（更可能被重复使用次数）&lt;/li&gt;
+&lt;li&gt;例如维基百科重复采用3次&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;部分表格：&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Dataset Name&lt;/th&gt;
+          &lt;th&gt;Raw Size (before sampling)&lt;/th&gt;
+          &lt;th&gt;Weight (%)&lt;/th&gt;
+          &lt;th&gt;Epochs&lt;/th&gt;
+          &lt;th&gt;Effective Size&lt;/th&gt;
+          &lt;th&gt;Mean Document Size&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Pile-CC&lt;/td&gt;
+          &lt;td&gt;227.12 GiB&lt;/td&gt;
+          &lt;td&gt;18.11%&lt;/td&gt;
+          &lt;td&gt;1.0&lt;/td&gt;
+          &lt;td&gt;227.12 GiB&lt;/td&gt;
+          &lt;td&gt;4.33 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;PubMed Central&lt;/td&gt;
+          &lt;td&gt;90.27 GiB&lt;/td&gt;
+          &lt;td&gt;14.40%&lt;/td&gt;
+          &lt;td&gt;2.0&lt;/td&gt;
+          &lt;td&gt;180.55 GiB&lt;/td&gt;
+          &lt;td&gt;30.55 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Books3&lt;/td&gt;
+          &lt;td&gt;100.96 GiB&lt;/td&gt;
+          &lt;td&gt;12.07%&lt;/td&gt;
+          &lt;td&gt;1.5&lt;/td&gt;
+          &lt;td&gt;151.44 GiB&lt;/td&gt;
+          &lt;td&gt;538.36 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;OpenWebText2&lt;/td&gt;
+          &lt;td&gt;62.77 GiB&lt;/td&gt;
+          &lt;td&gt;10.01%&lt;/td&gt;
+          &lt;td&gt;2.0&lt;/td&gt;
+          &lt;td&gt;125.54 GiB&lt;/td&gt;
+          &lt;td&gt;3.85 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;ArXiv&lt;/td&gt;
+          &lt;td&gt;56.21 GiB&lt;/td&gt;
+          &lt;td&gt;8.96%&lt;/td&gt;
+          &lt;td&gt;2.0&lt;/td&gt;
+          &lt;td&gt;112.42 GiB&lt;/td&gt;
+          &lt;td&gt;46.61 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Github&lt;/td&gt;
+          &lt;td&gt;95.16 GiB&lt;/td&gt;
+          &lt;td&gt;7.59%&lt;/td&gt;
+          &lt;td&gt;1.0&lt;/td&gt;
+          &lt;td&gt;95.16 GiB&lt;/td&gt;
+          &lt;td&gt;5.25 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;FreeLaw&lt;/td&gt;
+          &lt;td&gt;51.15 GiB&lt;/td&gt;
+          &lt;td&gt;6.12%&lt;/td&gt;
+          &lt;td&gt;1.5&lt;/td&gt;
+          &lt;td&gt;76.73 GiB&lt;/td&gt;
+          &lt;td&gt;15.06 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;StackExchange&lt;/td&gt;
+          &lt;td&gt;32.20 GiB&lt;/td&gt;
+          &lt;td&gt;5.13%&lt;/td&gt;
+          &lt;td&gt;2.0&lt;/td&gt;
+          &lt;td&gt;64.39 GiB&lt;/td&gt;
+          &lt;td&gt;2.16 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;USPTO Backgrounds&lt;/td&gt;
+          &lt;td&gt;22.90 GiB&lt;/td&gt;
+          &lt;td&gt;3.65%&lt;/td&gt;
+          &lt;td&gt;2.0&lt;/td&gt;
+          &lt;td&gt;45.81 GiB&lt;/td&gt;
+          &lt;td&gt;4.08 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;PubMed Abstracts&lt;/td&gt;
+          &lt;td&gt;19.26 GiB&lt;/td&gt;
+          &lt;td&gt;3.07%&lt;/td&gt;
+          &lt;td&gt;2.0&lt;/td&gt;
+          &lt;td&gt;38.53 GiB&lt;/td&gt;
+          &lt;td&gt;1.30 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Gutenberg (PG-19)&lt;/td&gt;
+          &lt;td&gt;10.88 GiB&lt;/td&gt;
+          &lt;td&gt;2.17%&lt;/td&gt;
+          &lt;td&gt;2.5&lt;/td&gt;
+          &lt;td&gt;27.19 GiB&lt;/td&gt;
+          &lt;td&gt;398.73 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;OpenSubtitles&lt;/td&gt;
+          &lt;td&gt;12.98 GiB&lt;/td&gt;
+          &lt;td&gt;1.55%&lt;/td&gt;
+          &lt;td&gt;1.5&lt;/td&gt;
+          &lt;td&gt;19.47 GiB&lt;/td&gt;
+          &lt;td&gt;30.48 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Wikipedia (en)&lt;/td&gt;
+          &lt;td&gt;6.38 GiB&lt;/td&gt;
+          &lt;td&gt;1.53%&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;3.0&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;19.13 GiB&lt;/td&gt;
+          &lt;td&gt;1.11 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Raw Size：采样前的大小&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Weight ：采样后的大小占比&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Epochs：被采样次数&lt;/p&gt;
+&lt;p&gt;Effective Size：采样后的有效大小&lt;/p&gt;
+&lt;p&gt;Mean Document Size：平均文档大小&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;部分数据已被发布者清洗的很好，只进行了最小程度的预处理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;pile-cc&#34;&gt;Pile-CC
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;由CC数据集清洗得到&lt;/li&gt;
+&lt;li&gt;使用justText清洗raw HTTP responses including page HTML，相比于&lt;code&gt;.WET&lt;/code&gt;的纯文本效果更好&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;others&#34;&gt;Others
+&lt;/h3&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;分类&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;来源&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;学术文献&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;ArXiv、PubMed Central、NIH ExPorter&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;图书与出版物&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;Books3、Project Gutenberg (PG-19)、BookCorpus2&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;代码与技术文档&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;GitHub、StackExchange&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;法律与政府文件&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;FreeLaw、USPTO Backgrounds&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;多语言与翻译文本&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;EuroParl、OpenSubtitles&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;社交与对话数据&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;HackerNews、Ubuntu IRC、Enron Emails&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;特殊领域数据&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;DeepMind Mathematics、PhilPapers（哲学）、YouTube字幕&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;网络爬取内容&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;Pile-CC（新构建的Clean Common Crawl子集）&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;benchmarking-language-models-with-the-pile&#34;&gt;Benchmarking Language Models with the Pile
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;可以训练数据，同时因为涉及领域广泛，也可以基准测试&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;划分为训练集、验证集、测试集（$0.1%$测试集+验证集，虽然比例很低但是仍各自超过1G）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;尽管去重，但是肯定还是存在重复&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;paper中首选了BPB作为评测指标：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;输入：负对数似然损失（Negative Log-Likelihood Loss）&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;模型在测试数据上输出一个损失值 $L$，表示其预测能力。&lt;/li&gt;
+&lt;li&gt;越低的 $L$ 表示模型越能准确预测下一个词。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;转换为 BPB：&lt;/strong&gt;（bits per UTF-8 encoded byte）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用公式将损失 $L$ 转换为每字节的比特数&lt;/li&gt;
+&lt;/ul&gt;
+$$
+    BPB = \frac{L_T}{L_B}\log_2 e^L = \frac{L_T}{L_B}\times \frac{L}{\ln2}
+    $$&lt;ul&gt;
+&lt;li&gt;其中：
+&lt;ul&gt;
+&lt;li&gt;$L_T$：数据集以 token 为单位的长度&lt;/li&gt;
+&lt;li&gt;$L_B$：数据集以 UTF-8 编码字节为单位的长度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;和困惑度有一点相似，用于衡量模型对数据的压缩效率或预测能力&lt;/p&gt;
+&lt;p&gt;与Bits per Character (bpc)不同的一点，字符不是一个很好的定义（Unicode 中字符的界定可能复杂（例如组合字符、emoji 等），导致统计不一致。）&lt;/p&gt;
+&lt;p&gt;同时bpb不受到分词的影响，UTF-8的字节定义是准确的，适合基于不同模型、分词进行比较&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;指标&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;优点&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;缺点&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;适用场景&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;Bits per Byte&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;分词无关、字节标准明确&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;对非字节级任务不直观&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;跨模型比较、数据压缩评估&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;Bits per Char&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;更贴近人类理解&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Unicode 字符定义模糊&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;字符级生成任务（需统一字符定义）&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;Perplexity&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;直接反映预测不确定性&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;依赖分词、数值范围不稳定&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;单一模型调参、生成质量评估&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;更加完整的解释&#34;&gt;更加完整的解释
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;自信息：指的是当我们接收到一个消息时所获得的信息量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在信息论中，自信息衡量一个事件携带的信息量，由概率$p$决定。&lt;/p&gt;
+$$
+I(p) = -\log_2(p)
+$$&lt;p&gt;为了编码这一事件，我们选择霍夫曼编码这类最优编码，同时为了最小化平均码长：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;高频事件：分配短码&lt;/li&gt;
+&lt;li&gt;低频事件：分配长码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;如果事件 $A$ 的概率  $p = 1/2$ ，则  $I(A) = -\log_2(1/2) = 1$  比特。这表示需要用 1 位二进制码（如 &lt;code&gt;0&lt;/code&gt; 或 &lt;code&gt;1&lt;/code&gt;）编码。
+-   如果事件  $B$  的概率  $p = 1/8$ ，则  $I(B) = -\log_2(1/8) = 3$  比特。需要用 3 位二进制码（如 &lt;code&gt;000&lt;/code&gt; 到 &lt;code&gt;111&lt;/code&gt; 之一）编码。&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+$$
+L = -\ln p
+$$&lt;p&gt;
+一般使用的是自然对数，同时其恰好表示了概率为$p$的事件的信息量（单位为纳特（底数取e））&lt;/p&gt;
+$$
+Bits = I(p) = -\log_2(p) =-\frac{\ln p}{\ln 2} =\frac{L}{\ln 2}
+$$&lt;p&gt;
+&lt;strong&gt;同时，模型的损失是基于token计算的，即每个token的预测损失&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;所以这里的单位是：Bits per token&lt;/p&gt;
+$$
+bpb =  \frac{L_T}{L_B}\times \frac{L}{\ln2}
+$$&lt;p&gt;
+这样就得到了：Bits per Byte，消除了分词器、语种编码等其他影响，可以直接衡量模型输出的质量&lt;/p&gt;
+&lt;h2 id=&#34;评测&#34;&gt;评测
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;然后paper实验验证了一下用训练集训练过的模型会更nb&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;通过分析哪些Pile子数据集的表现最差，就知道模型的训练数据分布在这块比较浅，就可以使用pile这块数据集进行补充&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为了探索哪些数据集是模型表现较差的，显然不能直接使用困惑度进行比较（数据集熵值不一样）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;结构化的数据（熵值低）困惑度天然会比非结构化的更低&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;困惑度可以用于衡量一个数据集是否更接近另一个数据集&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如CCNet，在维基百科内训练一个模型，计算其他数据集的困惑度&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;所以如果要比较的话，可以通过模型的损失值，拟合得越好，说明训练数据中包含了这部分，否则就是缺失&lt;/p&gt;
+&lt;p&gt;如果钱多的话，当然是直接把所有数据集用模型train一下，看看损失值，与没有train过的原模型（GPT-3），在测试集上比一下Loss&lt;/p&gt;
+&lt;p&gt;paper这里钱不够，改用了GPT2做了一个trick：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;首先需要知道GPT3比GPT2强多少&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;参考数据集：OWT2（与GPT训练数据高度相似的一个数据集）&lt;/li&gt;
+&lt;li&gt;用原生的GPT3和在Pile训练的GPT2进行比较&lt;/li&gt;
+&lt;li&gt;得到一个基准差值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+L^{GPT-3}_{OWT2} - L^{GPT-2-Pile}_{OWT2}
+$$&lt;ul&gt;
+&lt;li&gt;
+$$
+L^{GPT-3}_{TargetSet} - L^{GPT-2-Pile}_{TargetSet}
+$$&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;两个值作差：大概能衡量出在目标数据集上的提升水平&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250606162030021.png&#34;
+	width=&#34;1172&#34;
+	height=&#34;571&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250606162030021_hu_c35f4776da27d503.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250606162030021_hu_a020da3b1c3d156d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;205&#34;
+		data-flex-basis=&#34;492px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Books3等数据集与GPT-3训练数据高度相似，因此不会有过多的提升（0）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;清洗&#34;&gt;清洗
+&lt;/h2&gt;&lt;p&gt;看不动了，以后再说，整理一下清洗的东西：&lt;/p&gt;
+&lt;h3 id=&#34;c1-pile-ccclean-common-crawl&#34;&gt;C.1 Pile-CC（Clean Common Crawl）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Common Crawl 的 WARC 文件（2013–2020 年）。&lt;/li&gt;
+&lt;li&gt;提取工具
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;jusText&lt;/code&gt; 提取网页正文，去除菜单、页脚等模板文本。&lt;/li&gt;
+&lt;li&gt;对比了 &lt;code&gt;Trafilatura&lt;/code&gt;、&lt;code&gt;Newspaper&lt;/code&gt;、&lt;code&gt;Goose3&lt;/code&gt;、&lt;code&gt;DragNet&lt;/code&gt;，最终选择 &lt;code&gt;jusText&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;语言过滤
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;pycld2&lt;/code&gt; 检测网页语言，仅保留英文内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;质量控制
+&lt;ul&gt;
+&lt;li&gt;使用 FastText 分类器对 OpenWebText2 和 Common Crawl 进行分类，过滤低质量页面。&lt;/li&gt;
+&lt;li&gt;参数 α = 3，使用 Pareto 分布阈值进行过滤。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;去重
+&lt;ul&gt;
+&lt;li&gt;使用 MinHash LSH 算法在内存中进行文档级去重。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;其他说明
+&lt;ul&gt;
+&lt;li&gt;未使用 WET 文件，因其包含大量模板文本。&lt;/li&gt;
+&lt;li&gt;与 Brown et al. (2020) 类似，但只处理了部分 WARC 文件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c2-pubmed-centralpmc&#34;&gt;C.2 PubMed Central（PMC）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：美国国家生物技术信息中心（NCBI）提供。&lt;/li&gt;
+&lt;li&gt;格式转换
+&lt;ul&gt;
+&lt;li&gt;使用 Pandoc 将 JATS 格式转为 Markdown。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;清理步骤
+&lt;ul&gt;
+&lt;li&gt;删除以 &lt;code&gt;:::&lt;/code&gt; 开头的行（Pandoc 添加的 HTML 类标签）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c3-books3&#34;&gt;C.3 Books3
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：未具体说明，但为高质量书籍数据集。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;处理细节&lt;/strong&gt; ：无额外处理。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c4-openwebtext2owt2&#34;&gt;C.4 OpenWebText2（OWT2）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Reddit 提交链接。&lt;/li&gt;
+&lt;li&gt;处理步骤
+&lt;ul&gt;
+&lt;li&gt;提取 URL 及其元数据。&lt;/li&gt;
+&lt;li&gt;去除得分低于 3 的链接。&lt;/li&gt;
+&lt;li&gt;使用 Newspaper 抓取网页内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;去重
+&lt;ul&gt;
+&lt;li&gt;使用 DataSketch 库进行文档级 MinHash LSH 去重。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c5-arxiv&#34;&gt;C.5 ArXiv
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：arXiv.org 学术论文。&lt;/li&gt;
+&lt;li&gt;处理步骤
+&lt;ul&gt;
+&lt;li&gt;转换为纯文本。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;去重
+&lt;ul&gt;
+&lt;li&gt;使用与验证/测试集对比的方法去重。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c6-github&#34;&gt;C.6 GitHub
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：GitHub 上的开源项目。&lt;/li&gt;
+&lt;li&gt;获取方式
+&lt;ul&gt;
+&lt;li&gt;收集星标数 &amp;gt; 100 的仓库。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;提取内容
+&lt;ul&gt;
+&lt;li&gt;提取可用于语言建模的文本（代码、README、注释等）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;限制条件
+&lt;ul&gt;
+&lt;li&gt;单个仓库克隆和提取时间不超过 300 秒。&lt;/li&gt;
+&lt;li&gt;文件大小上限为 100KB（避免大文件中的重复自动生成内容）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c7-freelaw&#34;&gt;C.7 FreeLaw
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：法律数据库。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;未提供详细清洗步骤。&lt;/li&gt;
+&lt;li&gt;数据来自已有结构化格式，可能已做过预处理。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c8-stack-exchange&#34;&gt;C.8 Stack Exchange
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Stack Overflow 等问答网站。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;提取问题、回答、评论。&lt;/li&gt;
+&lt;li&gt;按照层级结构组织。&lt;/li&gt;
+&lt;li&gt;保留 &lt;code&gt;/me&lt;/code&gt; 类型的动作描述，删除系统消息。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c9-uspto-backgrounds&#34;&gt;C.9 USPTO Backgrounds
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：美国专利商标局（USPTO）公开数据。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;处理 XML 格式的专利文件。&lt;/li&gt;
+&lt;li&gt;提取“Background”部分内容。&lt;/li&gt;
+&lt;li&gt;处理不同格式变化（APS → XML）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c10-pubmed-abstracts&#34;&gt;C.10 PubMed Abstracts
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：PubMed 数据库摘要。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;排除缺失或格式错误的条目。&lt;/li&gt;
+&lt;li&gt;合并标题和摘要，去除版权信息。&lt;/li&gt;
+&lt;li&gt;排除已在 PMC 中出现的内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c11-project-gutenbergpg-19&#34;&gt;C.11 Project Gutenberg（PG-19）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：古登堡计划电子书。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;处理方式&lt;/strong&gt; ：无额外处理。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c12-opensubtitles&#34;&gt;C.12 OpenSubtitles
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Tiedemann (2016) 提供的英文字幕数据。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;提取 XML 文件中的字幕文本。&lt;/li&gt;
+&lt;li&gt;忽略元数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c13-wikipedia-en&#34;&gt;C.13 Wikipedia (en)
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Wikipedia English dataset from TensorFlow Datasets。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;wikipedia/20200301.en&lt;/code&gt; 数据集。&lt;/li&gt;
+&lt;li&gt;在每篇文章开头添加标题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c14-deepmind-mathematicsdm-math&#34;&gt;C.14 DeepMind Mathematics（DM Math）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：DeepMind 数学数据集。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;包含 Easy、Medium、Hard 难度。&lt;/li&gt;
+&lt;li&gt;将每个题目拆分为 8 KiB 块。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c15-ubuntu-irc&#34;&gt;C.15 Ubuntu IRC
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Ubuntu IRC 日志（2004–2020）。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;删除系统消息（如加入、离开频道）。&lt;/li&gt;
+&lt;li&gt;保留 &lt;code&gt;/me&lt;/code&gt; 动作。&lt;/li&gt;
+&lt;li&gt;去除时间戳。&lt;/li&gt;
+&lt;li&gt;每周日志合并为一个文档，按日期分隔。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c16-bookcorpus2&#34;&gt;C.16 BookCorpus2
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：基于 Kobayashi (2018) 方法重新构建。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;收集更多书籍（共 17,868 本，原版为 11,038 本）。&lt;/li&gt;
+&lt;li&gt;使用修改后的 EPUB 解析器提取文本。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c17-europarl&#34;&gt;C.17 EuroParl
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：欧洲议会会议记录。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;已经是干净文本，无需额外清洗。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c18-hackernews&#34;&gt;C.18 HackerNews
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Hacker News 提交链接。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;提取文章标题、URL、子标题、作者。&lt;/li&gt;
+&lt;li&gt;按照评论层级组织内容。&lt;/li&gt;
+&lt;li&gt;使用 html2text 提取 HTML 文本。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c19-youtube-subtitles&#34;&gt;C.19 YouTube Subtitles
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：YouTube 视频字幕。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;三阶段构建：
+&lt;ol&gt;
+&lt;li&gt;GPT-3 生成搜索关键词。&lt;/li&gt;
+&lt;li&gt;下载相关视频。&lt;/li&gt;
+&lt;li&gt;提取字幕并按时间对齐。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;多语言字幕按分钟段落对齐，并标注语言。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c20-philpapers&#34;&gt;C.20 PhilPapers
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：PhilPapers 数据库（哲学论文）。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;使用 OAI-MPH 协议抓取元数据。&lt;/li&gt;
+&lt;li&gt;转换为纯文本。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c21-nih-exporter&#34;&gt;C.21 NIH ExPorter
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：NIH Grant Application 数据。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;合并 ExPORTER 和 CRISP 数据。&lt;/li&gt;
+&lt;li&gt;按申请 ID 去重。&lt;/li&gt;
+&lt;li&gt;删除空或太短的摘要。&lt;/li&gt;
+&lt;li&gt;去除行政模板内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c22-enron-emails&#34;&gt;C.22 Enron Emails
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Enron 公司邮件存档。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;mailparser&lt;/code&gt; 提取邮件正文作为文档。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
