@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>LLM on BiribiriBird</title>
+        <link>https://example.com/categories/llm/</link>
+        <description>Recent content in LLM on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Sat, 12 Jul 2025 00:25:32 +0800</lastBuildDate><atom:link href="https://example.com/categories/llm/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>CS336 · Part1 BPE</title>
+        <link>https://example.com/p/cs336-part1-bpe/</link>
+        <pubDate>Sat, 12 Jul 2025 00:25:32 +0800</pubDate>
+        
+        <guid>https://example.com/p/cs336-part1-bpe/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;第一节课没记笔记，更像是一个概览问题不大，从第二节课开始，记录一下细节的东西&lt;/p&gt;
+&lt;h2 id=&#34;memory-accounting&#34;&gt;Memory accounting
+&lt;/h2&gt;&lt;p&gt;至少对于Pytorch来说，tensor是一切的基础，从参数、梯度、优化器、激活值、数据……都是张量&lt;/p&gt;
+&lt;p&gt;因此核算内存，本质上就需要搞清楚张量的内存存储&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;float32(fp32)：单精度浮点数&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;**符号位（Sign）**1 + **指数位（Exponent）**8 + **尾数位（Fraction）**23&lt;/li&gt;
+&lt;li&gt;对float64确实挺菜的，但是对机器学习来说很顶级（被称为全精度）&lt;/li&gt;
+&lt;li&gt;Pytorch默认类型，占用4bytes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;float16(fp16)：半精度浮点数&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;**符号位（Sign）**1 + **指数位（Exponent）**5 + **尾数位（Fraction）**10&lt;/li&gt;
+&lt;li&gt;已经无法表示1e-8（下溢出）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;bfloat16(bf16)：半精度浮点数&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;**符号位（Sign）**1 + **指数位（Exponent）**8 + **尾数位（Fraction）**7&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;动态范围与float32一致（只不过有效数字变少了）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;……还有很多&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;有效数字其实没什么关系，bf16保证了我们至少可以表示一个非常小的数字，只不过精度较低&lt;/p&gt;
+&lt;p&gt;fp16对于同级别的小数字，会直接变成0&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;对于推理，你完全可以使用bf16，效果没有问题&lt;/p&gt;
+&lt;p&gt;但是存储优化器状态、参数，你最好还是保留fp32，更别说训练阶段&lt;/p&gt;
+&lt;p&gt;在一些任务中，会对一些数据进行极致优化（混合不同的精度，尽量降低内存）&lt;/p&gt;
+&lt;h2 id=&#34;compute-accounting&#34;&gt;Compute accounting
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Floating-point operation(FLOP)
+&lt;ul&gt;
+&lt;li&gt;FLOPs：operations（指浮点运算次数）&lt;/li&gt;
+&lt;li&gt;FLOP/s(FLOPS)：每秒的浮点运算次数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;cost
+&lt;ul&gt;
+&lt;li&gt;GPT-3：3.14e23 FLOPs&lt;/li&gt;
+&lt;li&gt;GPT-4：2e25 FLOPs&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs336-part1-bpe/assets/image-20250712031214668.png&#34;
+	width=&#34;917&#34;
+	height=&#34;197&#34;
+	srcset=&#34;https://example.com/p/cs336-part1-bpe/assets/image-20250712031214668_hu_bbd45662bec29705.png 480w, https://example.com/p/cs336-part1-bpe/assets/image-20250712031214668_hu_e8a4484b036bb1b3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;NVIDIA&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;465&#34;
+		data-flex-basis=&#34;1117px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;有时候数据标的是稀疏矩阵的速度，但是大部分时候是稠密的，性能会损失一半&lt;/p&gt;
+&lt;blockquote&gt;
+$$
+&gt; FLOPs = 2\times B\times D\times K
+&gt; $$&lt;p&gt;
+当然底层的优化使得我们不需要做到这个数量，但作为数量级的估算仍然是合理的&lt;/p&gt;
+&lt;p&gt;同时矩阵乘法是最贵的，因此我们一般只根据矩阵乘法进行估算成本&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;forward&#34;&gt;Forward
+&lt;/h3&gt;$$
+Y = xW
+$$&lt;p&gt;
+则我们认为数据$x(B,D)$，根据参数$W(D,K)$进行&lt;strong&gt;前向传播&lt;/strong&gt;&lt;/p&gt;
+$$
+FLOPs = 2\times \text{tokens}\times \text{params}
+$$&lt;p&gt;
+这个推广到Transformers的模型也是大差不差的&lt;/p&gt;
+$$
+MFU = \frac{actual\space FLOPs}{real \space FLOPs}\times 100\%
+$$&lt;p&gt;
+实际达到的 FLOPs 与硬件理论峰值 FLOPs 的比值（百分比），衡量了对硬件资源的利用效率&lt;/p&gt;
+&lt;p&gt;尽量保证在0.5以上&lt;/p&gt;
+&lt;h3 id=&#34;backward&#34;&gt;Backward
+&lt;/h3&gt;&lt;p&gt;对于反向传播，我们需要花费一些在维护梯度上&lt;/p&gt;
+$$
+Y = xW
+$$&lt;p&gt;
+为了做一次反向传播，我们会根据$\nabla_Y$进行维护（损失函数对$Y$的梯度）&lt;/p&gt;
+$$
+\nabla_W = X^T\nabla_Y
+$$$$
+\nabla_X = \nabla_YW^T
+$$$$
+FLOPs = 2\times D\times B \times K + 2\times B\times K\times D = 4\times \text{tokens}\times \text{params}
+$$&lt;p&gt;
+综上所述：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;推理开销：前向 $2\times \text{tokens}\times \text{params}$&lt;/li&gt;
+&lt;li&gt;训练开销：前向+反向 $ 6\times \text{tokens}\times \text{params}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;到这就能回答课题开始的问题了&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs336-part1-bpe/assets/image-20250712041541859.png&#34;
+	width=&#34;782&#34;
+	height=&#34;158&#34;
+	srcset=&#34;https://example.com/p/cs336-part1-bpe/assets/image-20250712041541859_hu_f59ee6777ae5e7a.png 480w, https://example.com/p/cs336-part1-bpe/assets/image-20250712041541859_hu_d5d40d3108a76c15.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Question1&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;494&#34;
+		data-flex-basis=&#34;1187px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs336-part1-bpe/assets/image-20250712041522508.png&#34;
+	width=&#34;802&#34;
+	height=&#34;136&#34;
+	srcset=&#34;https://example.com/p/cs336-part1-bpe/assets/image-20250712041522508_hu_3ca80cc47713ae6f.png 480w, https://example.com/p/cs336-part1-bpe/assets/image-20250712041522508_hu_e98735024571a7ac.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Question2&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;589&#34;
+		data-flex-basis=&#34;1415px&#34;
+	
+&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
