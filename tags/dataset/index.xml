@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Dataset on BiribiriBird</title>
+        <link>https://example.com/tags/dataset/</link>
+        <description>Recent content in Dataset on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Thu, 03 Apr 2025 15:10:53 +0800</lastBuildDate><atom:link href="https://example.com/tags/dataset/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>FineWeb-Edu-Chinese数据集论文记录</title>
+        <link>https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/</link>
+        <pubDate>Thu, 03 Apr 2025 15:10:53 +0800</pubDate>
+        
+        <guid>https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/</guid>
+        <description>&lt;h1 id=&#34;opencsg-chinese-corpus-a-series-of-highquality-chinese-datasets-for-llm-training&#34;&gt;OPENCSG CHINESE CORPUS A SERIES OF HIGHQUALITY CHINESE DATASETS FOR LLM TRAINING
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;Dataset：https://huggingface.co/collections/opencsg/chinese-fineweb-66cfed105f502ece8f29643e&lt;/p&gt;
+&lt;p&gt;Code：https://github.com/yuyijiong/fineweb-edu-chinese&lt;/p&gt;
+&lt;p&gt;Paper：[&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2501.08197&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2501.08197] OpenCSG Chinese Corpus: A Series of High-quality Chinese Datasets for LLM Training&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;fineweb-edu-chinese&#34;&gt;FineWeb-Edu-Chinese
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;Hugging Face的数据集主页有一些表述和论文是不同的&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://huggingface.co/datasets/opencsg/chinese-fineweb-edu#chinese&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;opencsg/chinese-fineweb-edu · Datasets at Hugging Face&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;FineWeb-Edu-Chinese&lt;/code&gt; 数据集的构建流程在很大程度上遵循了&lt;code&gt;FineWeb-edu&lt;/code&gt;的策略
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;FineWeb-edu&lt;/code&gt;从15TB的&lt;code&gt;FineWeb&lt;/code&gt;语料库进行筛选&lt;/li&gt;
+&lt;li&gt;重点关注数据的教育价值和内容质量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;中文数据相对匮乏，整合了&lt;strong&gt;多个开源中文语料库&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404183728532.png&#34;
+	width=&#34;529&#34;
+	height=&#34;341&#34;
+	srcset=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404183728532_hu_6b5bf4328244d6a6.png 480w, https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404183728532_hu_91007c4b67850578.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20250404183728532&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;155&#34;
+		data-flex-basis=&#34;372px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;These datasets were selected for their &lt;strong&gt;diversity&lt;/strong&gt; and their &lt;strong&gt;educational and technical relevance.&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;由上述语料库构建了Original Data Pool&lt;/p&gt;
+&lt;p&gt;首先从&lt;strong&gt;教育相关性的方向&lt;/strong&gt;进行过滤：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404183829384.png&#34;
+	width=&#34;1465&#34;
+	height=&#34;248&#34;
+	srcset=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404183829384_hu_947dd572a0ee599a.png 480w, https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404183829384_hu_78e526a76edc6a51.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20250404183829384&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;590&#34;
+		data-flex-basis=&#34;1417px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从&lt;code&gt;CCI2&lt;/code&gt;数据集中抽取100万个条目&lt;/li&gt;
+&lt;li&gt;使用&lt;code&gt;Qwen2-7b-instruct&lt;/code&gt;按照附录A.1的提示词，对样本的教育价值打分0-5，完成数据标注&lt;/li&gt;
+&lt;li&gt;使用这些打分数据，微调&lt;code&gt;bge-rerank-zh&lt;/code&gt;，添加一个线性回归层，得到一个&lt;code&gt;filter&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;利用&lt;code&gt;filter&lt;/code&gt;排除&lt;strong&gt;所有语料库中&lt;/strong&gt;分数低于3的数据&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404185932046.png&#34;
+	width=&#34;833&#34;
+	height=&#34;204&#34;
+	srcset=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404185932046_hu_a9e1485c883dde75.png 480w, https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404185932046_hu_867ca48d44c08947.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20250404185932046&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;408&#34;
+		data-flex-basis=&#34;980px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://huggingface.co/datasets/opencsg/chinese-fineweb-v2-scorer-train-data&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;opencsg/chinese-fineweb-v2-scorer-train-data · Datasets at Hugging Face&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;同时为了去重，采用重叠阈值0.7的&lt;code&gt;Min-Hash&lt;/code&gt;算法（平衡计算效率、数据多样性）&lt;/p&gt;
+&lt;p&gt;最后得到：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt; Fineweb-Edu-Chinese&lt;/code&gt;数据集包含 8900 万个高质量样本，为教育和技术应用提供了丰富的资源。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;附录A.1提示词：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;以下是一段网页内容摘录。请使用以下5分制评分系统来评估该网页的写作水平、教育价值和实用性:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0分：如果网页没有提供任何教育价值,完全由无关信息(如广告、宣传材料、少儿不宜内容)组成。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1分：如果网页提供了一些可能有教育价值的基本信息,即使包含一些无关或非学术内容(如广告和宣传材料)。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2分：如果网页涉及某些与教育相关的元素,但与教育标准不太吻合。它可能将教育内容与非教育材料混杂,对潜在的有用的主题进行浅显概述,或以不连贯的写作风格呈现信息。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3分：如果网页适合教育使用,并介绍了与某些学校课程中可能学到的关键概念，或对个人发展有用的实用信息。它的内容连贯但可能不全面,或包含一些无关信息。它可能类似于教科书的一小段节选,可以学习但有明显局限,如涉及过于复杂的概念、过于具体的不重要事件。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4分：如果网页与教育高度相关，对个人学习发展有益,表现出清晰一致的写作风格。它可能类似于教科书的一个章节或教程,提供大量教育内容,极少包含无关信息,且概念对学生来说不会过于深奥。内容连贯、重点突出,对结构化学习有价值。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5分：如果网页摘录在教育价值上表现极好,完全适合小学、中学或大学教学或专业人士学习。它遵循详细的推理过程,写作风格易于理解,对主题提供深刻而全面的见解,不包含任何非教育性或无实用意义内容。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;网页内容摘录:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;{data}
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;在审查这段网页摘录后：请简要地为您的评分进行合理的解释，最多不超过100字，最后以“教育得分：【分数】”的格式结束。请根据所列出的标准系统地赋予分数。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;fineweb-edu-chinese-v2&#34;&gt;FineWeb-Edu-Chinese-V2
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;进一步扩展了语料库，添加了这个那个和那个……数据集&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Qwen2.5-14b-instruct&lt;/code&gt;更换了&lt;code&gt;Qwen2-7b-instruct&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404184549881.png&#34;
+	width=&#34;757&#34;
+	height=&#34;455&#34;
+	srcset=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404184549881_hu_4ba66c4a7deb409d.png 480w, https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404184549881_hu_7bc36cccbc484b47.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20250404184549881&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;166&#34;
+		data-flex-basis=&#34;399px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-plain&#34; data-lang=&#34;plain&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;以下是一段网页内容摘录。请使用以下5分制评分系统来评估该网页的写作水平、教育价值和实用性:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0分：如果网页没有提供任何教育价值,完全由无关信息(如广告、宣传材料、少儿不宜内容)组成。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1分：如果网页提供了一些可能有教育价值的基本信息,但包含较多的无关或非学术内容(如广告和宣传材料)。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2分：如果网页涉及某些与教育相关的元素,但与教育标准不太吻合。它可能将教育内容与非教育材料混杂,对潜在的有用的主题进行浅显概述,或以不连贯的写作风格呈现信息。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3分：如果网页适合教育使用,并介绍了与某些学校课程中可能学到的关键概念，或对个人发展有用的实用信息。它的内容连贯但可能不全面,或包含一些无关信息。它可能类似于教科书的一小段节选,可以学习但有明显局限,如涉及过于复杂的概念、过于具体的不重要事件。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4分：如果网页与教育高度相关，对个人学习发展有益,表现出清晰一致的写作风格。它可能类似于教科书的一个章节或教程,提供大量教育内容,极少包含无关信息,且概念对学生来说不会过于深奥。内容连贯、重点突出,对结构化学习有价值。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5分：如果网页摘录在教育价值上表现极好,完全适合小学、中学或大学教学或专业人士学习。它遵循详细的推理过程,写作风格易于理解,对主题提供深刻而全面的见解,不包含任何非教育性或无实用意义内容。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;网页内容摘录:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;{}
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;在审查这段网页摘录后：请简要地为您的评分进行合理的解释，最多不超过100字，最后以“教育得分：&amp;lt;分数&amp;gt;”的格式结束。请根据所列出的标准系统地赋予分数。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;打分的分布如下，最终选择3以上的数据：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404190613997.png&#34;
+	width=&#34;750&#34;
+	height=&#34;556&#34;
+	srcset=&#34;https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404190613997_hu_c9dbc47b61605e6f.png 480w, https://example.com/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/assets/image-20250404190613997_hu_a1660813e643fed0.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20250404190613997&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;134&#34;
+		data-flex-basis=&#34;323px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;cosmopedia-chinese&#34;&gt;Cosmopedia-Chinese
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;种子数据&lt;/strong&gt;来源：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;560万百度百科条目&lt;/li&gt;
+&lt;li&gt;100万个知乎问答样本&lt;/li&gt;
+&lt;li&gt;200万个技术博客条目&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;丰富领域知识、较高的信息密度&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;中文数据池中的网页文本：质量不够高，含有广告&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;种子数据：for example an extract from a web page&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;Cosmopedia-v2的实验说明更大的模型生成数据有显著效果&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt; qwen2-7b-instruct&lt;/code&gt;、&lt;code&gt;yi-1.5-9b-chat&lt;/code&gt;：倾向于输出简洁、通用的内容，如摘要、大纲（提示词也没救）&lt;/li&gt;
+&lt;li&gt;最终选择&lt;code&gt;glm4-9b-longwriter&lt;/code&gt;：教科书主要内容那样足够详细和具体的内容&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;生成：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;生成了各种体裁的合成样本，如教科书单元、叙事故事和详细的 “操作指南”&lt;/li&gt;
+&lt;li&gt;温度0.8保证多样性&lt;/li&gt;
+&lt;li&gt;对2000万个样本进行Min-Hash去重，保留1500万个&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;这是一段来自网页的摘录：
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;“{data}”
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;请编写一个针对大学生的足够详细的教科书课程单元，该单元与给定的摘录中的某个概念或多个概念相关。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;不需要包含摘录中的所有内容，只需要发掘其中适合作为教科书内容的部分。你可以自由补充其他相关知识。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;不能仅仅列出概念，而是要深入发展和详细探讨每个概念，因为我们优先考虑深入理解主题内容，而不是广度。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;要求：
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	1. 严谨性：确保对概念/章节的深入覆盖。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	2. 吸引性：用学术、专业且引人入胜的语气撰写，以吸引兴趣。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	3. 应用：融入具体的实践例子，例如微积分中要给出公式、严格证明，历史中要给出关键日期和人物，计算机操作中要给出代码。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	4.不需要给出参考文献。内容中不应包含广告或涉及隐私的信息。注重主体内容，不需要其它格式化的内容。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;请记住，要针对大学生制作内容，他们可能拥有一些基础知识，但不是该领域的专家。内容应该详细且发人深省。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;请立即开始撰写教科书,不要使用图片,不要输出除了教科书以外的内容,不要以“课程单元”作为标题而是要有具体的标题｡
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;以及其他写故事、教程、教科书的提示词&lt;/p&gt;
+&lt;h2 id=&#34;smoltalk-chinese&#34;&gt;Smoltalk-Chinese
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;基于&lt;code&gt; Magpie-ultra-1M&lt;/code&gt;和&lt;code&gt;Smoltalk&lt;/code&gt;的方法构建，提升任务多样性和对话深度&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;引入了 7 个额外的任务类别：格式约束、总结、改写、文档QA、安全QA、翻译和&lt;strong&gt;日常对话&lt;/strong&gt;。
+&lt;ul&gt;
+&lt;li&gt;确保了对与自然语言理解和生成相关的任务有更广泛的覆盖。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;使用&lt;code&gt;Deepseek-V2.5&lt;/code&gt;、&lt;code&gt;Qwen2.5-72B-Insturct&lt;/code&gt;等较为先进的模型&lt;/li&gt;
+&lt;li&gt;为&lt;code&gt;Magpie-ultra-1M&lt;/code&gt;使用的11个任务类别生成3轮对话、新任务类别（除日常对话）1轮对话、&lt;strong&gt;日常对话&lt;/strong&gt;5轮&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于质量筛选，首先要保证用户的第一个命令语句是流畅、连贯、清晰的，使用&lt;code&gt;Qwen2.5-7b-instruct&lt;/code&gt;打分，保留超过3分的&lt;/p&gt;
+&lt;p&gt;使用&lt;code&gt;gte-zh-large&lt;/code&gt;编码的嵌入进行去重&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

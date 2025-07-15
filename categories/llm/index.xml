@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>LLM on BiribiriBird</title>
+        <link>https://example.com/categories/llm/</link>
+        <description>Recent content in LLM on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Sat, 12 Jul 2025 00:25:32 +0800</lastBuildDate><atom:link href="https://example.com/categories/llm/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>CS336 · Part1 BPE</title>
+        <link>https://example.com/p/cs336-part1-bpe/</link>
+        <pubDate>Sat, 12 Jul 2025 00:25:32 +0800</pubDate>
+        
+        <guid>https://example.com/p/cs336-part1-bpe/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://stanford-cs336.github.io/spring2025/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Stanford CS336 | Language Modeling from Scratch&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;第一节课没记笔记，更像是一个概览问题不大，从第二节课开始，记录一下细节的东西&lt;/p&gt;
+&lt;h2 id=&#34;memory-accounting&#34;&gt;Memory accounting
+&lt;/h2&gt;&lt;p&gt;至少对于Pytorch来说，tensor是一切的基础，从参数、梯度、优化器、激活值、数据……都是张量&lt;/p&gt;
+&lt;p&gt;因此核算内存，本质上就需要搞清楚张量的内存存储&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;float32(fp32)：单精度浮点数&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;**符号位（Sign）**1 + **指数位（Exponent）**8 + **尾数位（Fraction）**23&lt;/li&gt;
+&lt;li&gt;对float64确实挺菜的，但是对机器学习来说很顶级（被称为全精度）&lt;/li&gt;
+&lt;li&gt;Pytorch默认类型，占用4bytes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;float16(fp16)：半精度浮点数&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;**符号位（Sign）**1 + **指数位（Exponent）**5 + **尾数位（Fraction）**10&lt;/li&gt;
+&lt;li&gt;已经无法表示1e-8（下溢出）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;bfloat16(bf16)：半精度浮点数&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;**符号位（Sign）**1 + **指数位（Exponent）**8 + **尾数位（Fraction）**7&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;动态范围与float32一致（只不过有效数字变少了）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;……还有很多&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;有效数字其实没什么关系，bf16保证了我们至少可以表示一个非常小的数字，只不过精度较低&lt;/p&gt;
+&lt;p&gt;fp16对于同级别的小数字，会直接变成0&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;对于推理，你完全可以使用bf16，效果没有问题&lt;/p&gt;
+&lt;p&gt;但是存储优化器状态、参数，你最好还是保留fp32，更别说训练阶段&lt;/p&gt;
+&lt;p&gt;在一些任务中，会对一些数据进行极致优化（混合不同的精度，尽量降低内存）&lt;/p&gt;
+&lt;h2 id=&#34;compute-accounting&#34;&gt;Compute accounting
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Floating-point operation(FLOP)
+&lt;ul&gt;
+&lt;li&gt;FLOPs：operations（指浮点运算次数）&lt;/li&gt;
+&lt;li&gt;FLOP/s(FLOPS)：每秒的浮点运算次数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;cost
+&lt;ul&gt;
+&lt;li&gt;GPT-3：3.14e23 FLOPs&lt;/li&gt;
+&lt;li&gt;GPT-4：2e25 FLOPs&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs336-part1-bpe/assets/image-20250712031214668.png&#34;
+	width=&#34;917&#34;
+	height=&#34;197&#34;
+	srcset=&#34;https://example.com/p/cs336-part1-bpe/assets/image-20250712031214668_hu_bbd45662bec29705.png 480w, https://example.com/p/cs336-part1-bpe/assets/image-20250712031214668_hu_e8a4484b036bb1b3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;NVIDIA&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;465&#34;
+		data-flex-basis=&#34;1117px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;有时候数据标的是稀疏矩阵的速度，但是大部分时候是稠密的，性能会损失一半&lt;/p&gt;
+&lt;blockquote&gt;
+$$
+&gt; FLOPs = 2\times B\times D\times K
+&gt; $$&lt;p&gt;
+当然底层的优化使得我们不需要做到这个数量，但作为数量级的估算仍然是合理的&lt;/p&gt;
+&lt;p&gt;同时矩阵乘法是最贵的，因此我们一般只根据矩阵乘法进行估算成本&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;forward&#34;&gt;Forward
+&lt;/h3&gt;$$
+Y = xW
+$$&lt;p&gt;
+则我们认为数据$x(B,D)$，根据参数$W(D,K)$进行&lt;strong&gt;前向传播&lt;/strong&gt;&lt;/p&gt;
+$$
+FLOPs = 2\times \text{tokens}\times \text{params}
+$$&lt;p&gt;
+这个推广到Transformers的模型也是大差不差的&lt;/p&gt;
+$$
+MFU = \frac{actual\space FLOPs}{real \space FLOPs}\times 100\%
+$$&lt;p&gt;
+实际达到的 FLOPs 与硬件理论峰值 FLOPs 的比值（百分比），衡量了对硬件资源的利用效率&lt;/p&gt;
+&lt;p&gt;尽量保证在0.5以上&lt;/p&gt;
+&lt;h3 id=&#34;backward&#34;&gt;Backward
+&lt;/h3&gt;&lt;p&gt;对于反向传播，我们需要花费一些在维护梯度上&lt;/p&gt;
+$$
+Y = xW
+$$&lt;p&gt;
+为了做一次反向传播，我们会根据$\nabla_Y$进行维护（损失函数对$Y$的梯度）&lt;/p&gt;
+$$
+\nabla_W = X^T\nabla_Y
+$$$$
+\nabla_X = \nabla_YW^T
+$$$$
+FLOPs = 2\times D\times B \times K + 2\times B\times K\times D = 4\times \text{tokens}\times \text{params}
+$$&lt;p&gt;
+综上所述：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;推理开销：前向 $2\times \text{tokens}\times \text{params}$&lt;/li&gt;
+&lt;li&gt;训练开销：前向+反向 $ 6\times \text{tokens}\times \text{params}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;到这就能回答课题开始的问题了&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs336-part1-bpe/assets/image-20250712041541859.png&#34;
+	width=&#34;782&#34;
+	height=&#34;158&#34;
+	srcset=&#34;https://example.com/p/cs336-part1-bpe/assets/image-20250712041541859_hu_f59ee6777ae5e7a.png 480w, https://example.com/p/cs336-part1-bpe/assets/image-20250712041541859_hu_d5d40d3108a76c15.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Question1&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;494&#34;
+		data-flex-basis=&#34;1187px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs336-part1-bpe/assets/image-20250712041522508.png&#34;
+	width=&#34;802&#34;
+	height=&#34;136&#34;
+	srcset=&#34;https://example.com/p/cs336-part1-bpe/assets/image-20250712041522508_hu_3ca80cc47713ae6f.png 480w, https://example.com/p/cs336-part1-bpe/assets/image-20250712041522508_hu_e98735024571a7ac.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Question2&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;589&#34;
+		data-flex-basis=&#34;1415px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;assignment-1&#34;&gt;Assignment 1
+&lt;/h2&gt;&lt;h3 id=&#34;byte-pair-encoding-tokenizer&#34;&gt;Byte-Pair Encoding Tokenizer
+&lt;/h3&gt;&lt;p&gt;Unicode对每个字符都定义了一个整数进行对应，但是我们不会直接使用Unicode去做分词&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;数量过大（大约 150,000 个字符）&lt;/li&gt;
+&lt;li&gt;大量生僻字符&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因此我们更倾向于对Byte而不是Char进行建模&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;byte的取值范围是0-255，相对可接受&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;UTF-8等被称为编码方式，是一种变长编码，基于字节去表示Unicode字符&lt;/p&gt;
+&lt;p&gt;更方便了计算机的传输与存储&lt;/p&gt;
+&lt;p&gt;对于常用的字母数字，通常只需要1个字节(ASCII)，汉字需要3字节&lt;/p&gt;
+&lt;p&gt;使用贪婪匹配&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;相当于我们把Char进一步拆分，变成Byte级别进行处理，降低规模&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;test_string&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;hello! こんにちは!&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;utf8_encoded&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;test_string&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;encode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;utf-8&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8_encoded&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# 输出: b&amp;#39;hello! \xe3\x81\x93\xe3\x82\x93\xe3\x81\xab\xe3\x81\xa1\xe3\x81\xaf!&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8_encoded&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# 输出: &amp;lt;class &amp;#39;bytes&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 获取编码后的字节值（0 到 255 的整数）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8_encoded&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# 输出: [104, 101, 108, 108, 111, 33, 32, 227, 129, 147, 227, 130, 147, 227, 129, 171, 227, 129, 161, 227, 129, 175, 33]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 注意：一个字节不一定对应一个 Unicode 字符！&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;test_string&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# 输出: 13（字符数）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8_encoded&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# 输出: 23（字节数）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 解码回原始字符串&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8_encoded&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;decode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;utf-8&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# 输出: hello! こんにちは!&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;非ASCII码是通过转义表现的（超过1个字节）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;但是字节会使得整个序列变长（原本10token的序列可能就要变成50）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因此BPE对高频出现的字节进行替换与合并（比如说the），使用未出现的索引代表&lt;/p&gt;
+&lt;p&gt;构建字节和字节合并序列的过程就是在构建一个词汇表，这个过程也被称为分词器的训练&lt;/p&gt;
+&lt;h4 id=&#34;bpe-tokenizer-training-theory&#34;&gt;BPE Tokenizer Training Theory
+&lt;/h4&gt;&lt;p&gt;分为三个阶段&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Vocabulary Initialization&lt;/strong&gt;：词汇表就是字节到整数id的映射，在最开始，我们只需要管理256种字节（会添加一些额外的特殊记号，例如&lt;code&gt;endoftext&lt;/code&gt;，表示文档的末尾）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Pre-Tokenization&lt;/strong&gt;：将文本分成更大的单元（称为 pre-tokens），而不是直接处理单个字节或字符
+&lt;ul&gt;
+&lt;li&gt;实现1：&lt;code&gt;.split(&#39; &#39;)&lt;/code&gt;，虽然简单，但是无法处理复杂任务&lt;/li&gt;
+&lt;li&gt;GPT-2的实现：正则表达式&lt;code&gt;PAT = r&amp;quot;&amp;quot;&amp;quot;\b(?:[sdmt]|[ll|ve]re)|\p{L}+|\p{N}+|[^\s\p{L}\p{N}]+|\s+(?!\S)|\S+&amp;quot;&amp;quot;&amp;quot;&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;匹配特定的缩写形式，如 &lt;code&gt;s&lt;/code&gt;, &lt;code&gt;d&lt;/code&gt;, &lt;code&gt;m&lt;/code&gt;, &lt;code&gt;t&lt;/code&gt;, &lt;code&gt;ll&lt;/code&gt;, &lt;code&gt;ve&lt;/code&gt;, &lt;code&gt;re&lt;/code&gt; 等。&lt;/li&gt;
+&lt;li&gt;匹配连续的字母、数字字符、非空白字符。&lt;/li&gt;
+&lt;li&gt;匹配非空白、非字母、非数字的字符序列（通常是标点符号或其他特殊字符）。&lt;/li&gt;
+&lt;li&gt;匹配尾随的空白字符&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;PAT&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;sa&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&amp;#34;\b(?:[sdmt]|[ll|ve]re)|\p&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;{L}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;+|\p&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;{N}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;+|[^\s\p&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;{L}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;\p&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;{N}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;]+|\s+(?!\S)|\S+&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;re&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;findall&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PAT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;some text that i&amp;#39;ll pre-tokenize&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# [&amp;#39;some&amp;#39;, &amp;#39; &amp;#39;, &amp;#39;text&amp;#39;, &amp;#39; &amp;#39;, &amp;#39;that&amp;#39;, &amp;#39; &amp;#39;, &amp;#39;i&amp;#39;, &amp;#34;&amp;#39;&amp;#34;, &amp;#39;ll&amp;#39;, &amp;#39; &amp;#39;, &amp;#39;pre&amp;#39;, &amp;#39;-&amp;#39;, &amp;#39;tokenize&amp;#39;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 建议使用 re.finditer 而不是 re.findall，以避免在构建映射时存储所有预分词后的单词。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# re.finditer 是一个生成器，可以逐个返回匹配项，节省内存。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;一个初步的想法：遍历整个语料，统计所有字节相邻出现的频率，例如 &lt;code&gt;th&lt;/code&gt;, &lt;code&gt;he&lt;/code&gt;, &lt;code&gt;in&lt;/code&gt; 等（这里用字符代表一个字节）&lt;/p&gt;
+&lt;p&gt;然后我们选择出现频率最高的相邻字节进行合并，但是我们要往下继续做的话，就需要重新统计一次语料的字节频率，这样效率极低&lt;/p&gt;
+&lt;p&gt;而且这个方案会造成：&lt;code&gt;dog!&lt;/code&gt;和&lt;code&gt;dog.&lt;/code&gt;语义本身一致，但是被一些奇怪的字节产生区分，分配不同的 token ID，这样会导致模型学不到通用的表示&lt;/p&gt;
+&lt;p&gt;因此希望引入Pre-Tokenization：&lt;/p&gt;
+&lt;p&gt;例如：Hello, world! I&amp;rsquo;ll see you tomorrow.&lt;/p&gt;
+&lt;p&gt;预分词：[&lt;code&gt;Hello&lt;/code&gt;, &lt;code&gt;,&lt;/code&gt;,&lt;code&gt; &lt;/code&gt;, &lt;code&gt;world&lt;/code&gt;, &lt;code&gt;!&lt;/code&gt;, &lt;code&gt; &lt;/code&gt;, &lt;code&gt;I&lt;/code&gt;, &lt;code&gt;&#39;&lt;/code&gt;, &lt;code&gt;ll&lt;/code&gt;, &lt;code&gt; &lt;/code&gt;, &lt;code&gt;see&lt;/code&gt;, &lt;code&gt; &lt;/code&gt;, &lt;code&gt;you&lt;/code&gt;, &lt;code&gt; &lt;/code&gt;, &lt;code&gt;tomorrow&lt;/code&gt;, &lt;code&gt;.&lt;/code&gt;]&lt;/p&gt;
+&lt;p&gt;这里我们就不需要遍历语料库了，比如我们可以直接知道&lt;code&gt;Hello&lt;/code&gt;的数量，我们只需要对每个pre-tokens单独维护贡献，乘以其频率即可&lt;/p&gt;
+&lt;p&gt;并且成功避免了一些标点符号的影响&lt;/p&gt;
+&lt;p&gt;具体示例看下文&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Compute BPE merges&lt;/strong&gt;：在pre-tokens内计算相邻字节的出现频率，每次选择全局频率最高的两个合并成一个&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;注意，&lt;code&gt;&amp;lt;|endoftext|&amp;gt;&lt;/code&gt;等特殊标记由于其特定功能，是不会被合并到合成字节中的，强制占用一个vocabulary里的位置&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;对于文档：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;low low low low low
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lower lower widest widest widest
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;newest newest newest newest newest newest
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;Vocabulary：初始化256个字节，以及特殊标记&lt;/li&gt;
+&lt;li&gt;Pre-tokenization：为了简化问题，这里使用空格切分&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;{low: 5, lower: 2, widest: 3, newest: 6}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;Merges&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们依次查看每一个pre-token：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;low&lt;/code&gt;：被切分为&lt;code&gt;lo&lt;/code&gt;和&lt;code&gt;ow&lt;/code&gt;两个相邻字节对，贡献为&lt;code&gt;{&amp;quot;lo&amp;quot;: 5, &amp;quot;ow&amp;quot;: 5}&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;lower&lt;/code&gt;：&lt;code&gt;{&amp;quot;lo&amp;quot;: 2, &amp;quot;ow&amp;quot;: 2, &amp;quot;we&amp;quot;: 2, &amp;quot;er&amp;quot;: 2}&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;……&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;最后合并每一个pre-token的贡献&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; {lo: 7, ow: 7, we: 8, er: 2, wi: 3, id: 3, de: 3, es: 9, st: 9, ne: 6, ew: 6} 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;code&gt;es&lt;/code&gt;和&lt;code&gt;st&lt;/code&gt;的频率最高，选择字典序最高的&lt;code&gt;st&lt;/code&gt;（这里更多是保证标准一致，没有特殊理由，好处是只需要比较一下就好，是非常方便的做法）&lt;/p&gt;
+&lt;p&gt;继续迭代，注意所有&lt;code&gt;st&lt;/code&gt;将被认为是一个字节&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;low&lt;/code&gt;：&lt;code&gt;{&amp;quot;lo&amp;quot;: 5, &amp;quot;ow&amp;quot;: 5}&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;lower&lt;/code&gt;：&lt;code&gt;{&amp;quot;lo&amp;quot;: 2, &amp;quot;ow&amp;quot;: 2, &amp;quot;we&amp;quot;: 2, &amp;quot;er&amp;quot;: 2}&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;widest&lt;/code&gt;:&lt;code&gt;{&amp;quot;wi&amp;quot;: 3, &amp;quot;id&amp;quot;: 3, &amp;quot;de&amp;quot;: 3, &amp;quot;e st&amp;quot;: 3}&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;newest&lt;/code&gt;：&lt;code&gt;{&amp;quot;ne&amp;quot;: 6, &amp;quot;ew&amp;quot;: 6, &amp;quot;we&amp;quot;: 6, &amp;quot;e st&amp;quot;: 6}&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;重复以上过程即可&lt;/p&gt;
+&lt;p&gt;迭代6轮得到的vocabulary：&lt;code&gt;&#39;s t&#39;, &#39;e st&#39;, &#39;o w&#39;, &#39;l ow&#39;, &#39;w est&#39;, &#39;n e&#39;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;根据这个词汇表，&lt;code&gt;newest&lt;/code&gt;就会被表示为&lt;code&gt;ne&lt;/code&gt;和&lt;code&gt;west&lt;/code&gt;两个token&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h4 id=&#34;experimenting-with-bpe-tokenizer-training&#34;&gt;Experimenting with BPE Tokenizer Training
+&lt;/h4&gt;&lt;p&gt;数据集：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;wget https://huggingface.co/datasets/roneneldan/TinyStories/resolve/main/TinyStoriesV2-GPT4-train.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;wget https://huggingface.co/datasets/roneneldan/TinyStories/resolve/main/TinyStoriesV2-GPT4-valid.txt
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;可以使用其中的一小部分进行调试（验证集就行），不建议上来就整大的&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>N-Gram on BiribiriBird</title>
+        <link>https://example.com/tags/n-gram/</link>
+        <description>Recent content in N-Gram on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Mon, 07 Apr 2025 16:31:31 +0800</lastBuildDate><atom:link href="https://example.com/tags/n-gram/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>浅谈MinHash</title>
+        <link>https://example.com/p/%E6%B5%85%E8%B0%88minhash/</link>
+        <pubDate>Mon, 07 Apr 2025 16:31:31 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E6%B5%85%E8%B0%88minhash/</guid>
+        <description>&lt;h1 id=&#34;浅谈minhash&#34;&gt;浅谈MinHash
+&lt;/h1&gt;&lt;p&gt;常用于网页、文本去重&lt;/p&gt;
+&lt;h2 id=&#34;前置知识&#34;&gt;前置知识
+&lt;/h2&gt;&lt;h3 id=&#34;n-gram&#34;&gt;n-gram
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;通过分词将文本分解为连续的n个单词或字符序列&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;例如：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;This is an example sentence for n-gram extraction.&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;表示为&lt;code&gt;3-gram&lt;/code&gt;：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;This&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;is&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;an&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;is&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;an&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;example&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;an&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;example&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;sentence&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;example&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;sentence&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;for&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;sentence&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;for&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;n-gram&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;for&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;n-gram&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;extraction&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;按照此方式可以将一段文本表示成一个n元组序列，每个元组可以考虑到一定的上下文&lt;/p&gt;
+&lt;h3 id=&#34;jaccard相似度&#34;&gt;Jaccard相似度
+&lt;/h3&gt;$$
+\text{Jaccard}(A,B) = \frac{|A\cap B|}{|A \cup B|}
+$$&lt;p&gt;
+&lt;img src=&#34;https://example.com/p/%E6%B5%85%E8%B0%88minhash/assets/image-20250407164231880.png&#34;
+	width=&#34;583&#34;
+	height=&#34;433&#34;
+	srcset=&#34;https://example.com/p/%E6%B5%85%E8%B0%88minhash/assets/image-20250407164231880_hu_a295d421056dd3e9.png 480w, https://example.com/p/%E6%B5%85%E8%B0%88minhash/assets/image-20250407164231880_hu_102364a62db2837c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;集合计算方式&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;134&#34;
+		data-flex-basis=&#34;323px&#34;
+	
+&gt; &lt;img src=&#34;https://example.com/p/%E6%B5%85%E8%B0%88minhash/assets/image-20250407164305553.png&#34;
+	width=&#34;598&#34;
+	height=&#34;428&#34;
+	srcset=&#34;https://example.com/p/%E6%B5%85%E8%B0%88minhash/assets/image-20250407164305553_hu_be5ba4658136a322.png 480w, https://example.com/p/%E6%B5%85%E8%B0%88minhash/assets/image-20250407164305553_hu_39367a95e7c76b9c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;可重集合计算方式&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;139&#34;
+		data-flex-basis=&#34;335px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;假设一共有$N$篇文档，每篇文档大小都是$M$，我们想知道两两文档之间的Jaccard值的开销是$O(N^2M)$&lt;/p&gt;
+&lt;p&gt;对于超大规模的文档，一般来说$M$会占大头，文档的大小都非常恐怖&lt;/p&gt;
+&lt;h2 id=&#34;流程&#34;&gt;流程
+&lt;/h2&gt;&lt;p&gt;因此MinHash的目标是将一篇大文档表示为一个较短的signature（假设大小为$\text{numHash}$）&lt;/p&gt;
+&lt;p&gt;本质上在做数据降维&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;重要的前提&lt;/strong&gt;：两个集合&lt;strong&gt;非常相似&lt;/strong&gt;，那么对两个集合使用&lt;strong&gt;相同的变化&lt;/strong&gt;，得到的变化结果也是相似的&lt;/p&gt;
+&lt;p&gt;例如对于$A,B$两个集合，同时使用函数$\min$，结果$\min(A),\min(B)$大概率也是相同的&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;基于hash的方法&#34;&gt;基于Hash的方法
+&lt;/h3&gt;&lt;p&gt;假设哈希就用最简单的&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;hash&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;p&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;因为叫MinHash，所以取最小值&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;MinHash&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;document&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;hash&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;min&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;hash&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;document&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;$$
+P(\text{minHash}(A) = \text{minHash}(B)) = \text{Jaccard}(A,B)
+$$&lt;blockquote&gt;
+&lt;p&gt;为什么这个公式是对的？&lt;/p&gt;
+&lt;p&gt;假设有30个小朋友，有的会唱歌、有的会跳舞，有的什么都会&lt;/p&gt;
+&lt;p&gt;定义：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A = 会唱歌的集合&lt;/li&gt;
+&lt;li&gt;B = 会跳舞的集合&lt;/li&gt;
+&lt;li&gt;A和B的并集即为全集&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们从A中挑选身高最高的小朋友，B中也挑选一个最高的小朋友&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;两个小朋友是同一个小朋友的概率，等价于从全班中挑选一个身高最高的小朋友，他同时属于A和B&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;我们还可以使用：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;体重&lt;/li&gt;
+&lt;li&gt;力气&lt;/li&gt;
+&lt;li&gt;成绩&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;等多种方式（本质上是多种哈希），将所有元素投影到一个方向，完成近似&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;我们只要使用多个&lt;code&gt;hash&lt;/code&gt;函数进行测试，就可以估计出$\text{Jaccard}(A,B)$&lt;/p&gt;
+$$
+\text{Jaccard}(A,B) \approx  \frac{\sum^{numHash}[\text{minHash}(A,hash_i) = \text{minHash}(B,hash_i)]}{numHash}
+$$&lt;p&gt;实际操作中略微复杂，会更偏向于使用随机打乱的方法&lt;/p&gt;
+&lt;h3 id=&#34;基于随机打乱的方法&#34;&gt;基于随机打乱的方法
+&lt;/h3&gt;&lt;p&gt;将$N$个文档中的所有token抽取出来去重，假设是一个长度为$M$的集合&lt;/p&gt;
+&lt;p&gt;那么每个文档自然可以表示为一个$M$维的01向量&lt;/p&gt;
+&lt;p&gt;我们把所有文档写在一起就是一个 $M\times N$的矩阵&lt;/p&gt;
+&lt;p&gt;例如：&lt;code&gt;上山打老虎&lt;/code&gt;和&lt;code&gt;老虎不在家&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%B5%85%E8%B0%88minhash/assets/image-20250407171454621.png&#34;
+	width=&#34;672&#34;
+	height=&#34;383&#34;
+	srcset=&#34;https://example.com/p/%E6%B5%85%E8%B0%88minhash/assets/image-20250407171454621_hu_381ba848fbf97651.png 480w, https://example.com/p/%E6%B5%85%E8%B0%88minhash/assets/image-20250407171454621_hu_b63953e24b8d3ab8.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;原文档向量&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;175&#34;
+		data-flex-basis=&#34;421px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;也就是说每个token对应的下标顺序如果不一致，我们表示每个文档的向量也是不一样的&lt;/p&gt;
+&lt;p&gt;我们进行一次打乱得到：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%B5%85%E8%B0%88minhash/assets/image-20250407171756704.png&#34;
+	width=&#34;687&#34;
+	height=&#34;368&#34;
+	srcset=&#34;https://example.com/p/%E6%B5%85%E8%B0%88minhash/assets/image-20250407171756704_hu_6f3bd02675a840b1.png 480w, https://example.com/p/%E6%B5%85%E8%B0%88minhash/assets/image-20250407171756704_hu_761d79e565642fde.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;打乱后的向量&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;186&#34;
+		data-flex-basis=&#34;448px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;此时我们的&lt;code&gt;Min&lt;/code&gt;选择表示向量出现&lt;strong&gt;第一个1的idx&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;例如第一张图：A是0，B是3；第二张图：A是0，B是1&lt;/p&gt;
+&lt;p&gt;我们进行多次这样的打乱排序&lt;/p&gt;
+&lt;p&gt;并统计他们相等的次数，除以总次数，就是估计出来的值&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;在打乱前只执行一次Hash即可&lt;/strong&gt;，与前文的方法相比，是避免了多次hash计算，最终效果相似&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
