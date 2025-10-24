@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="你永远可以相信">
+<title>Diffusion Model · 李宏毅2023</title>
+
+<link rel='canonical' href='https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="Diffusion Model · 李宏毅2023">
+<meta property='og:description' content="你永远可以相信">
+<meta property='og:url' content='https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/'>
+<meta property='og:site_name' content='BiribiriBird'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Diffusion' /><meta property='article:published_time' content='2025-09-22T20:32:34&#43;08:00'/><meta property='article:modified_time' content='2025-09-22T20:32:34&#43;08:00'/>
+<meta name="twitter:title" content="Diffusion Model · 李宏毅2023">
+<meta name="twitter:description" content="你永远可以相信">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            localStorage.setItem(colorSchemeKey, "light");
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_bbc58a5457fc2680.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">BiribiriBird</a></h1>
+            <h2 class="site-description">Segmentation fault!</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/498088093'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648787418" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2107" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="2108" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:neworld1111@163.com'
+                        target="_blank"
+                        title="Email"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743649088353" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6924" width="24" height="24"><path d="M874.666667 181.333333H149.333333c-40.533333 0-74.666667 34.133333-74.666666 74.666667v512c0 40.533333 34.133333 74.666667 74.666666 74.666667h725.333334c40.533333 0 74.666667-34.133333 74.666666-74.666667V256c0-40.533333-34.133333-74.666667-74.666666-74.666667z m-725.333334 64h725.333334c6.4 0 10.666667 4.266667 10.666666 10.666667v25.6L512 516.266667l-373.333333-234.666667V256c0-6.4 4.266667-10.666667 10.666666-10.666667z m725.333334 533.333334H149.333333c-6.4 0-10.666667-4.266667-10.666666-10.666667V356.266667l356.266666 224c4.266667 4.266667 10.666667 4.266667 17.066667 4.266666s12.8-2.133333 17.066667-4.266666l356.266666-224V768c0 6.4-4.266667 10.666667-10.666666 10.666667z" fill="#666666" p-id="6925"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/aoiJays'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648734849" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5802" width="24" height="24"><path d="M511.957333 21.333333C241.024 21.333333 21.333333 240.981333 21.333333 512c0 216.832 140.544 400.725333 335.573334 465.664 24.490667 4.394667 32.256-10.069333 32.256-23.082667 0-11.690667 0.256-44.245333 0-85.205333-136.448 29.610667-164.736-64.64-164.736-64.64-22.314667-56.704-54.4-71.765333-54.4-71.765333-44.586667-30.464 3.285333-29.824 3.285333-29.824 49.194667 3.413333 75.178667 50.517333 75.178667 50.517333 43.776 75.008 114.816 53.333333 142.762666 40.789333 4.522667-31.658667 17.152-53.376 31.189334-65.536-108.970667-12.458667-223.488-54.485333-223.488-242.602666 0-53.546667 19.114667-97.322667 50.517333-131.669334-5.034667-12.330667-21.930667-62.293333 4.778667-129.834666 0 0 41.258667-13.184 134.912 50.346666a469.802667 469.802667 0 0 1 122.88-16.554666c41.642667 0.213333 83.626667 5.632 122.88 16.554666 93.653333-63.488 134.784-50.346667 134.784-50.346666 26.752 67.541333 9.898667 117.504 4.864 129.834666 31.402667 34.346667 50.474667 78.122667 50.474666 131.669334 0 188.586667-114.730667 230.016-224.042666 242.090666 17.578667 15.232 33.578667 44.672 33.578666 90.453334v135.850666c0 13.141333 7.936 27.605333 32.853334 22.869334C862.250667 912.597333 1002.666667 728.746667 1002.666667 512 1002.666667 240.981333 783.018667 21.333333 511.957333 21.333333z" p-id="5803" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About me</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/experience/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Experience</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friend/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>Friend</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#denoise-model">Denoise Model</a>
+      <ol>
+        <li><a href="#输入与输出">输入与输出</a></li>
+        <li><a href="#train">Train</a></li>
+        <li><a href="#text2img">Text2Img</a></li>
+      </ol>
+    </li>
+    <li><a href="#diffusion图片生成">Diffusion图片生成</a>
+      <ol>
+        <li><a href="#text-encoder">Text Encoder</a></li>
+        <li><a href="#decoder">Decoder</a></li>
+        <li><a href="#generation-model">Generation Model</a></li>
+      </ol>
+    </li>
+    <li><a href="#数学推导">数学推导</a>
+      <ol>
+        <li><a href="#优化目标">优化目标</a>
+          <ol>
+            <li><a href="#kl散度">KL散度</a></li>
+          </ol>
+        </li>
+        <li><a href="#denoising-diffusion-probabilistic-models">Denoising Diffusion Probabilistic Models</a>
+          <ol>
+            <li><a href="#马尔可夫性质离散时间">马尔可夫性质（离散时间）</a></li>
+            <li><a href="#重参数化技巧">重参数化技巧</a></li>
+            <li><a href="#分布">分布</a></li>
+            <li><a href="#正态分布高斯分布">正态分布（高斯分布）</a></li>
+            <li><a href="#加噪">加噪</a></li>
+            <li><a href="#高效加噪">高效加噪</a></li>
+            <li><a href="#去噪">去噪</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/diffusion/" >
+                Diffusion
+            </a>
+        
+            <a href="/categories/%E6%9D%8E%E5%AE%8F%E6%AF%852023/" >
+                李宏毅2023
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/">Diffusion Model · 李宏毅2023</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            你永远可以相信
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Sep 22, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 8 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>[TOC]</p>
+<p><a class="link" href="https://www.bilibili.com/video/BV19EVUzrEF4"  target="_blank" rel="noopener"
+    >【李宏毅】2025最新的Diffusion Model教程！1小时清楚扩散模型原理，简直不要太爽！人工智能|机器学习|OpenAI_哔哩哔哩_bilibili</a></p>
+<h2 id="denoise-model">Denoise Model
+</h2><p><img src="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922205615821.png"
+	width="1584"
+	height="878"
+	srcset="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922205615821_hu_453fe11cd11c3e77.png 480w, /p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922205615821_hu_2ca5d8c679f0be68.png 1024w"
+	loading="lazy"
+	
+		alt="Denoise"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="180"
+		data-flex-basis="432px"
+	
+></p>
+<ul>
+<li>第一步，从正态分布中随机一个二维向量（纯噪声）作为最开始的输入</li>
+<li>第二步，假设迭代次数为1000，将输入送入Denoise Model进行推理，得到新的图片</li>
+<li>不断重复步骤（同时需要输入当前step数字，表示噪声的严重程度，见图片下方）</li>
+<li>完成迭代，得到生成的图片</li>
+</ul>
+<h3 id="输入与输出">输入与输出
+</h3><p><img src="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922205938120.png"
+	width="1427"
+	height="581"
+	srcset="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922205938120_hu_87c6f8cd75cf8030.png 480w, /p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922205938120_hu_2a73b7b05d8477a1.png 1024w"
+	loading="lazy"
+	
+		alt="Input and Output"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="245"
+		data-flex-basis="589px"
+	
+></p>
+<p>如果直接让模型输出denoise之后的图片，本质上需要让模型学会生成新的图片，实践证明是一件比较难的事情</p>
+<p>但是我们将模型训练成一个<code>Noise Predicter</code>，推理出图片中的噪音是什么样的</p>
+<p>最后使用图片<strong>减去</strong>噪音，则可以得到迭代出的图片</p>
+<h3 id="train">Train
+</h3><p>数据可以自己造，迭代一定次数，每次生成一个正态分布随机出的噪声</p>
+<p><img src="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922210258582.png"
+	width="1587"
+	height="416"
+	srcset="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922210258582_hu_86784d3c57d0ab5b.png 480w, /p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922210258582_hu_e58decbdfdec74a3.png 1024w"
+	loading="lazy"
+	
+		alt="Forward Process"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="381"
+		data-flex-basis="915px"
+	
+></p>
+<p>生成的噪声就是ground truth</p>
+<h3 id="text2img">Text2Img
+</h3><p>一般来说我们希望通过文字prompt生成想要的图片，而不是让模型自己决定生成什么样的图片</p>
+<p><del>但其实也很简单</del>，将文字作为输入送入到Denoise Model中即可</p>
+<p><img src="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922210650681.png"
+	width="1461"
+	height="667"
+	srcset="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922210650681_hu_a6406ef6f25440e6.png 480w, /p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922210650681_hu_c0cd833da929db2d.png 1024w"
+	loading="lazy"
+	
+		alt="text2img Denoise Model"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="219"
+		data-flex-basis="525px"
+	
+> <img src="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922210725023.png"
+	width="1515"
+	height="590"
+	srcset="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922210725023_hu_4269068570ae2bce.png 480w, /p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922210725023_hu_2db49e2e8eff8032.png 1024w"
+	loading="lazy"
+	
+		alt="text2img Denoise Model"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="256"
+		data-flex-basis="616px"
+	
+></p>
+<h2 id="diffusion图片生成">Diffusion图片生成
+</h2><p>主流的图片生成模型Stable Diffusion、DALLE……的Framework基本都差不多</p>
+<p><img src="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922211223208.png"
+	width="1510"
+	height="666"
+	srcset="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922211223208_hu_def2addc8ac2b945.png 480w, /p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922211223208_hu_fd84a22358b47845.png 1024w"
+	loading="lazy"
+	
+		alt="Framework"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="226"
+		data-flex-basis="544px"
+	
+></p>
+<ul>
+<li>Generation Model的输入来自于，最后输出一个类似压缩版本的图片向量
+<ul>
+<li>文字经过<code>text encoder</code>得到向量</li>
+<li>从正态分布中随机一个初始向量</li>
+</ul>
+</li>
+<li>通过Decoder生成高清图片</li>
+</ul>
+<h3 id="text-encoder">Text Encoder
+</h3><p><img src="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922211718217.png"
+	width="1453"
+	height="652"
+	srcset="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922211718217_hu_5418abee0fb12839.png 480w, /p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922211718217_hu_c76abe57cd04014c.png 1024w"
+	loading="lazy"
+	
+		alt="Text Encoder对性能的影响"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="222"
+		data-flex-basis="534px"
+	
+></p>
+<p>文字Encoder对最终模型的影响远大于Noise Predictor，不管采用多大的U-Net，似乎效果没什么变</p>
+<h3 id="decoder">Decoder
+</h3><p>取决于Framework中的技术路线</p>
+<ul>
+<li>
+<p>Generation Model生成一张小图，Decoder进行高清图生成</p>
+<ul>
+<li>找大量图片进行down sample，即可完成数据集制作</li>
+</ul>
+</li>
+<li>
+<p>Generation Model生成<strong>Latent representation（潜在表示）</strong></p>
+<ul>
+<li>使用auto-encoder的方法进行训练</li>
+</ul>
+</li>
+</ul>
+<p><img src="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922212322444.png"
+	width="1515"
+	height="589"
+	srcset="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922212322444_hu_7b613dd45f728dad.png 480w, /p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922212322444_hu_35e1579bdfc731e6.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="257"
+		data-flex-basis="617px"
+	
+>  <img src="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922212458561.png"
+	width="1492"
+	height="758"
+	srcset="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922212458561_hu_12414711517716a6.png 480w, /p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922212458561_hu_1a550b46d2d6259b.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="196"
+		data-flex-basis="472px"
+	
+></p>
+<h3 id="generation-model">Generation Model
+</h3><ul>
+<li>Diffusion Model
+<ul>
+<li>输出：图片</li>
+</ul>
+</li>
+<li>Generation Model
+<ul>
+<li>输出：Latent Representation</li>
+</ul>
+</li>
+</ul>
+<p>同样会使用Forward Process进行数据生成</p>
+<p>因此随机的noise应该加在Latent Representation上</p>
+<h2 id="数学推导">数学推导
+</h2><h3 id="优化目标">优化目标
+</h3><p>图像生成的本质：</p>
+<p><img src="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250923181904461.png"
+	width="1099"
+	height="415"
+	srcset="/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250923181904461_hu_184c20ea63b526c5.png 480w, /p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250923181904461_hu_8b01de306072e72f.png 1024w"
+	loading="lazy"
+	
+		alt="本质"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="264"
+		data-flex-basis="635px"
+	
+></p>
+<p>从一个高斯中随机出的向量$z$，通过生成网络$G(z)$得到的分布$x$，希望尽可能接近真实</p>
+<ul>
+<li>文字等其他信息作为condition（本质上是条件概率）</li>
+</ul>
+<p>记模型的参数为$\theta$，则模型的概率分布为$P_\theta{(x)}$，真实数据的分布为$P_{data}{(x)}$</p>
+$$
+Sample \left\{ x^1, x^2, ..., x^m\right \} \space from \space P_{data}(x)\\
+\theta^*=\arg \max_\theta \prod_{i=1}^{m}P_\theta{(x^i)}
+$$<blockquote>
+<p><strong>希望模型能以尽可能高的概率生成我们观察到的数据</strong></p></blockquote>
+$$
+\theta^*=\arg \max_\theta \sum_{i=1}^{m}\log P_\theta{(x^i)} =\arg \max_\theta  \frac{1}{m}\sum_{i=1}^{m}\log P_\theta{(x^i)}
+$$<p>
+只要我们从真实数据中采样的数据量$m$​足够大，就可以用<strong>真实数据的期望</strong>，代替<strong>样本的均值</strong></p>
+$$
+\theta^*=\arg \max_\theta \mathbb{E}_{x\sim P_{data}}\left [ \log P_\theta(x) \right]
+$$<p>转换成积分形式：</p>
+$$
+\theta^*=\arg \max_\theta \int P_{data}(x)\log P_\theta(x) dx
+$$<blockquote>
+<p>概率乘上数值</p></blockquote>
+<h4 id="kl散度">KL散度
+</h4><p>有两个概率分布：</p>
+<ul>
+<li><strong>P分布</strong>：代表真实的情况或我们观察到的数据分布。</li>
+<li><strong>Q分布</strong>：代表我们模型预测的分布、一个近似分布</li>
+</ul>
+<p>现在的问题是：<strong>如果我们使用Q分布来编码来自P分布的数据，会犯多大的“错误”？会损失多少信息？</strong></p>
+<p>使用KL散度进行表示</p>
+<blockquote>
+<p>KL散度是不对称的</p>
+<ul>
+<li>用Q近似P的损失 不等于 用P近似Q的损失</li>
+</ul></blockquote>
+<p>对于离散型变量：</p>
+$$
+D_{KL}(P\mid\mid Q) = \sum_i P(i)\log (\frac{P(i)}{Q(i)})
+$$<ul>
+<li>$P(i)$是事件$i$在真实分布$P$中发生的概率。</li>
+<li>$Q(i)$是事件$i$在近似分布$Q$中发生的概率。</li>
+</ul>
+<p>对于连续型变量：</p>
+$$
+D_{KL}(P\mid\mid Q) = \int_{-\infty}^{\infty}p(x)\log (\frac{p(x)}{q(x)})dx
+$$<p>
+这里使用的是概率密度函数</p>
+<hr>
+$$
+\int P_{data}(x)\log P_\theta(x) dx = \int P_{data}(x)\log P_\theta{(x)}dx - \int P_{data}(x) \log P_{data}(x)dx +  \int P_{data}(x) \log P_{data}(x)dx \\
+= \int P_{data}(x)\log \frac{P_\theta(x)}{P_{data}(x)}dx +  \int P_{data}(x) \log P_{data}(x)dx
+$$<p>
+第二项是与$\theta$无关的一项（常数），这样不影响$\theta$​优化，因此可以直接舍弃</p>
+$$
+\theta^* = \arg \max_\theta  \int P_{data}(x)\log \frac{P_\theta(x)}{P_{data}(x)}dx\\
+= \arg \max_\theta  \left [ -\int P_{data}(x)\log \frac{P_{data}(x)}{P_\theta(x)}dx\right ]\\
+= \arg \min_\theta  \left [ \int P_{data}(x)\log \frac{P_{data}(x)}{P_\theta(x)}dx\right ]\\
+=  \arg \min_\theta  D_{KL}(P_{data}\mid\mid P_\theta)
+$$<h3 id="denoising-diffusion-probabilistic-models">Denoising Diffusion Probabilistic Models
+</h3><p>那么如何计算$P_\theta(x)$​呢？对于DDPM，图片是逐渐Denoise得到的</p>
+<p>我们假设最后得到的干净图片是$x_0$，一开始的随机噪声是$x_T \sim \mathcal{N}(0,I)$​</p>
+<hr>
+<p>先补充一些数学</p>
+<h4 id="马尔可夫性质离散时间">马尔可夫性质（离散时间）
+</h4><p>对于一个随机过程$\left { X_t   \right }_{t\in T}$，$T$是离散的时间序列$\left { 0,1,2,&hellip;\right}$</p>
+<p>若对于任意时间点$t$，满足：</p>
+$$
+P(X_t=x\mid X_{t-1}=x_{t-1},...,X_1=x_1) = P(X_t=x\mid X_{t-1}=x_{t-1})
+$$<p>
+也就是说，<strong>给定当前状态，未来状态与过去状态条件独立</strong>。这就是“无记忆性”。</p>
+<h4 id="重参数化技巧">重参数化技巧
+</h4><p>对于深度学习过程，若途中从高斯中进行采样，是不可导的，无法进行反向传播</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">sigma</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>x的产生是随机的，<strong>无法写出关于参数的函数</strong>，无法反向传播到mu和sigma</p>
+<p>因此我们希望引入一个具体的表达方式，方便求导</p>
+<p>可以采用的是：</p>
+$$
+x = \mu + \sigma \odot \epsilon
+$$<p>
+其中$\epsilon \sim \mathcal{N} (0,I)$，$\odot$表示逐元素乘法，$I$是单位矩阵</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">A = [[1, 2],
+</span></span><span class="line"><span class="cl">     [3, 4]]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">B = [[5, 6],
+</span></span><span class="line"><span class="cl">     [7, 8]]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">A ⊙ B = [[1*5, 2*6],
+</span></span><span class="line"><span class="cl">         [3*7, 4*8]] = [[5, 12],
+</span></span><span class="line"><span class="cl">                        [21, 32]]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>我们只需要学习$\mu,\sigma$，而$\epsilon$作为随机噪声，在单次的传播过程中是固定的，不影响求导</p>
+$$
+\mu = \left [\mu_1, \mu_2, ..., \mu_d\right]\\
+\sigma = \left [\sigma_1, \sigma_2, ..., \sigma_d\right]\\
+\epsilon = \left [\epsilon_1, \epsilon_2, ..., \epsilon_d\right],\epsilon \sim \mathcal{N}(0,1)
+$$<p>因此</p>
+$$
+x = \mu + \sigma \odot \epsilon\\
+x_i = \mu_i + \sigma_i \cdot \epsilon_i,\forall i\\
+\therefore x_i\sim \mathcal{N}(\mu_i,\sigma^2_i)
+$$<p>
+各维度是独立的</p>
+<h4 id="分布">分布
+</h4><p>假设你想知道&quot;今天是否下雨了&quot;（未知事物），但你无法直接看窗外。</p>
+<ul>
+<li><strong>先验分布</strong>：在没有任何证据时，你根据历史数据猜测&quot;今天下雨的概率是20%&quot;</li>
+<li><strong>证据</strong>：你听到有人说&quot;地上是湿的&quot;</li>
+<li><strong>后验分布</strong>：在知道&quot;地上是湿的&quot;这个证据后，你更新对&quot;今天下雨&quot;的概率判断（比如变成70%）</li>
+</ul>
+<h4 id="正态分布高斯分布">正态分布（高斯分布）
+</h4><ul>
+<li>性质1：均值与方差的线性组合</li>
+</ul>
+<p>若$z = ay+b$，且$y\sim \mathcal{N}(\mu, \sigma^2)$，其他均为常数</p>
+<p>则：</p>
+$$
+z \sim \mathcal{N}(a\mu + b,a^2\sigma^2 )
+$$<ul>
+<li>性质2：独立正态分布的和</li>
+</ul>
+<p>若$y_1,y_2$都是独立的正态分布变量，则他们的和$z=y_1+y_2$也是正态分布</p>
+$$
+z\sim \mathcal{N}(\mu_1+\mu_2, \sigma^2_1+\sigma_2^2)
+$$<hr>
+<h4 id="加噪">加噪
+</h4><p>加噪是一个正向过程</p>
+<p>从数据集的原始图片$x_0$出发，最终需要得到$x_T \sim \mathcal{N}(0,I)$</p>
+<p>如果每一步按照前文所说进行简单加噪</p>
+$$
+x_t =x_{t-1} + \epsilon_t, \quad \epsilon_t\sim \mathcal{N}(0,\sigma^2I)
+$$<p>
+其中$\sigma$可以让我们自己定义</p>
+<p>故随着时间累计：</p>
+$$
+x_t = x_0 + \sum_{i=1}^t\epsilon_i
+$$<p>
+$\epsilon_i$是独立同分布的，故</p>
+$$
+x_t \sim \mathcal{N}\left ( x_0, t\sigma^2I \right)
+$$<p>
+这样无法保证最后$x^T$是一个标准正态分布</p>
+<p>且随着$t$增加，数值的不稳定性会上升</p>
+<hr>
+<p>加噪目标：</p>
+<ul>
+<li>最终是标准正态分布的纯噪声</li>
+<li>加噪可控、平滑过渡</li>
+<li>数值稳定</li>
+</ul>
+<p>设计：</p>
+$$
+x_t = \sqrt{1-\beta_t}\cdot x_{t-1} + \sqrt{\beta_t}\cdot \epsilon_t
+$$<p>
+其中$\beta_t$是<strong>预先设定</strong>的缩放系数，在$(0,1)$之间</p>
+<p>从原理上能够解释为：衰减旧图片，添加新噪声</p>
+<p>推导一下方差：</p>
+$$
+\text{Var}(x_t) = \text{Var}(\sqrt{1-\beta_t}\cdot x_{t-1} + \sqrt{\beta_t}\cdot \epsilon_t)\\
+= (1-\beta_t)\text{Var}(x_{t-1}) + \beta_t\text{Var}(\epsilon_t)
+$$<p>
+如果$x_{t-1}$之前的方差都是按照某种方式保持的很好，方差为1</p>
+<p>同时我们知道$\epsilon_t$是标准正态分布，方差也是1</p>
+$$
+\text{Var}(x_t)= (1-\beta_t)\text{Var}(x_{t-1}) + \beta_t\text{Var}(\epsilon_t) = 1-\beta_t + \beta_t = 1
+$$<p>
+所以后续按照此方法，能够始终保持数值稳定</p>
+<h4 id="高效加噪">高效加噪
+</h4><p>一般迭代次数还是足够多的， 如果使用循环就会很慢</p>
+<p>我们可以对公式进行展开：</p>
+<ul>
+<li>迭代1次</li>
+</ul>
+$$
+x_1 = \sqrt{1-\beta_1}\cdot x_0 + \sqrt{\beta_1}\cdot \epsilon_1
+$$<ul>
+<li>迭代2次</li>
+</ul>
+$$
+x_2 = \sqrt{1-\beta_2}\cdot x_1 + \sqrt{\beta_2}\cdot \epsilon_2 \\
+= \sqrt{1-\beta_2}\cdot (\sqrt{1-\beta_1}\cdot x_0 + \sqrt{\beta_1}\cdot \epsilon_1) + \sqrt{\beta_2}\cdot \epsilon_2 \\
+= \sqrt{(1-\beta_1)(1-\beta_2)}x_0 + \sqrt{(1-\beta_2)\beta_1} \cdot \epsilon_1 + \sqrt{\beta_2} \cdot \epsilon_2
+$$<ul>
+<li>迭代3次</li>
+</ul>
+$$
+x_3 = \sqrt{(1 - \beta_3)(1 - \beta_2)(1 - \beta_1)} \cdot x_0 + \sqrt{(1 - \beta_3)(1 - \beta_2)\beta_1} \cdot \epsilon_1 + \sqrt{(1 - \beta_3)\beta_2} \cdot \epsilon_2 + \sqrt{\beta_3} \cdot \epsilon_3
+$$<p>令</p>
+$$
+\alpha_i = 1-\beta_i,\quad \overline{\alpha}_t = \prod_{i=1}^{t}\alpha_i  
+$$<ul>
+<li>$x_0$的系数：$\sqrt{\overline{\alpha}_t}$</li>
+<li>$\epsilon_i$的系数：$\sqrt{\beta_i\prod_{j=i+1}^t \alpha_j} = \sqrt{\beta_i\cdot\frac{\overline{\alpha}_t}{\overline{\alpha}_i}}$</li>
+</ul>
+<p>得：</p>
+$$
+x_t = \sqrt{\overline{\alpha}_t}x_0 + \sum_{i=1}^t\sqrt{\beta_i\cdot\frac{\overline{\alpha}_t}{\overline{\alpha}_i}}\cdot \epsilon_i
+$$<p>
+左边是定值，右边显然服从某个正态分布</p>
+<p>并且方差完全取决于系数，令</p>
+$$
+\sigma^2_t=\sum_{i=1}^t\beta_i\cdot\frac{\overline{\alpha}_t}{\overline{\alpha}_i} = \sum_{i=1}^t\beta_i\prod_{k=i+1}^t(1-\beta_k)
+$$<p>此时有：$x_t\sim \mathcal{N}(0,\sigma^2_tI)$</p>
+<hr>
+<p>这里有点跳跃，我们希望之间使用一个更简单的表示替换掉这个</p>
+<p>如果我们能够找到一个方差相等的一项，就可以替换</p>
+<p>这里智慧的假设是</p>
+$$
+1-\overline{\alpha}_t
+$$<p>
+使用数学归纳法进行证明，当 $t=2$​时：</p>
+$$
+1-\overline{\alpha}_t = 1-(1-\beta_1)(1-\beta_2) = \beta_1+\beta_2-\beta_1\beta_2\\
+\sigma^2=\beta_1(1-\beta_2) + \beta_2 = \beta_1+\beta_2-\beta_1\beta_2
+$$<p>
+两者相等</p>
+<p>推导两者的递推关系</p>
+<p>前者：</p>
+$$
+1-\overline{\alpha}_t = 1 - \overline{\alpha}_{t-1}\cdot(1-\beta_t) = (1-\beta_t)(1-\overline{\alpha}_{t-1}) + \beta_t
+$$<p>
+后者：</p>
+$$
+\sigma_t^2 =\sum_{i=1}^t\beta_i\prod_{k=i+1}^t(1-\beta_k) \\
+= \sum_{i=1}^{t-1}\beta_i(1-\beta_t)\prod_{k=i+1}^{t-1}(1-\beta_k) + \beta_t \\
+= (1-\beta_t)\sum_{i=1}^{t-1}\beta_i\prod_{k=i+1}^{t-1}(1-\beta_k) + \beta_t \\
+= (1-\beta_t)\sigma_{t-1}^2+\beta_t
+$$<p>两者递推关系相同，故有：</p>
+$$
+\sigma^2_t = 1-\overline{\alpha}_t
+$$<p>
+原噪声项满足</p>
+$$
+\sum_{i=1}^t\sqrt{\beta_i\cdot\frac{\overline{\alpha}_t}{\overline{\alpha}_i}}\cdot \epsilon_i \sim \mathcal{N}(0,(1-\overline{\alpha}_t)I)
+$$<p>
+替换成满足同一个分布的噪声项</p>
+$$
+\sqrt{ 1-\overline{\alpha}_t}\cdot \epsilon
+$$<p>
+依旧可以使得$x_t \sim \mathcal{N}(0, (1-\overline{\alpha}_t)I)$</p>
+<p>所以完全可以写成：</p>
+$$
+x_t = \sqrt{\overline{\alpha}_t}x_0 +\sqrt{ 1-\overline{\alpha}_t}\cdot \epsilon, \quad \epsilon\sim\mathcal{N}(0,I)
+$$<p>至此，我们可以通过该公式直接从一个干净的$x_0$得到一个加噪图片$x_t$，极大简化了训练过程</p>
+<p>并且该式符合重参数化的</p>
+<blockquote>
+<p>为什么上面的公式是$\epsilon$？</p>
+<p>由于我们保证数值稳定，因此本质上是加上关于$\epsilon_i$的一个线性组合（并且线性组合系数权重始终为1），因此等价于只加上一次的标准正态分布</p></blockquote>
+<h4 id="去噪">去噪
+</h4><p>去噪是训练的核心步骤与目标</p>
+<p>定义真实的逆向分布：</p>
+$$
+q\left(x_{t-1}\mid x_t\right)
+$$<p>
+由于上文所提到的运算关系，计算$q(x_t\mid x_{t-1})$​是没问题的</p>
+<hr>
+<p>这里我们打断一下，不妨推导一下$q(x_t\mid x_{t-1})$的分布</p>
+<p>首先有如下关系：</p>
+$$
+x_t = \sqrt{1-\beta_t}\cdot x_{t-1} + \sqrt{\beta_t}\cdot \epsilon_t
+$$<p>
+则有（已知$x_{t-1}$的情况推$x_t$，故可以把$x_{t-1}$看作定值，且$\epsilon \sim \mathcal{N}(0,I)$）：</p>
+$$
+\mathbb{E}(x_t\mid x_{t-1}) = \sqrt{1-\beta_t}\mathbb{E}(x_{t-1}) + \sqrt{\beta_t}\mathbb{E}(\epsilon_t) = \sqrt{1-\beta_t}\cdot x_{t-1} \\
+\text{Var}(x_t\mid x_{t-1}) = \beta_tI
+$$<p>
+故：</p>
+$$
+q(x_t\mid x_{t-1})\sim \mathcal{N}(x_t;\sqrt{1-\beta_t}\cdot x_{t-1}, \beta_tI)
+$$<p>
+补充解释一下这个诡异的分号，其代表该分布是关于$x_t$的分布，即只有$x_t$是随机变量</p>
+<p>？？？？？？</p>
+<hr>
+<p>但是反过来计算逆向分布是一件非常难的事情</p>
+<p>我们需要学一个模型，定义为：</p>
+$$
+p_\theta\left(x_{t-1}|x_t\right)
+$$
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/diffusion/">Diffusion</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

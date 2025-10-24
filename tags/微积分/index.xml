@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>微积分 on BiribiriBird</title>
+        <link>http://localhost:1313/tags/%E5%BE%AE%E7%A7%AF%E5%88%86/</link>
+        <description>Recent content in 微积分 on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Mon, 11 Aug 2025 01:47:32 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/%E5%BE%AE%E7%A7%AF%E5%88%86/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>蓝鸟手搓大模型 · 数学小补习 · Calculus</title>
+        <link>http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/</link>
+        <pubDate>Mon, 11 Aug 2025 01:47:32 +0800</pubDate>
+        
+        <guid>http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.rethink.fun/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;RethinkFun深度学习 · GitBook&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1A9tszhEpp/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.bilibili.com/video/BV1A9tszhEpp/&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;微积分&#34;&gt;微积分
+&lt;/h2&gt;&lt;p&gt;总体依照：&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1qW411N7FU/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;3blue1brown 微积分的本质&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;导数&#34;&gt;导数
+&lt;/h3&gt;&lt;p&gt;情景：车随时间变化，采用不同的速度，行驶的距离&lt;/p&gt;
+&lt;p&gt;因此会建立一个：路程关于时间的函数，假设为：&lt;/p&gt;
+$$
+s(t) = t^2
+$$$$
+v(x) = \frac{s(x+dt)-s(x)}{dt} = \frac{x^2+(dt)^2+2xdt - x^2}{dt} = dt+2x
+$$$$
+v(x) = 2x
+$$&lt;p&gt;
+从几何角度出发：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250813213854672.png&#34;
+	width=&#34;420&#34;
+	height=&#34;384&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250813213854672_hu_27e05e978847b7cf.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250813213854672_hu_e78a299008d2d0f5.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;几何求导&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;109&#34;
+		data-flex-basis=&#34;262px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;对于一个面积为$x^2$的正方形，两边分别延长$dx$&lt;/p&gt;
+$$
+dA = xdx+xdx+d^2x = 2xdx
+$$&lt;p&gt;
+$d^2x$足够小，应该被忽略&lt;/p&gt;
+$$
+\frac{dA}{dx} = 2x
+$$$$
+A_{new} = (x+dx)^n = x^n+nx^{n-1}dx+.... \\
+A_{old} = x^n\\
+dA = A_{new} - A_{old}=nx^{n-1}dx\\
+\frac{dA}{dx}  = nx^{n-1}
+$$&lt;h4 id=&#34;链式法则&#34;&gt;链式法则
+&lt;/h4&gt;&lt;p&gt;求导只需要解决三个问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;函数相加&lt;/li&gt;
+&lt;li&gt;函数相乘&lt;/li&gt;
+&lt;li&gt;函数嵌套函数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所有函数都可以被表示为几个基本函数通过上述操作得到的&lt;/p&gt;
+&lt;h5 id=&#34;函数相加&#34;&gt;函数相加
+&lt;/h5&gt;&lt;p&gt;对于函数：&lt;/p&gt;
+$$
+f(x) = \sin(x) + x^2
+$$&lt;p&gt;
+其积分应该为：&lt;/p&gt;
+$$
+df = \sin(x+dx)+(x+dx)^2 - (\sin x + x^2) \\
+df = (\sin(x+dx) - \sin x) + ((x+dx)^2-x^2)\\
+df = d(\sin x)+ d(x^2)
+$$&lt;h5 id=&#34;函数相乘&#34;&gt;函数相乘
+&lt;/h5&gt;&lt;p&gt;同样的我们可以用面积来表示乘积，对于函数：&lt;/p&gt;
+$$
+f(x) = \sin(x)\times x^2
+$$&lt;p&gt;
+我们使用两个函数分别作为矩形的长与宽&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250815020412513.png&#34;
+	width=&#34;312&#34;
+	height=&#34;327&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250815020412513_hu_a3c9d54d0410b69c.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250815020412513_hu_9cac6849feb671b5.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;面积图像&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;95&#34;
+		data-flex-basis=&#34;228px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;当自变量增加$dx$，则增加的面积可以表示为：&lt;/p&gt;
+$$
+df = \sin x\times d(x^2) + d(\sin(x))x^2 + d(x^2)d(\sin(x))
+$$&lt;p&gt;最后一项可以省略&lt;/p&gt;
+&lt;h5 id=&#34;函数复合&#34;&gt;函数复合
+&lt;/h5&gt;&lt;p&gt;链式法则：&lt;/p&gt;
+$$
+\frac{dg(h(x))}{dx} = \frac{dg}{dx} = \frac{dg}{dh}\times\frac{dh}{dx}
+$$&lt;h4 id=&#34;指数函数求导&#34;&gt;指数函数求导
+&lt;/h4&gt;&lt;p&gt;例如：&lt;/p&gt;
+$$
+M(t) = a^t
+$$&lt;p&gt;
+求导：&lt;/p&gt;
+$$
+\frac{dM}{dt} = \frac{a^{t+dt}-a^t}{dt} = a^t\frac{(a^{dt}-1)}{dt}
+$$&lt;p&gt;
+此时函数右边这一项只与$dt$有关&lt;/p&gt;
+$$
+\lim_{x\to0^+}\frac{e^x-1}{x} = 1
+$$$$
+M(t) = a^t = e^{t\ln(a)}
+$$$$
+\frac{dM}{dt} = \frac{dM}{du}\frac{du}{dt} = e^u\ln a = a^t\ln a
+$$&lt;h3 id=&#34;隐函数&#34;&gt;隐函数
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250817005629077.png&#34;
+	width=&#34;645&#34;
+	height=&#34;251&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250817005629077_hu_f0da118e33af33b.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250817005629077_hu_65f8efdb68959460.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;256&#34;
+		data-flex-basis=&#34;616px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;对于某个存在关系的$x,y$，他们都是自变量而非因变量，因此不存在函数上的导数关系&lt;/p&gt;
+&lt;p&gt;他们在某处的斜率被定义为：&lt;/p&gt;
+$$
+\frac{dy}{dx}
+$$&lt;p&gt;
+对于上述圆方程，对这个隐函数的求导：两边同时求导：&lt;/p&gt;
+$$
+2xdx+2ydy = 0 \\
+\frac{dy}{dx} = -\frac{x}{y}
+$$&lt;p&gt;分析其几何意义：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250817010641732.png&#34;
+	width=&#34;225&#34;
+	height=&#34;132&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250817010641732_hu_5809e3cd14117a1d.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250817010641732_hu_723527b5d1ab6a23.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;170&#34;
+		data-flex-basis=&#34;409px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;$x,y$分别变换了$dx,dy$，因此$2xdx+2ydy$表示的就是$x^2+y^2$的变化量&lt;/p&gt;
+&lt;p&gt;而这个变化量为0时，$x,y$仍然在$x^2+y^2=5^2$上&lt;/p&gt;
+&lt;p&gt;否则就会离开曲线&lt;/p&gt;
+&lt;h4 id=&#34;自然对数函数求导&#34;&gt;自然对数函数求导
+&lt;/h4&gt;&lt;p&gt;本质上是对$y=\ln(x)$这条曲线上的某个点求斜率&lt;/p&gt;
+&lt;p&gt;在这条曲线上的点$(x,y)$，必然满足：&lt;/p&gt;
+$$
+e^y = x
+$$&lt;p&gt;
+同样也是一条曲线，我们可以两边求导：&lt;/p&gt;
+$$
+e^ydy = dx\\
+\frac{dy}{dx}= \frac{1}{e^y}= \frac{1}{x} 
+$$&lt;h3 id=&#34;极限&#34;&gt;极限
+&lt;/h3&gt;$$
+\frac{df}{dx}(x) = \lim_{h\to 0}\frac{f(x+h)-f(x)}{h}
+$$&lt;p&gt;对于$\frac{0}{0}$型的函数，在该点是不存在函数值的&lt;/p&gt;
+&lt;p&gt;但是可能存在极限，通常使用洛必达法则进行求解&lt;/p&gt;
+&lt;p&gt;从几何意义出发&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250817015948263.png&#34;
+	width=&#34;179&#34;
+	height=&#34;153&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250817015948263_hu_2636044c9029dd53.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250817015948263_hu_c669c7d15cc8968e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;116&#34;
+		data-flex-basis=&#34;280px&#34;
+	
+&gt;&lt;/p&gt;
+$$
+s(x) =\frac{f(x)}{g(x)}
+$$&lt;p&gt;
+只要把这个点放大足够大，这一处的函数可以被近似为两条直线&lt;/p&gt;
+$$
+\lim_{x\to a}\frac{f(x)}{g(x)} = \frac{\frac{df}{dx}(a)dx}{\frac{dg}{dx}(a)dx} =\frac{\frac{df}{dx}(a)}{\frac{dg}{dx}(a)}
+$$&lt;h3 id=&#34;积分&#34;&gt;积分
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250827004934989.png&#34;
+	width=&#34;926&#34;
+	height=&#34;539&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250827004934989_hu_676c93ffe9fe92c9.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250827004934989_hu_93c208edf7009dd2.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;积分与导数&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;171&#34;
+		data-flex-basis=&#34;412px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;对于速度函数&lt;/p&gt;
+$$
+v(t) = t(8-t)
+$$$$
+s(T) = \int_0^{T}v(t)dt
+$$&lt;p&gt;
+这个函数实质上就是距离函数&lt;/p&gt;
+&lt;p&gt;而距离函数关于时间的导数，正是速度函数&lt;/p&gt;
+&lt;p&gt;因此：&lt;/p&gt;
+$$
+\int f(x)dx = F(x) + C\\
+\frac{dF(x)}{dx} = f(x)
+$$&lt;p&gt;
+通常会写成：&lt;/p&gt;
+$$
+\int_a^bf(x)dx = F(b)-F(a)
+$$&lt;h3 id=&#34;泰勒级数&#34;&gt;泰勒级数
+&lt;/h3&gt;&lt;p&gt;对于三角函数$\cos \theta$，我们可以考虑使用多项式进行拟合&lt;/p&gt;
+$$
+P(x) = c_0 + c_1x + c_2x^2
+$$&lt;p&gt;
+对于$x=0$处，$\cos (0) = 1$&lt;/p&gt;
+&lt;p&gt;因此$P(0) = c_0 = 1$&lt;/p&gt;
+$$
+\frac{d \cos x}{dx} = -\sin x = 0\\
+\frac{dP(x)}{dx} = c_1 + 2c2x = c_1 = 0
+$$$$
+\frac{d^2 \cos x}{dx^2} = \frac{d(-\sin x)}{dx}  = -\cos x = -1\\
+\frac{d^2P(x)}{dx^2} =  2c_2 \\
+c_2 = -\frac{1}{2}
+$$$$
+\frac{d^nf(x)}{dx^n} = n!c_n\\
+$$$$
+f(x) = \sum \frac{1}{n!}\frac{d^nf(x)}{dx^n}x^n
+$$</description>
+        </item>
+        
+    </channel>
+</rss>

@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Diffusion on BiribiriBird</title>
+        <link>https://example.com/categories/diffusion/</link>
+        <description>Recent content in Diffusion on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Mon, 22 Sep 2025 20:32:34 +0800</lastBuildDate><atom:link href="https://example.com/categories/diffusion/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Diffusion Model · 李宏毅2023</title>
+        <link>https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/</link>
+        <pubDate>Mon, 22 Sep 2025 20:32:34 +0800</pubDate>
+        
+        <guid>https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV19EVUzrEF4&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;【李宏毅】2025最新的Diffusion Model教程！1小时清楚扩散模型原理，简直不要太爽！人工智能|机器学习|OpenAI_哔哩哔哩_bilibili&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;denoise-model&#34;&gt;Denoise Model
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922205615821.png&#34;
+	width=&#34;1584&#34;
+	height=&#34;878&#34;
+	srcset=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922205615821_hu_453fe11cd11c3e77.png 480w, https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922205615821_hu_2ca5d8c679f0be68.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Denoise&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;180&#34;
+		data-flex-basis=&#34;432px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;第一步，从正态分布中随机一个二维向量（纯噪声）作为最开始的输入&lt;/li&gt;
+&lt;li&gt;第二步，假设迭代次数为1000，将输入送入Denoise Model进行推理，得到新的图片&lt;/li&gt;
+&lt;li&gt;不断重复步骤（同时需要输入当前step数字，表示噪声的严重程度，见图片下方）&lt;/li&gt;
+&lt;li&gt;完成迭代，得到生成的图片&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;输入与输出&#34;&gt;输入与输出
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922205938120.png&#34;
+	width=&#34;1427&#34;
+	height=&#34;581&#34;
+	srcset=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922205938120_hu_87c6f8cd75cf8030.png 480w, https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922205938120_hu_2a73b7b05d8477a1.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Input and Output&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;245&#34;
+		data-flex-basis=&#34;589px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;如果直接让模型输出denoise之后的图片，本质上需要让模型学会生成新的图片，实践证明是一件比较难的事情&lt;/p&gt;
+&lt;p&gt;但是我们将模型训练成一个&lt;code&gt;Noise Predicter&lt;/code&gt;，推理出图片中的噪音是什么样的&lt;/p&gt;
+&lt;p&gt;最后使用图片&lt;strong&gt;减去&lt;/strong&gt;噪音，则可以得到迭代出的图片&lt;/p&gt;
+&lt;h3 id=&#34;train&#34;&gt;Train
+&lt;/h3&gt;&lt;p&gt;数据可以自己造，迭代一定次数，每次生成一个正态分布随机出的噪声&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922210258582.png&#34;
+	width=&#34;1587&#34;
+	height=&#34;416&#34;
+	srcset=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922210258582_hu_86784d3c57d0ab5b.png 480w, https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922210258582_hu_e58decbdfdec74a3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Forward Process&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;381&#34;
+		data-flex-basis=&#34;915px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;生成的噪声就是ground truth&lt;/p&gt;
+&lt;h3 id=&#34;text2img&#34;&gt;Text2Img
+&lt;/h3&gt;&lt;p&gt;一般来说我们希望通过文字prompt生成想要的图片，而不是让模型自己决定生成什么样的图片&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;但其实也很简单&lt;/del&gt;，将文字作为输入送入到Denoise Model中即可&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922210650681.png&#34;
+	width=&#34;1461&#34;
+	height=&#34;667&#34;
+	srcset=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922210650681_hu_a6406ef6f25440e6.png 480w, https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922210650681_hu_c0cd833da929db2d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;text2img Denoise Model&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;219&#34;
+		data-flex-basis=&#34;525px&#34;
+	
+&gt; &lt;img src=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922210725023.png&#34;
+	width=&#34;1515&#34;
+	height=&#34;590&#34;
+	srcset=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922210725023_hu_4269068570ae2bce.png 480w, https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922210725023_hu_2db49e2e8eff8032.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;text2img Denoise Model&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;256&#34;
+		data-flex-basis=&#34;616px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;diffusion图片生成&#34;&gt;Diffusion图片生成
+&lt;/h2&gt;&lt;p&gt;主流的图片生成模型Stable Diffusion、DALLE……的Framework基本都差不多&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922211223208.png&#34;
+	width=&#34;1510&#34;
+	height=&#34;666&#34;
+	srcset=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922211223208_hu_def2addc8ac2b945.png 480w, https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922211223208_hu_fd84a22358b47845.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Framework&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;226&#34;
+		data-flex-basis=&#34;544px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Generation Model的输入来自于，最后输出一个类似压缩版本的图片向量
+&lt;ul&gt;
+&lt;li&gt;文字经过&lt;code&gt;text encoder&lt;/code&gt;得到向量&lt;/li&gt;
+&lt;li&gt;从正态分布中随机一个初始向量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;通过Decoder生成高清图片&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;text-encoder&#34;&gt;Text Encoder
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922211718217.png&#34;
+	width=&#34;1453&#34;
+	height=&#34;652&#34;
+	srcset=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922211718217_hu_5418abee0fb12839.png 480w, https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922211718217_hu_c76abe57cd04014c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Text Encoder对性能的影响&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;222&#34;
+		data-flex-basis=&#34;534px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;文字Encoder对最终模型的影响远大于Noise Predictor，不管采用多大的U-Net，似乎效果没什么变&lt;/p&gt;
+&lt;h3 id=&#34;decoder&#34;&gt;Decoder
+&lt;/h3&gt;&lt;p&gt;取决于Framework中的技术路线&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Generation Model生成一张小图，Decoder进行高清图生成&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;找大量图片进行down sample，即可完成数据集制作&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Generation Model生成&lt;strong&gt;Latent representation（潜在表示）&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用auto-encoder的方法进行训练&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922212322444.png&#34;
+	width=&#34;1515&#34;
+	height=&#34;589&#34;
+	srcset=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922212322444_hu_7b613dd45f728dad.png 480w, https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922212322444_hu_35e1579bdfc731e6.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;257&#34;
+		data-flex-basis=&#34;617px&#34;
+	
+&gt;  &lt;img src=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922212458561.png&#34;
+	width=&#34;1492&#34;
+	height=&#34;758&#34;
+	srcset=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922212458561_hu_12414711517716a6.png 480w, https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250922212458561_hu_1a550b46d2d6259b.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;196&#34;
+		data-flex-basis=&#34;472px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;generation-model&#34;&gt;Generation Model
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Diffusion Model
+&lt;ul&gt;
+&lt;li&gt;输出：图片&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Generation Model
+&lt;ul&gt;
+&lt;li&gt;输出：Latent Representation&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;同样会使用Forward Process进行数据生成&lt;/p&gt;
+&lt;p&gt;因此随机的noise应该加在Latent Representation上&lt;/p&gt;
+&lt;h2 id=&#34;数学推导&#34;&gt;数学推导
+&lt;/h2&gt;&lt;h3 id=&#34;优化目标&#34;&gt;优化目标
+&lt;/h3&gt;&lt;p&gt;图像生成的本质：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250923181904461.png&#34;
+	width=&#34;1099&#34;
+	height=&#34;415&#34;
+	srcset=&#34;https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250923181904461_hu_184c20ea63b526c5.png 480w, https://example.com/p/diffusion-model-%E6%9D%8E%E5%AE%8F%E6%AF%852023/assets/image-20250923181904461_hu_8b01de306072e72f.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;本质&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;264&#34;
+		data-flex-basis=&#34;635px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;从一个高斯中随机出的向量$z$，通过生成网络$G(z)$得到的分布$x$，希望尽可能接近真实&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;文字等其他信息作为condition（本质上是条件概率）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;记模型的参数为$\theta$，则模型的概率分布为$P_\theta{(x)}$，真实数据的分布为$P_{data}{(x)}$&lt;/p&gt;
+$$
+Sample \left\{ x^1, x^2, ..., x^m\right \} \space from \space P_{data}(x)\\
+\theta^*=\arg \max_\theta \prod_{i=1}^{m}P_\theta{(x^i)}
+$$&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;希望模型能以尽可能高的概率生成我们观察到的数据&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+$$
+\theta^*=\arg \max_\theta \sum_{i=1}^{m}\log P_\theta{(x^i)} =\arg \max_\theta  \frac{1}{m}\sum_{i=1}^{m}\log P_\theta{(x^i)}
+$$&lt;p&gt;
+只要我们从真实数据中采样的数据量$m$​足够大，就可以用&lt;strong&gt;真实数据的期望&lt;/strong&gt;，代替&lt;strong&gt;样本的均值&lt;/strong&gt;&lt;/p&gt;
+$$
+\theta^*=\arg \max_\theta \mathbb{E}_{x\sim P_{data}}\left [ \log P_\theta(x) \right]
+$$&lt;p&gt;转换成积分形式：&lt;/p&gt;
+$$
+\theta^*=\arg \max_\theta \int P_{data}(x)\log P_\theta(x) dx
+$$&lt;blockquote&gt;
+&lt;p&gt;概率乘上数值&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h4 id=&#34;kl散度&#34;&gt;KL散度
+&lt;/h4&gt;&lt;p&gt;有两个概率分布：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;P分布&lt;/strong&gt;：代表真实的情况或我们观察到的数据分布。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Q分布&lt;/strong&gt;：代表我们模型预测的分布、一个近似分布&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;现在的问题是：&lt;strong&gt;如果我们使用Q分布来编码来自P分布的数据，会犯多大的“错误”？会损失多少信息？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;使用KL散度进行表示&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;KL散度是不对称的&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用Q近似P的损失 不等于 用P近似Q的损失&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;对于离散型变量：&lt;/p&gt;
+$$
+D_{KL}(P\mid\mid Q) = \sum_i P(i)\log (\frac{P(i)}{Q(i)})
+$$&lt;ul&gt;
+&lt;li&gt;$P(i)$是事件$i$在真实分布$P$中发生的概率。&lt;/li&gt;
+&lt;li&gt;$Q(i)$是事件$i$在近似分布$Q$中发生的概率。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于连续型变量：&lt;/p&gt;
+$$
+D_{KL}(P\mid\mid Q) = \int_{-\infty}^{\infty}p(x)\log (\frac{p(x)}{q(x)})dx
+$$&lt;p&gt;
+这里使用的是概率密度函数&lt;/p&gt;
+&lt;hr&gt;
+$$
+\int P_{data}(x)\log P_\theta(x) dx = \int P_{data}(x)\log P_\theta{(x)}dx - \int P_{data}(x) \log P_{data}(x)dx +  \int P_{data}(x) \log P_{data}(x)dx \\
+= \int P_{data}(x)\log \frac{P_\theta(x)}{P_{data}(x)}dx +  \int P_{data}(x) \log P_{data}(x)dx
+$$&lt;p&gt;
+第二项是与$\theta$无关的一项（常数），这样不影响$\theta$​优化，因此可以直接舍弃&lt;/p&gt;
+$$
+\theta^* = \arg \max_\theta  \int P_{data}(x)\log \frac{P_\theta(x)}{P_{data}(x)}dx\\
+= \arg \max_\theta  \left [ -\int P_{data}(x)\log \frac{P_{data}(x)}{P_\theta(x)}dx\right ]\\
+= \arg \min_\theta  \left [ \int P_{data}(x)\log \frac{P_{data}(x)}{P_\theta(x)}dx\right ]\\
+=  \arg \min_\theta  D_{KL}(P_{data}\mid\mid P_\theta)
+$$&lt;h3 id=&#34;denoising-diffusion-probabilistic-models&#34;&gt;Denoising Diffusion Probabilistic Models
+&lt;/h3&gt;&lt;p&gt;那么如何计算$P_\theta(x)$​呢？对于DDPM，图片是逐渐Denoise得到的&lt;/p&gt;
+&lt;p&gt;我们假设最后得到的干净图片是$x_0$，一开始的随机噪声是$x_T \sim \mathcal{N}(0,I)$​&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;先补充一些数学&lt;/p&gt;
+&lt;h4 id=&#34;马尔可夫性质离散时间&#34;&gt;马尔可夫性质（离散时间）
+&lt;/h4&gt;&lt;p&gt;对于一个随机过程$\left { X_t   \right }_{t\in T}$，$T$是离散的时间序列$\left { 0,1,2,&amp;hellip;\right}$&lt;/p&gt;
+&lt;p&gt;若对于任意时间点$t$，满足：&lt;/p&gt;
+$$
+P(X_t=x\mid X_{t-1}=x_{t-1},...,X_1=x_1) = P(X_t=x\mid X_{t-1}=x_{t-1})
+$$&lt;p&gt;
+也就是说，&lt;strong&gt;给定当前状态，未来状态与过去状态条件独立&lt;/strong&gt;。这就是“无记忆性”。&lt;/p&gt;
+&lt;h4 id=&#34;重参数化技巧&#34;&gt;重参数化技巧
+&lt;/h4&gt;&lt;p&gt;对于深度学习过程，若途中从高斯中进行采样，是不可导的，无法进行反向传播&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;torch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;normal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mean&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mu&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;std&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sigma&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;x的产生是随机的，&lt;strong&gt;无法写出关于参数的函数&lt;/strong&gt;，无法反向传播到mu和sigma&lt;/p&gt;
+&lt;p&gt;因此我们希望引入一个具体的表达方式，方便求导&lt;/p&gt;
+&lt;p&gt;可以采用的是：&lt;/p&gt;
+$$
+x = \mu + \sigma \odot \epsilon
+$$&lt;p&gt;
+其中$\epsilon \sim \mathcal{N} (0,I)$，$\odot$表示逐元素乘法，$I$是单位矩阵&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;A = [[1, 2],
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;     [3, 4]]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;B = [[5, 6],
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;     [7, 8]]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;A ⊙ B = [[1*5, 2*6],
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;         [3*7, 4*8]] = [[5, 12],
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                        [21, 32]]
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;我们只需要学习$\mu,\sigma$，而$\epsilon$作为随机噪声，在单次的传播过程中是固定的，不影响求导&lt;/p&gt;
+$$
+\mu = \left [\mu_1, \mu_2, ..., \mu_d\right]\\
+\sigma = \left [\sigma_1, \sigma_2, ..., \sigma_d\right]\\
+\epsilon = \left [\epsilon_1, \epsilon_2, ..., \epsilon_d\right],\epsilon \sim \mathcal{N}(0,1)
+$$&lt;p&gt;因此&lt;/p&gt;
+$$
+x = \mu + \sigma \odot \epsilon\\
+x_i = \mu_i + \sigma_i \cdot \epsilon_i,\forall i\\
+\therefore x_i\sim \mathcal{N}(\mu_i,\sigma^2_i)
+$$&lt;p&gt;
+各维度是独立的&lt;/p&gt;
+&lt;h4 id=&#34;分布&#34;&gt;分布
+&lt;/h4&gt;&lt;p&gt;假设你想知道&amp;quot;今天是否下雨了&amp;quot;（未知事物），但你无法直接看窗外。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;先验分布&lt;/strong&gt;：在没有任何证据时，你根据历史数据猜测&amp;quot;今天下雨的概率是20%&amp;quot;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;证据&lt;/strong&gt;：你听到有人说&amp;quot;地上是湿的&amp;quot;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;后验分布&lt;/strong&gt;：在知道&amp;quot;地上是湿的&amp;quot;这个证据后，你更新对&amp;quot;今天下雨&amp;quot;的概率判断（比如变成70%）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;正态分布高斯分布&#34;&gt;正态分布（高斯分布）
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;性质1：均值与方差的线性组合&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;若$z = ay+b$，且$y\sim \mathcal{N}(\mu, \sigma^2)$，其他均为常数&lt;/p&gt;
+&lt;p&gt;则：&lt;/p&gt;
+$$
+z \sim \mathcal{N}(a\mu + b,a^2\sigma^2 )
+$$&lt;ul&gt;
+&lt;li&gt;性质2：独立正态分布的和&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;若$y_1,y_2$都是独立的正态分布变量，则他们的和$z=y_1+y_2$也是正态分布&lt;/p&gt;
+$$
+z\sim \mathcal{N}(\mu_1+\mu_2, \sigma^2_1+\sigma_2^2)
+$$&lt;hr&gt;
+&lt;h4 id=&#34;加噪&#34;&gt;加噪
+&lt;/h4&gt;&lt;p&gt;加噪是一个正向过程&lt;/p&gt;
+&lt;p&gt;从数据集的原始图片$x_0$出发，最终需要得到$x_T \sim \mathcal{N}(0,I)$&lt;/p&gt;
+&lt;p&gt;如果每一步按照前文所说进行简单加噪&lt;/p&gt;
+$$
+x_t =x_{t-1} + \epsilon_t, \quad \epsilon_t\sim \mathcal{N}(0,\sigma^2I)
+$$&lt;p&gt;
+其中$\sigma$可以让我们自己定义&lt;/p&gt;
+&lt;p&gt;故随着时间累计：&lt;/p&gt;
+$$
+x_t = x_0 + \sum_{i=1}^t\epsilon_i
+$$&lt;p&gt;
+$\epsilon_i$是独立同分布的，故&lt;/p&gt;
+$$
+x_t \sim \mathcal{N}\left ( x_0, t\sigma^2I \right)
+$$&lt;p&gt;
+这样无法保证最后$x^T$是一个标准正态分布&lt;/p&gt;
+&lt;p&gt;且随着$t$增加，数值的不稳定性会上升&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;加噪目标：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;最终是标准正态分布的纯噪声&lt;/li&gt;
+&lt;li&gt;加噪可控、平滑过渡&lt;/li&gt;
+&lt;li&gt;数值稳定&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;设计：&lt;/p&gt;
+$$
+x_t = \sqrt{1-\beta_t}\cdot x_{t-1} + \sqrt{\beta_t}\cdot \epsilon_t
+$$&lt;p&gt;
+其中$\beta_t$是&lt;strong&gt;预先设定&lt;/strong&gt;的缩放系数，在$(0,1)$之间&lt;/p&gt;
+&lt;p&gt;从原理上能够解释为：衰减旧图片，添加新噪声&lt;/p&gt;
+&lt;p&gt;推导一下方差：&lt;/p&gt;
+$$
+\text{Var}(x_t) = \text{Var}(\sqrt{1-\beta_t}\cdot x_{t-1} + \sqrt{\beta_t}\cdot \epsilon_t)\\
+= (1-\beta_t)\text{Var}(x_{t-1}) + \beta_t\text{Var}(\epsilon_t)
+$$&lt;p&gt;
+如果$x_{t-1}$之前的方差都是按照某种方式保持的很好，方差为1&lt;/p&gt;
+&lt;p&gt;同时我们知道$\epsilon_t$是标准正态分布，方差也是1&lt;/p&gt;
+$$
+\text{Var}(x_t)= (1-\beta_t)\text{Var}(x_{t-1}) + \beta_t\text{Var}(\epsilon_t) = 1-\beta_t + \beta_t = 1
+$$&lt;p&gt;
+所以后续按照此方法，能够始终保持数值稳定&lt;/p&gt;
+&lt;h4 id=&#34;高效加噪&#34;&gt;高效加噪
+&lt;/h4&gt;&lt;p&gt;一般迭代次数还是足够多的， 如果使用循环就会很慢&lt;/p&gt;
+&lt;p&gt;我们可以对公式进行展开：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;迭代1次&lt;/li&gt;
+&lt;/ul&gt;
+$$
+x_1 = \sqrt{1-\beta_1}\cdot x_0 + \sqrt{\beta_1}\cdot \epsilon_1
+$$&lt;ul&gt;
+&lt;li&gt;迭代2次&lt;/li&gt;
+&lt;/ul&gt;
+$$
+x_2 = \sqrt{1-\beta_2}\cdot x_1 + \sqrt{\beta_2}\cdot \epsilon_2 \\
+= \sqrt{1-\beta_2}\cdot (\sqrt{1-\beta_1}\cdot x_0 + \sqrt{\beta_1}\cdot \epsilon_1) + \sqrt{\beta_2}\cdot \epsilon_2 \\
+= \sqrt{(1-\beta_1)(1-\beta_2)}x_0 + \sqrt{(1-\beta_2)\beta_1} \cdot \epsilon_1 + \sqrt{\beta_2} \cdot \epsilon_2
+$$&lt;ul&gt;
+&lt;li&gt;迭代3次&lt;/li&gt;
+&lt;/ul&gt;
+$$
+x_3 = \sqrt{(1 - \beta_3)(1 - \beta_2)(1 - \beta_1)} \cdot x_0 + \sqrt{(1 - \beta_3)(1 - \beta_2)\beta_1} \cdot \epsilon_1 + \sqrt{(1 - \beta_3)\beta_2} \cdot \epsilon_2 + \sqrt{\beta_3} \cdot \epsilon_3
+$$&lt;p&gt;令&lt;/p&gt;
+$$
+\alpha_i = 1-\beta_i,\quad \overline{\alpha}_t = \prod_{i=1}^{t}\alpha_i  
+$$&lt;ul&gt;
+&lt;li&gt;$x_0$的系数：$\sqrt{\overline{\alpha}_t}$&lt;/li&gt;
+&lt;li&gt;$\epsilon_i$的系数：$\sqrt{\beta_i\prod_{j=i+1}^t \alpha_j} = \sqrt{\beta_i\cdot\frac{\overline{\alpha}_t}{\overline{\alpha}_i}}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;得：&lt;/p&gt;
+$$
+x_t = \sqrt{\overline{\alpha}_t}x_0 + \sum_{i=1}^t\sqrt{\beta_i\cdot\frac{\overline{\alpha}_t}{\overline{\alpha}_i}}\cdot \epsilon_i
+$$&lt;p&gt;
+左边是定值，右边显然服从某个正态分布&lt;/p&gt;
+&lt;p&gt;并且方差完全取决于系数，令&lt;/p&gt;
+$$
+\sigma^2_t=\sum_{i=1}^t\beta_i\cdot\frac{\overline{\alpha}_t}{\overline{\alpha}_i} = \sum_{i=1}^t\beta_i\prod_{k=i+1}^t(1-\beta_k)
+$$&lt;p&gt;此时有：$x_t\sim \mathcal{N}(0,\sigma^2_tI)$&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;这里有点跳跃，我们希望之间使用一个更简单的表示替换掉这个&lt;/p&gt;
+&lt;p&gt;如果我们能够找到一个方差相等的一项，就可以替换&lt;/p&gt;
+&lt;p&gt;这里智慧的假设是&lt;/p&gt;
+$$
+1-\overline{\alpha}_t
+$$&lt;p&gt;
+使用数学归纳法进行证明，当 $t=2$​时：&lt;/p&gt;
+$$
+1-\overline{\alpha}_t = 1-(1-\beta_1)(1-\beta_2) = \beta_1+\beta_2-\beta_1\beta_2\\
+\sigma^2=\beta_1(1-\beta_2) + \beta_2 = \beta_1+\beta_2-\beta_1\beta_2
+$$&lt;p&gt;
+两者相等&lt;/p&gt;
+&lt;p&gt;推导两者的递推关系&lt;/p&gt;
+&lt;p&gt;前者：&lt;/p&gt;
+$$
+1-\overline{\alpha}_t = 1 - \overline{\alpha}_{t-1}\cdot(1-\beta_t) = (1-\beta_t)(1-\overline{\alpha}_{t-1}) + \beta_t
+$$&lt;p&gt;
+后者：&lt;/p&gt;
+$$
+\sigma_t^2 =\sum_{i=1}^t\beta_i\prod_{k=i+1}^t(1-\beta_k) \\
+= \sum_{i=1}^{t-1}\beta_i(1-\beta_t)\prod_{k=i+1}^{t-1}(1-\beta_k) + \beta_t \\
+= (1-\beta_t)\sum_{i=1}^{t-1}\beta_i\prod_{k=i+1}^{t-1}(1-\beta_k) + \beta_t \\
+= (1-\beta_t)\sigma_{t-1}^2+\beta_t
+$$&lt;p&gt;两者递推关系相同，故有：&lt;/p&gt;
+$$
+\sigma^2_t = 1-\overline{\alpha}_t
+$$&lt;p&gt;
+原噪声项满足&lt;/p&gt;
+$$
+\sum_{i=1}^t\sqrt{\beta_i\cdot\frac{\overline{\alpha}_t}{\overline{\alpha}_i}}\cdot \epsilon_i \sim \mathcal{N}(0,(1-\overline{\alpha}_t)I)
+$$&lt;p&gt;
+替换成满足同一个分布的噪声项&lt;/p&gt;
+$$
+\sqrt{ 1-\overline{\alpha}_t}\cdot \epsilon
+$$&lt;p&gt;
+依旧可以使得$x_t \sim \mathcal{N}(0, (1-\overline{\alpha}_t)I)$&lt;/p&gt;
+&lt;p&gt;所以完全可以写成：&lt;/p&gt;
+$$
+x_t = \sqrt{\overline{\alpha}_t}x_0 +\sqrt{ 1-\overline{\alpha}_t}\cdot \epsilon, \quad \epsilon\sim\mathcal{N}(0,I)
+$$&lt;p&gt;至此，我们可以通过该公式直接从一个干净的$x_0$得到一个加噪图片$x_t$，极大简化了训练过程&lt;/p&gt;
+&lt;p&gt;并且该式符合重参数化的&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;为什么上面的公式是$\epsilon$？&lt;/p&gt;
+&lt;p&gt;由于我们保证数值稳定，因此本质上是加上关于$\epsilon_i$的一个线性组合（并且线性组合系数权重始终为1），因此等价于只加上一次的标准正态分布&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h4 id=&#34;去噪&#34;&gt;去噪
+&lt;/h4&gt;&lt;p&gt;去噪是训练的核心步骤与目标&lt;/p&gt;
+&lt;p&gt;定义真实的逆向分布：&lt;/p&gt;
+$$
+q\left(x_{t-1}\mid x_t\right)
+$$&lt;p&gt;
+由于上文所提到的运算关系，计算$q(x_t\mid x_{t-1})$​是没问题的&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;这里我们打断一下，不妨推导一下$q(x_t\mid x_{t-1})$的分布&lt;/p&gt;
+&lt;p&gt;首先有如下关系：&lt;/p&gt;
+$$
+x_t = \sqrt{1-\beta_t}\cdot x_{t-1} + \sqrt{\beta_t}\cdot \epsilon_t
+$$&lt;p&gt;
+则有（已知$x_{t-1}$的情况推$x_t$，故可以把$x_{t-1}$看作定值，且$\epsilon \sim \mathcal{N}(0,I)$）：&lt;/p&gt;
+$$
+\mathbb{E}(x_t\mid x_{t-1}) = \sqrt{1-\beta_t}\mathbb{E}(x_{t-1}) + \sqrt{\beta_t}\mathbb{E}(\epsilon_t) = \sqrt{1-\beta_t}\cdot x_{t-1} \\
+\text{Var}(x_t\mid x_{t-1}) = \beta_tI
+$$&lt;p&gt;
+故：&lt;/p&gt;
+$$
+q(x_t\mid x_{t-1})\sim \mathcal{N}(x_t;\sqrt{1-\beta_t}\cdot x_{t-1}, \beta_tI)
+$$&lt;p&gt;
+补充解释一下这个诡异的分号，其代表该分布是关于$x_t$的分布，即只有$x_t$是随机变量&lt;/p&gt;
+&lt;p&gt;？？？？？？&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;但是反过来计算逆向分布是一件非常难的事情&lt;/p&gt;
+&lt;p&gt;我们需要学一个模型，定义为：&lt;/p&gt;
+$$
+p_\theta\left(x_{t-1}|x_t\right)
+$$</description>
+        </item>
+        
+    </channel>
+</rss>

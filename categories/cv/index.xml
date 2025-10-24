@@ -1,0 +1,1076 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>CV on BiribiriBird</title>
+        <link>https://example.com/categories/cv/</link>
+        <description>Recent content in CV on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Tue, 26 Mar 2024 02:45:55 +0800</lastBuildDate><atom:link href="https://example.com/categories/cv/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>CS231A：Computer Vision, From 3D Reconstruction to Recognition</title>
+        <link>https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/</link>
+        <pubDate>Tue, 26 Mar 2024 02:45:55 +0800</pubDate>
+        
+        <guid>https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/</guid>
+        <description>&lt;h1 id=&#34;cs231acomputer-vision-from-3d-reconstruction-to-recognition&#34;&gt;CS231A：Computer Vision, From 3D Reconstruction to Recognition
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1LQ4y1r7ps/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.bilibili.com/video/BV1LQ4y1r7ps/&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;l2-camera-models&#34;&gt;L2. Camera Models
+&lt;/h2&gt;&lt;h3 id=&#34;pinhole-camera小孔成像---摄像机&#34;&gt;pinhole camera（小孔成像 - 摄像机）
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326032639070.png&#34;
+	width=&#34;622&#34;
+	height=&#34;215&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326032639070_hu_efaebb50cf08f6e0.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326032639070_hu_8ac03921d68d0b49.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326032639070&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;289&#34;
+		data-flex-basis=&#34;694px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$f$：定义为相机焦距&lt;/li&gt;
+&lt;/ul&gt;
+$$
+x&#39; = \frac{f}{z}x,y&#39; = \frac{f}{z}y
+$$&lt;p&gt;
+物理课的小知识&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;小孔越小，透光越少，但是画面清晰&lt;/li&gt;
+&lt;li&gt;小孔越大，透光越多，但是画面模糊&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因此为了全部都要，引入了Lens（透镜）&lt;/p&gt;
+&lt;h3 id=&#34;lenses-and-cameras透镜和相机&#34;&gt;Lenses and Cameras（透镜和相机）
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326033557763.png&#34;
+	width=&#34;608&#34;
+	height=&#34;196&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326033557763_hu_2549720dc7fbbe79.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326033557763_hu_6b70e7121448f490.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326033557763&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;310&#34;
+		data-flex-basis=&#34;744px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;除了通过中心的光线，其他光线都会被折射&lt;/li&gt;
+&lt;li&gt;在一定距离，所有入射光线会被折射到图像的一点上&lt;/li&gt;
+&lt;li&gt;少于或多于这段距离，光无法聚焦在一个点上（Out of focus）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;景深（Depth of Field）则是指在摄影或者摄像中，一张图像中能够保持清晰度的距离范围。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326034355319.png&#34;
+	width=&#34;561&#34;
+	height=&#34;196&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326034355319_hu_19fae6f4fe47ff32.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326034355319_hu_d89771a1ab69b809.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326034355319&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;286&#34;
+		data-flex-basis=&#34;686px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;定义参数等效焦距$z&amp;rsquo;=f + z_0$，$z_0$​为像距&lt;/p&gt;
+$$
+x&#39; = \frac{z&#39;}{z}x,y&#39; = \frac{z&#39;}{z}y
+$$&lt;p&gt;
+但由于工艺问题，透镜成像的边缘经常发生distortion（畸变）&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326034749500.png&#34;
+	width=&#34;340&#34;
+	height=&#34;266&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326034749500_hu_3f155ab764b14aa1.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326034749500_hu_dbea4dd360a3a6c0.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326034749500&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;127&#34;
+		data-flex-basis=&#34;306px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;虚线为理想情况&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;图1：聚焦偏外，越角落越边缘的图像越偏外&lt;/li&gt;
+&lt;li&gt;图2：聚焦偏内，越角落越边缘的图像越偏内&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;the-geometry-of-pinhole-cameras几何&#34;&gt;The Geometry of Pinhole Cameras（几何）
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;只要距离足够，透镜和小孔成像都是同一个数学模型&lt;/p&gt;&lt;/blockquote&gt;
+$$
+p=\begin{bmatrix}x\\y\\z\end{bmatrix} \to p&#39;=\begin{bmatrix}x&#39;\\y&#39;\end{bmatrix}
+$$&lt;p&gt;我们完成了三维世界到二维平面的投影&lt;/p&gt;
+&lt;h4 id=&#34;coordinate-systems坐标系&#34;&gt;Coordinate systems（坐标系）
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326035659856.png&#34;
+	width=&#34;638&#34;
+	height=&#34;195&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326035659856_hu_860394ba096b6334.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326035659856_hu_ad944ccc6586450c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326035659856&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;327&#34;
+		data-flex-basis=&#34;785px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Off Set：$(x,y,z)\to(\frac{f}{z}x+c_x,\frac{f}{z}y+c_y)$​
+&lt;ul&gt;
+&lt;li&gt;$(c_x,c_y)$的存在：相机由于工艺问题，无法保证焦点中心一定在图像中心，因此通过引入参数来进行矫正调整&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;From Metric to Pixels：$(x,y,z)\to(k\frac{f}{z}x+c_x,l\frac{f}{z}y+c_y)$​
+&lt;ul&gt;
+&lt;li&gt;我们更偏向乘上系数，使得长度单位变成像素（不同的系数解决了像素是长方形的情况）&lt;/li&gt;
+&lt;li&gt;所以$(c_x,c_y)$也是像素单位&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;当$z$​发生变化时，投影坐标并不是线性变化（倒数），不利于使用线代处理&lt;/p&gt;
+&lt;p&gt;同时乘上$z$，会丢失$z$的信息&lt;/p&gt;
+&lt;p&gt;因此引入Homogeneous Coordinates（齐次坐标）&lt;/p&gt;
+&lt;h4 id=&#34;homogeneous-coordinates齐次坐标&#34;&gt;Homogeneous Coordinates（齐次坐标）
+&lt;/h4&gt;$$
+(x,y)\to \begin{bmatrix}x\\y\\1\end{bmatrix}
+$$&lt;p&gt;我们对点坐标，额外增加一个新的维度（二维变三维，三维变四维）&lt;/p&gt;
+$$
+\begin{bmatrix}x\\y\\w\end{bmatrix}\to (\frac{x}{w},\frac{y}{w})
+$$$$
+(x,y,z)\to(k\frac{f}{z}x+c_x,l\frac{f}{z}y+c_y)\\
+(x,y,z)\to(\alpha\frac{x}{z}+c_x,\beta\frac{y}{z}+c_y)
+$$$$
+\begin{bmatrix}
+\alpha &amp; 0 &amp; c_x &amp; 0\\
+0 &amp; \beta &amp; c_y &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; 0
+\end{bmatrix}
+\begin{bmatrix}x\\y\\z\\1\end{bmatrix}=\begin{bmatrix}
+\alpha x+c_xz\\\beta y+c_y \\ z
+\end{bmatrix}
+$$$$
+P_h&#39;=MP_h
+$$&lt;p&gt;
+$z$的信息就能得到很好的保存&lt;/p&gt;
+&lt;h4 id=&#34;camera-matrix-k相机内参&#34;&gt;Camera Matrix K（相机内参）
+&lt;/h4&gt;$$
+M = \begin{bmatrix}
+\alpha &amp; 0 &amp; c_x &amp; 0\\
+0 &amp; \beta &amp; c_y &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; 0
+\end{bmatrix} = K\begin{bmatrix}I &amp; 0\end{bmatrix}
+$$&lt;p&gt;
+但由于工艺问题，有时像素平面可能不是一个矩形，而是一个平行四边形，产生了旋转&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326155513409.png&#34;
+	width=&#34;233&#34;
+	height=&#34;211&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326155513409_hu_522b1a040f8712bc.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326155513409_hu_68975aac683aaccd.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326155513409&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;110&#34;
+		data-flex-basis=&#34;265px&#34;
+	
+&gt;&lt;/p&gt;
+$$
+K=\begin{bmatrix}
+\alpha &amp; -\alpha\cot\theta &amp; c_x \\
+0 &amp; \frac{\beta}{\sin\theta} &amp; c_y  \\
+0 &amp; 0 &amp; 1 
+\end{bmatrix}
+$$&lt;blockquote&gt;
+&lt;p&gt;懒得推导了&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;$\alpha,\beta,\theta,c_x,c_y$共五个自由度&lt;/li&gt;
+&lt;li&gt;上三角矩阵&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;world-reference-system世界坐标系&#34;&gt;World Reference System（世界坐标系）
+&lt;/h4&gt;&lt;p&gt;我们希望世界坐标系转化为相机坐标系，这里我们依旧使用齐次坐标&lt;/p&gt;
+&lt;p&gt;我们先处理二维平面的情况&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;平移Translation&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$$
+    P&#39;\to\begin{bmatrix}x + t_x\\y + t_y\\1\end{bmatrix} = 
+    \begin{bmatrix}
+    1 &amp; 0 &amp; t_x\\
+    0 &amp; 1 &amp; t_y \\
+    0 &amp; 0 &amp; 1\\
+    \end{bmatrix} 
+    \begin{bmatrix}x \\y \\1\end{bmatrix}
+    $$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;缩放Scaling&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;注意是围绕原点进行缩放&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;当$s_x=s_y$时，称为&lt;strong&gt;相似变换&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+$$
+    P&#39;\to\begin{bmatrix}s_xx\\s_yy\\1\end{bmatrix} = 
+    \begin{bmatrix}
+    s_x &amp; 0 &amp; 0\\
+    0 &amp; s_y &amp; 0 \\
+    0 &amp; 0 &amp; 1\\
+    \end{bmatrix} 
+    \begin{bmatrix}x \\y \\1\end{bmatrix}
+    $$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;旋转Rotation&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+    P&#39;\to\begin{bmatrix}x&#39;\\y&#39;\\1\end{bmatrix} = 
+    \begin{bmatrix}
+    \cos\theta &amp; -\sin\theta &amp; 0\\
+    \sin\theta &amp; \cos\theta &amp; 0 \\
+    0 &amp; 0 &amp; 1\\
+    \end{bmatrix} 
+    \begin{bmatrix}x \\y \\1\end{bmatrix}
+$$&lt;ul&gt;
+&lt;li&gt;同样是围绕原点进行旋转&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们可以组合上述的矩阵：同时进行平移缩放旋转&lt;/p&gt;
+&lt;p&gt;即对$P$先后进行变换矩阵的左乘即可&lt;/p&gt;
+&lt;p&gt;对于三维情况：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;平移Translation&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$$
+    P&#39;\to\begin{bmatrix}
+    I &amp; T\\
+    0 &amp; 1
+    \end{bmatrix} 
+    \begin{bmatrix}x \\y \\z \\1\end{bmatrix}
+    $$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;缩放Scaling&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$$
+    P&#39;\to
+    \begin{bmatrix}
+    S &amp; 0\\
+    0 &amp; 1
+    \end{bmatrix} 
+    \begin{bmatrix}x \\y \\z\\1\end{bmatrix}
+    $$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;旋转Rotation&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;绕x轴旋转$\alpha$，绕y轴旋转$\beta$，绕z轴旋转$\gamma$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+ R_x(\alpha)=
+\begin{bmatrix}
+1 &amp;0&amp;0\\
+0 &amp; \cos\alpha &amp; -\sin\alpha \\
+0 &amp; \sin\alpha &amp; \cos\alpha  \\
+\end{bmatrix} \\
+R_y(\beta)=\begin{bmatrix}
+\cos\beta &amp; 0 &amp; -\sin\beta\\
+0 &amp;1&amp;0\\
+\sin\beta  &amp; 0&amp; \cos\beta  \\
+\end{bmatrix} \\
+R_z(\gamma)=\begin{bmatrix}
+\cos\gamma&amp; -\sin\gamma &amp; 0 \\
+\sin\gamma &amp; \cos\gamma  &amp; 0\\
+0 &amp;0&amp;1\\
+\end{bmatrix}
+$$&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;任意绕轴旋转都可以进行分解成绕三轴先后旋转&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$R = R_x(\alpha)R_y(\beta)R_z(\gamma)$，合成三个矩阵&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+$$
+    P&#39;\to
+    \begin{bmatrix}
+    R &amp; 0\\
+    0 &amp; 1
+    \end{bmatrix} 
+    \begin{bmatrix}x \\y \\z\\1\end{bmatrix}
+    $$&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在这里，我们一般不考虑缩放（刚体是不会缩放的）&lt;/p&gt;
+$$
+P&#39; \to \begin{bmatrix}R &amp; T \\ 0 &amp; 1\end{bmatrix}
+$$&lt;p&gt;
+即可完成旋转后，再平移&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326193012179.png&#34;
+	width=&#34;632&#34;
+	height=&#34;193&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326193012179_hu_cfbbdca8fed1234b.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326193012179_hu_c96fb118b54057f4.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326193012179&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;327&#34;
+		data-flex-basis=&#34;785px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从世界坐标系，通过$R,T$转化到相机坐标系&lt;/li&gt;
+&lt;li&gt;从相机坐标系通过投影，转化为图像坐标系&lt;/li&gt;
+&lt;/ul&gt;
+$$
+P&#39;=K\begin{bmatrix}I &amp; 0\end{bmatrix}P=K\begin{bmatrix}I &amp; 0\end{bmatrix}\begin{bmatrix}R &amp; T \\ 0 &amp; 1\end{bmatrix}P_w\\
+P&#39;=K\begin{bmatrix}R &amp; T\end{bmatrix}P_w
+$$&lt;p&gt;
+其中$\begin{bmatrix}R &amp;amp; T\end{bmatrix}$被称为外参数&lt;/p&gt;
+&lt;h5 id=&#34;weak-perspective-projection弱透视投影&#34;&gt;Weak Perspective Projection（弱透视投影）
+&lt;/h5&gt;&lt;p&gt;当物体离相机足够远时，深度$z$其实可以近似为一个常数$z_0$，从而简化计算&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240328195920736.png&#34;
+	width=&#34;986&#34;
+	height=&#34;447&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240328195920736_hu_39c66bde6fb3f5f1.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240328195920736_hu_82958602ef591119.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240328195920736&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;220&#34;
+		data-flex-basis=&#34;529px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;l8-fitting-and-matching&#34;&gt;L8: Fitting and Matching
+&lt;/h2&gt;&lt;h3 id=&#34;fitting&#34;&gt;Fitting
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Choose a parametric model to fit a certain quantity from data&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Estimate model parameters&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;h4 id=&#34;critical-issues&#34;&gt;Critical issues
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;noisy data
+&lt;ul&gt;
+&lt;li&gt;数据中存在的随机误差或不确定性，测量、记录或传输过程中的各种因素引起&lt;/li&gt;
+&lt;li&gt;对整体趋势影响较小&lt;/li&gt;
+&lt;li&gt;处理噪声数据的方法包括平滑技术（如移动平均）、滤波方法、数据清洗等&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;outliers
+&lt;ul&gt;
+&lt;li&gt;数据集中与其他观测值&lt;strong&gt;明显不同&lt;/strong&gt;的值，测量错误、录入错误、实际现象的稀有事件&lt;/li&gt;
+&lt;li&gt;具有明显的偏离，可能对分析结果产生较大的影响&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;missing data&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;techniques&#34;&gt;Techniques
+&lt;/h4&gt;&lt;p&gt;目标：拟合点集$(x_i,y_i)$&lt;/p&gt;
+&lt;h5 id=&#34;least-square-methods最小二乘法&#34;&gt;Least Square methods（最小二乘法）
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;直线模型：$y-mx-b = 0$&lt;/li&gt;
+&lt;li&gt;找到$(m,b)$使得最小化误差$E = \sum(y_i-mx_i-b)^2$&lt;/li&gt;
+&lt;/ul&gt;
+$$
+E = \sum(y_i-\begin{bmatrix}
+x_i  &amp; 1
+\end{bmatrix}
+\begin{bmatrix}
+  m\\b
+\end{bmatrix})^2 \\
+= \left \| \begin{bmatrix}
+y_1  \\ ... \\ y_n
+\end{bmatrix}- \begin{bmatrix}
+x_1 &amp; 1 \\ ... &amp; 1\\ x_n &amp; 1
+\end{bmatrix} \begin{bmatrix}
+m \\ b
+\end{bmatrix}\right \| ^2 \\
+= \left \| Y - Xh \right \| ^2 \\
+= (Y-Xh)^T(Y-Xh) \\
+= Y^TY-2(Xh)^TY+(Xh)^TXh
+$$&lt;p&gt;对$h$求导&lt;/p&gt;
+$$
+\frac{dE}{dh} = -2X^TY+2X^TXh=0
+$$$$
+h = (X^TX)^{-1}X^TY
+$$&lt;p&gt;
+但是这样是&lt;strong&gt;代数意义&lt;/strong&gt;上的最优解&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022250550.png&#34;
+	width=&#34;1066&#34;
+	height=&#34;882&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022250550_hu_ea26c5e7384b3a53.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022250550_hu_8fcd8001d050c35.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022250550&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;120&#34;
+		data-flex-basis=&#34;290px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;考虑几何意义上的最优解：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022302839.png&#34;
+	width=&#34;1089&#34;
+	height=&#34;815&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022302839_hu_56efd3c2190f319c.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022302839_hu_167c22badd3abbc0.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022302839&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;133&#34;
+		data-flex-basis=&#34;320px&#34;
+	
+&gt;&lt;/p&gt;
+$$
+dis=\frac{|ax+by+d|}{\sqrt{a^2+b^2}}
+$$&lt;p&gt;
+我们可以$a,b$的存在表示了斜率，因此我们可以通过类似归一化的操作，使得$\sqrt{a^2+b^2}$为1，或者为一个定值&lt;/p&gt;
+&lt;p&gt;因此我们事实上只需要关心$|ax+by+d|$，代表了相对大小，不需要具体的真实值&lt;/p&gt;
+&lt;p&gt;故定义：$E = \sum |ax+by+d|^2$&lt;/p&gt;
+&lt;p&gt;我们需要寻找最优的$(a,b,d)$&lt;/p&gt;
+&lt;p&gt;令矩阵&lt;/p&gt;
+$$
+A = \begin{bmatrix}
+ x_1 &amp; y_1 &amp; 1 \\ x_2 &amp; y_2 &amp; 1 \\ ...&amp;...&amp;...\\x_n&amp;y_n&amp;1\end{bmatrix}\\
+ h = \begin{bmatrix}
+a\\b\\d\end{bmatrix}
+$$&lt;p&gt;则问题转化为：最小化 $||Ah||$，并且限制$||h|| = 1$&lt;/p&gt;
+&lt;p&gt;使用&lt;strong&gt;SVD分解&lt;/strong&gt;即可完成优化问题（留坑待填）&lt;/p&gt;
+&lt;p&gt;最后：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;噪声：鲁棒的&lt;/li&gt;
+&lt;li&gt;外点：影响巨大&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022314924.png&#34;
+	width=&#34;1494&#34;
+	height=&#34;634&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022314924_hu_c4c27030d0b11f52.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022314924_hu_8145b20ae8bfdea0.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022314924&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;235&#34;
+		data-flex-basis=&#34;565px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;conclusion: Least Square is not robust w.r.t. outliers.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;w.r.t.&amp;rdquo; 是英文表达中的缩写，意思是 &amp;ldquo;with respect to&amp;rdquo;，翻译成中文是 &amp;ldquo;关于&amp;rdquo;、&amp;ldquo;针对&amp;rdquo;、&amp;ldquo;就&amp;hellip;而言&amp;rdquo; 等等。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h5 id=&#34;least-squares-robust-estimators-鲁棒估计器&#34;&gt;Least Squares: Robust Estimators （鲁棒估计器）
+&lt;/h5&gt;&lt;p&gt;令残差$\mu = ax+by-d$&lt;/p&gt;
+$$
+\rho(u;\sigma) = \frac{\mu^2}{\sigma^2+\mu^2}
+$$&lt;p&gt;
+&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022343561.png&#34;
+	width=&#34;1207&#34;
+	height=&#34;1234&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022343561_hu_80c54b30222ba984.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022343561_hu_60f451972b050627.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022343561&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;97&#34;
+		data-flex-basis=&#34;234px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\mu$越大，函数值接近1&lt;/li&gt;
+&lt;li&gt;$\mu$越小，函数是一个关于$\mu^2$的函数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;较大的残差，原本会极大影响损失函数的值&lt;/p&gt;
+&lt;p&gt;通过此方法，我们限制了大残差的贡献，从而降低了对损失函数的影响，故能拟合的鲁棒性提升&lt;/p&gt;
+&lt;h5 id=&#34;random-sample-consensusransac&#34;&gt;RANdom SAmple Consensus(RANSAC)
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;假设1：嘈杂的数据不会为任何单一模型投一致的票&lt;/li&gt;
+&lt;li&gt;假设2：有足够的数据点来商定一个好的模型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们定义好阈值$\delta$，与给定直线的距离在阈值范围内的点，被称为内点；否则是外点&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022424569.png&#34;
+	width=&#34;1105&#34;
+	height=&#34;930&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022424569_hu_8bb8b0a352eb618f.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022424569_hu_c2b58dd1c6fe5e64.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022424569&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;118&#34;
+		data-flex-basis=&#34;285px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;算法流程&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;随机选择出需要确定模型的最小数量的点（例如：确定直线需要两个点，因此随机两个点）&lt;/li&gt;
+&lt;li&gt;对于随机选出的点，计算出模型&lt;/li&gt;
+&lt;li&gt;计算出内点和外点&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;重复多次，外点数量最小的模型即为我们需要的&lt;/p&gt;
+&lt;p&gt;因此我们比较好奇重复多少次可以基本保证能找到最优解&lt;/p&gt;
+&lt;p&gt;设重复次数为$N$，算法成功概率为$p$（一般取0.99），$e$表示内点数量与点数之比，$s$表示采样点的数量&lt;/p&gt;
+$$
+1-p = (1-e^s)^N
+$$$$
+N = \frac{\log (1-p)}{\log (1-e^s)}
+$$&lt;p&gt;
+&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022438387.png&#34;
+	width=&#34;1653&#34;
+	height=&#34;545&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022438387_hu_52b28d76fea94918.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022438387_hu_f754c0fb80960ca9.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022438387&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;303&#34;
+		data-flex-basis=&#34;727px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;不管是需要采样的点变多，还是内点比例下降，都会使得次数增加&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;conclusion: Cannot be used if ratio inliers is too small&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;但对于大部分场景，外点是占较大部分的，因此很难使用&lt;/p&gt;
+&lt;h5 id=&#34;hough-transform霍夫变换&#34;&gt;Hough transform(霍夫变换)
+&lt;/h5&gt;&lt;p&gt;设一条直线：$y=mx+n$，其中$(x_i,y_i)$是该直线上一点&lt;/p&gt;
+&lt;p&gt;我们考虑将$m,n$看作自变量与因变量：$n = -x_im-y_i$&lt;/p&gt;
+&lt;p&gt;因此我们得到了&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022447459.png&#34;
+	width=&#34;1417&#34;
+	height=&#34;593&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022447459_hu_c52c9bb3ef21a383.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022447459_hu_508b964d7d915c2a.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022447459&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;238&#34;
+		data-flex-basis=&#34;573px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;经过霍夫变换后得到的被称为是霍夫空间&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;笛卡尔坐标系中的一个点，对应霍夫空间中的一条直线&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022457114.png&#34;
+	width=&#34;1307&#34;
+	height=&#34;519&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022457114_hu_6d682975f63f8fd.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022457114_hu_ed406c6eceb4432.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022457114&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;251&#34;
+		data-flex-basis=&#34;604px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;同理，&lt;strong&gt;笛卡尔坐标系中的一条直线，对应霍夫空间中的一个点&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022513705.png&#34;
+	width=&#34;1826&#34;
+	height=&#34;568&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022513705_hu_ce7972da00d8463.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022513705_hu_8d54b6de437ca92e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022513705&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;321&#34;
+		data-flex-basis=&#34;771px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;因此在笛卡尔坐标系中，同一直线上的点，其在霍夫空间中将交于同一点&lt;/p&gt;
+&lt;p&gt;理论上我们只需要知道哪些点被投票得最多，这条直线就是我们需要的&lt;/p&gt;
+&lt;p&gt;但问题还很多：&lt;strong&gt;我们无法表示垂直的线&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;考虑切换为&lt;strong&gt;极坐标系&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022522360.png&#34;
+	width=&#34;1557&#34;
+	height=&#34;639&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022522360_hu_6295ba1bd4f2ee00.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022522360_hu_59a4f44a950135a6.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022522360&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;243&#34;
+		data-flex-basis=&#34;584px&#34;
+	
+&gt;&lt;/p&gt;
+$$
+x\cos\theta +y\sin\theta = \rho
+$$&lt;p&gt;
+&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022532822.png&#34;
+	width=&#34;1581&#34;
+	height=&#34;745&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022532822_hu_cfd5ad4322699b8a.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022532822_hu_44c15c8d9fc7f123.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022532822&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;212&#34;
+		data-flex-basis=&#34;509px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;我们将霍夫空间看作一个网格&lt;/p&gt;
+&lt;p&gt;其中高度为原图像对角线长度（$\rho$的最大值），宽度为$\theta$的最大值$2\pi$&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022542627.png&#34;
+	width=&#34;1086&#34;
+	height=&#34;914&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022542627_hu_6729ac3eae5a4497.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022542627_hu_b2774d67ce126a12.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022542627&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;118&#34;
+		data-flex-basis=&#34;285px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;枚举网格点，估计一下其中的交点数量&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;对于高维数据非常难以处理&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;l9-detectors-and-descriptors&#34;&gt;L9. Detectors and descriptors
+&lt;/h2&gt;&lt;h3 id=&#34;detectors&#34;&gt;Detectors
+&lt;/h3&gt;&lt;h4 id=&#34;edge-detectors&#34;&gt;Edge detectors
+&lt;/h4&gt;&lt;h5 id=&#34;edge产生的要素&#34;&gt;Edge产生的要素
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;深度&lt;/strong&gt;不连续性&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;表面方向&lt;/strong&gt;不连续性（物体表面不同部分的朝向或法线方向发生突然变化）&lt;/li&gt;
+&lt;li&gt;反射率不连续性（即，表面材料性质的变化、颜色）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;光照&lt;/strong&gt;不连续性（例如，高光; 阴影）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;边缘检测的例子&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022552308.png&#34;
+	width=&#34;586&#34;
+	height=&#34;573&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022552308_hu_dd9253ef1936c03e.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022552308_hu_c4c6cd259ad7982e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022552308&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;102&#34;
+		data-flex-basis=&#34;245px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h5 id=&#34;检测标准&#34;&gt;检测标准
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;Good detection accuracy：不误检测噪声，漏检测真实边缘&lt;/li&gt;
+&lt;li&gt;Good localization：检测边缘应该尽可能接近真实边缘&lt;/li&gt;
+&lt;li&gt;Single response constraint：单一的回应&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022559357.png&#34;
+	width=&#34;952&#34;
+	height=&#34;504&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022559357_hu_3bb5856a04f766aa.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022559357_hu_7011cb969efe27e1.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022559357&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;188&#34;
+		data-flex-basis=&#34;453px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h5 id=&#34;detectors的设计&#34;&gt;Detectors的设计
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;使用导数，定义了梯度较高（也就是变化较为激烈）的地方&lt;/li&gt;
+&lt;li&gt;对图像进行了平滑处理，提取导数之前减少噪音&lt;/li&gt;
+&lt;/ul&gt;
+$$
+\frac{df}{dx} = f_x - f_{x-1}
+$$&lt;p&gt;
+因为是离散的，所以单位长度是一个像素，我们对一个像素作一个差值就是变化率，即导数&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022607900.png&#34;
+	width=&#34;976&#34;
+	height=&#34;231&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022607900_hu_d931fa5ed9a52085.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022607900_hu_e56162696d6afb2d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022607900&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;422&#34;
+		data-flex-basis=&#34;1014px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;考虑如上的一个图像，我们若直接求出导数图像，你会发现并没有特别显著的大导数&lt;/p&gt;
+&lt;p&gt;原因是本身图像的波动大概就是5左右，而上升部分的差值也差不多是5&lt;/p&gt;
+&lt;p&gt;所以你会发现导数基本都一样&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022615022.png&#34;
+	width=&#34;1111&#34;
+	height=&#34;523&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022615022_hu_8915f4b7694c7926.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022615022_hu_2e83d6200424dbd4.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022615022&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;212&#34;
+		data-flex-basis=&#34;509px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;因此我们使用高斯模糊的卷积核进行平滑处理&lt;/p&gt;
+$$
+S = \bigtriangledown(g\ast I) = (\bigtriangledown g)\ast I \\ =  \begin{bmatrix}
+ \frac{\partial  g}{\partial  x} \\
+ \frac{\partial  g}{\partial  y}
+\end{bmatrix}\ast I = \begin{bmatrix}
+g_x\ast I \\
+ g_y\ast I
+\end{bmatrix} \\
+= \begin{bmatrix}
+S_x &amp; S_y
+\end{bmatrix}
+$$&lt;h4 id=&#34;cornerblob-detectors&#34;&gt;Corner/blob detectors
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;可重复性&lt;/strong&gt;：尽管存在几何和光度变换，但同一特征可以在多幅图像中被找到。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;显著性&lt;/strong&gt;：每个特征都位于图像的“有趣”区域。（反正基本不是空白区域）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;局部性&lt;/strong&gt;：一个特征占据图像的“相对较小”区域。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;harris-corner-detector&#34;&gt;Harris corner detector
+&lt;/h5&gt;&lt;p&gt;在窗口位置变化时探索窗口内的&lt;strong&gt;强度变化&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022623347.png&#34;
+	width=&#34;1282&#34;
+	height=&#34;441&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022623347_hu_b6db5bd0224e4628.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022623347_hu_e1857047c55be46d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022623347&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;290&#34;
+		data-flex-basis=&#34;697px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;flat：在所有方向上都没有变化&lt;/li&gt;
+&lt;li&gt;edge：沿着边缘方向没有变化&lt;/li&gt;
+&lt;li&gt;corner：在&lt;strong&gt;所有方向&lt;/strong&gt;上都有显著变化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022632821.png&#34;
+	width=&#34;1319&#34;
+	height=&#34;874&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022632821_hu_94886b8847ef9a75.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022632821_hu_8fcf6f8d9d766c47.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022632821&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;150&#34;
+		data-flex-basis=&#34;362px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;我们无法知道corner的尺度变化&lt;/strong&gt;&lt;/p&gt;
+&lt;h5 id=&#34;blob-detection&#34;&gt;Blob detection
+&lt;/h5&gt;&lt;p&gt;回到边缘探测，我们可以把卷积后的结果的导数&lt;/p&gt;
+&lt;p&gt;修改为二阶导&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022643978.png&#34;
+	width=&#34;1390&#34;
+	height=&#34;327&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022643978_hu_b1d7bb674c30fff1.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022643978_hu_538015615e28b923.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022643978&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;425&#34;
+		data-flex-basis=&#34;1020px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;因此我们的高斯算子可以换成拉普拉斯算子（高斯的导数）&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022651285.png&#34;
+	width=&#34;1220&#34;
+	height=&#34;224&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022651285_hu_619768f6ba5c3141.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022651285_hu_26fa020152e6952c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022651285&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;544&#34;
+		data-flex-basis=&#34;1307px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;对原图像使用拉普拉斯算子进行处理即可&lt;/p&gt;
+&lt;p&gt;因此对于一个比较宽的图形，两侧边缘会分别导出两个波动&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022658579.png&#34;
+	width=&#34;1138&#34;
+	height=&#34;286&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022658579_hu_736f5d6c0583a334.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022658579_hu_88c53341e8c6653.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022658579&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;397&#34;
+		data-flex-basis=&#34;954px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;我们先尝试固定拉普拉斯算子，当图形宽度变化时&lt;/p&gt;
+&lt;p&gt;某种情况下，两个波动会融合在一起，并且幅度最大值取在了图形中央&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022705631.png&#34;
+	width=&#34;1452&#34;
+	height=&#34;657&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022705631_hu_c25616eb9271c440.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022705631_hu_a3f856808087a3d4.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022705631&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;221&#34;
+		data-flex-basis=&#34;530px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;所以我们调一下参数，就可以找到幅度最大的点，从而估计出&lt;strong&gt;尺度大小&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022712160.png&#34;
+	width=&#34;1322&#34;
+	height=&#34;558&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022712160_hu_9b2b9afcc26f67d3.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022712160_hu_b514d7a41245bccc.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022712160&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;236&#34;
+		data-flex-basis=&#34;568px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;并且对于半径为$r$的圆，取到最大值的参数是可以计算的&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022719594.png&#34;
+	width=&#34;946&#34;
+	height=&#34;444&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022719594_hu_79df132facd27b87.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022719594_hu_8eb90fbc300a3c8d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022719594&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;213&#34;
+		data-flex-basis=&#34;511px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h5 id=&#34;dog&#34;&gt;DoG
+&lt;/h5&gt;&lt;p&gt;高斯差分，你只需知道这个算子会更常用一点&lt;/p&gt;
+&lt;h3 id=&#34;descriptors&#34;&gt;Descriptors
+&lt;/h3&gt;&lt;p&gt;描述信息一般需要：&lt;/p&gt;
+&lt;p&gt;特征保证&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;光照不变性（Invariant w.r.t Illumination）&lt;/strong&gt;：特征应该不受光照变化的影响。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;姿势不变性（Invariant w.r.t Pose）&lt;/strong&gt;：特征应该不受物体姿势变化的影响。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;尺度不变性（Invariant w.r.t Scale）&lt;/strong&gt;：特征应该不受尺度变化的影响。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;类内变异不变性（Invariant w.r.t Intraclass variability）&lt;/strong&gt;：特征应该能够在相同类别的不同实例之间保持稳定性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;特征要有&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;高度独特性（Highly distinctive）&lt;/strong&gt;：特征应该具有足够的独特性，以便在大型特征数据库中能够以高概率找到其正确匹配的特征。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;simplest-descriptor---patch&#34;&gt;Simplest Descriptor - Patch
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;p&gt;图像中的一个小区域或局部区域，通常由一组相邻像素组成&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;将特征周围的像素$n\times m$的小图片展开为$[1,nm]$大小的一维向量$w$&lt;/p&gt;
+$$
+w = \frac{w-\bar{w}}{||w-\bar{w}||}
+$$&lt;p&gt;
+减去均值除以模长&lt;/p&gt;
+&lt;p&gt;无论图像的光照条件如何变化，这种归一化保证了描述符的生成不会受到影响，从而增强了描述符的稳定性和可靠性&lt;/p&gt;
+&lt;p&gt;缺点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于位置、姿势、尺度和类内变异的小变化敏感&lt;/li&gt;
+&lt;li&gt;特征区分度较差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;filter&#34;&gt;Filter
+&lt;/h4&gt;&lt;p&gt;提供卷积核做点事情，然后提取特征&lt;/p&gt;
+&lt;p&gt;只能说鲁棒性有所提升&lt;/p&gt;
+&lt;h4 id=&#34;sift&#34;&gt;SIFT
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;p&gt;大致理解即可，并不准确&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;使用DoG确定位置和特征尺度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于一个$N\times N$的窗口，我们对每个像素计算梯度&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022731222.png&#34;
+	width=&#34;521&#34;
+	height=&#34;473&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022731222_hu_cc18e1bcefc1aecb.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022731222_hu_19407029f81e9fc8.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022731222&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;110&#34;
+		data-flex-basis=&#34;264px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;我们把$[0,2\pi]$分成若干份，对所有方向进行计数&lt;/p&gt;
+&lt;p&gt;数量最多的即为主方向&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022741296.png&#34;
+	width=&#34;1329&#34;
+	height=&#34;494&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022741296_hu_5763f0002aab630d.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022741296_hu_e64a24d12e9530b9.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022741296&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;269&#34;
+		data-flex-basis=&#34;645px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;那么只需要按照主方向的角度进行旋转即可&lt;/p&gt;
+&lt;p&gt;打包后得到的向量即为描述符&lt;/p&gt;
+&lt;p&gt;显然&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;强度：DoG的归一化、梯度足够处理&lt;/li&gt;
+&lt;li&gt;姿势：按照主方向把所有箭头旋转成一样的角度，无视了姿势变化&lt;/li&gt;
+&lt;li&gt;尺度：DoG处理完毕&lt;/li&gt;
+&lt;li&gt;类内变异：直方图有一定的粗略计算，有一定鲁棒性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022751181.png&#34;
+	width=&#34;1272&#34;
+	height=&#34;380&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022751181_hu_89ced602842fe642.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022751181_hu_23e6fbf7d6bb0c7.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022751181&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;334&#34;
+		data-flex-basis=&#34;803px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;l11-visual-recognition&#34;&gt;L11. Visual recognition
+&lt;/h2&gt;&lt;h2 id=&#34;数学补坑&#34;&gt;数学补坑
+&lt;/h2&gt;&lt;h3 id=&#34;svd分解未完成&#34;&gt;SVD分解（未完成）
+&lt;/h3&gt;&lt;h3 id=&#34;卷积&#34;&gt;卷积
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1Vd4y1e7pj&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;【官方双语】那么……什么是卷积？&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022801282.png&#34;
+	width=&#34;1218&#34;
+	height=&#34;857&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022801282_hu_253be7fba8ef9085.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022801282_hu_b902826269466ced.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022801282&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;142&#34;
+		data-flex-basis=&#34;341px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;在这里我们主要理解一下离散的情况即可&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022811109.png&#34;
+	width=&#34;985&#34;
+	height=&#34;898&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022811109_hu_52d23d38c2e65e60.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022811109_hu_f9fd1846fd7ade5b.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022811109&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;109&#34;
+		data-flex-basis=&#34;263px&#34;
+	
+&gt;&lt;/p&gt;
+$$
+P(n) = \sum_{i+j=n}a_ib_j
+$$&lt;p&gt;
+&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022819009.png&#34;
+	width=&#34;1418&#34;
+	height=&#34;773&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022819009_hu_eb05afcf21eedfde.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022819009_hu_994932f024e1ff45.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022819009&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;183&#34;
+		data-flex-basis=&#34;440px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022828890.png&#34;
+	width=&#34;1637&#34;
+	height=&#34;891&#34;
+	srcset=&#34;https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022828890_hu_99f33e8bebc6449a.png 480w, https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022828890_hu_d87c5b2cfc08e63e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240326022828890&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;183&#34;
+		data-flex-basis=&#34;440px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;高斯模糊：&lt;/p&gt;
+&lt;p&gt;在二维图像上，使用一个$n\times n$的卷积核，卷积核的值从中心开始符合二维高斯分布，对整个图像的颜色进行加权平均&lt;/p&gt;&lt;/blockquote&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

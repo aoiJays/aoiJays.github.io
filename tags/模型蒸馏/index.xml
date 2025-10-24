@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>模型蒸馏 on BiribiriBird</title>
+        <link>https://example.com/tags/%E6%A8%A1%E5%9E%8B%E8%92%B8%E9%A6%8F/</link>
+        <description>Recent content in 模型蒸馏 on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Thu, 10 Jul 2025 11:16:32 +0800</lastBuildDate><atom:link href="https://example.com/tags/%E6%A8%A1%E5%9E%8B%E8%92%B8%E9%A6%8F/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>大语言模型数据清洗 · 论文笔记（五）</title>
+        <link>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/</link>
+        <pubDate>Thu, 10 Jul 2025 11:16:32 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1 id=&#34;essential-web-v10-24t-tokens-of-organized-web-data&#34;&gt;Essential-Web v1.0 24T tokens of organized web data
+&lt;/h1&gt;&lt;h2 id=&#34;preview&#34;&gt;Preview
+&lt;/h2&gt;&lt;p&gt;构建了多维度的分类体系，适合通过SQL等方式进行数据筛选出新的数据集&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用开源模型进行数据标签的标注，得到了EAI-Distill-0.5b&lt;/li&gt;
+&lt;li&gt;推理清洗了23.6B的数据，花费了90000 AMD MI300x GPU-hours&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The inference job ran on 512 AMD MI300x for about 1 week.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;分类体系：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一个有限的类别集合 $T=\left { C_1, C_2, &amp;hellip;, C_k \right } $。&lt;/li&gt;
+&lt;li&gt;每个类别$C_i$都有一个非空、有限的标签集$L_i$。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;标注形式为$T(d) = \left { (\lambda_1, \mu_1), &amp;hellip;\right}$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;其中，$λ_i\in L_i$ 是类别$C_i$的主要标签&lt;/li&gt;
+&lt;li&gt;$\mu_i \in (L_i \setminus {\lambda_i}) \cup {\bot}$ 是一个可选的次要标签，必须与$\lambda_i$不同
+&lt;ul&gt;
+&lt;li&gt;当文档适合两个标签时非常有用&lt;/li&gt;
+&lt;li&gt;$\bot$表示弃权（abstention）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;所有类别和标签集都是预先固定的，这允许训练一个单一的静态分类器&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/assets/image-20250710141259250.png&#34;
+	width=&#34;923&#34;
+	height=&#34;234&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/assets/image-20250710141259250_hu_35e32e8ea56e9d9f.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/assets/image-20250710141259250_hu_7dca944e0ae04e92.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;PipeLine&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;394&#34;
+		data-flex-basis=&#34;946px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;实验设置&#34;&gt;实验设置
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;h2 id=&#34;chinchilla最优计算比例&#34;&gt;Chinchilla最优计算比例
+&lt;/h2&gt;&lt;p&gt;Chinchilla缩放定律发现了一个最优比例：大约每个参数需要20个训练token &lt;a class=&#34;link&#34; href=&#34;https://epoch.ai/blog/chinchilla-scaling-a-replication-attempt&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Epoch AI&lt;/a&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.analyticsvidhya.com/blog/2024/09/chinchilla-scaling-law/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Analytics Vidhya&lt;/a&gt;。这个比例是DeepMind通过训练400多个语言模型得出的计算最优配置。&lt;/p&gt;
+&lt;p&gt;具体来说：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Chinchilla模型有70B参数，在1.4万亿tokens上训练，达到20 tokens per parameter的比例 &lt;a class=&#34;link&#34; href=&#34;https://epoch.ai/blog/chinchilla-scaling-a-replication-attempt&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Chinchilla Scaling: A Replication Attempt | Epoch AI&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;这个20:1的比例被认为是在给定计算预算下实现最佳性能的理想配置&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/assets/image-20250710142401273.png&#34;
+	width=&#34;608&#34;
+	height=&#34;269&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/assets/image-20250710142401273_hu_1c12a53edcfe7eaf.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/assets/image-20250710142401273_hu_1c71ffbb1c3f701e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Train&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;226&#34;
+		data-flex-basis=&#34;542px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;所有数据集在训练前均使用了 13-gram Bloom Filter&lt;/p&gt;
+&lt;p&gt;选用了两个2.3B模型对数据进行评估&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;预训练（3200亿Token）：该阶段帮助模型学到广泛的语言知识&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;General-base：仅使用网络数据（DCLM-baseline）做&lt;strong&gt;预训练&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Code-base：使用网络数据（DCLM-baseline）+代码数据（Stack v2 Dedup中的Python），各占50%做&lt;strong&gt;预训练&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;退火（800亿token）：为了评估特定领域数据集的性能，采用需要评估的新数据集&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;学习率接近零的目的是在新的领域数据上进行“微调”，而不是进行大规模的“重新训练”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;每个模型总计处理 4000 亿 token 数据量，是Chinchilla的10倍数据&lt;/p&gt;
+&lt;h2 id=&#34;蒸馏&#34;&gt;蒸馏
+&lt;/h2&gt;&lt;h3 id=&#34;蒸馏方案&#34;&gt;蒸馏方案
+&lt;/h3&gt;&lt;h4 id=&#34;数据来源与规模&#34;&gt;&lt;strong&gt;数据来源与规模&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;标注数据&lt;/strong&gt;：使用Qwen2.5-32B-Instruct对104.6M文档共82Btoken进行两轮标注，生成合成标签用于蒸馏训练。
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;第一轮&lt;/strong&gt;：标注8个分类类别（如FDC、Document Type V1/V2等）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;第二轮&lt;/strong&gt;：扩展至12个类别（新增Bloom、Technical Correctness等）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;数据预处理&#34;&gt;&lt;strong&gt;数据预处理&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;子采样&lt;/strong&gt;：对超过30,000字符的文档，截取开头、随机中间段和结尾（Algorithm 12），避免长文本影响推理速度。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;质量过滤&lt;/strong&gt;：通过统计和模型信号（如DCLM分类器）过滤低质量文档（Algorithm 1）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;模型架构&#34;&gt;&lt;strong&gt;模型架构&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;基础模型&lt;/strong&gt;：Qwen2.5-0.5b-Instruct（5亿参数），基于Gemma 3架构，使用QK-norm稳定注意力。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;序列长度&lt;/strong&gt;：16,384 tokens，支持长上下文。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;训练参数&#34;&gt;&lt;strong&gt;训练参数&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;优化器&lt;/strong&gt;：AdamW（β1=0.9, β2=0.95），权重衰减0.1。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;学习率&lt;/strong&gt;：峰值1e-4，线性预热2B tokens，余弦衰减至1e-5，最后线性退火至0。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;批量大小&lt;/strong&gt;：全局2M tokens，梯度累积实现大批次训练。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;训练量&lt;/strong&gt;：82B tokens（合成标签数据）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;损失计算&lt;/strong&gt;：仅对教师模型生成的标签token计算损失，输入文档和系统提示被掩码。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;教师模型选择&#34;&gt;&lt;strong&gt;教师模型选择&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;教师&lt;/strong&gt;：Qwen2.5-32B-Instruct，因其标注一致性（κ=0.74）与推理速度平衡（1.4 RPS/GPU）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;蒸馏步骤&#34;&gt;&lt;strong&gt;蒸馏步骤&lt;/strong&gt;
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;标签生成&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;教师模型生成多分类标签（如FDC层级、Document Type等），格式为&lt;code&gt;主标签,次标签&lt;/code&gt;（Algorithm 13）。&lt;/li&gt;
+&lt;li&gt;压缩输出：从平均791 tokens缩短至51 tokens，提升推理速度50倍（Table 12）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;上下文蒸馏&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;移除教师模型的提示模板（Prompt 1/2），直接训练学生模型生成压缩格式标签。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;评估方案&#34;&gt;评估方案
+&lt;/h3&gt;&lt;h4 id=&#34;metrics&#34;&gt;Metrics
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;正确性：多人分类的结果应该类似，验证模型打标签是否标准一致
+&lt;ul&gt;
+&lt;li&gt;使用GPT-4o和Claude Sonnet-3.5作为专家模型&lt;/li&gt;
+&lt;li&gt;使用kappa系数作为指标&lt;/li&gt;
+&lt;li&gt;取对4o的系数和对claude的系数的均值作为结果&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;检测方式是验证模型与专家模型的标准是否一致，对于指标paper中进行了变种&lt;/p&gt;
+&lt;p&gt;对于某个模型的分类结果$S\in \left { \phi, (\text{label}), (\text{label1, label2}) \right }$​&lt;/p&gt;
+&lt;p&gt;最少是一个标签（主标签），有时可以加一个次标签&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;标注结果一致的判定：两模型的$S$​有交集&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;然后套公式&lt;/p&gt;
+&lt;p&gt;Qwen2.5-32B-Instruct ≈ 0.74&lt;/p&gt;
+&lt;p&gt;EAI-Distill-0.5b ≈ 0.71~0.73&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;正交性：不同分类体系之间的标签应该是独立的
+&lt;ul&gt;
+&lt;li&gt;例如在某分类A下打了a，分类B始终是b，发生了绑定&lt;/li&gt;
+&lt;li&gt;需计算互信息、香农熵&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+$$
+&gt;\text{NMI}(X, Y) = \frac{2 I(X; Y)}{H(X) + H(Y)}
+&gt;$$&lt;p&gt;其中：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$p(x)$按$x$出现的频率，$p(x,y)$按$x,y$同时出现的频率计算&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;$I(X; Y)$：互信息&lt;/li&gt;
+&lt;/ul&gt;
+$$
+&gt;  I(X; Y) = \sum_{x, y} p(x, y) \cdot \log \frac{p(x, y)}{p(x)p(y)}
+&gt;  $$&lt;ul&gt;
+&lt;li&gt;$H(X)$：X 的香农熵&lt;/li&gt;
+&lt;/ul&gt;
+$$
+&gt;  H(X) = -\sum_{x} p(x) \cdot \log p(x)
+&gt;  $$&lt;p&gt;Qwen2.5-32B 平均 NMI ≈ 0.079&lt;/p&gt;
+&lt;p&gt;EAI-Distill-0.5b 平均 NMI ≈ 0.092&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Domain Recall
+&lt;ul&gt;
+&lt;li&gt;定了Golden URL（认为arxiv和……30 个 base URL的都是高质量数据）&lt;/li&gt;
+&lt;li&gt;统计有多少能被模型召回&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;dataset&#34;&gt;Dataset
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Random Set：随机采样（需要避免撞车训练数据）&lt;/li&gt;
+&lt;li&gt;STEM Set：从特定领域集合（科学领域）随机采样&lt;/li&gt;
+&lt;li&gt;通过Golden URL采样&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
