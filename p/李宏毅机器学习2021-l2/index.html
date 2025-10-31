@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="What to do if my network fails to train">
+<title>李宏毅机器学习2021 · L2</title>
+
+<link rel='canonical' href='https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="李宏毅机器学习2021 · L2">
+<meta property='og:description' content="What to do if my network fails to train">
+<meta property='og:url' content='https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/'>
+<meta property='og:site_name' content='BiribiriBird'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='机器学习' /><meta property='article:tag' content='深度学习' /><meta property='article:published_time' content='2024-07-26T20:45:55&#43;08:00'/><meta property='article:modified_time' content='2024-07-26T20:45:55&#43;08:00'/>
+<meta name="twitter:title" content="李宏毅机器学习2021 · L2">
+<meta name="twitter:description" content="What to do if my network fails to train">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            localStorage.setItem(colorSchemeKey, "light");
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_bbc58a5457fc2680.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">BiribiriBird</a></h1>
+            <h2 class="site-description">Segmentation fault!</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/498088093'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648787418" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2107" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="2108" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:neworld1111@163.com'
+                        target="_blank"
+                        title="Email"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743649088353" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6924" width="24" height="24"><path d="M874.666667 181.333333H149.333333c-40.533333 0-74.666667 34.133333-74.666666 74.666667v512c0 40.533333 34.133333 74.666667 74.666666 74.666667h725.333334c40.533333 0 74.666667-34.133333 74.666666-74.666667V256c0-40.533333-34.133333-74.666667-74.666666-74.666667z m-725.333334 64h725.333334c6.4 0 10.666667 4.266667 10.666666 10.666667v25.6L512 516.266667l-373.333333-234.666667V256c0-6.4 4.266667-10.666667 10.666666-10.666667z m725.333334 533.333334H149.333333c-6.4 0-10.666667-4.266667-10.666666-10.666667V356.266667l356.266666 224c4.266667 4.266667 10.666667 4.266667 17.066667 4.266666s12.8-2.133333 17.066667-4.266666l356.266666-224V768c0 6.4-4.266667 10.666667-10.666666 10.666667z" fill="#666666" p-id="6925"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/aoiJays'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648734849" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5802" width="24" height="24"><path d="M511.957333 21.333333C241.024 21.333333 21.333333 240.981333 21.333333 512c0 216.832 140.544 400.725333 335.573334 465.664 24.490667 4.394667 32.256-10.069333 32.256-23.082667 0-11.690667 0.256-44.245333 0-85.205333-136.448 29.610667-164.736-64.64-164.736-64.64-22.314667-56.704-54.4-71.765333-54.4-71.765333-44.586667-30.464 3.285333-29.824 3.285333-29.824 49.194667 3.413333 75.178667 50.517333 75.178667 50.517333 43.776 75.008 114.816 53.333333 142.762666 40.789333 4.522667-31.658667 17.152-53.376 31.189334-65.536-108.970667-12.458667-223.488-54.485333-223.488-242.602666 0-53.546667 19.114667-97.322667 50.517333-131.669334-5.034667-12.330667-21.930667-62.293333 4.778667-129.834666 0 0 41.258667-13.184 134.912 50.346666a469.802667 469.802667 0 0 1 122.88-16.554666c41.642667 0.213333 83.626667 5.632 122.88 16.554666 93.653333-63.488 134.784-50.346667 134.784-50.346666 26.752 67.541333 9.898667 117.504 4.864 129.834666 31.402667 34.346667 50.474667 78.122667 50.474666 131.669334 0 188.586667-114.730667 230.016-224.042666 242.090666 17.578667 15.232 33.578667 44.672 33.578666 90.453334v135.850666c0 13.141333 7.936 27.605333 32.853334 22.869334C862.250667 912.597333 1002.666667 728.746667 1002.666667 512 1002.666667 240.981333 783.018667 21.333333 511.957333 21.333333z" p-id="5803" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About me</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/experience/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Experience</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friend/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>Friend</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#general-guide">General Guide</a></li>
+    <li><a href="#optimization-failed">Optimization Failed</a>
+      <ol>
+        <li><a href="#critical-point">Critical Point</a>
+          <ol>
+            <li><a href="#tayler-series-approximation">Tayler Series Approximation</a></li>
+            <li><a href="#batch-size">Batch Size</a></li>
+          </ol>
+        </li>
+        <li><a href="#learning-rate">Learning Rate</a>
+          <ol>
+            <li><a href="#root-mean-squareadagrad">Root Mean Square（Adagrad）</a></li>
+            <li><a href="#rmspropadam">RMSProp+Adam</a></li>
+            <li><a href="#momentum">Momentum</a></li>
+          </ol>
+        </li>
+        <li><a href="#adam">Adam</a>
+          <ol>
+            <li><a href="#learning-rate-scheduling">Learning Rate Scheduling</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E6%9D%8E%E5%AE%8F%E6%AF%852021/" >
+                李宏毅2021
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/">李宏毅机器学习2021 · L2</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            What to do if my network fails to train
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 26, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="l2-what-to-do-if-my-network-fails-to-train">L2. What to do if my network fails to train
+</h1><blockquote>
+<p><a class="link" href="https://speech.ee.ntu.edu.tw/~hylee/ml/2022-spring.php"  target="_blank" rel="noopener"
+    >ML 2022 Spring (ntu.edu.tw)</a></p>
+<p><a class="link" href="https://www.bilibili.com/video/BV1J94y1f7u5"  target="_blank" rel="noopener"
+    >https://www.bilibili.com/video/BV1J94y1f7u5</a></p></blockquote>
+<p>[TOC]</p>
+<h2 id="general-guide">General Guide
+</h2><ul>
+<li>检查Training Loss
+<ul>
+<li>Training Loss大
+<ul>
+<li>Model Bias
+<ul>
+<li>模型不够复杂</li>
+<li>提高模型复杂度即可</li>
+</ul>
+</li>
+<li>Optimization
+<ul>
+<li>可以尝试使用浅层神经网络等容易优化的模型进行训练，若Train Loss比复杂模型更低，说明优化出问题了</li>
+<li>解释：复杂模型包含了简单模型（多出来的部分全部不训练，剩下的就是简单模型），因此简单模型能做到的Training Loss，对于复杂模型也需要做到</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Training Loss小
+<ul>
+<li>检查Testing Loss
+<ul>
+<li>Testing Loss小（这不结束了吗）</li>
+<li>Testing Loss大
+<ul>
+<li>Overfitting
+<ul>
+<li>增加训练数据</li>
+<li>数据增强（Data augmentation）</li>
+<li>减少模型复杂度</li>
+<li>Early Stopping</li>
+<li>Regularization</li>
+<li>Dropout</li>
+</ul>
+</li>
+<li>Mismatch
+<ul>
+<li>与过拟合不同，没法使用增加训练数据避免</li>
+<li>训练数据与测试数据有着不同的分布</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726002318989.png"
+	width="1146"
+	height="784"
+	srcset="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726002318989_hu_e2a3a53f03528fce.png 480w, /p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726002318989_hu_9e3a17f420fb61bc.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240726002318989"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="146"
+		data-flex-basis="350px"
+	
+></p>
+<blockquote>
+<ul>
+<li>训练数据少，不足以限制模型</li>
+<li>模型太复杂，过于自由</li>
+</ul></blockquote>
+<h2 id="optimization-failed">Optimization Failed
+</h2><h3 id="critical-point">Critical Point
+</h3><p><img src="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726212706358.png"
+	width="1432"
+	height="537"
+	srcset="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726212706358_hu_23a27474b4a8738b.png 480w, /p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726212706358_hu_5840c17e70f7cc2.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240726212706358"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="266"
+		data-flex-basis="640px"
+	
+></p>
+<p>处于局部极值点（极大值、极小值）或鞍点时，梯度值为0，此时没有办法继续更新梯度</p>
+<h4 id="tayler-series-approximation">Tayler Series Approximation
+</h4><p>为了判别<code>critical point</code>，我们要是能够知道损失函数$L(\theta)$的形状就会非常容易</p>
+<p>我们考虑使用<strong>泰勒展开</strong>，对参数$\theta&rsquo;$周围的损失函数进行近似</p>
+$$
+L(\theta) \approx L(\theta') + (\theta-\theta')g+\frac{1}{2}(\theta-\theta')^T\times H\times (\theta-\theta')
+$$$$
+L(\theta) \approx L(\theta') + \frac{1}{2}(\theta-\theta')^T\times H\times (\theta-\theta')
+$$<p>
+此时取决于最后一项：</p>
+<ul>
+<li>永远大于0，则$L(\theta) &gt; L(\theta&rsquo;)$，是局部极小值</li>
+<li>永远小于0，则$L(\theta) &lt; L(\theta&rsquo;)$，是局部极大值</li>
+<li>否则：鞍点</li>
+</ul>
+<p>判断$\frac{1}{2}(\theta-\theta&rsquo;)^T\times H\times (\theta-\theta&rsquo;)$的正负是一个经典问题</p>
+<p>即$\forall v, v^THv &gt; 0$，此时$H$被称为正定矩阵（特征值都是正值）</p>
+<p>反之，负定矩阵所有的特征值均小于0</p>
+<p>但是每次都需要计算矩阵及其特征值，是一件开销很大的事情</p>
+<p>我们考虑从其他方式进行规避鞍点</p>
+<h4 id="batch-size">Batch Size
+</h4><ul>
+<li>大的Batch会花费更多时间进行计算，但是减少梯度更新次数</li>
+<li>小的Batch会花费更少时间进行计算，但是增加梯度更新次数</li>
+</ul>
+<p><img src="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726221840015.png"
+	width="1764"
+	height="698"
+	srcset="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726221840015_hu_ba30f46d87e548b6.png 480w, /p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726221840015_hu_659b1db9b1480a48.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240726221840015"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="252"
+		data-flex-basis="606px"
+	
+></p>
+<p>得益于GPU并行计算，batch在不是非常大的时候，多条数据计算loss计算梯度是并行的，因此时间非常少</p>
+<p>但是小的batch确确实实需要更多次梯度更新，因此<strong>小的batch事实上在单个epoch上花费时间更大</strong></p>
+<p><img src="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726222335373.png"
+	width="1869"
+	height="1099"
+	srcset="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726222335373_hu_97093e71718a6005.png 480w, /p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726222335373_hu_7824f9a4c08d3c6d.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240726222335373"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="170"
+		data-flex-basis="408px"
+	
+></p>
+<p>​	<strong>但是似乎小的batch可以对Optimization带来更好的效果</strong></p>
+<img src="assets/image-20240726222828695.png" alt="image-20240726222828695" style="zoom: 50%;" />
+<p>每次使用不同batch的数据进行更新，某种程度上引入了噪声</p>
+<p>在第一份batch上进入鞍点，但是对于第二份就不一定是鞍点</p>
+<p><img src="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726223435549.png"
+	width="1670"
+	height="837"
+	srcset="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726223435549_hu_4f1ea00d81182b5.png 480w, /p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726223435549_hu_4c77eb55e35b5415.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240726223435549"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="199"
+		data-flex-basis="478px"
+	
+></p>
+<p>甚至你会发现，小batch训练出来的模型，泛化性能更好，在测试集上表现更好</p>
+<p>一种比较玄学的解释：</p>
+<p>极值点有平坦的、陡峭的两种（如图左、右）</p>
+<p>由于测试集多少与训练集有一些mismatch，如果是平坦的极值点，稍微的偏移不会引起损失函数变化太多</p>
+<p>而陡峭的极值点会表现糟糕</p>
+<p>小batch在训练时引入的噪声，非常跳脱，峡谷很难困住其更新方向</p>
+<p>而大batch的梯度下降方向稳定，因此容易进入陡峭的峡谷</p>
+<h3 id="learning-rate">Learning Rate
+</h3><p><img src="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727004526896.png"
+	width="1363"
+	height="641"
+	srcset="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727004526896_hu_8c6188ae5b6c6c00.png 480w, /p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727004526896_hu_8d76fccda6fb61f8.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240727004526896"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="212"
+		data-flex-basis="510px"
+	
+></p>
+<p>非常多时候Loss并不是卡在<code>critical point</code></p>
+<p><strong>我们观察训练末期的梯度，发现并不是0</strong></p>
+<p>原因是在山谷之间来回跳动，无法下降</p>
+<p><img src="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727005023817.png"
+	width="1475"
+	height="561"
+	srcset="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727005023817_hu_a86798eefc4da2cf.png 480w, /p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727005023817_hu_a9d1d2bc213f1013.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240727005023817"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="262"
+		data-flex-basis="631px"
+	
+></p>
+<ul>
+<li>学习率较大，会在山谷来回跳（左图）</li>
+<li>学习率较小，在稍微平坦的地方完全走不动（右图）</li>
+</ul>
+<p>因此一般的梯度下降很难进入<code>critical point</code></p>
+<p>我们考虑自适应学习率</p>
+<ul>
+<li>陡峭的地方学习率高</li>
+<li>平坦的地方学习率低</li>
+</ul>
+<p>梯度的更新应该由</p>
+$$
+\theta^{t+1} =\theta^t - \eta g^t
+$$<p>
+转变为：</p>
+$$
+\theta^{t+1} =\theta^t - \frac{\eta}{\sigma^t}g^t
+$$<h4 id="root-mean-squareadagrad">Root Mean Square（Adagrad）
+</h4><p><img src="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727011659380.png"
+	width="1754"
+	height="911"
+	srcset="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727011659380_hu_cfce72f52008edc.png 480w, /p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727011659380_hu_cf09cae5a88ea49e.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240727011659380"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="192"
+		data-flex-basis="462px"
+	
+></p>
+<p>及对应维度上的梯度均方根作为分母</p>
+<p>但是这样的方法不够灵活</p>
+<p>有时候同一个维度，在不同时间点可能又陡峭又平缓，因此需要更加灵活、动态变化的学习率</p>
+<h4 id="rmspropadam">RMSProp+Adam
+</h4><p><img src="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727012032761.png"
+	width="1620"
+	height="943"
+	srcset="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727012032761_hu_19cf01196f551643.png 480w, /p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727012032761_hu_54fdc8c1132da213.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240727012032761"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="171"
+		data-flex-basis="412px"
+	
+></p>
+<p>定义权重$\alpha$，每次结合上一次的$\sigma^{t-1}$与当前梯度进行计算</p>
+$$
+\sigma^{t} = \sqrt{\alpha(\sigma^{t-1})^2+(1-\alpha)(g^t)^2}
+$$<p>但此时我们仍然无法解决卡在<code>critical point</code>的问题</p>
+<p><u>Adam = RMSProp + Momentum</u></p>
+<h4 id="momentum">Momentum
+</h4><p>我们考虑在优化时引入动量的概念</p>
+<p><img src="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726225731002.png"
+	width="1803"
+	height="933"
+	srcset="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726225731002_hu_fe9931e5cd78a4dc.png 480w, /p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726225731002_hu_ddf4c9f7bbf28d4d.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240726225731002"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="193"
+		data-flex-basis="463px"
+	
+></p>
+<p>物体在下降时，到达谷底仍拥有一定的动量，还会沿之前的方向继续冲一会</p>
+<p>这样有机会冲到更低的极值点</p>
+<p><img src="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726225918900.png"
+	width="970"
+	height="451"
+	srcset="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726225918900_hu_e14983e0a01f82cf.png 480w, /p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240726225918900_hu_94e222b769489513.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240726225918900"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="215"
+		data-flex-basis="516px"
+	
+></p>
+<p>并且：每次移动的$m_i$都可以表示为之前所有梯度的综合（一个关于$g_0,g_1,&hellip;$的式子）</p>
+<h3 id="adam">Adam
+</h3><p>结合 RMSProp + Momentum，我们就得到了Adam</p>
+<p><strong>Momentum：</strong></p>
+$$
+\theta^t = \theta^{t-1} - \eta m^t\\
+m^t = \beta m^{t-1} + (1-\beta)g^{t-1}
+$$<p>
+<strong>RMSProp:</strong></p>
+$$
+\theta^t = \theta^{t-1} - \frac{\eta}{\sigma^t}g^{t-1}\\
+\sigma^{t} = \sqrt{\alpha(\sigma^{t-1})^2+(1-\alpha)(g^t)^2}
+$$<p>
+结合一下，<strong>Adam</strong>：</p>
+$$
+\hat m^{t} = \frac{m^t}{1-\beta}\\
+\hat \sigma^t = \sqrt{\frac{(\sigma^t)^2}{1-\alpha}}\\
+\epsilon = 10^{-8}\\
+\theta^t = \theta^{t-1} - \frac{\eta}{\hat \sigma^t + \epsilon}\hat m^{t}
+$$<ul>
+<li>
+<p><strong>同时兼顾方向与步长</strong>：</p>
+<ul>
+<li>Momentum 负责确定更新方向（加速收敛）：在陡峭的地方始终保持总体方向，防止偏航</li>
+<li>RMSProp 负责调整步长（自适应学习率）：调整每一步的大小，走的更稳</li>
+</ul>
+</li>
+</ul>
+<h4 id="learning-rate-scheduling">Learning Rate Scheduling
+</h4><p><img src="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727012518967.png"
+	width="718"
+	height="486"
+	srcset="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727012518967_hu_48bc08e310f5f031.png 480w, /p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727012518967_hu_19837198438541ad.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240727012518967"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="147"
+		data-flex-basis="354px"
+	
+></p>
+<p>我们采用Adagrad，此时就可以进行正常的下降</p>
+<p>但是会出现奇怪的波动</p>
+$$
+\sigma^{t} = \sqrt{\frac{1}{t+1}\sum_k (g^k)^2}
+$$<p>
+刚进入平坦区时，得益于一开始积累了下降的较高梯度</p>
+<p><img src="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727013213318.png"
+	width="746"
+	height="424"
+	srcset="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727013213318_hu_5f5b3f52637abddf.png 480w, /p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727013213318_hu_6c632e041303e9a8.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240727013213318"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="175"
+		data-flex-basis="422px"
+	
+></p>
+<p>$\sigma_y$仍然可以维持在一个比较大的范围</p>
+<p>但随着迭代次数增加，$\sigma_y$每次只能加上非常小的梯度，平均值不断变小，最终引起了学习率爆炸</p>
+<p>如何解决这个问题呢</p>
+$$
+\theta^{t+1} =\theta^t - \frac{\eta}{\sigma^t}g^t
+$$<p>
+我们除了对$\sigma$进行变化，我们可以本身对$\eta$​进行变化</p>
+<p>即随着时间，$\eta$慢慢变小</p>
+<p>时间越长，本身肯定也已经离终点越来越近，因此就会抵消之前的梯度积累</p>
+<p>或者变大再变小</p>
+<ul>
+<li>Learning Rate Decay
+<img src="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727013705566.png"
+	width="573"
+	height="301"
+	srcset="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727013705566_hu_d727239789cb5408.png 480w, /p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727013705566_hu_68a454e90ebbe697.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240727013705566"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="190"
+		data-flex-basis="456px"
+	
+></li>
+<li>Warm Up</li>
+</ul>
+<p><img src="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727013732870.png"
+	width="534"
+	height="308"
+	srcset="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727013732870_hu_9d6fba0554416a60.png 480w, /p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l2/assets/image-20240727013732870_hu_e11995cf98bfdded.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240727013732870"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="173"
+		data-flex-basis="416px"
+	
+></p>
+<blockquote>
+<p>Warm Up貌似更黑科技一点</p>
+<p>Warm Up可能的解释：</p>
+<ul>
+<li>一开始希望多收集周围的梯度信息，因此不希望走太快</li>
+<li>信息足够后，开始正式的大踏步前进</li>
+</ul></blockquote>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+        
+            <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l5/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">李宏毅机器学习2021 · L5</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l4/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">李宏毅机器学习2021 · L4</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02021-l3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">李宏毅机器学习2021 · L3</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

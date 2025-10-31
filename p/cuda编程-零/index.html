@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="好好学习">
+<title>cuda编程 · 零</title>
+
+<link rel='canonical' href='https://example.com/p/cuda%E7%BC%96%E7%A8%8B-%E9%9B%B6/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="cuda编程 · 零">
+<meta property='og:description' content="好好学习">
+<meta property='og:url' content='https://example.com/p/cuda%E7%BC%96%E7%A8%8B-%E9%9B%B6/'>
+<meta property='og:site_name' content='BiribiriBird'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='cuda' /><meta property='article:published_time' content='2024-04-02T20:46:34&#43;08:00'/><meta property='article:modified_time' content='2024-04-02T20:46:34&#43;08:00'/>
+<meta name="twitter:title" content="cuda编程 · 零">
+<meta name="twitter:description" content="好好学习">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            localStorage.setItem(colorSchemeKey, "light");
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_bbc58a5457fc2680.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">BiribiriBird</a></h1>
+            <h2 class="site-description">Segmentation fault!</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/498088093'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648787418" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2107" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="2108" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:neworld1111@163.com'
+                        target="_blank"
+                        title="Email"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743649088353" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6924" width="24" height="24"><path d="M874.666667 181.333333H149.333333c-40.533333 0-74.666667 34.133333-74.666666 74.666667v512c0 40.533333 34.133333 74.666667 74.666666 74.666667h725.333334c40.533333 0 74.666667-34.133333 74.666666-74.666667V256c0-40.533333-34.133333-74.666667-74.666666-74.666667z m-725.333334 64h725.333334c6.4 0 10.666667 4.266667 10.666666 10.666667v25.6L512 516.266667l-373.333333-234.666667V256c0-6.4 4.266667-10.666667 10.666666-10.666667z m725.333334 533.333334H149.333333c-6.4 0-10.666667-4.266667-10.666666-10.666667V356.266667l356.266666 224c4.266667 4.266667 10.666667 4.266667 17.066667 4.266666s12.8-2.133333 17.066667-4.266666l356.266666-224V768c0 6.4-4.266667 10.666667-10.666666 10.666667z" fill="#666666" p-id="6925"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/aoiJays'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648734849" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5802" width="24" height="24"><path d="M511.957333 21.333333C241.024 21.333333 21.333333 240.981333 21.333333 512c0 216.832 140.544 400.725333 335.573334 465.664 24.490667 4.394667 32.256-10.069333 32.256-23.082667 0-11.690667 0.256-44.245333 0-85.205333-136.448 29.610667-164.736-64.64-164.736-64.64-22.314667-56.704-54.4-71.765333-54.4-71.765333-44.586667-30.464 3.285333-29.824 3.285333-29.824 49.194667 3.413333 75.178667 50.517333 75.178667 50.517333 43.776 75.008 114.816 53.333333 142.762666 40.789333 4.522667-31.658667 17.152-53.376 31.189334-65.536-108.970667-12.458667-223.488-54.485333-223.488-242.602666 0-53.546667 19.114667-97.322667 50.517333-131.669334-5.034667-12.330667-21.930667-62.293333 4.778667-129.834666 0 0 41.258667-13.184 134.912 50.346666a469.802667 469.802667 0 0 1 122.88-16.554666c41.642667 0.213333 83.626667 5.632 122.88 16.554666 93.653333-63.488 134.784-50.346667 134.784-50.346666 26.752 67.541333 9.898667 117.504 4.864 129.834666 31.402667 34.346667 50.474667 78.122667 50.474666 131.669334 0 188.586667-114.730667 230.016-224.042666 242.090666 17.578667 15.232 33.578667 44.672 33.578666 90.453334v135.850666c0 13.141333 7.936 27.605333 32.853334 22.869334C862.250667 912.597333 1002.666667 728.746667 1002.666667 512 1002.666667 240.981333 783.018667 21.333333 511.957333 21.333333z" p-id="5803" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About me</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/experience/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Experience</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friend/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>Friend</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#基本步骤">基本步骤</a>
+      <ol>
+        <li>
+          <ol>
+            <li><a href="#gpu详细信息">GPU详细信息</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#cuda项目建立">Cuda项目建立</a></li>
+    <li><a href="#手写卷积">手写卷积</a></li>
+    <li><a href="#并行归约parallel-reduction">并行归约Parallel Reduction</a>
+      <ol>
+        <li><a href="#交错寻址">交错寻址</a></li>
+        <li><a href="#连续地址">连续地址</a></li>
+      </ol>
+    </li>
+    <li><a href="#程序计时">程序计时</a></li>
+    <li><a href="#原子操作">原子操作</a>
+      <ol>
+        <li><a href="#实例">实例</a></li>
+      </ol>
+    </li>
+    <li><a href="#共享内存">共享内存</a>
+      <ol>
+        <li><a href="#静态申请">静态申请</a></li>
+        <li><a href="#动态申请">动态申请</a></li>
+      </ol>
+    </li>
+    <li><a href="#框架thrust">框架thrust</a></li>
+    <li><a href="#实例估算圆周率">实例：估算圆周率</a></li>
+    <li><a href="#多个block的归约">多个block的归约</a></li>
+    <li><a href="#多维矩阵">多维矩阵</a></li>
+    <li><a href="#实例手写全加器">实例：手写全加器</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/cuda/" >
+                Cuda
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/cuda%E7%BC%96%E7%A8%8B-%E9%9B%B6/">cuda编程 · 零</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            好好学习
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Apr 02, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 7 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="cuda编程--零">cuda编程 · 零
+</h1><blockquote>
+<p><a class="link" href="https://www.bilibili.com/video/BV17K411K76C/"  target="_blank" rel="noopener"
+    >蒙特卡洛的树 - Cuda编程Bilibili</a></p>
+<p><a class="link" href="https://github.com/keefeWu/cuda_learning"  target="_blank" rel="noopener"
+    >Github: Cuda_Learning</a></p></blockquote>
+<p>[TOC]</p>
+<h2 id="基本步骤">基本步骤
+</h2><p>在进行运行之前，我们可以先查询一下设备中有多少块GPU</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">gpuCount</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cudaGetDeviceCount</span><span class="p">(</span><span class="o">&amp;</span><span class="n">gpuCount</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%d &#34;</span><span class="p">,</span> <span class="n">gpuCount</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后可以设置成最后一块显卡的ID</p>
+<p><code>cudaGetDevice</code>可以得到当前正在使用的gpu</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">gpuCount</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cudaGetDeviceCount</span><span class="p">(</span><span class="o">&amp;</span><span class="n">gpuCount</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;gpuCount = %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">gpuCount</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 1. 指定GPU设别
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 单GPU设备其实可以省略此步骤
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">cudaSetDevice</span><span class="p">(</span><span class="n">gpuCount</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">devideId</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cudaGetDevice</span><span class="p">(</span><span class="o">&amp;</span><span class="n">devideId</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;gpu = %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">devideId</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>当设置不存在的设备编号时，默认启动0号gpu</p>
+<p>基本步骤如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;cuda_runtime_api.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="n">__global__</span> <span class="kt">void</span> <span class="nf">kernel</span><span class="p">(</span><span class="kt">float</span> <span class="o">*</span><span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">a</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">gpuCount</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cudaGetDeviceCount</span><span class="p">(</span><span class="o">&amp;</span><span class="n">gpuCount</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;gpuCount = %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">gpuCount</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 1. 指定GPU设别
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 单GPU设备其实可以省略此步骤
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">cudaSetDevice</span><span class="p">(</span><span class="n">gpuCount</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">devideId</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cudaGetDevice</span><span class="p">(</span><span class="o">&amp;</span><span class="n">devideId</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;gpu = %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">devideId</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 2. 分配显存空间
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">float</span> <span class="o">*</span><span class="n">aGPU</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// cudaError_t cudaMalloc(void **devPtr, size_t size);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// void **devPtr 指向待分配内存空间指针的指针 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 		指针是通用的设备指针，可以指向任何类型的内存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// size_t size 分配的内存大小
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">cudaMalloc</span><span class="p">((</span><span class="kt">void</span><span class="o">**</span><span class="p">)</span><span class="o">&amp;</span><span class="n">aGPU</span><span class="p">,</span> <span class="mi">16</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 3. 分配内存空间
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">float</span> <span class="n">a</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 4. 内存-&gt;显存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// cudaError_t cudaMemcpy(void* dst, const void* src, size_t count, cudaMemcpyKind kind)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 目的地址, 源地址，需要复制的字节数量， 复制类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">//  cudaMemcpyHostToHost：从主机到主机的内存复制。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">//  cudaMemcpyHostToDevice：从主机到设备的内存复制。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">//  cudaMemcpyDeviceToHost：从设备到主机的内存复制。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">//  cudaMemcpyDeviceToDevice：从设备到设备的内存复制。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">aGPU</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="mi">16</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">),</span> <span class="n">cudaMemcpyHostToDevice</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 5. 设备代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">kernel</span><span class="o">&lt;&lt;&lt;</span><span class="mi">1</span><span class="p">,</span> <span class="mi">16</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">aGPU</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">// 6. 显存-&gt;内存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">aGPU</span><span class="p">,</span> <span class="mi">16</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">),</span> <span class="n">cudaMemcpyDeviceToHost</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">16</span><span class="p">;</span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%.2lf &#34;</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 7. 释放
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">cudaFree</span><span class="p">(</span><span class="n">aGPU</span><span class="p">);</span> <span class="c1">// 释放申请的显存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">cudaDeviceReset</span><span class="p">();</span> <span class="c1">// 重置设备
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 如果主机内存也有申请 也需要释放
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="gpu详细信息">GPU详细信息
+</h4><p><code>cudaDeviceProp</code>是cuda封装的一个显卡信息结构体</p>
+<p>我们可以通过这个结构体查看显卡信息</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">    <span class="n">cudaDeviceProp</span> <span class="n">prop</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 指定0号显卡
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">cudaGetDeviceProperties</span><span class="p">(</span><span class="o">&amp;</span><span class="n">prop</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;maxThreadsPerBLOCK: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">prop</span><span class="p">.</span><span class="n">maxThreadsPerBlock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;maxThreadsDim: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">prop</span><span class="p">.</span><span class="n">maxThreadsDim</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;maxGridSize: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">prop</span><span class="p">.</span><span class="n">maxGridSize</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;totalConstMem: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">prop</span><span class="p">.</span><span class="n">totalConstMem</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;clockRate: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">prop</span><span class="p">.</span><span class="n">clockRate</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;integrated: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">prop</span><span class="p">.</span><span class="n">integrated</span><span class="p">);</span>    
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>还有一些别的东西</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 程序可以在多个 CUDA 设备上运行时，可以使用这个函数来选择一个最合适的设备 device会变成被选中的设备编号 
+</span></span></span><span class="line"><span class="cl"><span class="c1">// prop需要填写需求 自动匹配符合要求的设备
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">cudaError_t</span> <span class="nf">cudaChooseDevice</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">device</span><span class="p">,</span> <span class="k">const</span> <span class="n">cudaDeviceProp</span><span class="o">*</span> <span class="n">prop</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 传入一个编号数组和数组长度
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 只有编号在其中的设备会是有效设备
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">cudaError_t</span> <span class="n">cudaSetValidDevices</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">device_arr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="cuda项目建立">Cuda项目建立
+</h2><p>建立项目文件夹，新建<code>CMakeLists.txt</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">3.22</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">project</span><span class="p">(</span><span class="s">app</span> <span class="s">LANGUAGES</span> <span class="s">CUDA</span> <span class="s">CXX</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">find_package</span><span class="p">(</span><span class="s">CUDA</span> <span class="s">REQUIRED</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">CUDA_ADD_EXECUTABLE</span><span class="p">(</span><span class="s">app</span> <span class="s">main.cu</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">TARGET_LINK_LIBRARIES</span><span class="p">(</span><span class="s">app</span><span class="p">)</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>在同文件夹下建立一个<code>main.cu</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;cuda_runtime_api.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="n">__global__</span> <span class="kt">void</span> <span class="nf">add</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">b</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">c</span><span class="p">,</span> <span class="kt">int</span> <span class="n">num</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span> <span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">num</span> <span class="p">)</span> 
+</span></span><span class="line"><span class="cl">		<span class="n">c</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="n">num</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="n">num</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="n">num</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">num</span><span class="p">;</span><span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">num</span><span class="p">;</span><span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="o">*</span><span class="n">agpu</span><span class="p">,</span> <span class="o">*</span><span class="n">bgpu</span><span class="p">,</span> <span class="o">*</span><span class="n">cgpu</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">cudaMalloc</span><span class="p">((</span><span class="kt">void</span><span class="o">**</span><span class="p">)</span><span class="o">&amp;</span><span class="n">agpu</span><span class="p">,</span> <span class="n">num</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	<span class="n">cudaMalloc</span><span class="p">((</span><span class="kt">void</span><span class="o">**</span><span class="p">)</span><span class="o">&amp;</span><span class="n">bgpu</span><span class="p">,</span> <span class="n">num</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	<span class="n">cudaMalloc</span><span class="p">((</span><span class="kt">void</span><span class="o">**</span><span class="p">)</span><span class="o">&amp;</span><span class="n">cgpu</span><span class="p">,</span> <span class="n">num</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">agpu</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">num</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">),</span> <span class="n">cudaMemcpyHostToDevice</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">bgpu</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">num</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">),</span> <span class="n">cudaMemcpyHostToDevice</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 加法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">add</span><span class="o">&lt;&lt;&lt;</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">agpu</span><span class="p">,</span> <span class="n">bgpu</span><span class="p">,</span> <span class="n">cgpu</span><span class="p">,</span> <span class="n">num</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">cgpu</span><span class="p">,</span> <span class="n">num</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">),</span> <span class="n">cudaMemcpyDeviceToHost</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">printf</span><span class="p">(</span><span class="s">&#34;add:</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">num</span><span class="p">;</span><span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%d + %d = %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">cudaFree</span><span class="p">(</span><span class="n">agpu</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">	<span class="n">cudaFree</span><span class="p">(</span><span class="n">bgpu</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">	<span class="n">cudaFree</span><span class="p">(</span><span class="n">cgpu</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">cudaDeviceReset</span><span class="p">();</span> 
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>新建<code>build</code>文件夹</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir buid <span class="o">&amp;&amp;</span> <span class="nb">cd</span> build
+</span></span><span class="line"><span class="cl">cmake ..
+</span></span><span class="line"><span class="cl">make -j3
+</span></span><span class="line"><span class="cl">./app
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="手写卷积">手写卷积
+</h2><p>什么是卷积？<a class="link" href="https://www.bilibili.com/video/BV1Vd4y1e7pj"  target="_blank" rel="noopener"
+    >【官方双语】那么……什么是卷积？</a></p>
+<p>首先需要添加一个新的东西：<code>CUDA_CHECK</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define CUDA_CHECK(call) \
+</span></span></span><span class="line"><span class="cl"><span class="cp">do { \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    cudaError_t err = call; \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    if (err != cudaSuccess) { \
+</span></span></span><span class="line"><span class="cl"><span class="cp">        fprintf(stderr, &#34;CUDA error at %s:%d code=%d(%s) \&#34;%s\&#34;\n&#34;, \
+</span></span></span><span class="line"><span class="cl"><span class="cp">                __FILE__, __LINE__, err, cudaGetErrorString(err), #call); \
+</span></span></span><span class="line"><span class="cl"><span class="cp">        exit(EXIT_FAILURE); \
+</span></span></span><span class="line"><span class="cl"><span class="cp">    } \
+</span></span></span><span class="line"><span class="cl"><span class="cp">} while (0)
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 后续我们使用Cuda函数时 用宏进行包装
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 即可及时报错
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">CUDA_CHECK</span><span class="p">(</span><span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">devPtr</span><span class="p">,</span> <span class="n">size</span><span class="p">));</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>code见<code>code/src/code_2.cu</code></p>
+<h2 id="并行归约parallel-reduction">并行归约Parallel Reduction
+</h2><blockquote>
+<p>我们需要对一个数组进行并行算法的求和</p></blockquote>
+<h3 id="交错寻址">交错寻址
+</h3><p><img src="/p/cuda%E7%BC%96%E7%A8%8B-%E9%9B%B6/assets/image-20240402123917253.png"
+	width="843"
+	height="459"
+	srcset="/p/cuda%E7%BC%96%E7%A8%8B-%E9%9B%B6/assets/image-20240402123917253_hu_43ac0dfedf094112.png 480w, /p/cuda%E7%BC%96%E7%A8%8B-%E9%9B%B6/assets/image-20240402123917253_hu_5cbf96bd37116d85.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240402123917253"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="183"
+		data-flex-basis="440px"
+	
+></p>
+<p>两两求和，逐渐合并</p>
+<p>但是这样寻址速度较慢</p>
+<h3 id="连续地址">连续地址
+</h3><p><img src="/p/cuda%E7%BC%96%E7%A8%8B-%E9%9B%B6/assets/image-20240402124057146.png"
+	width="868"
+	height="518"
+	srcset="/p/cuda%E7%BC%96%E7%A8%8B-%E9%9B%B6/assets/image-20240402124057146_hu_d005e5e14dbce07b.png 480w, /p/cuda%E7%BC%96%E7%A8%8B-%E9%9B%B6/assets/image-20240402124057146_hu_70ee4934d213382b.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240402124057146"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="167"
+		data-flex-basis="402px"
+	
+></p>
+<p>code见<code>code/src/code_3.cu</code></p>
+<h2 id="程序计时">程序计时
+</h2><p>推荐使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/time.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl">	<span class="k">struct</span> <span class="nc">timeval</span> <span class="n">startTime</span><span class="p">,</span> <span class="n">endTime</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="c1">// 获取开始时间
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">gettimeofday</span><span class="p">(</span><span class="o">&amp;</span><span class="n">startTime</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 执行一些操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 获取结束时间
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">gettimeofday</span><span class="p">(</span><span class="o">&amp;</span><span class="n">endTime</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 计算时间差
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">long</span> <span class="kt">long</span> <span class="n">elapsedTime</span> <span class="o">=</span> <span class="p">(</span><span class="n">endTime</span><span class="p">.</span><span class="n">tv_sec</span> <span class="o">-</span> <span class="n">startTime</span><span class="p">.</span><span class="n">tv_sec</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000000LL</span> <span class="o">+</span> <span class="p">(</span><span class="n">endTime</span><span class="p">.</span><span class="n">tv_usec</span> <span class="o">-</span> <span class="n">startTime</span><span class="p">.</span><span class="n">tv_usec</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;Elapsed time: %lld microseconds</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">elapsedTime</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其中，<code>sys/time.h</code> 是一个 C 标准库头文件，通常用于在 POSIX 操作系统中进行时间操作，因此在 POSIX 兼容的操作系统上使用时通常是可用的，比如 Linux 和 macOS 等。</p>
+<p>这里我们对手写卷积进行了测速</p>
+<p>code见<code>code/src/code_4.cu</code></p>
+<p>并且我们发现，我们一个block一次计算，和一个thread一次计算</p>
+<p>效率基本一致</p>
+<p>并且放在thread可以共享内存，所以推荐放在thread里</p>
+<h2 id="原子操作">原子操作
+</h2><p>原子操作是一种<strong>不可分割</strong>的操作，它要么完全执行，要么完全不执行，没有中间状态。</p>
+<p>在并发编程中，原子操作是一种<strong>确保多个线程或进程安全访问共享资源</strong>的机制。</p>
+<p>原子操作能够保证在多线程环境下不会出现数据竞争的情况，从而确保数据的一致性和正确性。</p>
+<p>原子操作的特性包括：</p>
+<ol>
+<li><strong>不可分割性</strong>：原子操作是一个不可分割的操作，它要么完全执行，要么完全不执行，不会被中断或分割成更小的部分。</li>
+<li><strong>独占性</strong>：在原子操作执行期间，其他线程或进程无法访问被操作的资源，直到原子操作执行完成。</li>
+<li><strong>并发安全性</strong>：多个线程或进程可以同时执行原子操作，而不会导致数据竞争或数据不一致的情况。</li>
+</ol>
+<blockquote>
+<p>银行转账，当钱被转出时若发生中断，则此时钱就少了</p>
+<p>因此转出和转入必须完整执行完毕</p></blockquote>
+<h3 id="实例">实例
+</h3><blockquote>
+<p>统计每种数字出现多少次</p></blockquote>
+<p>如果在核函数中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">	<span class="n">hist</span><span class="p">[</span> <span class="n">a</span><span class="p">[</span><span class="n">id</span><span class="p">]</span> <span class="p">]</span> <span class="o">++</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>由于会有多个核函数并行操作，每次hist的值都不一致</p>
+<p>会造成值操作的覆盖</p>
+<p>因此引入了<code>atomicAdd()</code>，自动为数据上锁，在完成一次加法之间，不允许被其他thread使用</p>
+<p>code见<code>code/src/code_5.cu</code></p>
+<h2 id="共享内存">共享内存
+</h2><p>使用<code>__shared__</code>进行声明</p>
+<p>同属于一个block的thread共享一个共享内存</p>
+<h3 id="静态申请">静态申请
+</h3><p>如果我们一开始就确定要开多少共享内存数组</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">__shared__</span> <span class="kt">int</span> <span class="n">s</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="n">__shared__</span> <span class="kt">int</span> <span class="n">s</span><span class="p">[</span><span class="n">N</span><span class="p">];</span> <span class="c1">// N is constexpr
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="动态申请">动态申请
+</h3><p>在核函数指定第三个执行配置参数，数值为需要申请的<strong>每个块</strong>动态共享内存大小</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">dynamicReverse</span><span class="o">&lt;&lt;&lt;</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;&gt;&gt;</span><span class="p">();</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在核函数内</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">extern</span> <span class="n">__shared__</span> <span class="kt">int</span> <span class="n">s</span><span class="p">[];</span> <span class="c1">// 此时s即为大小为指定值的数组
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果需要申请多个共享内存数组</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Kernel</span><span class="o">&lt;&lt;&lt;</span><span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">nI</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">+</span><span class="n">nF</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="o">+</span><span class="n">nC</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">)</span><span class="o">&gt;&gt;&gt;</span><span class="p">();</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>申请的数值即为所有数组大小之和</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">extern</span> <span class="n">__shared__</span> <span class="kt">int</span> <span class="n">s</span><span class="p">[];</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span><span class="n">integerData</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>                        <span class="c1">// nI ints
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">float</span> <span class="o">*</span><span class="n">floatData</span> <span class="o">=</span> <span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">integerData</span><span class="p">[</span><span class="n">nI</span><span class="p">];</span> <span class="c1">// nF floats
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">char</span> <span class="o">*</span><span class="n">charData</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">floatData</span><span class="p">[</span><span class="n">nF</span><span class="p">];</span>      <span class="c1">// nC chars
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>手动切割数组即可</p>
+<h2 id="框架thrust">框架thrust
+</h2><blockquote>
+<p>cuda版本的STL</p></blockquote>
+<p>官方地址：https://github.com/NVIDIA/thrust</p>
+<p>记录几个比较简单的例子</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;thrust/host_vector.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;thrust/device_vector.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 在主机内存中申请 大小为10的vector
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">thrust</span><span class="o">::</span><span class="n">host_vector</span><span class="o">&lt;</span><span class="kt">int</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span> <span class="nl">e</span> <span class="p">:</span> <span class="n">a</span><span class="p">)</span> <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">e</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span> <span class="nl">e</span> <span class="p">:</span> <span class="n">a</span><span class="p">)</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">e</span> <span class="o">&lt;&lt;</span><span class="s">&#34; &#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 基本和std::vector没什么差别
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="实例估算圆周率">实例：估算圆周率
+</h2><p>code见<code>code/src/code_6.cu</code></p>
+<h2 id="多个block的归约">多个block的归约
+</h2><p>例如我们要进行一个数组求和，但是数组元素个数远远多于线程</p>
+<p>一个block的线程数量有限，一般是1024（看具体设备）</p>
+<p>因此我们需要让多个block进行归约</p>
+<p>（估算圆周率的实例中，我们使用了1个block进行归约）</p>
+<ul>
+<li>把数据切分为若干段，每段数量为总线程数</li>
+<li>第一次先把所有数据读到前总线程数个数字内</li>
+<li>再细分成block num段，每段thread_num个</li>
+<li>分别归约，得到blockNum个数字</li>
+<li>数量不会很多的情况下直接CPU计算，节省硬件传输</li>
+</ul>
+<p>code见<code>code/src/code_7.cu</code></p>
+<h2 id="多维矩阵">多维矩阵
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">size_t</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">120</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">float</span> <span class="o">*</span> <span class="n">a_gpu</span><span class="p">;</span> <span class="n">size_t</span> <span class="n">pitch</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">cudaMallocPitch</span><span class="p">((</span><span class="kt">void</span><span class="o">**</span><span class="p">)</span><span class="o">&amp;</span><span class="n">a_gpu</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pitch</span><span class="p">,</span> <span class="n">width</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">),</span> <span class="n">height</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;real = %zu</span><span class="se">\n</span><span class="s">pitch = %zu&#34;</span><span class="p">,</span> <span class="n">width</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">),</span> <span class="n">pitch</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cudaFree</span><span class="p">(</span><span class="n">a_gpu</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 当width*sizeof(float)&lt;=512时 pitch=512
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 超过512 pitch取最小的512的倍数
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>内存对齐，使得访问效率更高</p>
+<p>但是我们一行该放多少放多少，剩下的空间直接忽略</p>
+<p>暂时先不研究这个，感觉用处不大</p>
+<h2 id="实例手写全加器">实例：手写全加器
+</h2><p>对于串行加法器</p>
+<p><img src="/p/cuda%E7%BC%96%E7%A8%8B-%E9%9B%B6/assets/image-20240405022231427.png"
+	width="521"
+	height="141"
+	srcset="/p/cuda%E7%BC%96%E7%A8%8B-%E9%9B%B6/assets/image-20240405022231427_hu_4fca6a541fb284ae.png 480w, /p/cuda%E7%BC%96%E7%A8%8B-%E9%9B%B6/assets/image-20240405022231427_hu_386a1dc50d15ea55.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240405022231427"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="369"
+		data-flex-basis="886px"
+	
+></p>
+<p>高位计算需要等待低位的进位</p>
+<p>令$A_i+B_i$的进位结果为$C_i$，计算结果为$S_i$</p>
+<p>则$C_i = 1 $的情况有：</p>
+<ul>
+<li>$A_i = 1, B_i = 1$同时为1</li>
+<li>$A_i \otimes B_i = 1, C_{i-1} = 1$只有一个1，存在进位1</li>
+</ul>
+<p>因此$C_i = A_iB_i + (A_i\otimes B_i)C_{i - 1}$</p>
+<blockquote>
+<p>$+$表示或，$\cdot$表示并</p></blockquote>
+<p><img src="/p/cuda%E7%BC%96%E7%A8%8B-%E9%9B%B6/assets/image-20240405023017938.png"
+	width="521"
+	height="80"
+	srcset="/p/cuda%E7%BC%96%E7%A8%8B-%E9%9B%B6/assets/image-20240405023017938_hu_fb59cecf242d02a0.png 480w, /p/cuda%E7%BC%96%E7%A8%8B-%E9%9B%B6/assets/image-20240405023017938_hu_d2732738529ab482.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240405023017938"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="651"
+		data-flex-basis="1563px"
+	
+></p>
+<p>因此我们可以进行多次展开，每次的进位都可以由$C_0$直接确定</p>
+<p>一般来说我们每四位进行并行，然后总体串行即可</p>
+<p>code见<code>code/src/code_8.cu</code></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/cuda/">Cuda</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

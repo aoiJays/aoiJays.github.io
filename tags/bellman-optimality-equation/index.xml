@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Bellman Optimality Equation on BiribiriBird</title>
+        <link>https://example.com/tags/bellman-optimality-equation/</link>
+        <description>Recent content in Bellman Optimality Equation on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Thu, 30 Oct 2025 23:38:34 +0800</lastBuildDate><atom:link href="https://example.com/tags/bellman-optimality-equation/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>强化学习的数学原理 · Chap3 · Bellman Optimality Equation</title>
+        <link>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap3-bellman-optimality-equation/</link>
+        <pubDate>Thu, 30 Oct 2025 23:38:34 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap3-bellman-optimality-equation/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1sd4y167NS&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.bilibili.com/video/BV1sd4y167NS&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;笔记丢失了一次&lt;/p&gt;
+&lt;p&gt;这是补档版本，稍微粗略一点……心态小炸&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;optimal-policy&#34;&gt;Optimal Policy
+&lt;/h2&gt;&lt;p&gt;当一个策略，在任意状态都比另一个策略的state value更好（或者相等）&lt;/p&gt;
+&lt;p&gt;我们就认为这个策略优于另一个策略&lt;/p&gt;
+&lt;p&gt;当一个策略比所有策略都好，它就是&lt;strong&gt;最优策略&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;bellman-optimality-equation&#34;&gt;Bellman Optimality Equation
+&lt;/h2&gt;$$
+\begin{split}
+v(s) &amp;= {\color{red}\max_\pi} \sum_a \pi(a|s) \left( \sum_r p(r|s,a)r + \gamma \sum_{s&#39;} p(s&#39;|s,a)v(s&#39;)\right), \quad \forall s\in \mathcal{S} \\
+&amp;= {\color{red}\max_\pi} \sum_a \pi(a|s) q(s,a), \quad \forall s\in \mathcal{S}
+\end{split}
+$$&lt;p&gt;
+相比于贝尔曼公式，BOE实质上就是多了一个优化问题&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;已知：$p(r|s,a),p(s&amp;rsquo;|s,a)$&lt;/li&gt;
+&lt;li&gt;未知：$v(s),v(s&amp;rsquo;)$，需要我们针对不同的$\pi$​去计算&lt;/li&gt;
+&lt;li&gt;求解：$\pi$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;自然有向量形式：&lt;/p&gt;
+$$
+v = \max_\pi (r_\pi + \gamma P_\pi v)
+$$&lt;h3 id=&#34;maximization&#34;&gt;Maximization
+&lt;/h3&gt;&lt;p&gt;我们先考虑固定$v$，看看能不能求解$\pi$​&lt;/p&gt;
+$$
+v = \max_\pi\sum_a \pi(a|s)q(s,a)
+$$&lt;p&gt;
+其中$q(s,a)$自然也是一个已知的量（所有的$v$都可以知道，自然可以算出$q$）&lt;/p&gt;
+&lt;p&gt;同时有：&lt;/p&gt;
+$$
+\sum_a \pi(a|s) = 1
+$$&lt;p&gt;
+那么本质上$\sum_a \pi(a|s)q(s,a)$是对action value做加权平均&lt;/p&gt;
+&lt;p&gt;为了最大化这一项，我们肯定需要给最大的$q$最多的权值，也就是1&lt;/p&gt;
+&lt;p&gt;可以得到策略：选择action最大的行动$a^*$&lt;/p&gt;
+$$
+\pi(a|s) = \begin{cases}
+ 1 &amp; \text{ if } a= a^*\\
+ 0 &amp; \text{ if } a\neq a^*
+\end{cases}
+$$&lt;p&gt;
+这样我们就能得到原式：&lt;/p&gt;
+$$
+v = \max_\pi\sum_a \pi(a|s)q(s,a) = \max_{a\in \mathcal{A}(s)}q(s,a) \\
+\text{where }a^* = \arg \max_a q(s,a)
+$$&lt;p&gt;
+只要我们固定$v$，我们肯定就能得到最优策略，自然计算出右边的值&lt;/p&gt;
+&lt;p&gt;因此右边的值可以直接表示成一个只关于$v$的函数：$v=f(v)$&lt;/p&gt;
+&lt;p&gt;表达成向量形式：&lt;/p&gt;
+$$
+f(v):=\max_\pi (r_\pi+\gamma P_\pi v)
+$$&lt;blockquote&gt;
+&lt;p&gt;搜索一下不动点定理或叫Contraction mapping theorem&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;基于这个定理，可以证明$f(v)$是符合这个定理的条件的&lt;/p&gt;
+&lt;p&gt;大概就是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;函数具有压缩性：有$\left|v_1-v_2\right | \leq \gamma\left|f(v_1)-f(v_2)\right |$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;也就是满足这个条件，就会有&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;必然存在&lt;strong&gt;唯一的&lt;/strong&gt;一个不动点$f(v) =v$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因此，我们可以不断套用$v,f(v),f(f(v)),&amp;hellip;$&lt;/p&gt;
+&lt;p&gt;最后会&lt;strong&gt;收敛得到不动点&lt;/strong&gt;，具体证明略过&lt;/p&gt;
+&lt;p&gt;实际上的操作就是：&lt;/p&gt;
+$$
+v_{k+1}=f(v_k) =\max_\pi (r_\pi+\gamma P_\pi v_k)
+$$&lt;p&gt;
+那么如何证明最后收敛到的结果$v^*$就是最优解呢？&lt;/p&gt;
+&lt;p&gt;固定$v=v^&lt;em&gt;$，自然可以得到当前的策略$\pi^&lt;/em&gt;$&lt;/p&gt;
+$$
+\pi^* = \arg \max_\pi (r_\pi+\gamma P_\pi v^*)
+$$&lt;p&gt;
+将$\pi^*$代入：&lt;/p&gt;
+$$
+v^* = \max_\pi (r_\pi+\gamma P_\pi v_*) = r_{\pi^*}+\gamma P_{\pi^*} v^*
+$$&lt;p&gt;
+你会发现变成state value的公式了&lt;/p&gt;
+&lt;p&gt;也就是说$v^&lt;em&gt;$，就是策略$\pi^&lt;/em&gt;$​的state value&lt;/p&gt;
+&lt;p&gt;我们考虑策略替换成任意其他的策略$\pi$时：&lt;/p&gt;
+$$
+v^* = r_{\pi^*}+\gamma P_{\pi^*} v^* \geq r_\pi + \gamma P_\pi v^*
+$$&lt;p&gt;
+令该策略对应state value的贝尔曼公式：&lt;/p&gt;
+$$
+v = r_{\pi}+\gamma P_{\pi} v
+$$&lt;p&gt;
+做一个减法则有：&lt;/p&gt;
+$$
+v^*-v \geq (r_\pi + \gamma P_\pi v^*)-(r_{\pi}+\gamma P_{\pi} v) = \gamma P_\pi(v^*-v)
+$$&lt;p&gt;令$\Delta = v^*-v$，则有：&lt;/p&gt;
+$$
+\Delta \geq \gamma P_\pi\Delta
+$$&lt;p&gt;
+我们只需要把右边的$\Delta$不停代换为$\gamma P_\pi\Delta$：&lt;/p&gt;
+$$
+\Delta \geq \gamma P_\pi\Delta \geq \gamma^2 P_\pi^2\Delta \geq ...  \geq \gamma^n P_\pi^n\Delta \geq 0
+$$&lt;p&gt;
+故对于策略$\pi^*$，其state value始终是最大的&lt;/p&gt;
+&lt;p&gt;因此是最优策略&lt;/p&gt;
+&lt;h3 id=&#34;analysis&#34;&gt;Analysis
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Change $r\to ar+b$会发生什么？
+&lt;ul&gt;
+&lt;li&gt;什么都不会发生&lt;/li&gt;
+&lt;li&gt;可以证明 $v&amp;rsquo; = av^*+\frac{b}{1-\gamma}I$，所有state value的相对大小没有发生变化&lt;/li&gt;
+&lt;li&gt;自然action value不会有其他选择，policy不改变&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;如何鼓励走最短路径？
+&lt;ul&gt;
+&lt;li&gt;其实不用一直给agent做-1（损失能量），催促agent&lt;/li&gt;
+&lt;li&gt;$\gamma$本身就在催促agent尽快到终点，否则终点的贡献变少了&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
