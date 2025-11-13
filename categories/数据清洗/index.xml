@@ -1,0 +1,1954 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>数据清洗 on BiribiriBird</title>
+        <link>https://example.com/categories/%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97/</link>
+        <description>Recent content in 数据清洗 on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Thu, 10 Jul 2025 11:16:32 +0800</lastBuildDate><atom:link href="https://example.com/categories/%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>大语言模型数据清洗 · 论文笔记（五）</title>
+        <link>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/</link>
+        <pubDate>Thu, 10 Jul 2025 11:16:32 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1 id=&#34;essential-web-v10-24t-tokens-of-organized-web-data&#34;&gt;Essential-Web v1.0 24T tokens of organized web data
+&lt;/h1&gt;&lt;h2 id=&#34;preview&#34;&gt;Preview
+&lt;/h2&gt;&lt;p&gt;构建了多维度的分类体系，适合通过SQL等方式进行数据筛选出新的数据集&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用开源模型进行数据标签的标注，得到了EAI-Distill-0.5b&lt;/li&gt;
+&lt;li&gt;推理清洗了23.6B的数据，花费了90000 AMD MI300x GPU-hours&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The inference job ran on 512 AMD MI300x for about 1 week.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;分类体系：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一个有限的类别集合 $T=\left { C_1, C_2, &amp;hellip;, C_k \right } $。&lt;/li&gt;
+&lt;li&gt;每个类别$C_i$都有一个非空、有限的标签集$L_i$。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;标注形式为$T(d) = \left { (\lambda_1, \mu_1), &amp;hellip;\right}$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;其中，$λ_i\in L_i$ 是类别$C_i$的主要标签&lt;/li&gt;
+&lt;li&gt;$\mu_i \in (L_i \setminus {\lambda_i}) \cup {\bot}$ 是一个可选的次要标签，必须与$\lambda_i$不同
+&lt;ul&gt;
+&lt;li&gt;当文档适合两个标签时非常有用&lt;/li&gt;
+&lt;li&gt;$\bot$表示弃权（abstention）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;所有类别和标签集都是预先固定的，这允许训练一个单一的静态分类器&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/assets/image-20250710141259250.png&#34;
+	width=&#34;923&#34;
+	height=&#34;234&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/assets/image-20250710141259250_hu_35e32e8ea56e9d9f.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/assets/image-20250710141259250_hu_7dca944e0ae04e92.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;PipeLine&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;394&#34;
+		data-flex-basis=&#34;946px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;实验设置&#34;&gt;实验设置
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;h2 id=&#34;chinchilla最优计算比例&#34;&gt;Chinchilla最优计算比例
+&lt;/h2&gt;&lt;p&gt;Chinchilla缩放定律发现了一个最优比例：大约每个参数需要20个训练token &lt;a class=&#34;link&#34; href=&#34;https://epoch.ai/blog/chinchilla-scaling-a-replication-attempt&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Epoch AI&lt;/a&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.analyticsvidhya.com/blog/2024/09/chinchilla-scaling-law/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Analytics Vidhya&lt;/a&gt;。这个比例是DeepMind通过训练400多个语言模型得出的计算最优配置。&lt;/p&gt;
+&lt;p&gt;具体来说：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Chinchilla模型有70B参数，在1.4万亿tokens上训练，达到20 tokens per parameter的比例 &lt;a class=&#34;link&#34; href=&#34;https://epoch.ai/blog/chinchilla-scaling-a-replication-attempt&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Chinchilla Scaling: A Replication Attempt | Epoch AI&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;这个20:1的比例被认为是在给定计算预算下实现最佳性能的理想配置&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/assets/image-20250710142401273.png&#34;
+	width=&#34;608&#34;
+	height=&#34;269&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/assets/image-20250710142401273_hu_1c12a53edcfe7eaf.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/assets/image-20250710142401273_hu_1c71ffbb1c3f701e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Train&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;226&#34;
+		data-flex-basis=&#34;542px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;所有数据集在训练前均使用了 13-gram Bloom Filter&lt;/p&gt;
+&lt;p&gt;选用了两个2.3B模型对数据进行评估&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;预训练（3200亿Token）：该阶段帮助模型学到广泛的语言知识&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;General-base：仅使用网络数据（DCLM-baseline）做&lt;strong&gt;预训练&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Code-base：使用网络数据（DCLM-baseline）+代码数据（Stack v2 Dedup中的Python），各占50%做&lt;strong&gt;预训练&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;退火（800亿token）：为了评估特定领域数据集的性能，采用需要评估的新数据集&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;学习率接近零的目的是在新的领域数据上进行“微调”，而不是进行大规模的“重新训练”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;每个模型总计处理 4000 亿 token 数据量，是Chinchilla的10倍数据&lt;/p&gt;
+&lt;h2 id=&#34;蒸馏&#34;&gt;蒸馏
+&lt;/h2&gt;&lt;h3 id=&#34;蒸馏方案&#34;&gt;蒸馏方案
+&lt;/h3&gt;&lt;h4 id=&#34;数据来源与规模&#34;&gt;&lt;strong&gt;数据来源与规模&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;标注数据&lt;/strong&gt;：使用Qwen2.5-32B-Instruct对104.6M文档共82Btoken进行两轮标注，生成合成标签用于蒸馏训练。
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;第一轮&lt;/strong&gt;：标注8个分类类别（如FDC、Document Type V1/V2等）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;第二轮&lt;/strong&gt;：扩展至12个类别（新增Bloom、Technical Correctness等）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;数据预处理&#34;&gt;&lt;strong&gt;数据预处理&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;子采样&lt;/strong&gt;：对超过30,000字符的文档，截取开头、随机中间段和结尾（Algorithm 12），避免长文本影响推理速度。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;质量过滤&lt;/strong&gt;：通过统计和模型信号（如DCLM分类器）过滤低质量文档（Algorithm 1）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;模型架构&#34;&gt;&lt;strong&gt;模型架构&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;基础模型&lt;/strong&gt;：Qwen2.5-0.5b-Instruct（5亿参数），基于Gemma 3架构，使用QK-norm稳定注意力。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;序列长度&lt;/strong&gt;：16,384 tokens，支持长上下文。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;训练参数&#34;&gt;&lt;strong&gt;训练参数&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;优化器&lt;/strong&gt;：AdamW（β1=0.9, β2=0.95），权重衰减0.1。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;学习率&lt;/strong&gt;：峰值1e-4，线性预热2B tokens，余弦衰减至1e-5，最后线性退火至0。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;批量大小&lt;/strong&gt;：全局2M tokens，梯度累积实现大批次训练。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;训练量&lt;/strong&gt;：82B tokens（合成标签数据）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;损失计算&lt;/strong&gt;：仅对教师模型生成的标签token计算损失，输入文档和系统提示被掩码。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;教师模型选择&#34;&gt;&lt;strong&gt;教师模型选择&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;教师&lt;/strong&gt;：Qwen2.5-32B-Instruct，因其标注一致性（κ=0.74）与推理速度平衡（1.4 RPS/GPU）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;蒸馏步骤&#34;&gt;&lt;strong&gt;蒸馏步骤&lt;/strong&gt;
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;标签生成&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;教师模型生成多分类标签（如FDC层级、Document Type等），格式为&lt;code&gt;主标签,次标签&lt;/code&gt;（Algorithm 13）。&lt;/li&gt;
+&lt;li&gt;压缩输出：从平均791 tokens缩短至51 tokens，提升推理速度50倍（Table 12）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;上下文蒸馏&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;移除教师模型的提示模板（Prompt 1/2），直接训练学生模型生成压缩格式标签。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;评估方案&#34;&gt;评估方案
+&lt;/h3&gt;&lt;h4 id=&#34;metrics&#34;&gt;Metrics
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;正确性：多人分类的结果应该类似，验证模型打标签是否标准一致
+&lt;ul&gt;
+&lt;li&gt;使用GPT-4o和Claude Sonnet-3.5作为专家模型&lt;/li&gt;
+&lt;li&gt;使用kappa系数作为指标&lt;/li&gt;
+&lt;li&gt;取对4o的系数和对claude的系数的均值作为结果&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;检测方式是验证模型与专家模型的标准是否一致，对于指标paper中进行了变种&lt;/p&gt;
+&lt;p&gt;对于某个模型的分类结果$S\in \left { \phi, (\text{label}), (\text{label1, label2}) \right }$​&lt;/p&gt;
+&lt;p&gt;最少是一个标签（主标签），有时可以加一个次标签&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;标注结果一致的判定：两模型的$S$​有交集&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;然后套公式&lt;/p&gt;
+&lt;p&gt;Qwen2.5-32B-Instruct ≈ 0.74&lt;/p&gt;
+&lt;p&gt;EAI-Distill-0.5b ≈ 0.71~0.73&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;正交性：不同分类体系之间的标签应该是独立的
+&lt;ul&gt;
+&lt;li&gt;例如在某分类A下打了a，分类B始终是b，发生了绑定&lt;/li&gt;
+&lt;li&gt;需计算互信息、香农熵&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+$$
+&gt;\text{NMI}(X, Y) = \frac{2 I(X; Y)}{H(X) + H(Y)}
+&gt;$$&lt;p&gt;其中：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$p(x)$按$x$出现的频率，$p(x,y)$按$x,y$同时出现的频率计算&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;$I(X; Y)$：互信息&lt;/li&gt;
+&lt;/ul&gt;
+$$
+&gt;  I(X; Y) = \sum_{x, y} p(x, y) \cdot \log \frac{p(x, y)}{p(x)p(y)}
+&gt;  $$&lt;ul&gt;
+&lt;li&gt;$H(X)$：X 的香农熵&lt;/li&gt;
+&lt;/ul&gt;
+$$
+&gt;  H(X) = -\sum_{x} p(x) \cdot \log p(x)
+&gt;  $$&lt;p&gt;Qwen2.5-32B 平均 NMI ≈ 0.079&lt;/p&gt;
+&lt;p&gt;EAI-Distill-0.5b 平均 NMI ≈ 0.092&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Domain Recall
+&lt;ul&gt;
+&lt;li&gt;定了Golden URL（认为arxiv和……30 个 base URL的都是高质量数据）&lt;/li&gt;
+&lt;li&gt;统计有多少能被模型召回&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;dataset&#34;&gt;Dataset
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Random Set：随机采样（需要避免撞车训练数据）&lt;/li&gt;
+&lt;li&gt;STEM Set：从特定领域集合（科学领域）随机采样&lt;/li&gt;
+&lt;li&gt;通过Golden URL采样&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>大语言模型数据清洗 · 论文笔记（四）</title>
+        <link>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E5%9B%9B/</link>
+        <pubDate>Sat, 14 Jun 2025 16:35:54 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E5%9B%9B/</guid>
+        <description>&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/html/2303.16854&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://arxiv.org/html/2303.16854&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;preview&#34;&gt;Preview
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;解释 - 标注 双阶段方法
+&lt;ul&gt;
+&lt;li&gt;LLM生成少量人类标注的解释&lt;/li&gt;
+&lt;li&gt;自动构建思维链+fewshot提示词&lt;/li&gt;
+&lt;li&gt;自动标注&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;approach&#34;&gt;Approach
+&lt;/h2&gt;&lt;p&gt;从人类标注者的培训中可以发现，我们需要提供一定的引导、样例，才能规范人类标注一致性&lt;/p&gt;
+&lt;p&gt;模型标注也是同理&lt;/p&gt;
+&lt;h3 id=&#34;解释&#34;&gt;解释
+&lt;/h3&gt;&lt;p&gt;使用GPT3.5进行生成解释：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Directions&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Given&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;engine&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;google data studio sharepoint&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;consider&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;what&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;could&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;have&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;mind&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;when&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;they&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;allow&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;misspellings&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;or&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;other&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ambiguity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;then&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;classify&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevance&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;sharepoint migration tool file share&amp;#34;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;into&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;one&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;following&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;categories&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Not bad&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Bad&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Definitions&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;categories&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Not bad&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;The&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevant&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;’&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;This&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;can&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;include&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;broader&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;or&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;narrower&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;product&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;selection&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;competitor&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;or&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;alternative&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;products&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;accessories&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;products&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;often&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;purchased&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;together&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;related&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;topics&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;well&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;direct&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;matches&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;’&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Bad&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;The&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevant&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;’&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;There&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;no&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relationship&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;between&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;This&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;includes&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;but&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;limited&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;incorrect&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;unrelated&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;product&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;unrelated&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;topic&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;wrong&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;location&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;when&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;location&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;important&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cannot&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;be&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;used&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;place&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;product&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nor&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;are&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;they&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;commonly&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;purchased&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;together&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;etc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Briefly&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;explain&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;why&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevance&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Bad&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;response&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;length&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;exceeding&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;100&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;words&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;构建提示词&#34;&gt;构建提示词
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Given&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;engine&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;first&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;consider&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;what&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;could&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;have&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;mind&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;when&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;they&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;allow&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;misspellings&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;or&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;other&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ambiguity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;then&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;classify&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevance&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;into&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;one&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;following&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;categories&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Not bad&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;or&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Bad&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;The&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;definitions&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;categories&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;are&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Not bad&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevant&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;’&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;This&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;can&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;include&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;broader&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;or&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;narrower&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;product&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;selection&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;competitor&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;or&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;alternative&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;products&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;accessories&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;products&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;often&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;purchased&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;together&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;related&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;topics&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;well&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;direct&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;matches&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;’&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Bad&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevant&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;’&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;There&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;no&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relationship&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;between&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;This&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;includes&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;but&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;limited&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;incorrect&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;unrelated&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;product&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;unrelated&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;topic&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;wrong&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;location&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;when&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;location&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;important&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cannot&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;be&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;used&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;place&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;product&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nor&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;are&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;they&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;commonly&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;purchased&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;together&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;etc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Please&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;predict&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;whether&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevant&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;or&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;The&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;answer&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;should&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;be&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;exact&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Not bad&amp;#34;&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;or&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Bad&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;### Examples:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;mf&#34;&gt;1.&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Query&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;google&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;studio&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sharepoint&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Keyword&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sharepoint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;migration&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tool&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;file&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;share&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Answer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;The&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevance&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;sharepoint migration tool file share&amp;#34;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;google data studio sharepoint&amp;#34;&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Bad&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;This&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevant&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;’&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;it&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pertains&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;different&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tool&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;or&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;technology&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SharePoint&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;that&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;mentioned&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;The&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;focuses&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;on&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;migration&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tool&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SharePoint&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;file&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sharing&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;focused&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;on&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Google&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Data&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Studio&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;There&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;no&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relationship&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;between&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;two&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;so&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevant&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;’&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Therefore&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevance&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Bad&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;mf&#34;&gt;2.&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Query&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;motorhomes&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sale&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Keyword&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;rv&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sale&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;used&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;c&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Answer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;The&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevance&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;rv sale used class c&amp;#34;&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Not bad&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;The&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;rv sale used class c&amp;#34;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;contains&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevant&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;information&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;’&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;motorhomes sale&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;It&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;includes&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;specific&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;motorhome&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;class c&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;that&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;being&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sold&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;used&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;which&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevant&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;product&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;selection&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;’&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Additionally&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;rv sale used class c&amp;#34;&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;direct&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;match&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;’&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;commonly&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;purchased&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;together&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;products&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Therefore&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevance&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Not bad&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;mf&#34;&gt;3.&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Query&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;southern&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;exposure&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;seed&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;exchange&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;company&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Keyword&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;uk&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;poppy&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;seeds&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Answer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;The&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevance&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;uk poppy seeds&amp;#34;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;southern exposure seed exchange company&amp;#34;&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Not bad&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;This&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;because&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;about&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;seed&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;exchange&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;company&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;uk poppy seeds&amp;#34;&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;specific&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;seed&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;that&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;could&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;be&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;offered&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;by&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;such&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;company&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Even&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;though&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;company&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;mentioned&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;based&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;southern&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;hemisphere&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;they&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;may&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;still&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;offer&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;seeds&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;other&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;regions&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;including&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UK&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;which&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;could&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;include&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;poppy&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;seeds&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Therefore&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevance&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Not bad&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;mf&#34;&gt;4.&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Query&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nissan&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;parts&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;canada&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Keyword&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;purchase&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tires&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Answer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;The&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevance&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;purchase tires&amp;#34;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;nissan parts canada&amp;#34;&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Bad&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;The&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;purchase tires&amp;#34;&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;directly&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;related&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;’&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Nissan&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;parts&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Canada&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Tires&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;are&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;part&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Nissan&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;car&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;therefore&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;are&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevant&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Nissan&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;parts&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Additionally&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;does&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relate&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;common&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;purchase&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Nissan&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;parts&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;it&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;substitute&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;search&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Therefore&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;relevance&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Bad&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;### Task:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Query&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;query&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Keyword&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;keyword&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Answer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>大语言模型数据清洗 · 论文笔记（三）</title>
+        <link>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/</link>
+        <pubDate>Tue, 10 Jun 2025 14:54:12 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/</guid>
+        <description>&lt;h1 id=&#34;finerweb-10bt-refining-web-data-with-llm-based-line-level-filtering&#34;&gt;FinerWeb-10BT: Refining Web Data with LLM-Based Line-Level Filtering
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2501.07314&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2501.07314FinerWeb-10BT: Refining Web Data with LLM-Based Line-Level Filtering&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/TurkuNLP/finerweb-10bt&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/TurkuNLP/finerweb-10bt&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;概述&#34;&gt;概述
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;GPT-4o mini 对 FineWeb 中 20,000 份文档样本进行逐行标注，使模型能够为低质量文本行创建描述性标签&lt;/li&gt;
+&lt;li&gt;标签被归纳为九大类别，并训练 DeBERTa-v3 分类器将过滤规模扩展至 FineWeb 的 100 亿 token 子集&lt;/li&gt;
+&lt;li&gt;结果表明：使用过滤数据训练的模型在 HellaSwag 基准测试中准确率更高，且能以最多减少 25%的数据量更快达到性能目标&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;核心问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;How well can an LLM identify low-quality content missed by &lt;strong&gt;heuristic filters&lt;/strong&gt;?&lt;/li&gt;
+&lt;li&gt;Does LLM-based &lt;strong&gt;quality filtering&lt;/strong&gt; of training datasets &lt;strong&gt;improve model performance&lt;/strong&gt;?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;paper定义高质量数据为：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;human-written, continuous English text from the main content of a website, reflecting natural language use across diverse contexts and domains.&lt;/p&gt;
+&lt;p&gt;网站主体内容中人类撰写的连贯英文文本，能反映跨领域自然语言使用。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;典型实例包括访谈核心文本、论坛帖子、新闻文章、博客和食谱。&lt;/li&gt;
+&lt;li&gt;与之相对，低质量内容则包含导航菜单、版权声明、编程代码和元数据等重复性元素。&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;过滤分为三个级别：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;文档级：基于简单规则整篇剔除文档
+&lt;ul&gt;
+&lt;li&gt;少于三句话的文档&lt;/li&gt;
+&lt;li&gt;存在过度重复内容的文档&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;行级：
+&lt;ul&gt;
+&lt;li&gt;删除含&lt;code&gt;javascript&lt;/code&gt;等术语的行、纯数字行或低于长度阈值的行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;字符级：
+&lt;ul&gt;
+&lt;li&gt;移除维基百科常见的引用标记如&lt;code&gt;[1]&lt;/code&gt;和&lt;code&gt;[citation needed]&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;现存的过滤方法具有数据集特异性，相关指标与数据集本身有关&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;行末标点比例≤0.12的文档（移除10.14% token，相比C4终止标点过滤的30%更高效）&lt;/li&gt;
+&lt;li&gt;重复行字符比例≥0.1的文档（移除12.47% token）&lt;/li&gt;
+&lt;li&gt;短行（&amp;lt;30字符）比例≥0.67的文档（移除3.73% token）&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;method&#34;&gt;Method
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;数据来源：Fineweb，构建来自 FineWeb 的 100 亿 token（约 1500 万文档）样本，称为 FineWeb-10BT&lt;/li&gt;
+&lt;li&gt;抽样20,000份文档进行GPT-4o mini 标注
+-   为每行生成描述性标签，分为高质量或低质量类别&lt;/li&gt;
+&lt;li&gt;O1-preview将生成的大量标签归类为更小、更方便管理的集合&lt;/li&gt;
+&lt;li&gt;训练基于encoder的分类器，scale到Fineweb10BT&lt;/li&gt;
+&lt;li&gt;使用清洗前后的Fineweb10BT训练GPT-2，在HellaSwag上benchmark&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;全过程是数据驱动的，不依赖于固定的类别&lt;/p&gt;
+&lt;h2 id=&#34;experiments&#34;&gt;Experiments
+&lt;/h2&gt;&lt;h3 id=&#34;gpt-4o-mini-标签标注&#34;&gt;GPT-4o mini 标签标注
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;48
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;49
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;50
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;51
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;52
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;53
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;54
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;55
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;56
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;57
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;58
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;59
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;60
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;61
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;62
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;63
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;64
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;65
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;66
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;67
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;68
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;69
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;70
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;71
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;72
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;73
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;74
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;75
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;76
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;77
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;78
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;79
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;80
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;81
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;82
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;83
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;84
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;85
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;86
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;# 系统提示词&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;system&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;You are an expert text classifier specializing in LLM training data. Your task is to classify each line of text based on its suitability for inclusion in a language model training dataset. High-quality content is clean, meaningful, well-structured, and useful for training language models. Low-quality content includes boilerplate elements (e.g., navigation menus, footers), non-linguistic symbols, formatting tags, placeholders like &amp;#39;Lorem ipsum&amp;#39;, and spammy, irrelevant, or toxic language.&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;# 用户提示词&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;prompt&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;sa&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    **Instructions:**
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    1. **Line Identification and Separation**:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;       - Each line starts with &amp;#34;Line X:&amp;#34; where X is the line number. Treat each &amp;#34;Line X:&amp;#34; as a single unit, regardless of length; do not split lines.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;       - Lines are separated by newline characters (`&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\\&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;n`) and dashes (`------`). If there&amp;#39;s no newline character, treat the entire text as a single line.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    2. **Contextual Classification**:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;       - Use the context of all lines when classifying each one, as they are sequential and from the same document.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;       - For example, a line starting with a hyphen might be part of a list and should be classified as &amp;#34;Clean.&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    3. **Assigning Labels**:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;       - Assign **exactly one label** to each line.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;       - If the line is suitable for inclusion, label it **&amp;#34;Clean&amp;#34;**.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;       - If not, assign a specific and descriptive label explaining why it&amp;#39;s unsuitable.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;       - **Prefer labels from the provided list**. Only create a new label (max three words) if absolutely necessary.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;       - **Do not use vague labels** like &amp;#34;Low-Quality,&amp;#34; &amp;#34;Bad,&amp;#34; &amp;#34;Unsuitable,&amp;#34; etc. Labels must be specific and descriptive.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    4. **Focus on Linguistic Content**:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;       - Retain valuable and diverse linguistic content suitable for language model pre-training, including natural language patterns, standard advertising copy, commercial language, and promotional content written in natural language.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    5. **Tolerance for Minor Errors and Toxic Language**:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;       - Minor grammatical errors, typos, or small mistakes do not disqualify a line from being &amp;#34;Clean.&amp;#34; Only exclude lines with pervasive errors that significantly hinder understanding.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;       - Mild expletives and controversial opinions do not disqualify a line from being &amp;#34;Clean.&amp;#34; Only exclude lines with blatantly hateful, harmful or toxic content.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    6. **Output Format**:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;       - Your output must have exactly the same number of lines as the input, matching each line number correctly.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;       - Output only the line number followed by the label, separated by a colon.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;       - Do not include any additional text or explanations.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;       - Do not output dashes between the lines.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    **Guidelines for &amp;#34;Clean&amp;#34; Lines**:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    Assign &amp;#34;Clean&amp;#34; to lines that:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    - Represent natural language suitable for training language models.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    - Include informal internet language, grammatical errors, questions, partial sentences, and common online expressions.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    - Contain standard advertising or commercial language in natural sentences.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    - Have properly formatted titles, headings, and readable content, even with stylistic elements.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    - Include minor in-text elements like email addresses, dates, or URLs within natural sentences.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    - Are general promotional content written in natural language.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    **Guidelines for Non-&amp;#34;Clean&amp;#34; Lines**:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    Lines not classified as &amp;#34;Clean&amp;#34; need a specific and descriptive label. Examples include lines that:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    - Contain blatantly hateful or harmful language. 
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    - Are long passages of non-English text (excluding common foreign phrases used in English).
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    - Include disclaimers, copyright notices, terms, and conditions.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    - Consist of menu items, login links, buttons, or navigation menus.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    - Contain random characters, garbled text, or excessive symbols.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    - Include programming code, HTML tags, or markup languages (when actual code or markup appears).
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    - Present keywords, tags, or similar data without sufficient context.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    - Are irrelevant or spam-like content not suitable for training.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    - Are **excessively** promotional without natural language structure (e.g., a list of product names and prices without sentences).
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    **Possible Labels for Non-&amp;#34;Clean&amp;#34; Lines**:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;non_quality_labels&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    **Example Input:**
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    Line 1: Welcome to our website!
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    ------
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    Line 2: Contact us at support@example.com.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    ------
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    Line 3: ***** $$$$$
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    ------
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    Line 4: &amp;lt;div&amp;gt;Content&amp;lt;/div&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    ------
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    **Example Output:**
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    Line 1: Clean  
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    Line 2: Clean  
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    Line 3: Encoding Errors  
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    Line 4: HTML Tags
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    **Now, classify the following lines:**
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;input&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;    &amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;48
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;49
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;50
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;51
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;52
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;53
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;54
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;55
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;56
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;57
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;58
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;59
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;60
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;61
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;62
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;63
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;64
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;65
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;66
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;67
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;68
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;69
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;70
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;71
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;72
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;指令&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;：&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;mf&#34;&gt;1.&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;行标识与分隔&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;每行以&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;“&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Line&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;X&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;”&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;开头&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;X为行号&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;将每个&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;“&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Line&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;X&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;”&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;视为一个独立单元&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;无论长度如何&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;；&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;请勿拆分&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;行之间用换行符&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;（`&lt;/span&gt;\&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;`）&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;和短横线&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;（`&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;------&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;`）&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;分隔&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;若无换行符&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;则将整个文本视为单行&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;mf&#34;&gt;2.&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;上下文分类&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;分类时需考虑所有行的上下文&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;因为它们来自同一文档且顺序相关&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;例如&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;以连字符开头的行可能是列表的一部分&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;应标记为&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;“&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Clean&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;”。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;mf&#34;&gt;3.&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;标签分配&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;每行&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;必须分配一个标签&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;若适合纳入训练数据&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;标记为&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;“&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Clean&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;”&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;若不适合&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;需提供具体描述性标签说明原因&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;优先使用提供的标签列表&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;仅在必要时创建新标签&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;（&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;最多三个单词&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;）。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;禁止使用模糊标签&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;如&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;“&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;低质量&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;”、“&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;差&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;”、“&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;不合适&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;”&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;等&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;标签必须具体明确&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;mf&#34;&gt;4.&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;语言内容聚焦&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;保留对语言模型预训练有价值的多样化语言内容&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;包括自然语言模式&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;、&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;标准广告文案&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;、&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;商业用语和自然语言编写的推广内容&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;mf&#34;&gt;5.&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;对轻微错误和毒性内容的容忍&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;轻微语法错误&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;、&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;拼写问题或小错误不影响标记为&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;“&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Clean&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;”。&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;仅当错误严重影响理解时才排除&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;轻度脏话或有争议的观点不影响标记为&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;“&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Clean&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;”。&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;仅排除明显仇恨&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;、&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;有害或毒性内容&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;mf&#34;&gt;6.&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;输出格式&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;输出行数必须与输入完全一致&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;且行号对应正确&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;每行输出格式为&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;“&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Line&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;X&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;标签&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;”，&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;仅包含行号和标签&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;禁止额外解释或文本&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;行间禁止输出短横线&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;“&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Clean&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;”&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;行标准&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;符合以下条件的行标记为&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;“&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Clean&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;”：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;代表适合训练的自然语言&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;包含网络用语&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;、&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;语法错误&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;、&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;问题&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;、&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;不完整句子或常见网络表达&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;含有自然句式中的标准广告或商业用语&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;格式正确的标题&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;、&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;题头或可读内容&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;（&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;即使包含样式元素&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;）。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;自然句子中的邮箱&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;、&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;日期或URL等次要元素&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;以自然语言编写的常规推广内容&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;非&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;“&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Clean&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;”&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;行标准&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;需提供具体描述性标签&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;例如&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;包含明显仇恨或有害内容&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;大段非英语文本&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;（&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;英语中常用的外语短语除外&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;）。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;免责声明&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;、&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;版权声明&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;、&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;条款协议&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;菜单项&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;、&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;登录链接&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;、&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;按钮或导航菜单&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;随机字符&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;、&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;乱码或过多符号&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;编程代码&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;、&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;HTML标签或标记语言&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;（&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;实际代码或标签出现时&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;）。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;缺乏上下文的关键词或标签&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;与训练无关的垃圾内容&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;过度推广&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;且无自然语言结构&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;（&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;如纯产品名和价格列表&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;）。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;非&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;“&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Clean&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;”&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;行标签示例&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;non_quality_labels&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;输入示例&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Line&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;欢迎访问我们的网站&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;！&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;------&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Line&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;联系支持邮箱&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;：&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;support&lt;/span&gt;&lt;span class=&#34;nd&#34;&gt;@example.com&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;------&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Line&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*****&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;$$$$$&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;------&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Line&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;div&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;内容&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;div&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;------&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;输出示例&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Line&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Clean&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Line&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Clean&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Line&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;编码错误&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Line&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;HTML标签&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;请对以下行进行分类&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;input&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;一开始并不提供任何的非Clean标签，由模型逐渐生成，优先使用已有的标签，否则进行扩充&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;未避免顺序带来的影响，每次迭代后随即打乱标签列表&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;文档最多被分割为多个chunk，每个chunk最多15行，方便结合上下文&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;单行不能超过200字符，否则按照标点进行切割为新的行&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;paper提到：超长行会导致模型的错误输出&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/assets/image-20250610184759762.png&#34;
+	width=&#34;875&#34;
+	height=&#34;596&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/assets/image-20250610184759762_hu_77126521573083f.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/assets/image-20250610184759762_hu_c2d6a7a748645646.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;50个最常见的标签 - 二维UMAP投影&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;146&#34;
+		data-flex-basis=&#34;352px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;其中每个圆点的大小对应相应类别的相对出现频率&lt;/p&gt;
+&lt;p&gt;法律文本出现在左上角，成人及有害内容集中于右上方中部，而参考文献则靠近底部。联系方式（如时间、日期和电话号码）松散分布在左侧，技术类内容（如编程代码）则位于中部。这些分布模式表明，LLM 生成的标签能够有效区分文本行质量，为我们最终构建分类体系提供了可靠依据。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;83%的数据被标记为清洁&lt;/li&gt;
+&lt;li&gt;547个生成的标签，其中部分只出现了一次
+&lt;ul&gt;
+&lt;li&gt;人工复查，直接标记为清洁&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;标签分组&#34;&gt;标签分组
+&lt;/h3&gt;&lt;p&gt;对于实现剩下的382个标签，通过O1-preview（推理模型）归类为更简洁、更易管理的宽泛类别&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;指导该模型创建清晰、明确的分类&lt;/li&gt;
+&lt;li&gt;每个标签只能属于一个组别&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Categories&lt;/th&gt;
+          &lt;th&gt;Lines&lt;/th&gt;
+          &lt;th&gt;%&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;em&gt;Clean&lt;/em&gt;&lt;/td&gt;
+          &lt;td&gt;283,267&lt;/td&gt;
+          &lt;td&gt;86.24&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;em&gt;Formatting, Style &amp;amp; Errors 格式、风格与错误&lt;/em&gt;&lt;/td&gt;
+          &lt;td&gt;13,150&lt;/td&gt;
+          &lt;td&gt;4.00&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;em&gt;Bibliographical &amp;amp; Citation References 参考文献与引用规范&lt;/em&gt;&lt;/td&gt;
+          &lt;td&gt;8,768&lt;/td&gt;
+          &lt;td&gt;2.67&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;em&gt;Promotional &amp;amp; Spam Content 促销与垃圾内容&lt;/em&gt;&lt;/td&gt;
+          &lt;td&gt;7,339&lt;/td&gt;
+          &lt;td&gt;2.23&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;em&gt;Contact &amp;amp; Identification Information 联系与身份识别信息&lt;/em&gt;&lt;/td&gt;
+          &lt;td&gt;3,898&lt;/td&gt;
+          &lt;td&gt;1.19&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;em&gt;Navigation &amp;amp; Interface Elements 导航与界面元素&lt;/em&gt;&lt;/td&gt;
+          &lt;td&gt;3,327&lt;/td&gt;
+          &lt;td&gt;1.01&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;em&gt;Technical Specifications &amp;amp; Metadata 技术规范与元数据&lt;/em&gt;&lt;/td&gt;
+          &lt;td&gt;3,298&lt;/td&gt;
+          &lt;td&gt;1.00&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;em&gt;Legal &amp;amp; Administrative Content 法律与行政内容&lt;/em&gt;&lt;/td&gt;
+          &lt;td&gt;2,992&lt;/td&gt;
+          &lt;td&gt;0.91&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;em&gt;Offensive or Inappropriate Content 冒犯性或不当内容&lt;/em&gt;&lt;/td&gt;
+          &lt;td&gt;2,433&lt;/td&gt;
+          &lt;td&gt;0.74&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Total 总计&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;328,472&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;100&lt;/strong&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;模型可能会发生错误，例如未能分配全部标签、标签归入多个类别……&lt;/p&gt;
+&lt;p&gt;人工修正一下即可&lt;/p&gt;
+&lt;h4 id=&#34;inter-annotator-agreement--人工标注者一致性iaa实验&#34;&gt;Inter-Annotator Agreement  人工标注者一致性（IAA）实验
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;抽取50篇文档的726行，人工独立分类到九个标签之内&lt;/li&gt;
+&lt;/ul&gt;
+$$
+\kappa = \frac{p_o - p_e}{1 - p_e}
+$$&lt;blockquote&gt;
+&lt;p&gt;假设两位标注员（A 和 B）对 100 条文本进行情感分类，标签为 &lt;strong&gt;正面（Positive）&lt;/strong&gt; 或 &lt;strong&gt;负面（Negative）&lt;/strong&gt;。他们的标注结果如下表：&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;&lt;/th&gt;
+          &lt;th&gt;B: Positive&lt;/th&gt;
+          &lt;th&gt;B: Negative&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;总计&lt;/strong&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;A: Positive&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;50&lt;/td&gt;
+          &lt;td&gt;10&lt;/td&gt;
+          &lt;td&gt;60&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;A: Negative&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;20&lt;/td&gt;
+          &lt;td&gt;20&lt;/td&gt;
+          &lt;td&gt;40&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;总计&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;70&lt;/td&gt;
+          &lt;td&gt;30&lt;/td&gt;
+          &lt;td&gt;100&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;p&gt;$p_o$是两位标注员&lt;strong&gt;实际一致的比例&lt;/strong&gt;，即对角线单元格的和除以总数。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;两位标注员在 70 条样本上达成一致（50 条 Positive + 20 条 Negative），因此$p_o = 0.7$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;$p_e$ 是假设两位标注员&lt;strong&gt;随机标注&lt;/strong&gt;时预期的一致比例。需分别计算每个类别随机一致的联合概率，再求和。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;A 标注 Positive 的概率&lt;/strong&gt;：$P_{\text{A+}} = \frac{60}{100} = 0.6$
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;A 标注 Negative 的概率&lt;/strong&gt;：$P_{\text{A-}} = \frac{40}{100} = 0.4$&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;B 标注 Positive 的概率&lt;/strong&gt;：$P_{\text{B+}} = \frac{70}{100} = 0.7$&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;B 标注 Negative 的概率&lt;/strong&gt;：$P_{\text{B-}} = \frac{30}{100} = 0.3$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;已知以上概率，接下来计算在随机标注的情况下，两人同时一致的概率：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;随机都标为 Positive 的概率：$P_{\text{A+}} \times P_{\text{B+}} = 0.6 \times 0.7 = 0.42$
+&lt;ul&gt;
+&lt;li&gt;随机都标为 Negative 的概率：$P_{\text{A-}} \times P_{\text{B-}} = 0.4 \times 0.3 = 0.12$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因此：$p_e = 0.42 + 0.12 = 0.54$&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;解释&lt;/strong&gt;：&lt;br&gt;
+如果两位标注员完全随机标注，预计会有 54% 的样本因巧合而一致。&lt;/p&gt;
+&lt;hr&gt;
+$$
+&gt;   \kappa = \frac{p_o - p_e}{1 - p_e} = \frac{0.7 - 0.54}{1 - 0.54} = \frac{0.16}{0.46} \approx 0.348
+&gt;   $$&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;κ ≈ 0.35&lt;/strong&gt;：介于 0.2~0.4 之间，说明两位标注员的一致性为“一般”（仅略高于随机水平）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;对比简单一致率 70%&lt;/strong&gt;：若直接用 70% 会高估一致性，而 Cohen&amp;rsquo;s Kappa 通过剔除随机影响，给出了更严格的评估。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;\( p_o \)&lt;/strong&gt;：直接观察到的对角线比例。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;\( p_e \)&lt;/strong&gt;：基于边际分布的“随机一致”概率，反映巧合带来的虚假一致性。
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Kappa 的意义&lt;/strong&gt;：量化了&lt;strong&gt;超越随机水平的一致性&lt;/strong&gt;，避免高估可靠性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;&lt;strong&gt;κ值范围&lt;/strong&gt;&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;&lt;strong&gt;一致性强度&lt;/strong&gt;&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;&lt;strong&gt;解释&lt;/strong&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;κ ≤ 0&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;比随机还差&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;一致性低于随机猜测（罕见，可能表示系统性分歧或标注错误）。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;0 &amp;lt; κ ≤ 0.2&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;轻微一致（可忽略）&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;一致性极低，几乎无实际意义。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;0.2 &amp;lt; κ ≤ 0.4&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;一般一致（弱）&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;一致性较弱，但高于随机水平（需谨慎对待结果）。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;0.4 &amp;lt; κ ≤ 0.6&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;中等一致&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;一致性适中，结果有一定可靠性（常见于人工标注任务）。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;0.6 &amp;lt; κ ≤ 0.8&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;高度一致&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;一致性较强，结果可靠（如专业医生诊断或严格标注流程）。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;0.8 &amp;lt; κ ≤ 1&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;几乎完全一致&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;一致性极高，接近完美（罕见，通常需检查是否过拟合或标注规则过于简单）。&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;通过IAA实验，得到：&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;A1&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;&lt;strong&gt;A2&lt;/strong&gt;&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;&lt;strong&gt;Avg. 平均&lt;/strong&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;All labels 所有标签&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;0.79&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;0.60&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;0.70&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;Clean vs. Non-clean 清洁与非清洁&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;0.78&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;0.67&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;0.73&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;基于 LLM 的分类方法总体上能为 FineWeb 文本生成可接受的标签。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;分类器训练&#34;&gt;分类器训练
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;DeBERTa-v3&lt;/li&gt;
+&lt;li&gt;Stella-en-400M-v5&lt;/li&gt;
+&lt;li&gt;XLM-RoBERTa-base（支持多语言）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;我们首先从文档中提取独立文本行，将每行作为单独样本。随后对数据进行随机打乱，并通过分层抽样划分为训练集（70%）、开发集（10%）和测试集（20%）。我们在每个模型上添加分类头，为每行文本生成 9 个类别的概率分布，同时微调分类头与基础模型。&lt;/p&gt;
+&lt;p&gt;我们采用 bfloat16 精度，学习率设为 1e-5，批处理大小为 16。基于评估损失值实施早停机制（耐心值为 5），最大训练轮数设为 5 轮，但模型通常在首轮后即收敛。我们对交叉熵损失函数施加 0.1 的标签平滑处理以提升泛化能力。所有训练均在单块 A100 GPU 上完成。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/assets/image-20250610192229209.png&#34;
+	width=&#34;899&#34;
+	height=&#34;634&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/assets/image-20250610192229209_hu_9bd47b2a1e06ee33.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/assets/image-20250610192229209_hu_d11c68ec86e2dc63.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;分类器混淆矩阵&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;141&#34;
+		data-flex-basis=&#34;340px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;大多数误分类样本被归入 Clean 类别，表明其他类别间具有较强区分度&lt;/li&gt;
+&lt;li&gt;冒犯性或不当内容区分度最低，源于 LLM 训练数据中对冒犯性材料定义边界存在固有困难&lt;/li&gt;
+&lt;li&gt;参考文献与引用类别因其易于识别的格式和内容特征，成为区分度最高的类别&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;分类器更倾向于将低质量文本行误标为&amp;quot;清洁&amp;quot;&lt;/p&gt;
+&lt;p&gt;而非错误地将高质量行标记为低质量&lt;/p&gt;
+&lt;p&gt;这种偏差有助于降低从数据集中丢弃有价值数据的风险&lt;/p&gt;
+&lt;h3 id=&#34;数据清洗&#34;&gt;数据清洗
+&lt;/h3&gt;&lt;p&gt;Clean数据占比86%确实可能会带来模型预测过度自信的问题&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;采用 Platt 缩放法
+&lt;ul&gt;
+&lt;li&gt;在保留测试集上训练 Platt 逻辑回归模型&lt;/li&gt;
+&lt;li&gt;在为 FineWeb-10BT 数据集预测质量分数时将其叠加应用于分类器之上&lt;/li&gt;
+&lt;li&gt;留坑，先不研究&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对整个数据集进行分片，每个分片128行为一个批次&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;转化为分类问题，只判断是否为Clean&lt;/li&gt;
+&lt;li&gt;阈值分别设为0.5或0.9&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/assets/image-20250610194623280.png&#34;
+	width=&#34;701&#34;
+	height=&#34;485&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/assets/image-20250610194623280_hu_f739427efcc7e2.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/assets/image-20250610194623280_hu_31a6a550d7d615f5.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;GPT-2训练结果&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;144&#34;
+		data-flex-basis=&#34;346px&#34;
+	
+&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>大语言模型数据清洗 · 论文笔记（二）</title>
+        <link>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/</link>
+        <pubDate>Fri, 06 Jun 2025 13:12:32 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1 id=&#34;the-pile-an-800gb-dataset-of-diverse-text-for-language-modeling&#34;&gt;The Pile: An 800GB Dataset of Diverse Text for Language Modeling
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2101.00027&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;arXiv 2101.00027 The Pile: An 800GB Dataset of Diverse Text for Language Modeling&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/EleutherAI/the-pile&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Github EleutherAI/the-pile&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通过合成多个数据集，提升多样性，提升大规模语言模型的跨领域通用知识与下游任务泛化能力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;稍微看偏了，paper更多的精华在如何去衡量数据集对模型性能的提升水平&lt;/p&gt;
+&lt;p&gt;和清洗关系不大&lt;/p&gt;
+&lt;h2 id=&#34;the-pile-datasets&#34;&gt;The Pile Datasets
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;由22个部分组成&lt;/li&gt;
+&lt;li&gt;由于不同数据集存在差异（维基百科质量更高），因此进行了加权处理
+&lt;ul&gt;
+&lt;li&gt;权重越高，被使用的概率越高（更可能被重复使用次数）&lt;/li&gt;
+&lt;li&gt;例如维基百科重复采用3次&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;部分表格：&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Dataset Name&lt;/th&gt;
+          &lt;th&gt;Raw Size (before sampling)&lt;/th&gt;
+          &lt;th&gt;Weight (%)&lt;/th&gt;
+          &lt;th&gt;Epochs&lt;/th&gt;
+          &lt;th&gt;Effective Size&lt;/th&gt;
+          &lt;th&gt;Mean Document Size&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Pile-CC&lt;/td&gt;
+          &lt;td&gt;227.12 GiB&lt;/td&gt;
+          &lt;td&gt;18.11%&lt;/td&gt;
+          &lt;td&gt;1.0&lt;/td&gt;
+          &lt;td&gt;227.12 GiB&lt;/td&gt;
+          &lt;td&gt;4.33 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;PubMed Central&lt;/td&gt;
+          &lt;td&gt;90.27 GiB&lt;/td&gt;
+          &lt;td&gt;14.40%&lt;/td&gt;
+          &lt;td&gt;2.0&lt;/td&gt;
+          &lt;td&gt;180.55 GiB&lt;/td&gt;
+          &lt;td&gt;30.55 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Books3&lt;/td&gt;
+          &lt;td&gt;100.96 GiB&lt;/td&gt;
+          &lt;td&gt;12.07%&lt;/td&gt;
+          &lt;td&gt;1.5&lt;/td&gt;
+          &lt;td&gt;151.44 GiB&lt;/td&gt;
+          &lt;td&gt;538.36 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;OpenWebText2&lt;/td&gt;
+          &lt;td&gt;62.77 GiB&lt;/td&gt;
+          &lt;td&gt;10.01%&lt;/td&gt;
+          &lt;td&gt;2.0&lt;/td&gt;
+          &lt;td&gt;125.54 GiB&lt;/td&gt;
+          &lt;td&gt;3.85 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;ArXiv&lt;/td&gt;
+          &lt;td&gt;56.21 GiB&lt;/td&gt;
+          &lt;td&gt;8.96%&lt;/td&gt;
+          &lt;td&gt;2.0&lt;/td&gt;
+          &lt;td&gt;112.42 GiB&lt;/td&gt;
+          &lt;td&gt;46.61 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Github&lt;/td&gt;
+          &lt;td&gt;95.16 GiB&lt;/td&gt;
+          &lt;td&gt;7.59%&lt;/td&gt;
+          &lt;td&gt;1.0&lt;/td&gt;
+          &lt;td&gt;95.16 GiB&lt;/td&gt;
+          &lt;td&gt;5.25 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;FreeLaw&lt;/td&gt;
+          &lt;td&gt;51.15 GiB&lt;/td&gt;
+          &lt;td&gt;6.12%&lt;/td&gt;
+          &lt;td&gt;1.5&lt;/td&gt;
+          &lt;td&gt;76.73 GiB&lt;/td&gt;
+          &lt;td&gt;15.06 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;StackExchange&lt;/td&gt;
+          &lt;td&gt;32.20 GiB&lt;/td&gt;
+          &lt;td&gt;5.13%&lt;/td&gt;
+          &lt;td&gt;2.0&lt;/td&gt;
+          &lt;td&gt;64.39 GiB&lt;/td&gt;
+          &lt;td&gt;2.16 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;USPTO Backgrounds&lt;/td&gt;
+          &lt;td&gt;22.90 GiB&lt;/td&gt;
+          &lt;td&gt;3.65%&lt;/td&gt;
+          &lt;td&gt;2.0&lt;/td&gt;
+          &lt;td&gt;45.81 GiB&lt;/td&gt;
+          &lt;td&gt;4.08 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;PubMed Abstracts&lt;/td&gt;
+          &lt;td&gt;19.26 GiB&lt;/td&gt;
+          &lt;td&gt;3.07%&lt;/td&gt;
+          &lt;td&gt;2.0&lt;/td&gt;
+          &lt;td&gt;38.53 GiB&lt;/td&gt;
+          &lt;td&gt;1.30 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Gutenberg (PG-19)&lt;/td&gt;
+          &lt;td&gt;10.88 GiB&lt;/td&gt;
+          &lt;td&gt;2.17%&lt;/td&gt;
+          &lt;td&gt;2.5&lt;/td&gt;
+          &lt;td&gt;27.19 GiB&lt;/td&gt;
+          &lt;td&gt;398.73 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;OpenSubtitles&lt;/td&gt;
+          &lt;td&gt;12.98 GiB&lt;/td&gt;
+          &lt;td&gt;1.55%&lt;/td&gt;
+          &lt;td&gt;1.5&lt;/td&gt;
+          &lt;td&gt;19.47 GiB&lt;/td&gt;
+          &lt;td&gt;30.48 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Wikipedia (en)&lt;/td&gt;
+          &lt;td&gt;6.38 GiB&lt;/td&gt;
+          &lt;td&gt;1.53%&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;3.0&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;19.13 GiB&lt;/td&gt;
+          &lt;td&gt;1.11 KiB&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Raw Size：采样前的大小&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Weight ：采样后的大小占比&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Epochs：被采样次数&lt;/p&gt;
+&lt;p&gt;Effective Size：采样后的有效大小&lt;/p&gt;
+&lt;p&gt;Mean Document Size：平均文档大小&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;部分数据已被发布者清洗的很好，只进行了最小程度的预处理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;pile-cc&#34;&gt;Pile-CC
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;由CC数据集清洗得到&lt;/li&gt;
+&lt;li&gt;使用justText清洗raw HTTP responses including page HTML，相比于&lt;code&gt;.WET&lt;/code&gt;的纯文本效果更好&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;others&#34;&gt;Others
+&lt;/h3&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;分类&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;来源&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;学术文献&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;ArXiv、PubMed Central、NIH ExPorter&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;图书与出版物&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;Books3、Project Gutenberg (PG-19)、BookCorpus2&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;代码与技术文档&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;GitHub、StackExchange&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;法律与政府文件&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;FreeLaw、USPTO Backgrounds&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;多语言与翻译文本&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;EuroParl、OpenSubtitles&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;社交与对话数据&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;HackerNews、Ubuntu IRC、Enron Emails&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;特殊领域数据&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;DeepMind Mathematics、PhilPapers（哲学）、YouTube字幕&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;网络爬取内容&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;Pile-CC（新构建的Clean Common Crawl子集）&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;benchmarking-language-models-with-the-pile&#34;&gt;Benchmarking Language Models with the Pile
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;可以训练数据，同时因为涉及领域广泛，也可以基准测试&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;划分为训练集、验证集、测试集（$0.1%$测试集+验证集，虽然比例很低但是仍各自超过1G）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;尽管去重，但是肯定还是存在重复&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;paper中首选了BPB作为评测指标：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;输入：负对数似然损失（Negative Log-Likelihood Loss）&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;模型在测试数据上输出一个损失值 $L$，表示其预测能力。&lt;/li&gt;
+&lt;li&gt;越低的 $L$ 表示模型越能准确预测下一个词。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;转换为 BPB：&lt;/strong&gt;（bits per UTF-8 encoded byte）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用公式将损失 $L$ 转换为每字节的比特数&lt;/li&gt;
+&lt;/ul&gt;
+$$
+    BPB = \frac{L_T}{L_B}\log_2 e^L = \frac{L_T}{L_B}\times \frac{L}{\ln2}
+    $$&lt;ul&gt;
+&lt;li&gt;其中：
+&lt;ul&gt;
+&lt;li&gt;$L_T$：数据集以 token 为单位的长度&lt;/li&gt;
+&lt;li&gt;$L_B$：数据集以 UTF-8 编码字节为单位的长度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;和困惑度有一点相似，用于衡量模型对数据的压缩效率或预测能力&lt;/p&gt;
+&lt;p&gt;与Bits per Character (bpc)不同的一点，字符不是一个很好的定义（Unicode 中字符的界定可能复杂（例如组合字符、emoji 等），导致统计不一致。）&lt;/p&gt;
+&lt;p&gt;同时bpb不受到分词的影响，UTF-8的字节定义是准确的，适合基于不同模型、分词进行比较&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;指标&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;优点&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;缺点&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;适用场景&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;Bits per Byte&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;分词无关、字节标准明确&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;对非字节级任务不直观&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;跨模型比较、数据压缩评估&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;Bits per Char&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;更贴近人类理解&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Unicode 字符定义模糊&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;字符级生成任务（需统一字符定义）&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;Perplexity&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;直接反映预测不确定性&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;依赖分词、数值范围不稳定&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;单一模型调参、生成质量评估&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;更加完整的解释&#34;&gt;更加完整的解释
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;自信息：指的是当我们接收到一个消息时所获得的信息量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在信息论中，自信息衡量一个事件携带的信息量，由概率$p$决定。&lt;/p&gt;
+$$
+I(p) = -\log_2(p)
+$$&lt;p&gt;为了编码这一事件，我们选择霍夫曼编码这类最优编码，同时为了最小化平均码长：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;高频事件：分配短码&lt;/li&gt;
+&lt;li&gt;低频事件：分配长码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;如果事件 $A$ 的概率  $p = 1/2$ ，则  $I(A) = -\log_2(1/2) = 1$  比特。这表示需要用 1 位二进制码（如 &lt;code&gt;0&lt;/code&gt; 或 &lt;code&gt;1&lt;/code&gt;）编码。
+-   如果事件  $B$  的概率  $p = 1/8$ ，则  $I(B) = -\log_2(1/8) = 3$  比特。需要用 3 位二进制码（如 &lt;code&gt;000&lt;/code&gt; 到 &lt;code&gt;111&lt;/code&gt; 之一）编码。&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+$$
+L = -\ln p
+$$&lt;p&gt;
+一般使用的是自然对数，同时其恰好表示了概率为$p$的事件的信息量（单位为纳特（底数取e））&lt;/p&gt;
+$$
+Bits = I(p) = -\log_2(p) =-\frac{\ln p}{\ln 2} =\frac{L}{\ln 2}
+$$&lt;p&gt;
+&lt;strong&gt;同时，模型的损失是基于token计算的，即每个token的预测损失&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;所以这里的单位是：Bits per token&lt;/p&gt;
+$$
+bpb =  \frac{L_T}{L_B}\times \frac{L}{\ln2}
+$$&lt;p&gt;
+这样就得到了：Bits per Byte，消除了分词器、语种编码等其他影响，可以直接衡量模型输出的质量&lt;/p&gt;
+&lt;h2 id=&#34;评测&#34;&gt;评测
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;然后paper实验验证了一下用训练集训练过的模型会更nb&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;通过分析哪些Pile子数据集的表现最差，就知道模型的训练数据分布在这块比较浅，就可以使用pile这块数据集进行补充&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为了探索哪些数据集是模型表现较差的，显然不能直接使用困惑度进行比较（数据集熵值不一样）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;结构化的数据（熵值低）困惑度天然会比非结构化的更低&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;困惑度可以用于衡量一个数据集是否更接近另一个数据集&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如CCNet，在维基百科内训练一个模型，计算其他数据集的困惑度&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;所以如果要比较的话，可以通过模型的损失值，拟合得越好，说明训练数据中包含了这部分，否则就是缺失&lt;/p&gt;
+&lt;p&gt;如果钱多的话，当然是直接把所有数据集用模型train一下，看看损失值，与没有train过的原模型（GPT-3），在测试集上比一下Loss&lt;/p&gt;
+&lt;p&gt;paper这里钱不够，改用了GPT2做了一个trick：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;首先需要知道GPT3比GPT2强多少&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;参考数据集：OWT2（与GPT训练数据高度相似的一个数据集）&lt;/li&gt;
+&lt;li&gt;用原生的GPT3和在Pile训练的GPT2进行比较&lt;/li&gt;
+&lt;li&gt;得到一个基准差值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+L^{GPT-3}_{OWT2} - L^{GPT-2-Pile}_{OWT2}
+$$&lt;ul&gt;
+&lt;li&gt;
+$$
+L^{GPT-3}_{TargetSet} - L^{GPT-2-Pile}_{TargetSet}
+$$&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;两个值作差：大概能衡量出在目标数据集上的提升水平&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250606162030021.png&#34;
+	width=&#34;1172&#34;
+	height=&#34;571&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250606162030021_hu_c35f4776da27d503.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250606162030021_hu_a020da3b1c3d156d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;205&#34;
+		data-flex-basis=&#34;492px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Books3等数据集与GPT-3训练数据高度相似，因此不会有过多的提升（0）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;清洗&#34;&gt;清洗
+&lt;/h2&gt;&lt;p&gt;看不动了，以后再说，整理一下清洗的东西：&lt;/p&gt;
+&lt;h3 id=&#34;c1-pile-ccclean-common-crawl&#34;&gt;C.1 Pile-CC（Clean Common Crawl）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Common Crawl 的 WARC 文件（2013–2020 年）。&lt;/li&gt;
+&lt;li&gt;提取工具
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;jusText&lt;/code&gt; 提取网页正文，去除菜单、页脚等模板文本。&lt;/li&gt;
+&lt;li&gt;对比了 &lt;code&gt;Trafilatura&lt;/code&gt;、&lt;code&gt;Newspaper&lt;/code&gt;、&lt;code&gt;Goose3&lt;/code&gt;、&lt;code&gt;DragNet&lt;/code&gt;，最终选择 &lt;code&gt;jusText&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;语言过滤
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;pycld2&lt;/code&gt; 检测网页语言，仅保留英文内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;质量控制
+&lt;ul&gt;
+&lt;li&gt;使用 FastText 分类器对 OpenWebText2 和 Common Crawl 进行分类，过滤低质量页面。&lt;/li&gt;
+&lt;li&gt;参数 α = 3，使用 Pareto 分布阈值进行过滤。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;去重
+&lt;ul&gt;
+&lt;li&gt;使用 MinHash LSH 算法在内存中进行文档级去重。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;其他说明
+&lt;ul&gt;
+&lt;li&gt;未使用 WET 文件，因其包含大量模板文本。&lt;/li&gt;
+&lt;li&gt;与 Brown et al. (2020) 类似，但只处理了部分 WARC 文件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c2-pubmed-centralpmc&#34;&gt;C.2 PubMed Central（PMC）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：美国国家生物技术信息中心（NCBI）提供。&lt;/li&gt;
+&lt;li&gt;格式转换
+&lt;ul&gt;
+&lt;li&gt;使用 Pandoc 将 JATS 格式转为 Markdown。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;清理步骤
+&lt;ul&gt;
+&lt;li&gt;删除以 &lt;code&gt;:::&lt;/code&gt; 开头的行（Pandoc 添加的 HTML 类标签）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c3-books3&#34;&gt;C.3 Books3
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：未具体说明，但为高质量书籍数据集。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;处理细节&lt;/strong&gt; ：无额外处理。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c4-openwebtext2owt2&#34;&gt;C.4 OpenWebText2（OWT2）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Reddit 提交链接。&lt;/li&gt;
+&lt;li&gt;处理步骤
+&lt;ul&gt;
+&lt;li&gt;提取 URL 及其元数据。&lt;/li&gt;
+&lt;li&gt;去除得分低于 3 的链接。&lt;/li&gt;
+&lt;li&gt;使用 Newspaper 抓取网页内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;去重
+&lt;ul&gt;
+&lt;li&gt;使用 DataSketch 库进行文档级 MinHash LSH 去重。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c5-arxiv&#34;&gt;C.5 ArXiv
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：arXiv.org 学术论文。&lt;/li&gt;
+&lt;li&gt;处理步骤
+&lt;ul&gt;
+&lt;li&gt;转换为纯文本。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;去重
+&lt;ul&gt;
+&lt;li&gt;使用与验证/测试集对比的方法去重。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c6-github&#34;&gt;C.6 GitHub
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：GitHub 上的开源项目。&lt;/li&gt;
+&lt;li&gt;获取方式
+&lt;ul&gt;
+&lt;li&gt;收集星标数 &amp;gt; 100 的仓库。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;提取内容
+&lt;ul&gt;
+&lt;li&gt;提取可用于语言建模的文本（代码、README、注释等）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;限制条件
+&lt;ul&gt;
+&lt;li&gt;单个仓库克隆和提取时间不超过 300 秒。&lt;/li&gt;
+&lt;li&gt;文件大小上限为 100KB（避免大文件中的重复自动生成内容）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c7-freelaw&#34;&gt;C.7 FreeLaw
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：法律数据库。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;未提供详细清洗步骤。&lt;/li&gt;
+&lt;li&gt;数据来自已有结构化格式，可能已做过预处理。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c8-stack-exchange&#34;&gt;C.8 Stack Exchange
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Stack Overflow 等问答网站。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;提取问题、回答、评论。&lt;/li&gt;
+&lt;li&gt;按照层级结构组织。&lt;/li&gt;
+&lt;li&gt;保留 &lt;code&gt;/me&lt;/code&gt; 类型的动作描述，删除系统消息。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c9-uspto-backgrounds&#34;&gt;C.9 USPTO Backgrounds
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：美国专利商标局（USPTO）公开数据。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;处理 XML 格式的专利文件。&lt;/li&gt;
+&lt;li&gt;提取“Background”部分内容。&lt;/li&gt;
+&lt;li&gt;处理不同格式变化（APS → XML）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c10-pubmed-abstracts&#34;&gt;C.10 PubMed Abstracts
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：PubMed 数据库摘要。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;排除缺失或格式错误的条目。&lt;/li&gt;
+&lt;li&gt;合并标题和摘要，去除版权信息。&lt;/li&gt;
+&lt;li&gt;排除已在 PMC 中出现的内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c11-project-gutenbergpg-19&#34;&gt;C.11 Project Gutenberg（PG-19）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：古登堡计划电子书。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;处理方式&lt;/strong&gt; ：无额外处理。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c12-opensubtitles&#34;&gt;C.12 OpenSubtitles
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Tiedemann (2016) 提供的英文字幕数据。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;提取 XML 文件中的字幕文本。&lt;/li&gt;
+&lt;li&gt;忽略元数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c13-wikipedia-en&#34;&gt;C.13 Wikipedia (en)
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Wikipedia English dataset from TensorFlow Datasets。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;wikipedia/20200301.en&lt;/code&gt; 数据集。&lt;/li&gt;
+&lt;li&gt;在每篇文章开头添加标题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c14-deepmind-mathematicsdm-math&#34;&gt;C.14 DeepMind Mathematics（DM Math）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：DeepMind 数学数据集。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;包含 Easy、Medium、Hard 难度。&lt;/li&gt;
+&lt;li&gt;将每个题目拆分为 8 KiB 块。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c15-ubuntu-irc&#34;&gt;C.15 Ubuntu IRC
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Ubuntu IRC 日志（2004–2020）。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;删除系统消息（如加入、离开频道）。&lt;/li&gt;
+&lt;li&gt;保留 &lt;code&gt;/me&lt;/code&gt; 动作。&lt;/li&gt;
+&lt;li&gt;去除时间戳。&lt;/li&gt;
+&lt;li&gt;每周日志合并为一个文档，按日期分隔。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c16-bookcorpus2&#34;&gt;C.16 BookCorpus2
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：基于 Kobayashi (2018) 方法重新构建。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;收集更多书籍（共 17,868 本，原版为 11,038 本）。&lt;/li&gt;
+&lt;li&gt;使用修改后的 EPUB 解析器提取文本。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c17-europarl&#34;&gt;C.17 EuroParl
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：欧洲议会会议记录。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;已经是干净文本，无需额外清洗。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c18-hackernews&#34;&gt;C.18 HackerNews
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Hacker News 提交链接。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;提取文章标题、URL、子标题、作者。&lt;/li&gt;
+&lt;li&gt;按照评论层级组织内容。&lt;/li&gt;
+&lt;li&gt;使用 html2text 提取 HTML 文本。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c19-youtube-subtitles&#34;&gt;C.19 YouTube Subtitles
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：YouTube 视频字幕。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;三阶段构建：
+&lt;ol&gt;
+&lt;li&gt;GPT-3 生成搜索关键词。&lt;/li&gt;
+&lt;li&gt;下载相关视频。&lt;/li&gt;
+&lt;li&gt;提取字幕并按时间对齐。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;多语言字幕按分钟段落对齐，并标注语言。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c20-philpapers&#34;&gt;C.20 PhilPapers
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：PhilPapers 数据库（哲学论文）。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;使用 OAI-MPH 协议抓取元数据。&lt;/li&gt;
+&lt;li&gt;转换为纯文本。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c21-nih-exporter&#34;&gt;C.21 NIH ExPorter
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：NIH Grant Application 数据。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;合并 ExPORTER 和 CRISP 数据。&lt;/li&gt;
+&lt;li&gt;按申请 ID 去重。&lt;/li&gt;
+&lt;li&gt;删除空或太短的摘要。&lt;/li&gt;
+&lt;li&gt;去除行政模板内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;c22-enron-emails&#34;&gt;C.22 Enron Emails
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt; ：Enron 公司邮件存档。&lt;/li&gt;
+&lt;li&gt;处理方式
+&lt;ul&gt;
+&lt;li&gt;使用 &lt;code&gt;mailparser&lt;/code&gt; 提取邮件正文作为文档。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>大语言模型数据清洗 · 论文笔记（一）</title>
+        <link>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/</link>
+        <pubDate>Fri, 06 Jun 2025 01:38:32 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/</guid>
+        <description>&lt;h2 id=&#34;ccnet-extracting-high-quality-monolingual-datasets-from-web-crawl-data&#34;&gt;CCNet: Extracting High Quality Monolingual Datasets from Web Crawl Data
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1911.00359&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ArXiv1911.00359 CCNet: Extracting High Quality Monolingual Datasets from Web Crawl Data&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/facebookresearch/cc_net&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Github facebookresearch/cc_net: Tools to download and cleanup Common Crawl data&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;概述&#34;&gt;概述
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;为保证数据质量，倾向于通过维基百科等高质量数据来源合成&lt;code&gt;ad-hoc datasets&lt;/code&gt;（专门构建的数据集），但是低资源语言不好做&lt;/li&gt;
+&lt;li&gt;paper从CC数据集出发，执行了FastText所提出的pipeline，但不同之处：
+&lt;ul&gt;
+&lt;li&gt;保留文档级别的结构，支持Bert等需要段落级别的模型训练
+&lt;ul&gt;
+&lt;li&gt;之前的方法切成单个句子，只关心局部上下文，切分成了n-gram&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;增加一个可选的&lt;strong&gt;单语言过滤&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;针对目标语言进行筛选&lt;/li&gt;
+&lt;li&gt;筛选出接近维基百科风格的文档
+&lt;ul&gt;
+&lt;li&gt;在目标语言的维基百科等语料上训练一个语言模型&lt;/li&gt;
+&lt;li&gt;通过困惑度进行文档打分，只保留那些 perplexity 较低的文档&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;与传统方法相比：
+&lt;ul&gt;
+&lt;li&gt;传统方法：多数只适用于英语的特殊方法，手动设置规则&lt;/li&gt;
+&lt;li&gt;paper：通用性强，适用于多种语言&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;method&#34;&gt;Method
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250605191955047.png&#34;
+	width=&#34;1142&#34;
+	height=&#34;594&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250605191955047_hu_c0a8034b02c0e136.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250605191955047_hu_f79931d4cc592469.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Figure 1&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;192&#34;
+		data-flex-basis=&#34;461px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;下载网页快照的.WET文件，为每个段落生成哈希值，转化为.bin的二进制文件&lt;/li&gt;
+&lt;li&gt;独立处理每个WET下的文档，通过哈希进行去重，识别语言，计算困惑度&lt;/li&gt;
+&lt;li&gt;按照语言和困惑度得分重新分组，保存为 JSON 格式的文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;预处理&#34;&gt;预处理
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;每个快照包含大约 20 到 30TB 的未压缩纯文本&lt;/li&gt;
+&lt;li&gt;将 WET 文件分组为每个 5GB 的分片（shard），转化为json格式&lt;/li&gt;
+&lt;li&gt;json中的每一条entry：记录了url、文本等信息，代表了一个网页的内容
+&lt;ul&gt;
+&lt;li&gt;文本中含有段落&lt;/li&gt;
+&lt;li&gt;所以这里的逻辑是：快照（.WET） &amp;gt; shard &amp;gt; entry &amp;gt; 段落&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;去重&#34;&gt;去重
+&lt;/h3&gt;&lt;p&gt;需要删除不同网页之间的重复段落（占了70%），为方便去重：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;标准化&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;字符全部小写&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;所有数字变成0&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;删除所有Unicode的Punctuation Marks（标点符号）、Accent Marks（重音符号），完成段落标准化&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;标点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;英文标点：&lt;code&gt;.,!?;:&amp;quot;&#39;()[]{}-–—…@#$%^&amp;amp;*&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;中文标点：&lt;code&gt;，。！？；：“”‘’（）【】《》……&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;法语标点：&lt;code&gt;«»&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;阿拉伯语标点：&lt;code&gt;،؛؟&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;日文标点：&lt;code&gt;、。，・「」『』&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Accent：表示发音变化或区分拼写&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;法语：&lt;code&gt;à, é, ô, ù, ç&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;西班牙语：&lt;code&gt;ñ, á, é&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;德语：&lt;code&gt;ä, ö, ü&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;波兰语：&lt;code&gt;ą, ę, ś, ź&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;希腊语：&lt;code&gt;ά, έ, ό&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;计算哈希
+&lt;ul&gt;
+&lt;li&gt;对每个shard的每个段落计算SHA哈希值（160位），保存为二进制文件&lt;code&gt;.bin&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;每个段落的前64位作为其id便于维护&lt;/li&gt;
+&lt;li&gt;对每个段落，查询处理过的**一些（见后文）**shard的二进制文件，若出现过则舍弃，否则保存在本shard二进制文件中&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;由于很多步骤都是独立的，因此支持并行&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于网页数据，需要去掉导航栏、cookie、联系信息等&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;语言识别&#34;&gt;语言识别
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;FastText模型，基于 Wikipedia、Tatoeba 和 SETimes 数据集进行训练&lt;/li&gt;
+&lt;li&gt;支持176种语言，为每一种语言输出0-1的置信度（总和为1）&lt;/li&gt;
+&lt;li&gt;若某语言得分超过0.5则进行确认，否则舍弃（无法识别语言）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;语言模型过滤&#34;&gt;语言模型过滤
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;对每种语言，训练了一个tokenizer和语言模型
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;KenLM 库&lt;/strong&gt;实现的5-gram模型（处理大量数据效率高）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;使用tokenizer对每一个entry进行分词，使用语言模型计算每个段落的困惑度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;消融实验&#34;&gt;消融实验
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;先去重再语言识别
+&lt;ul&gt;
+&lt;li&gt;可以去除一些英文的Cookie警告，防止误识别为英文&lt;/li&gt;
+&lt;li&gt;去重跨越的shard越多去除内容越多，去重效果越好，但是自然开销变大
+&lt;ul&gt;
+&lt;li&gt;选择50均衡了资源与性能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;最终数据集的指标&#34;&gt;最终数据集的指标
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;使用训练好的语言模型对段落进行困惑度（perplexity）评分，作为衡量文本质量的代理指标。&lt;/li&gt;
+&lt;li&gt;结果发现：
+&lt;ul&gt;
+&lt;li&gt;高质量内容（如新闻、写作规范的内容）通常位于数据集的“头部”（head）&lt;/li&gt;
+&lt;li&gt;含有关键词列表或与 Wikipedia 差异较大的口语化内容会落在“尾部”（tail）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;不同语言的困惑度分布差异较大，这主要是由于训练语言模型所使用的 Wikipedia 数据大小不同，而不是某些语言本身缺乏高质量内容。&lt;/li&gt;
+&lt;li&gt;因此，为每种语言设置了不同的困惑度阈值，将语料库划分为三个部分：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Head（头部）&lt;/strong&gt; ：高质量段落&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Middle（中部）&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tail（尾部）&lt;/strong&gt; ：较低质量段落&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为了验证数据集的质量，作者使用 fastText 和 BERT 模型进行实验：&lt;/p&gt;
+&lt;h4 id=&#34;fasttext-实验&#34;&gt;fastText 实验
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;对英语和波兰语的不同质量子集（head、mid、tail）训练词向量&lt;/li&gt;
+&lt;li&gt;在标准的类比任务数据集（Mikolov et al., 2013）上评估性能&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;结果表明&lt;/strong&gt; ：随着从 tail 到 head 的变化，模型性能逐步提升，说明基于困惑度的过滤方法能有效提升数据质量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;子集&lt;/th&gt;
+          &lt;th&gt;英语总分&lt;/th&gt;
+          &lt;th&gt;波兰语总分&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;head&lt;/td&gt;
+          &lt;td&gt;77.9&lt;/td&gt;
+          &lt;td&gt;65.3&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;mid&lt;/td&gt;
+          &lt;td&gt;74.2&lt;/td&gt;
+          &lt;td&gt;62.8&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;tail&lt;/td&gt;
+          &lt;td&gt;62.0&lt;/td&gt;
+          &lt;td&gt;59.9&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id=&#34;bert-实验&#34;&gt;BERT 实验
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;分别使用 Wikipedia 和 CCNet 提取的 head 数据训练 BERT-BASE 模型&lt;/li&gt;
+&lt;li&gt;训练语言包括：英语（en）、俄语（ru）、中文（zh）、乌尔都语（ur）&lt;/li&gt;
+&lt;li&gt;使用 XNLI 任务评估模型表现&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;语言&lt;/th&gt;
+          &lt;th&gt;Wikipedia 准确率&lt;/th&gt;
+          &lt;th&gt;CCNet 准确率&lt;/th&gt;
+          &lt;th&gt;提升幅度&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;en&lt;/td&gt;
+          &lt;td&gt;82.8&lt;/td&gt;
+          &lt;td&gt;85.0&lt;/td&gt;
+          &lt;td&gt;+2.2&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;ru&lt;/td&gt;
+          &lt;td&gt;73.3&lt;/td&gt;
+          &lt;td&gt;76.4&lt;/td&gt;
+          &lt;td&gt;+3.1&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;zh&lt;/td&gt;
+          &lt;td&gt;77.0&lt;/td&gt;
+          &lt;td&gt;77.9&lt;/td&gt;
+          &lt;td&gt;+0.9&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;ur&lt;/td&gt;
+          &lt;td&gt;57.3&lt;/td&gt;
+          &lt;td&gt;64.3&lt;/td&gt;
+          &lt;td&gt;+7.0 ✅（显著提升）&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;特别是对于低资源语言乌尔都语（ur），Wikipedia 数据太小导致模型几乎无效，而使用 CCNet 提取的数据训练后，准确率提升了 &lt;strong&gt;7 个百分点&lt;/strong&gt; ，证明了该数据集对低资源语言预训练的重要性。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;维基百科的数据不足，CCNet从CC中提取了高质量语言专用的数据，效果显著&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

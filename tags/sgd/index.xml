@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>SGD on BiribiriBird</title>
+        <link>https://example.com/tags/sgd/</link>
+        <description>Recent content in SGD on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Tue, 04 Nov 2025 22:53:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/sgd/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>强化学习的数学原理 · Chap6 · Stochastic Approximation and SGD</title>
+        <link>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap6-stochastic-approximation-and-sgd/</link>
+        <pubDate>Tue, 04 Nov 2025 22:53:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap6-stochastic-approximation-and-sgd/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1sd4y167NS&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.bilibili.com/video/BV1sd4y167NS&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;以计算采样数据的平均数为例&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;采样大量数据，最后一次性计算平均值&lt;/li&gt;
+&lt;li&gt;采样一个算一次，迭代计算，手上的均值最终会趋向真实&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们采样第二种方法，记：&lt;/p&gt;
+$$
+w_{k+1} = \frac{1}{k}\sum_{i=1}^k x_i
+$$&lt;p&gt;
+则：&lt;/p&gt;
+$$
+\begin{split}
+w_{k+1} &amp;= \frac{1}{k}\sum_{i=1}^k x_i = \frac{1}{k}(\sum_{i=1}^{k-1}x_i+x_k)\\
+&amp;= \frac{1}{k}\left [ (k-1)w_k + x_k \right ] = w_k - \frac{1}{k}(w_k-x_k)
+\end{split}
+$$&lt;h2 id=&#34;robbins-monro-algorithm&#34;&gt;Robbins-Monro Algorithm
+&lt;/h2&gt;&lt;p&gt;对于一个方程：&lt;/p&gt;
+$$
+g(w) = 0
+$$&lt;p&gt;
+我们希望求出解$w^&lt;em&gt;$，使得$g(w^&lt;/em&gt;) = 0$&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;为了简化问题，$g(w)$是一个单调递增的函数&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;如果函数已知，我们可以通过牛顿迭代法求解&lt;/p&gt;
+&lt;p&gt;但是如果函数未知，我们通过采样：&lt;/p&gt;
+$$
+y_k = g(w_k)
+$$&lt;p&gt;
+往往带有噪声：&lt;/p&gt;
+$$
+\widetilde{g}(w_k,\eta_k) = g(w_k) + \eta_k
+$$&lt;p&gt;
+我们定义一个迭代过程：&lt;/p&gt;
+$$
+w_{k+1} = w_k - a_k\widetilde{g}(w_k,\eta_k)
+$$&lt;ul&gt;
+&lt;li&gt;当$w_k&amp;gt;w^*$时，$g(w_k)&amp;gt;0$时
+&lt;ul&gt;
+&lt;li&gt;$w_{k+1} = w_k - a_k\widetilde{g}(w_k,\eta_k) &amp;lt; w_k$&lt;/li&gt;
+&lt;li&gt;所以会往$w^*$走一步&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;当$w_k&amp;lt;w^*$时，$g(w_k)&amp;lt;0$​时
+&lt;ul&gt;
+&lt;li&gt;$w_{k+1} = w_k - a_k\widetilde{g}(w_k,\eta_k) &amp;gt; w_k$&lt;/li&gt;
+&lt;li&gt;所以会往$w^*$走一步&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;但其实这个非常理想，条件也比较苛刻，需要满足&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;$0&amp;lt;c_1\leq \nabla g(w)\leq c_2,\text{ for all } w$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$c_1$保证函数单调递增，且必然存在0解&lt;/li&gt;
+&lt;li&gt;$c_2$​保证梯度有界，防止垂直&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$\sum a_k = \infty, \sum a_k^2 &amp;lt; \infty$​&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;促进探索：$a_k$​是步长，若不趋近无穷，代表调整幅度与范围是有限的&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;抑制噪声：噪声的方差大致是$\sum a_k^2 \mathbb{E}\left| \eta_k^2\right |$，$\sum a_k^2 &amp;lt; \infty$​保证方差不会发散&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;同时暗含了$a_k\to 0$，使得最后的$w^*$趋于定值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$\mathbb{E}(\eta_k|\mathcal{H}_k) =0, \text{ and }\mathbb{E}(\eta_k^2|\mathcal{H}_k &amp;lt; \infty)$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;噪声条件期望为0，可以保证噪声是不依赖于历史的（不会随着采样步数增加而增加/减少，即不存在系统性偏移）&lt;/li&gt;
+&lt;li&gt;条件方差不会无穷大，从而避免出现极端大的扰动，保证理论分析（如大数定律、中心极限定理）可用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;懒得纠结太多了&lt;/p&gt;
+&lt;h2 id=&#34;stochastic-gradient-descent&#34;&gt;Stochastic Gradient Descent
+&lt;/h2&gt;&lt;p&gt;随机梯度下降的目标是：&lt;/p&gt;
+$$
+\min_w \mathcal{J}(w) = \mathbb{E}\left[f(w,X)\right]
+$$&lt;p&gt;
+是一个含有随机变量的式子，需要优化一个参数$w$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Method1：&lt;strong&gt;Gradient Descent&lt;/strong&gt;，沿梯度的反方向走一个步长&lt;/li&gt;
+&lt;/ul&gt;
+$$
+w_{k+1} = w_k -\alpha_k \nabla_w \mathbb{E}[f(w_k,X)]
+$$&lt;p&gt;
+但是实际上我们很难获得所有样本分布$X$（数据是收集不完的）&lt;/p&gt;
+&lt;p&gt;所以这是一个理想的情况&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Method2：&lt;strong&gt;Batch Gradient Descent&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;考虑使用一个Batch进行近似&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+\mathbb{E}[\nabla_wf(w_k,X)] \approx \frac{1}{n}\sum_i^n\nabla_w f(w_k,x_i)\\
+w_{k+1} = w_k - \alpha_k  \frac{1}{n}\sum_i^n\nabla_w f(w_k,x_i)
+$$&lt;p&gt;
+但是每次迭代，都需把每一个Batch进行扫描，并不是很轻松&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Method3：&lt;strong&gt;Stochastic Gradient Descent&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;其实就是batch变成1了&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+w_{k+1} = w_k - \alpha_k  \nabla_w f(w_k,x_i)
+$$&lt;p&gt;
+为了证明SGD算法是收敛的，我们可以尝试构造一个方程：&lt;/p&gt;
+$$
+g(w) = \mathbb{E}\left[\nabla_w f(w,X)\right] = 0
+$$&lt;p&gt;
+我们使用RM算法求解，则有：&lt;/p&gt;
+$$
+\widetilde{g}(w,\eta) = g(w) + \eta = \mathbb{E}\left[\nabla_w f(w,X)\right] + \eta
+$$&lt;p&gt;
+则有迭代式：&lt;/p&gt;
+$$
+w_{k+1} = w_k - a_k\widetilde{g}(w_k,\eta_k) = w_k - a_k\nabla_wf(w_k,x_k) 
+$$&lt;p&gt;
+所以事实上SGD就是一个RM&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;截止到此，后续内容我应该不会继续深入，理论性比较强&lt;/p&gt;
+&lt;p&gt;之后如果有涉猎到的话再进行学习&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

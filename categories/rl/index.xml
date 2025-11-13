@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>RL on BiribiriBird</title>
+        <link>https://example.com/categories/rl/</link>
+        <description>Recent content in RL on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Fri, 17 Oct 2025 13:00:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/rl/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>强化学习2025 · 3 DQN</title>
+        <link>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A02025-3-dqn/</link>
+        <pubDate>Fri, 17 Oct 2025 13:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A02025-3-dqn/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;q-learning&#34;&gt;Q-Learning
+&lt;/h2&gt;&lt;p&gt;定义$Q$​函数为动作价值函数：评估某个状态下采取某个动作的质量&lt;/p&gt;
+$$
+Q(s,a) = \mathbb{E}\left[R(s,a) + \gamma \max_{a&#39;}Q(s&#39;,a&#39;)\right]
+$$&lt;blockquote&gt;
+&lt;p&gt;通过当前奖励和未来期望的最大回报来计算Q值&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;这是一个基于动态规划的状态转移方程，因此求解该内容的开销是$O(|S|\times |A|)$&lt;/p&gt;
+&lt;h3 id=&#34;dqndeep-q-network&#34;&gt;DQN(Deep Q Network)
+&lt;/h3&gt;&lt;p&gt;考虑使用深度网络$Q(s,a;\theta)$近似$Q$函数&lt;/p&gt;
+&lt;p&gt;为提高稳定性，DQN引入两个重要技术：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;目标网络（Target Network）：$\hat Q(s&amp;rsquo;,a&amp;rsquo;;\theta^{-})$，该网络定期更新（而非每次都更新），保证$Q$值稳定&lt;/li&gt;
+&lt;li&gt;经验回放（Experience Replay）：与环境交互时，将每个状态+动作+奖励+下一个状态构成的四元组存储在经验回放池，训练时随机抽取minibatch进行训练&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>强化学习2025 · 1 Markov Decision Process</title>
+        <link>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A02025-1-markov-decision-process/</link>
+        <pubDate>Fri, 10 Oct 2025 13:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A02025-1-markov-decision-process/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;第一节课没记笔记，生成一下&lt;/p&gt;
+&lt;h1 id=&#34;马尔可夫决策过程mdp与强化学习基础笔记&#34;&gt;马尔可夫决策过程（MDP）与强化学习基础笔记
+&lt;/h1&gt;&lt;h2 id=&#34;1-马尔可夫决策过程mdp定义&#34;&gt;1. 马尔可夫决策过程（MDP）定义
+&lt;/h2&gt;&lt;p&gt;MDP 是强化学习的数学建模框架，用于描述智能体（Agent）在环境中与状态、动作、奖励的交互。&lt;/p&gt;
+&lt;p&gt;一个 MDP 通常由五元组表示：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;状态集合 $S$&lt;/strong&gt;：环境可能处于的所有状态。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;动作集合 $A$&lt;/strong&gt;：智能体在某状态下可选择的动作。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;状态转移概率 $P(s&amp;rsquo;|s,a)$&lt;/strong&gt;：在状态 $s$ 下采取动作 $a$ 后转移到新状态 $s&amp;rsquo;$ 的概率。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;奖励函数 $R(s,a)$&lt;/strong&gt;：在状态 $s$ 下采取动作 $a$ 后获得的即时奖励。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;折扣因子 $\gamma ;(0 \leq \gamma &amp;lt; 1)$&lt;/strong&gt;：衡量未来奖励的重要性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;目标：寻找一条最优策略 $\pi$，使得长期累积奖励（回报）最大化。&lt;/p&gt;
+&lt;h2 id=&#34;2-策略policy&#34;&gt;2. 策略（Policy）
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;策略 $\pi$&lt;/strong&gt; 定义为：$\pi(a|s)$ 表示在状态 $s$ 下选择动作 $a$ 的概率。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;确定性策略&lt;/strong&gt;：$\pi(s) = a$&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;随机性策略&lt;/strong&gt;：$\pi(a|s)$ 是一个概率分布。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;3-价值函数value-function&#34;&gt;3. 价值函数（Value Function）
+&lt;/h2&gt;&lt;p&gt;价值函数用于评估某个状态或状态-动作的优劣：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;状态价值函数 $V^\pi(s)$&lt;/strong&gt;：在状态 $s$ 下遵循策略 $\pi$ 的期望回报&lt;/p&gt;
+$$
+  V^{\pi}(s) = \mathbb{E}_{\pi}\left[ \sum_{t=0}^{\infty} \gamma^t R(s_t,a_t) \mid s_0=s \right]
+  $$&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;动作价值函数 $Q^\pi(s,a)$&lt;/strong&gt;：在状态 $s$ 下采取动作 $a$，然后遵循策略 $\pi$ 的期望回报&lt;/p&gt;
+$$
+  Q^{\pi}(s,a) = \mathbb{E}_{\pi}\left[ \sum_{t=0}^{\infty} \gamma^t R(s_t,a_t) \mid s_0=s, a_0=a \right]
+  $$&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;两者关系：&lt;/p&gt;
+$$
+  V^{\pi}(s) = \sum_{a} \pi(a|s) Q^{\pi}(s,a)
+  $$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;4-贝尔曼方程bellman-equation&#34;&gt;4. 贝尔曼方程（Bellman Equation）
+&lt;/h2&gt;&lt;p&gt;MDP 的核心递推关系：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;价值函数贝尔曼方程&lt;/strong&gt;：&lt;/p&gt;
+$$
+  V^{\pi}(s) = \sum_{a} \pi(a|s) \left[ R(s,a) + \gamma \sum_{s&#39;} P(s&#39;|s,a) V^{\pi}(s&#39;) \right]
+  $$&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;动作价值函数贝尔曼方程&lt;/strong&gt;：&lt;/p&gt;
+$$
+  Q^{\pi}(s,a) = R(s,a) + \gamma \sum_{s&#39;} P(s&#39;|s,a) \sum_{a&#39;} \pi(a&#39;|s&#39;) Q^{\pi}(s&#39;,a&#39;)
+  $$&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;最优价值函数贝尔曼最优方程&lt;/strong&gt;：&lt;/p&gt;
+$$
+  V^{*}(s) = \max_{a} \left[ R(s,a) + \gamma \sum_{s&#39;} P(s&#39;|s,a) V^{*}(s&#39;) \right]
+  $$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;5-值迭代value-iteration&#34;&gt;5. 值迭代（Value Iteration）
+&lt;/h2&gt;&lt;p&gt;值迭代是一种动态规划方法，用于计算最优价值函数和最优策略。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;步骤：&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$V_k(s)$表示从状态$s$出发迭代$k$次的值&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;初始化：对所有状态赋初值 $V_0(s)=0$。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;迭代更新：&lt;/p&gt;
+$$
+   V_{k+1}(s) = \max_{a} \left[ R(s,a) + \gamma \sum_{s&#39;} P(s&#39;|s,a) V_k(s&#39;) \right]
+   $$&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;收敛：当 $V_k$ 收敛时，得到最优值函数。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;策略提取：&lt;/p&gt;
+$$
+   \pi^{*}(s) = \arg\max_a \left[ R(s,a) + \gamma \sum_{s&#39;} P(s&#39;|s,a) V^{*}(s&#39;) \right]
+   $$&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;6-策略迭代policy-iteration&#34;&gt;6. 策略迭代（Policy Iteration）
+&lt;/h2&gt;&lt;p&gt;策略迭代通过“评估-改进”循环寻找最优策略。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;步骤：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;初始化：随机选择一个策略 $\pi$。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;策略评估&lt;/strong&gt;：在固定策略 $\pi$ 下，求解贝尔曼方程得到 $V^\pi(s)$。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;策略改进&lt;/strong&gt;：更新策略：&lt;/p&gt;
+$$
+   \pi_{\text{new}}(s) = \arg\max_a \left[ R(s,a) + \gamma \sum_{s&#39;} P(s&#39;|s,a) V^{\pi}(s&#39;) \right]
+   $$&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;若策略收敛，则得到最优策略 $\pi^*$。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;7-值迭代-vs-策略迭代&#34;&gt;7. 值迭代 vs 策略迭代
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;值迭代&lt;/strong&gt;：直接逼近最优值函数，更新过程中隐式改进策略。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;策略迭代&lt;/strong&gt;：交替进行“策略评估”和“策略改进”。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;效率对比&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;策略迭代每次迭代计算量大，但收敛步数少。&lt;/li&gt;
+&lt;li&gt;值迭代每次更新计算量小，但需要更多迭代。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;8-总结&#34;&gt;8. 总结
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;MDP 提供了强化学习的数学基础。&lt;/li&gt;
+&lt;li&gt;价值函数刻画了状态和动作的优劣。&lt;/li&gt;
+&lt;li&gt;值迭代与策略迭代是动态规划求解最优策略的两大基本算法。&lt;/li&gt;
+&lt;li&gt;在实际应用中，状态空间过大时，需结合函数逼近（如神经网络）来解决。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>强化学习2025 · 2 RL</title>
+        <link>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A02025-2-rl/</link>
+        <pubDate>Fri, 10 Oct 2025 13:00:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A02025-2-rl/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;model&#34;&gt;Model
+&lt;/h2&gt;&lt;h3 id=&#34;model-based-learning&#34;&gt;Model-based Learning
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;环境模型&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;模型通常包含两部分：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;状态转移模型（Transition model）&lt;/strong&gt;：给定当前状态和动作，预测下一个状态的分布。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;奖励模型（Reward model）&lt;/strong&gt;：给定当前状态和动作，预测可能得到的奖励。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;优势&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;因为能在“想象”的环境模型中模拟许多轨迹，不需要每次都和真实环境交互&lt;/li&gt;
+&lt;li&gt;学到的模型可在新情境下预测结果&lt;/li&gt;
+&lt;li&gt;可解释性强&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;劣势&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;需要保证环境模型的可靠&lt;/li&gt;
+&lt;li&gt;需要额外学习和维护环境模型，有时规划过程（如基于树搜索）会比较耗时&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;假设智能体（agent）是一只老鼠，要在迷宫中找到奶酪。&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;知道“向北会撞墙”，“向东有一个通道”。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;预测“从当前点走两步后会到达哪个位置”。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;有了地图后，老鼠就能在脑子里“模拟”几条可能的路径，然后选择最短的去找奶酪。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;假设agent是机器人，需要学会走路&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;机器人先学习“动力学模型”：比如“如果关节转动10度，身体会前倾多少”。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;它可以在模拟器里尝试动作，预测是否会摔倒。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这样在真实环境中测试之前，机器人已经在“脑海”里学会了走路。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;model-free-learning&#34;&gt;Model-free Learning
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;核心思想&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;不尝试理解环境的规律，而是直接通过与&lt;strong&gt;环境的交互&lt;/strong&gt;来学习&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;优势&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;实现简单，不需要构建和维护复杂的环境模型。&lt;/li&gt;
+&lt;li&gt;在环境复杂、难以建模时非常实用（比如真实世界中的天气、股市）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;劣势&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;数据效率低：需要&lt;strong&gt;大量的真实交互&lt;/strong&gt;才能学到较好的策略。&lt;/li&gt;
+&lt;li&gt;可解释性差，只知道“做这个动作会有用”，但不知道为什么。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;示例&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;老鼠找奶酪&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;不理解迷宫规则，只是不断试错。&lt;/li&gt;
+&lt;li&gt;“向北走几次都撞墙 → 不要往北走”。&lt;/li&gt;
+&lt;li&gt;“偶尔往东走到达奶酪 → 记住这种动作”。&lt;/li&gt;
+&lt;li&gt;通过不断积累经验，学会走到奶酪，但不一定是最短路径。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;机器人学走路&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;不建立动力学模型，只是反复尝试不同的动作（抬腿、摆手）。&lt;/li&gt;
+&lt;li&gt;摔倒 → 负奖励；前进一步 → 正奖励。&lt;/li&gt;
+&lt;li&gt;经过大量试错，最终学会稳定行走。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

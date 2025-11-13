@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>手搓代码 on BiribiriBird</title>
+        <link>http://localhost:1313/categories/%E6%89%8B%E6%90%93%E4%BB%A3%E7%A0%81/</link>
+        <description>Recent content in 手搓代码 on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Wed, 10 Sep 2025 00:21:34 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/%E6%89%8B%E6%90%93%E4%BB%A3%E7%A0%81/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>手搓系列 · Transformer</title>
+        <link>http://localhost:1313/p/%E6%89%8B%E6%90%93%E7%B3%BB%E5%88%97-transformer/</link>
+        <pubDate>Wed, 10 Sep 2025 00:21:34 +0800</pubDate>
+        
+        <guid>http://localhost:1313/p/%E6%89%8B%E6%90%93%E7%B3%BB%E5%88%97-transformer/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1 id=&#34;transformer&#34;&gt;Transformer
+&lt;/h1&gt;&lt;h2 id=&#34;环境&#34;&gt;环境
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;conda create -n transformer &lt;span class=&#34;nv&#34;&gt;python&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;3.10 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;conda activate transformer
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/347061440&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;(80 封私信) 教你用PyTorch玩转Transformer英译中翻译模型！ - 知乎&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

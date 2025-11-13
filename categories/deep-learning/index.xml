@@ -1,0 +1,812 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Deep Learning on BiribiriBird</title>
+        <link>http://localhost:1313/categories/deep-learning/</link>
+        <description>Recent content in Deep Learning on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Mon, 11 Aug 2025 01:47:33 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/deep-learning/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>蓝鸟手搓大模型 · 数学小补习 · linear algebra</title>
+        <link>http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/</link>
+        <pubDate>Mon, 11 Aug 2025 01:47:33 +0800</pubDate>
+        
+        <guid>http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.rethink.fun/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;RethinkFun深度学习 · GitBook&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1A9tszhEpp/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.bilibili.com/video/BV1A9tszhEpp/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;不知道开了第几个坑，这里需要从头开始补一下深度学习&lt;/p&gt;
+&lt;p&gt;但是这里会比较浅，稍微过一下我忘记的知识&lt;/p&gt;
+&lt;h2 id=&#34;pre&#34;&gt;Pre
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;传统：专家系统、知识图谱，本质上都是设定好规则，没什么美感
+&lt;ul&gt;
+&lt;li&gt;适合已有既定规则、规律的任务（物理规则、计算）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;机器学习：从数据中自动挖掘规律
+&lt;ul&gt;
+&lt;li&gt;难以描述的规律、规则（识别猫和狗）&lt;/li&gt;
+&lt;li&gt;黑盒&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;深度学习：机器学习的子集
+&lt;ul&gt;
+&lt;li&gt;更黑盒&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;线性代数&#34;&gt;线性代数
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;标量（scalar）：年龄、身高……等单一数值&lt;/li&gt;
+&lt;li&gt;向量（vector）
+&lt;ul&gt;
+&lt;li&gt;物理中的意义非凡&lt;/li&gt;
+&lt;li&gt;机器学习中其实就是一个对象的在不同维度的属性，简称一组有序的数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;区分一下向量的缩放，缩放的英语单词为scaling&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;请阅读：&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1Ys411k7yQ&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;3blue1brown 线性代数的本质&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;线性相关&#34;&gt;线性相关
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250811022056661.png&#34;
+	width=&#34;212&#34;
+	height=&#34;133&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250811022056661_hu_e7b7f8b6d9e37cd4.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250811022056661_hu_84de81f9b410d5f9.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;线性不相关的向量&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;159&#34;
+		data-flex-basis=&#34;382px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;线性相关&lt;/strong&gt;：如果一组向量里至少有一个向量可以表示为其他向量的线性组合，那么就称这一组向量线性相关。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;基：向量空间的一组基是指张成该空间的&lt;strong&gt;一个线性无关的向量组&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;线性变换&#34;&gt;线性变换
+&lt;/h3&gt;&lt;p&gt;可以理解为对向量的一个函数：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入：一个向量&lt;/li&gt;
+&lt;li&gt;输出：一个向量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;但这个函数需要满足：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;加法封闭性：$T(u+v) = T(u) + T(v)$&lt;/li&gt;
+&lt;li&gt;数乘封闭性：$T(cu) = cT(u)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;向量的基本操作就两个：一个是数乘，一个是向量加法&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;但是这样对理解来说过于复杂，不如把线性变换定义为：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812012420942.png&#34;
+	width=&#34;599&#34;
+	height=&#34;325&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812012420942_hu_858a757222182e0d.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812012420942_hu_f9d8a240b6ab3bd.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;线性变换&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;184&#34;
+		data-flex-basis=&#34;442px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;平面上任意直线都不会扭曲&lt;/li&gt;
+&lt;li&gt;原点不变&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;通过基向量在变换前后的变换情况，我们可以推出平面上所有向量的变换后结果：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812013525403.png&#34;
+	width=&#34;1482&#34;
+	height=&#34;273&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812013525403_hu_11694879bc89226e.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812013525403_hu_d8d2bfefcd7bb3bc.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;矩阵&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;542&#34;
+		data-flex-basis=&#34;1302px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;(a,c)和(b,d)就是(1,0)和(0,1)在二维平面上变换后的向量&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;同理，线性变换可以复合，因此可以表示为矩阵乘法：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812014116036.png&#34;
+	width=&#34;1102&#34;
+	height=&#34;454&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812014116036_hu_250776a2caad13f9.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812014116036_hu_737da9bd7b66540a.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;矩阵乘法&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;242&#34;
+		data-flex-basis=&#34;582px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;行列式&#34;&gt;行列式
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;反映了&lt;strong&gt;线性变换&lt;/strong&gt;对空间的**“体积”**影响&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812153841621.png&#34;
+	width=&#34;853&#34;
+	height=&#34;388&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812153841621_hu_59085455a22ad3ed.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812153841621_hu_e5e65e49b269d466.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;行列式&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;219&#34;
+		data-flex-basis=&#34;527px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;线性变换后，平面的面积会由于变换发生变换，行列式恰好反应了这一变换系数&lt;/p&gt;
+&lt;p&gt;同时面积是具有方向的（A向量到B向量之间的面积与B向量到A向量之间的面积相反）&lt;/p&gt;
+&lt;p&gt;因此行列式可以是负数&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于二维的线性变换矩阵，若行列式为0
+&lt;ul&gt;
+&lt;li&gt;所有向量被线性变换压缩到一条直线或点上&lt;/li&gt;
+&lt;li&gt;两个新的基向量是线性相关的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;对于三维，可能被压缩到平面、直线、点中……&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;根据以上内容，证明以下结论会非常简单：&lt;/p&gt;
+$$
+\det(M_1M_2)=\det(M_1)\det(M_2)
+$$&lt;h3 id=&#34;线性方程组&#34;&gt;线性方程组
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812154645760.png&#34;
+	width=&#34;2387&#34;
+	height=&#34;887&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812154645760_hu_fc668b8edf628647.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812154645760_hu_b626eef399dba9e6.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;线性方程组&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;269&#34;
+		data-flex-basis=&#34;645px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;我们通过将线性方程组写成矩阵方程的形式&lt;/p&gt;
+&lt;p&gt;似乎可以表示为：求解一个向量$x$，通过线性变换$A$，与向量$v$重叠&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当$A$的行列式不为0时
+&lt;ul&gt;
+&lt;li&gt;显然线性变化是可逆的（空间并没有被压缩）&lt;/li&gt;
+&lt;li&gt;因此逆矩阵是存在的，且逆矩阵可以使得$AA^{-1}$的结果为一个什么都没做的线性变换，即单位矩阵&lt;/li&gt;
+&lt;li&gt;所以只需要对$v$应用一个逆线性变换即可求解&lt;/li&gt;
+&lt;li&gt;且解唯一&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;当行列式为0，此时不存在逆矩阵（无法恢复被压缩的空间）
+&lt;ul&gt;
+&lt;li&gt;因此此时解的情况非常复杂&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;rank&#34;&gt;Rank
+&lt;/h4&gt;&lt;p&gt;从线性变换后的空间出发，秩被定义为：&lt;strong&gt;线性变换后的空间的维数&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;对于线性变换矩阵$A$​，其每一个列向量就是基向量的一部分&lt;/p&gt;
+&lt;h5 id=&#34;列空间&#34;&gt;列空间
+&lt;/h5&gt;&lt;p&gt;由其列向量的线性组合张成的空间即为&lt;strong&gt;列空间&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;秩就是列空间的维数&lt;/p&gt;
+&lt;h5 id=&#34;零空间&#34;&gt;零空间
+&lt;/h5&gt;&lt;p&gt;线性变换后落在零点的向量，构成&lt;strong&gt;零空间&lt;/strong&gt;，或者&lt;strong&gt;核&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;即：&lt;/p&gt;
+$$
+Ax = 0
+$$&lt;h4 id=&#34;非方阵&#34;&gt;非方阵
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812170428764.png&#34;
+	width=&#34;2229&#34;
+	height=&#34;1010&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812170428764_hu_49821499805589c7.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812170428764_hu_eab7e9b58689921a.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;线性变换&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;220&#34;
+		data-flex-basis=&#34;529px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$n\times m$维的矩阵，表示$m$维空间转化到$n$维的一个线性变换&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;点积&#34;&gt;点积
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812170729176.png&#34;
+	width=&#34;2318&#34;
+	height=&#34;953&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812170729176_hu_d3186a71a8d14d6f.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812170729176_hu_1f18f293f6c62e2d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;点积&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;243&#34;
+		data-flex-basis=&#34;583px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;同样从几何意义出发，两个向量的点积，象征了一个向量在另一个向量的投影与该向量长度的乘积&lt;/p&gt;
+&lt;p&gt;通过这一层意义，我们可以知道点积的正、负、零的关系所带来的一些意义&lt;/p&gt;
+&lt;p&gt;但是为什么点积的计算是符合这个几何意义的？&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812172043278.png&#34;
+	width=&#34;1476&#34;
+	height=&#34;827&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812172043278_hu_518b9ff5f69c3dfa.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812172043278_hu_8ef2ba0470544917.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;点积-&amp;gt;线性变换&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;178&#34;
+		data-flex-basis=&#34;428px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;两个列向量的点积，其实可以看做一个向量基于一个线性变换，最终被压缩到了一个一维空间&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812172746673.png&#34;
+	width=&#34;1637&#34;
+	height=&#34;1113&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812172746673_hu_961c31f6e0a49fb6.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812172746673_hu_4a0b5bf7a154be33.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;证明&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;147&#34;
+		data-flex-basis=&#34;352px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;我们可以构造任意一条过原点的向量，且引入一个二维向量$u$，长度为1，恰好在这条直线的刻度1上&lt;/p&gt;
+&lt;p&gt;我们可以把空间中所有点都线性变换到这个直线所在的一维空间&lt;/p&gt;
+&lt;p&gt;显然这个过程可以使用一个$1\times 2$矩阵表示&lt;/p&gt;
+&lt;p&gt;因此我们只需要求解$i,j$变换后在直线上的刻度值，即可得到这个矩阵&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812172958533.png&#34;
+	width=&#34;2221&#34;
+	height=&#34;1103&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812172958533_hu_23c4eaa7c7853dd4.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250812172958533_hu_e006ac23ca4119f6.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;投影&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;201&#34;
+		data-flex-basis=&#34;483px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;由于$i,j,u$的长度都是相同的（都是1），因此实质上具备对称性：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$i$线性变换后的刻度值 = $u$投影到$i$的长度 = $u_x$&lt;/li&gt;
+&lt;li&gt;$j$线性变换后的刻度值 = $u$投影到$j$的长度 = $u_y$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因此这个$1\times 2$矩阵可以表示为：&lt;/p&gt;
+$$
+\begin{bmatrix}
+u_x  &amp; u_y
+\end{bmatrix}
+$$&lt;p&gt;因此空间中任意向量的线性变换可以表示为：&lt;/p&gt;
+&lt;p&gt;$$
+\begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;u_x  &amp;amp; u_y&lt;/p&gt;
+&lt;p&gt;\end{bmatrix} \begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;x\y&lt;/p&gt;
+&lt;p&gt;\end{bmatrix} = u_x\times x+u_y\times y
+$$&lt;/p&gt;
+&lt;p&gt;因此任意向量在指定&lt;strong&gt;单位向量&lt;/strong&gt;上的投影值，可以表示为与这个&lt;strong&gt;单位向量&lt;/strong&gt;的点积&lt;/p&gt;
+&lt;p&gt;对于非单位向量，似乎只是$u_x,u_y$乘上了一个长度系数&lt;/p&gt;
+&lt;p&gt;对于点积的结果，正是投影长度乘以这个长度系数&lt;/p&gt;
+&lt;h4 id=&#34;对偶向量&#34;&gt;对偶向量
+&lt;/h4&gt;&lt;p&gt;对于一个向量$v$，我们可以定义一个线性变换（点积）&lt;/p&gt;
+$$
+f_v(w) = v \cdot w
+$$&lt;p&gt;此时向量$f_v(w)$就是一个通过线性变换$v$，由$w$得到的一个一维向量&lt;/p&gt;
+&lt;p&gt;这一类向量$f_v$被称为对偶向量&lt;/p&gt;
+&lt;p&gt;即：构造了一个等价的线性函数，描述了一类操作&lt;/p&gt;
+&lt;h3 id=&#34;叉积&#34;&gt;叉积
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250813021248650.png&#34;
+	width=&#34;1487&#34;
+	height=&#34;525&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250813021248650_hu_7c856fabd8bb14eb.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250813021248650_hu_2cc69a71a9d9e6cb.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;叉积&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;283&#34;
+		data-flex-basis=&#34;679px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于二维平面，在几何意义上，叉积代表了两向量之间的&lt;strong&gt;有向面积&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;并且这个值可以通过行列式（反应面积）衍生而来&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;更具意义的是，两个向量的叉积，实质上得到的是一个&lt;strong&gt;新向量&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250813022058195.png&#34;
+	width=&#34;1709&#34;
+	height=&#34;597&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250813022058195_hu_3bfb2d549d8ab813.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250813022058195_hu_22abe970db1950a9.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;叉积的实质&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;286&#34;
+		data-flex-basis=&#34;687px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;法向量的长度等于两个向量的有向面积&lt;/li&gt;
+&lt;li&gt;方向符合右手定则&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这里我们仿造点积部分，我们希望定义一个线性变换，找到其对偶向量，并且说明对偶向量就是叉积的结果&lt;/p&gt;
+&lt;p&gt;对于两个三维的向量，其叉积的结果：&lt;/p&gt;
+&lt;p&gt;$$
+\begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;x_1\y_1\z_1&lt;/p&gt;
+&lt;p&gt;\end{bmatrix} \times \begin{bmatrix}
+x_2\y_2\z_2&lt;/p&gt;
+&lt;p&gt;\end{bmatrix} = \det (\begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;i &amp;amp; x_1 &amp;amp; x_2\&lt;/p&gt;
+&lt;p&gt;j &amp;amp; y_1 &amp;amp; y_2\&lt;/p&gt;
+&lt;p&gt;k &amp;amp; z_1 &amp;amp; z_2&lt;/p&gt;
+&lt;p&gt;\end{bmatrix} )
+$$&lt;/p&gt;
+&lt;p&gt;最后得到的$(i,j,k)$系数，即为对应的叉积向量&lt;/p&gt;
+&lt;p&gt;我们不如把$(i,j,k)$抽象成一个函数：&lt;/p&gt;
+&lt;p&gt;$$
+f(\begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;x\y\z&lt;/p&gt;
+&lt;p&gt;\end{bmatrix}) = \det (\begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;x &amp;amp; x_1 &amp;amp; x_2\&lt;/p&gt;
+&lt;p&gt;y &amp;amp; y_1 &amp;amp; y_2\&lt;/p&gt;
+&lt;p&gt;z &amp;amp; z_1 &amp;amp; z_2&lt;/p&gt;
+&lt;p&gt;\end{bmatrix} )
+$$&lt;/p&gt;
+&lt;p&gt;我们的目标是找到一个对偶向量$p$，使得：&lt;/p&gt;
+&lt;p&gt;$$
+p\cdot \begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;x\y\z&lt;/p&gt;
+&lt;p&gt;\end{bmatrix} =\begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;p_1\p_2\p_3&lt;/p&gt;
+&lt;p&gt;\end{bmatrix}\cdot \begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;x\y\z&lt;/p&gt;
+&lt;p&gt;\end{bmatrix} = f(\begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;x\y\z&lt;/p&gt;
+&lt;p&gt;\end{bmatrix}) = \det (\begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;x &amp;amp; x_1 &amp;amp; x_2\&lt;/p&gt;
+&lt;p&gt;y &amp;amp; y_1 &amp;amp; y_2\&lt;/p&gt;
+&lt;p&gt;z &amp;amp; z_1 &amp;amp; z_2&lt;/p&gt;
+&lt;p&gt;\end{bmatrix} )
+$$&lt;/p&gt;
+&lt;p&gt;则有：&lt;/p&gt;
+$$
+p_1x+p_2y+p_3z = x(y_1z_2-z_1y_2)+y(z_1x_2-x_1z_2)+z(z_1y_2-y_1z_2)
+$$&lt;p&gt;因此：&lt;/p&gt;
+&lt;p&gt;$$
+p = \begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;y_1z_2-z_1y_2\z_1x_2-x_1z_2\z_1y_2-y_1z_2&lt;/p&gt;
+&lt;p&gt;\end{bmatrix}
+$$&lt;/p&gt;
+&lt;p&gt;当我们构造出这个对偶向量时，回到点积的几何意义上&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将向量$(x,y,z)^T$投影到$p$上，并且将长度与$|p|$相乘&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;再回到三维叉积的几何意义上：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;三个向量所围成的平行六面体的有向体积&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们可以计算一下这个六面体的有向体积：&lt;/p&gt;
+&lt;p&gt;定义$v = (x_1,y_1,w_1)^T, w = (x_2,y_2,w_2)^T$&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250813025248690.png&#34;
+	width=&#34;1626&#34;
+	height=&#34;759&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250813025248690_hu_7ad640f3115c8072.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250813025248690_hu_6e6885dc7eb9a775.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;以v和w为底部的体积计算&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;214&#34;
+		data-flex-basis=&#34;514px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;因此可以说明为：将$(x,y,z)^T$投影到$v,w$法向量上，并且与$v,w$的平行四边形的有向面积相乘&lt;/p&gt;
+&lt;p&gt;注意：法向量的长度，恰好等于$v,w$的平行四边形的有向面积&lt;/p&gt;
+&lt;p&gt;因此整个过程可以被概括为：$(x,y,z)^T$与$v,w$法向量的点积&lt;/p&gt;
+&lt;h3 id=&#34;基变换&#34;&gt;基变换
+&lt;/h3&gt;&lt;p&gt;选用不同的基向量，表达的方式自然会有些不同&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;选用$i,j$：网格方方正正&lt;/li&gt;
+&lt;li&gt;选用其他基向量：网格有一定倾斜&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250813031140856.png&#34;
+	width=&#34;735&#34;
+	height=&#34;455&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250813031140856_hu_341701f1a6e49a0e.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250813031140856_hu_d63c09008d23ae6c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;基向量&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;161&#34;
+		data-flex-basis=&#34;387px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;对于空间中的同一个向量，不同的基向量选择，自然会使用不同的线性组合进行表示&lt;/p&gt;
+&lt;p&gt;假设选取一组基向量：&lt;/p&gt;
+&lt;p&gt;$$
+b_1 = \begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;2\1&lt;/p&gt;
+&lt;p&gt;\end{bmatrix},b_2 = \begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;-1\1&lt;/p&gt;
+&lt;p&gt;\end{bmatrix}
+$$&lt;/p&gt;
+&lt;p&gt;对于向量$(-4,1)^T$，可以表示为以下两种方式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$(-4,-1)^T = -4i+j$&lt;/li&gt;
+&lt;li&gt;$(-4,1)^T = -b_1 + 2b_2$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;似乎可以通过矩阵表示：&lt;/p&gt;
+&lt;p&gt;$$
+\begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;2 &amp;amp; -1\1 &amp;amp; 1&lt;/p&gt;
+&lt;p&gt;\end{bmatrix}\begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;-1\2&lt;/p&gt;
+&lt;p&gt;\end{bmatrix} = \begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;-4 \1&lt;/p&gt;
+&lt;p&gt;\end{bmatrix}
+$$&lt;/p&gt;
+&lt;p&gt;概括这个线性变换：&lt;/p&gt;
+&lt;p&gt;$$
+\begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;2 &amp;amp; -1\1 &amp;amp; 1&lt;/p&gt;
+&lt;p&gt;\end{bmatrix}v = w
+$$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$v$代表$b_1,b_2$空间下的向量表示&lt;/li&gt;
+&lt;li&gt;$w$代表$i,j$空间下的向量表示&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;有趣的是，$b_1,b_2$的数值是基于$i,j$进行表示的&lt;/p&gt;
+&lt;p&gt;也就是使用了$b_1,b_2$视角下的$v$，左乘了$i,j$视角下的基向量矩阵，得到$v$在$i,j$视角下的$w$&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;假设我们使用一个线性变换：逆时针旋转90°&lt;/p&gt;
+&lt;p&gt;对于$i,j$作为基向量的空间，只需要追踪$i,j$变换后的位置，这个线性变换可以轻松表示为：&lt;/p&gt;
+&lt;p&gt;$$
+M = \begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;0 &amp;amp; -1\1 &amp;amp; 0&lt;/p&gt;
+&lt;p&gt;\end{bmatrix}
+$$&lt;/p&gt;
+&lt;p&gt;我们好奇在$b_1,b_2$视角下的旋转矩阵应该是怎么样的&lt;/p&gt;
+&lt;p&gt;对于需要旋转的向量$v$（$b_1,b_2$视角），我们可以先把他转化到$i,j$下&lt;/p&gt;
+&lt;p&gt;$$
+\begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;2 &amp;amp; -1\1 &amp;amp; 1&lt;/p&gt;
+&lt;p&gt;\end{bmatrix}v
+$$&lt;/p&gt;
+&lt;p&gt;然后就可以自然代入旋转矩阵：&lt;/p&gt;
+&lt;p&gt;$$
+\begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;0 &amp;amp; -1\1 &amp;amp; 0&lt;/p&gt;
+&lt;p&gt;\end{bmatrix}\begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;2 &amp;amp; -1\1 &amp;amp; 1&lt;/p&gt;
+&lt;p&gt;\end{bmatrix}v
+$$&lt;/p&gt;
+&lt;p&gt;最后我们需要转化回$b_1,b_2$视角，乘上一个逆矩阵即可：&lt;/p&gt;
+&lt;p&gt;$$
+\begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;2 &amp;amp; -1\1 &amp;amp; 1&lt;/p&gt;
+&lt;p&gt;\end{bmatrix}^{-1}\begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;0 &amp;amp; -1\1 &amp;amp; 0&lt;/p&gt;
+&lt;p&gt;\end{bmatrix}\begin{bmatrix}&lt;/p&gt;
+&lt;p&gt;2 &amp;amp; -1\1 &amp;amp; 1&lt;/p&gt;
+&lt;p&gt;\end{bmatrix}v
+$$&lt;/p&gt;
+&lt;p&gt;令这个转化矩阵为$A$，则整个旋转矩阵可以归纳为：&lt;/p&gt;
+$$
+A^{-1}MA
+$$&lt;h3 id=&#34;特征变换与特征值&#34;&gt;特征变换与特征值
+&lt;/h3&gt;&lt;p&gt;对于一个线性变换$A$，总有一些向量在变换前后，仍然在同一条过原点的直线上&lt;/p&gt;
+&lt;p&gt;这些向量被称为&lt;strong&gt;特征向量&lt;/strong&gt;$v$&lt;/p&gt;
+&lt;p&gt;同时由于存在一定比例的拉伸，这个比例被称为&lt;strong&gt;特征值&lt;/strong&gt;$\lambda$&lt;/p&gt;
+$$
+Av = \lambda v
+$$&lt;p&gt;由于右边是数乘，会比较麻烦，所以通常处理为：&lt;/p&gt;
+&lt;p&gt;$$
+Av = (\lambda I)v \&lt;/p&gt;
+&lt;p&gt;(A-\lambda I)v =0
+$$&lt;/p&gt;
+&lt;p&gt;也就是说一个向量$v$要被线性变换$A-\lambda I$压缩成零向量&lt;/p&gt;
+&lt;p&gt;能做到这一点的只能是$rank=0$的线性变换&lt;/p&gt;
+&lt;p&gt;这里通过行列式就能求解&lt;/p&gt;
+&lt;h2 id=&#34;抽象向量空间&#34;&gt;抽象向量空间
+&lt;/h2&gt;&lt;p&gt;接下来我们将超出2、3维，把线性抽象到函数层面&lt;/p&gt;
+&lt;p&gt;我们对于函数也能做线性变化&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$L(f,g) = L(f) + L(g)$&lt;/li&gt;
+&lt;li&gt;$L(f) = cL(f)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;很巧，&lt;strong&gt;求导&lt;/strong&gt;完美符合这两条性质&lt;/p&gt;
+&lt;p&gt;因此对于一个多项式，求导可以使用矩阵进行表示&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250813034747091.png&#34;
+	width=&#34;1695&#34;
+	height=&#34;883&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250813034747091_hu_13f3cb675576ae.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-linear-algebra/assets/image-20250813034747091_hu_89bde6444f4c1e1.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;线性变换 - 求导&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;191&#34;
+		data-flex-basis=&#34;460px&#34;
+	
+&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>蓝鸟手搓大模型 · 数学小补习 · Calculus</title>
+        <link>http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/</link>
+        <pubDate>Mon, 11 Aug 2025 01:47:32 +0800</pubDate>
+        
+        <guid>http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.rethink.fun/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;RethinkFun深度学习 · GitBook&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1A9tszhEpp/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.bilibili.com/video/BV1A9tszhEpp/&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;微积分&#34;&gt;微积分
+&lt;/h2&gt;&lt;p&gt;总体依照：&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1qW411N7FU/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;3blue1brown 微积分的本质&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;导数&#34;&gt;导数
+&lt;/h3&gt;&lt;p&gt;情景：车随时间变化，采用不同的速度，行驶的距离&lt;/p&gt;
+&lt;p&gt;因此会建立一个：路程关于时间的函数，假设为：&lt;/p&gt;
+$$
+s(t) = t^2
+$$$$
+v(x) = \frac{s(x+dt)-s(x)}{dt} = \frac{x^2+(dt)^2+2xdt - x^2}{dt} = dt+2x
+$$$$
+v(x) = 2x
+$$&lt;p&gt;
+从几何角度出发：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250813213854672.png&#34;
+	width=&#34;420&#34;
+	height=&#34;384&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250813213854672_hu_27e05e978847b7cf.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250813213854672_hu_e78a299008d2d0f5.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;几何求导&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;109&#34;
+		data-flex-basis=&#34;262px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;对于一个面积为$x^2$的正方形，两边分别延长$dx$&lt;/p&gt;
+$$
+dA = xdx+xdx+d^2x = 2xdx
+$$&lt;p&gt;
+$d^2x$足够小，应该被忽略&lt;/p&gt;
+$$
+\frac{dA}{dx} = 2x
+$$$$
+A_{new} = (x+dx)^n = x^n+nx^{n-1}dx+.... \\
+A_{old} = x^n\\
+dA = A_{new} - A_{old}=nx^{n-1}dx\\
+\frac{dA}{dx}  = nx^{n-1}
+$$&lt;h4 id=&#34;链式法则&#34;&gt;链式法则
+&lt;/h4&gt;&lt;p&gt;求导只需要解决三个问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;函数相加&lt;/li&gt;
+&lt;li&gt;函数相乘&lt;/li&gt;
+&lt;li&gt;函数嵌套函数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所有函数都可以被表示为几个基本函数通过上述操作得到的&lt;/p&gt;
+&lt;h5 id=&#34;函数相加&#34;&gt;函数相加
+&lt;/h5&gt;&lt;p&gt;对于函数：&lt;/p&gt;
+$$
+f(x) = \sin(x) + x^2
+$$&lt;p&gt;
+其积分应该为：&lt;/p&gt;
+$$
+df = \sin(x+dx)+(x+dx)^2 - (\sin x + x^2) \\
+df = (\sin(x+dx) - \sin x) + ((x+dx)^2-x^2)\\
+df = d(\sin x)+ d(x^2)
+$$&lt;h5 id=&#34;函数相乘&#34;&gt;函数相乘
+&lt;/h5&gt;&lt;p&gt;同样的我们可以用面积来表示乘积，对于函数：&lt;/p&gt;
+$$
+f(x) = \sin(x)\times x^2
+$$&lt;p&gt;
+我们使用两个函数分别作为矩形的长与宽&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250815020412513.png&#34;
+	width=&#34;312&#34;
+	height=&#34;327&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250815020412513_hu_a3c9d54d0410b69c.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250815020412513_hu_9cac6849feb671b5.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;面积图像&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;95&#34;
+		data-flex-basis=&#34;228px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;当自变量增加$dx$，则增加的面积可以表示为：&lt;/p&gt;
+$$
+df = \sin x\times d(x^2) + d(\sin(x))x^2 + d(x^2)d(\sin(x))
+$$&lt;p&gt;最后一项可以省略&lt;/p&gt;
+&lt;h5 id=&#34;函数复合&#34;&gt;函数复合
+&lt;/h5&gt;&lt;p&gt;链式法则：&lt;/p&gt;
+$$
+\frac{dg(h(x))}{dx} = \frac{dg}{dx} = \frac{dg}{dh}\times\frac{dh}{dx}
+$$&lt;h4 id=&#34;指数函数求导&#34;&gt;指数函数求导
+&lt;/h4&gt;&lt;p&gt;例如：&lt;/p&gt;
+$$
+M(t) = a^t
+$$&lt;p&gt;
+求导：&lt;/p&gt;
+$$
+\frac{dM}{dt} = \frac{a^{t+dt}-a^t}{dt} = a^t\frac{(a^{dt}-1)}{dt}
+$$&lt;p&gt;
+此时函数右边这一项只与$dt$有关&lt;/p&gt;
+$$
+\lim_{x\to0^+}\frac{e^x-1}{x} = 1
+$$$$
+M(t) = a^t = e^{t\ln(a)}
+$$$$
+\frac{dM}{dt} = \frac{dM}{du}\frac{du}{dt} = e^u\ln a = a^t\ln a
+$$&lt;h3 id=&#34;隐函数&#34;&gt;隐函数
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250817005629077.png&#34;
+	width=&#34;645&#34;
+	height=&#34;251&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250817005629077_hu_f0da118e33af33b.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250817005629077_hu_65f8efdb68959460.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;256&#34;
+		data-flex-basis=&#34;616px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;对于某个存在关系的$x,y$，他们都是自变量而非因变量，因此不存在函数上的导数关系&lt;/p&gt;
+&lt;p&gt;他们在某处的斜率被定义为：&lt;/p&gt;
+$$
+\frac{dy}{dx}
+$$&lt;p&gt;
+对于上述圆方程，对这个隐函数的求导：两边同时求导：&lt;/p&gt;
+$$
+2xdx+2ydy = 0 \\
+\frac{dy}{dx} = -\frac{x}{y}
+$$&lt;p&gt;分析其几何意义：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250817010641732.png&#34;
+	width=&#34;225&#34;
+	height=&#34;132&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250817010641732_hu_5809e3cd14117a1d.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250817010641732_hu_723527b5d1ab6a23.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;170&#34;
+		data-flex-basis=&#34;409px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;$x,y$分别变换了$dx,dy$，因此$2xdx+2ydy$表示的就是$x^2+y^2$的变化量&lt;/p&gt;
+&lt;p&gt;而这个变化量为0时，$x,y$仍然在$x^2+y^2=5^2$上&lt;/p&gt;
+&lt;p&gt;否则就会离开曲线&lt;/p&gt;
+&lt;h4 id=&#34;自然对数函数求导&#34;&gt;自然对数函数求导
+&lt;/h4&gt;&lt;p&gt;本质上是对$y=\ln(x)$这条曲线上的某个点求斜率&lt;/p&gt;
+&lt;p&gt;在这条曲线上的点$(x,y)$，必然满足：&lt;/p&gt;
+$$
+e^y = x
+$$&lt;p&gt;
+同样也是一条曲线，我们可以两边求导：&lt;/p&gt;
+$$
+e^ydy = dx\\
+\frac{dy}{dx}= \frac{1}{e^y}= \frac{1}{x} 
+$$&lt;h3 id=&#34;极限&#34;&gt;极限
+&lt;/h3&gt;$$
+\frac{df}{dx}(x) = \lim_{h\to 0}\frac{f(x+h)-f(x)}{h}
+$$&lt;p&gt;对于$\frac{0}{0}$型的函数，在该点是不存在函数值的&lt;/p&gt;
+&lt;p&gt;但是可能存在极限，通常使用洛必达法则进行求解&lt;/p&gt;
+&lt;p&gt;从几何意义出发&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250817015948263.png&#34;
+	width=&#34;179&#34;
+	height=&#34;153&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250817015948263_hu_2636044c9029dd53.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250817015948263_hu_c669c7d15cc8968e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;116&#34;
+		data-flex-basis=&#34;280px&#34;
+	
+&gt;&lt;/p&gt;
+$$
+s(x) =\frac{f(x)}{g(x)}
+$$&lt;p&gt;
+只要把这个点放大足够大，这一处的函数可以被近似为两条直线&lt;/p&gt;
+$$
+\lim_{x\to a}\frac{f(x)}{g(x)} = \frac{\frac{df}{dx}(a)dx}{\frac{dg}{dx}(a)dx} =\frac{\frac{df}{dx}(a)}{\frac{dg}{dx}(a)}
+$$&lt;h3 id=&#34;积分&#34;&gt;积分
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250827004934989.png&#34;
+	width=&#34;926&#34;
+	height=&#34;539&#34;
+	srcset=&#34;http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250827004934989_hu_676c93ffe9fe92c9.png 480w, http://localhost:1313/p/%E8%93%9D%E9%B8%9F%E6%89%8B%E6%90%93%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%A6%E5%B0%8F%E8%A1%A5%E4%B9%A0-calculus/assets/image-20250827004934989_hu_93c208edf7009dd2.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;积分与导数&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;171&#34;
+		data-flex-basis=&#34;412px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;对于速度函数&lt;/p&gt;
+$$
+v(t) = t(8-t)
+$$$$
+s(T) = \int_0^{T}v(t)dt
+$$&lt;p&gt;
+这个函数实质上就是距离函数&lt;/p&gt;
+&lt;p&gt;而距离函数关于时间的导数，正是速度函数&lt;/p&gt;
+&lt;p&gt;因此：&lt;/p&gt;
+$$
+\int f(x)dx = F(x) + C\\
+\frac{dF(x)}{dx} = f(x)
+$$&lt;p&gt;
+通常会写成：&lt;/p&gt;
+$$
+\int_a^bf(x)dx = F(b)-F(a)
+$$&lt;h3 id=&#34;泰勒级数&#34;&gt;泰勒级数
+&lt;/h3&gt;&lt;p&gt;对于三角函数$\cos \theta$，我们可以考虑使用多项式进行拟合&lt;/p&gt;
+$$
+P(x) = c_0 + c_1x + c_2x^2
+$$&lt;p&gt;
+对于$x=0$处，$\cos (0) = 1$&lt;/p&gt;
+&lt;p&gt;因此$P(0) = c_0 = 1$&lt;/p&gt;
+$$
+\frac{d \cos x}{dx} = -\sin x = 0\\
+\frac{dP(x)}{dx} = c_1 + 2c2x = c_1 = 0
+$$$$
+\frac{d^2 \cos x}{dx^2} = \frac{d(-\sin x)}{dx}  = -\cos x = -1\\
+\frac{d^2P(x)}{dx^2} =  2c_2 \\
+c_2 = -\frac{1}{2}
+$$$$
+\frac{d^nf(x)}{dx^n} = n!c_n\\
+$$$$
+f(x) = \sum \frac{1}{n!}\frac{d^nf(x)}{dx^n}x^n
+$$</description>
+        </item>
+        
+    </channel>
+</rss>

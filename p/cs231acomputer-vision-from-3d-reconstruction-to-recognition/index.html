@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="计算机视觉笔记">
+<title>CS231A：Computer Vision, From 3D Reconstruction to Recognition</title>
+
+<link rel='canonical' href='https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="CS231A：Computer Vision, From 3D Reconstruction to Recognition">
+<meta property='og:description' content="计算机视觉笔记">
+<meta property='og:url' content='https://example.com/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/'>
+<meta property='og:site_name' content='BiribiriBird'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='CV' /><meta property='article:published_time' content='2024-03-26T02:45:55&#43;08:00'/><meta property='article:modified_time' content='2024-03-26T02:45:55&#43;08:00'/>
+<meta name="twitter:title" content="CS231A：Computer Vision, From 3D Reconstruction to Recognition">
+<meta name="twitter:description" content="计算机视觉笔记">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            localStorage.setItem(colorSchemeKey, "light");
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_bbc58a5457fc2680.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">BiribiriBird</a></h1>
+            <h2 class="site-description">Segmentation fault!</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/498088093'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648787418" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2107" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="2108" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:neworld1111@163.com'
+                        target="_blank"
+                        title="Email"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743649088353" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6924" width="24" height="24"><path d="M874.666667 181.333333H149.333333c-40.533333 0-74.666667 34.133333-74.666666 74.666667v512c0 40.533333 34.133333 74.666667 74.666666 74.666667h725.333334c40.533333 0 74.666667-34.133333 74.666666-74.666667V256c0-40.533333-34.133333-74.666667-74.666666-74.666667z m-725.333334 64h725.333334c6.4 0 10.666667 4.266667 10.666666 10.666667v25.6L512 516.266667l-373.333333-234.666667V256c0-6.4 4.266667-10.666667 10.666666-10.666667z m725.333334 533.333334H149.333333c-6.4 0-10.666667-4.266667-10.666666-10.666667V356.266667l356.266666 224c4.266667 4.266667 10.666667 4.266667 17.066667 4.266666s12.8-2.133333 17.066667-4.266666l356.266666-224V768c0 6.4-4.266667 10.666667-10.666666 10.666667z" fill="#666666" p-id="6925"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/aoiJays'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648734849" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5802" width="24" height="24"><path d="M511.957333 21.333333C241.024 21.333333 21.333333 240.981333 21.333333 512c0 216.832 140.544 400.725333 335.573334 465.664 24.490667 4.394667 32.256-10.069333 32.256-23.082667 0-11.690667 0.256-44.245333 0-85.205333-136.448 29.610667-164.736-64.64-164.736-64.64-22.314667-56.704-54.4-71.765333-54.4-71.765333-44.586667-30.464 3.285333-29.824 3.285333-29.824 49.194667 3.413333 75.178667 50.517333 75.178667 50.517333 43.776 75.008 114.816 53.333333 142.762666 40.789333 4.522667-31.658667 17.152-53.376 31.189334-65.536-108.970667-12.458667-223.488-54.485333-223.488-242.602666 0-53.546667 19.114667-97.322667 50.517333-131.669334-5.034667-12.330667-21.930667-62.293333 4.778667-129.834666 0 0 41.258667-13.184 134.912 50.346666a469.802667 469.802667 0 0 1 122.88-16.554666c41.642667 0.213333 83.626667 5.632 122.88 16.554666 93.653333-63.488 134.784-50.346667 134.784-50.346666 26.752 67.541333 9.898667 117.504 4.864 129.834666 31.402667 34.346667 50.474667 78.122667 50.474666 131.669334 0 188.586667-114.730667 230.016-224.042666 242.090666 17.578667 15.232 33.578667 44.672 33.578666 90.453334v135.850666c0 13.141333 7.936 27.605333 32.853334 22.869334C862.250667 912.597333 1002.666667 728.746667 1002.666667 512 1002.666667 240.981333 783.018667 21.333333 511.957333 21.333333z" p-id="5803" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About me</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/experience/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Experience</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friend/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>Friend</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#l2-camera-models">L2. Camera Models</a>
+      <ol>
+        <li><a href="#pinhole-camera小孔成像---摄像机">pinhole camera（小孔成像 - 摄像机）</a></li>
+        <li><a href="#lenses-and-cameras透镜和相机">Lenses and Cameras（透镜和相机）</a></li>
+        <li><a href="#the-geometry-of-pinhole-cameras几何">The Geometry of Pinhole Cameras（几何）</a>
+          <ol>
+            <li><a href="#coordinate-systems坐标系">Coordinate systems（坐标系）</a></li>
+            <li><a href="#homogeneous-coordinates齐次坐标">Homogeneous Coordinates（齐次坐标）</a></li>
+            <li><a href="#camera-matrix-k相机内参">Camera Matrix K（相机内参）</a></li>
+            <li><a href="#world-reference-system世界坐标系">World Reference System（世界坐标系）</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#l8-fitting-and-matching">L8: Fitting and Matching</a>
+      <ol>
+        <li><a href="#fitting">Fitting</a>
+          <ol>
+            <li><a href="#critical-issues">Critical issues</a></li>
+            <li><a href="#techniques">Techniques</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#l9-detectors-and-descriptors">L9. Detectors and descriptors</a>
+      <ol>
+        <li><a href="#detectors">Detectors</a>
+          <ol>
+            <li><a href="#edge-detectors">Edge detectors</a></li>
+            <li><a href="#cornerblob-detectors">Corner/blob detectors</a></li>
+          </ol>
+        </li>
+        <li><a href="#descriptors">Descriptors</a>
+          <ol>
+            <li><a href="#simplest-descriptor---patch">Simplest Descriptor - Patch</a></li>
+            <li><a href="#filter">Filter</a></li>
+            <li><a href="#sift">SIFT</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#l11-visual-recognition">L11. Visual recognition</a></li>
+    <li><a href="#数学补坑">数学补坑</a>
+      <ol>
+        <li><a href="#svd分解未完成">SVD分解（未完成）</a></li>
+        <li><a href="#卷积">卷积</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/cv/" >
+                CV
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/">CS231A：Computer Vision, From 3D Reconstruction to Recognition</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            计算机视觉笔记
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 26, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 10 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="cs231acomputer-vision-from-3d-reconstruction-to-recognition">CS231A：Computer Vision, From 3D Reconstruction to Recognition
+</h1><blockquote>
+<p><a class="link" href="https://www.bilibili.com/video/BV1LQ4y1r7ps/"  target="_blank" rel="noopener"
+    >https://www.bilibili.com/video/BV1LQ4y1r7ps/</a></p></blockquote>
+<p>[TOC]</p>
+<h2 id="l2-camera-models">L2. Camera Models
+</h2><h3 id="pinhole-camera小孔成像---摄像机">pinhole camera（小孔成像 - 摄像机）
+</h3><p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326032639070.png"
+	width="622"
+	height="215"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326032639070_hu_efaebb50cf08f6e0.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326032639070_hu_8ac03921d68d0b49.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326032639070"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="289"
+		data-flex-basis="694px"
+	
+></p>
+<ul>
+<li>$f$：定义为相机焦距</li>
+</ul>
+$$
+x' = \frac{f}{z}x,y' = \frac{f}{z}y
+$$<p>
+物理课的小知识</p>
+<ul>
+<li>小孔越小，透光越少，但是画面清晰</li>
+<li>小孔越大，透光越多，但是画面模糊</li>
+</ul>
+<p>因此为了全部都要，引入了Lens（透镜）</p>
+<h3 id="lenses-and-cameras透镜和相机">Lenses and Cameras（透镜和相机）
+</h3><p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326033557763.png"
+	width="608"
+	height="196"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326033557763_hu_2549720dc7fbbe79.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326033557763_hu_6b70e7121448f490.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326033557763"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="310"
+		data-flex-basis="744px"
+	
+></p>
+<ul>
+<li>除了通过中心的光线，其他光线都会被折射</li>
+<li>在一定距离，所有入射光线会被折射到图像的一点上</li>
+<li>少于或多于这段距离，光无法聚焦在一个点上（Out of focus）</li>
+</ul>
+<blockquote>
+<p>景深（Depth of Field）则是指在摄影或者摄像中，一张图像中能够保持清晰度的距离范围。</p></blockquote>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326034355319.png"
+	width="561"
+	height="196"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326034355319_hu_19fae6f4fe47ff32.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326034355319_hu_d89771a1ab69b809.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326034355319"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="286"
+		data-flex-basis="686px"
+	
+></p>
+<p>定义参数等效焦距$z&rsquo;=f + z_0$，$z_0$​为像距</p>
+$$
+x' = \frac{z'}{z}x,y' = \frac{z'}{z}y
+$$<p>
+但由于工艺问题，透镜成像的边缘经常发生distortion（畸变）</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326034749500.png"
+	width="340"
+	height="266"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326034749500_hu_3f155ab764b14aa1.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326034749500_hu_dbea4dd360a3a6c0.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326034749500"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="127"
+		data-flex-basis="306px"
+	
+></p>
+<blockquote>
+<p>虚线为理想情况</p>
+<ul>
+<li>图1：聚焦偏外，越角落越边缘的图像越偏外</li>
+<li>图2：聚焦偏内，越角落越边缘的图像越偏内</li>
+</ul></blockquote>
+<h3 id="the-geometry-of-pinhole-cameras几何">The Geometry of Pinhole Cameras（几何）
+</h3><blockquote>
+<p>只要距离足够，透镜和小孔成像都是同一个数学模型</p></blockquote>
+$$
+p=\begin{bmatrix}x\\y\\z\end{bmatrix} \to p'=\begin{bmatrix}x'\\y'\end{bmatrix}
+$$<p>我们完成了三维世界到二维平面的投影</p>
+<h4 id="coordinate-systems坐标系">Coordinate systems（坐标系）
+</h4><p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326035659856.png"
+	width="638"
+	height="195"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326035659856_hu_860394ba096b6334.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326035659856_hu_ad944ccc6586450c.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326035659856"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="327"
+		data-flex-basis="785px"
+	
+></p>
+<ul>
+<li>Off Set：$(x,y,z)\to(\frac{f}{z}x+c_x,\frac{f}{z}y+c_y)$​
+<ul>
+<li>$(c_x,c_y)$的存在：相机由于工艺问题，无法保证焦点中心一定在图像中心，因此通过引入参数来进行矫正调整</li>
+</ul>
+</li>
+<li>From Metric to Pixels：$(x,y,z)\to(k\frac{f}{z}x+c_x,l\frac{f}{z}y+c_y)$​
+<ul>
+<li>我们更偏向乘上系数，使得长度单位变成像素（不同的系数解决了像素是长方形的情况）</li>
+<li>所以$(c_x,c_y)$也是像素单位</li>
+</ul>
+</li>
+</ul>
+<p>当$z$​发生变化时，投影坐标并不是线性变化（倒数），不利于使用线代处理</p>
+<p>同时乘上$z$，会丢失$z$的信息</p>
+<p>因此引入Homogeneous Coordinates（齐次坐标）</p>
+<h4 id="homogeneous-coordinates齐次坐标">Homogeneous Coordinates（齐次坐标）
+</h4>$$
+(x,y)\to \begin{bmatrix}x\\y\\1\end{bmatrix}
+$$<p>我们对点坐标，额外增加一个新的维度（二维变三维，三维变四维）</p>
+$$
+\begin{bmatrix}x\\y\\w\end{bmatrix}\to (\frac{x}{w},\frac{y}{w})
+$$$$
+(x,y,z)\to(k\frac{f}{z}x+c_x,l\frac{f}{z}y+c_y)\\
+(x,y,z)\to(\alpha\frac{x}{z}+c_x,\beta\frac{y}{z}+c_y)
+$$$$
+\begin{bmatrix}
+\alpha & 0 & c_x & 0\\
+0 & \beta & c_y & 0 \\
+0 & 0 & 1 & 0
+\end{bmatrix}
+\begin{bmatrix}x\\y\\z\\1\end{bmatrix}=\begin{bmatrix}
+\alpha x+c_xz\\\beta y+c_y \\ z
+\end{bmatrix}
+$$$$
+P_h'=MP_h
+$$<p>
+$z$的信息就能得到很好的保存</p>
+<h4 id="camera-matrix-k相机内参">Camera Matrix K（相机内参）
+</h4>$$
+M = \begin{bmatrix}
+\alpha & 0 & c_x & 0\\
+0 & \beta & c_y & 0 \\
+0 & 0 & 1 & 0
+\end{bmatrix} = K\begin{bmatrix}I & 0\end{bmatrix}
+$$<p>
+但由于工艺问题，有时像素平面可能不是一个矩形，而是一个平行四边形，产生了旋转</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326155513409.png"
+	width="233"
+	height="211"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326155513409_hu_522b1a040f8712bc.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326155513409_hu_68975aac683aaccd.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326155513409"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="110"
+		data-flex-basis="265px"
+	
+></p>
+$$
+K=\begin{bmatrix}
+\alpha & -\alpha\cot\theta & c_x \\
+0 & \frac{\beta}{\sin\theta} & c_y  \\
+0 & 0 & 1 
+\end{bmatrix}
+$$<blockquote>
+<p>懒得推导了</p></blockquote>
+<ul>
+<li>$\alpha,\beta,\theta,c_x,c_y$共五个自由度</li>
+<li>上三角矩阵</li>
+</ul>
+<h4 id="world-reference-system世界坐标系">World Reference System（世界坐标系）
+</h4><p>我们希望世界坐标系转化为相机坐标系，这里我们依旧使用齐次坐标</p>
+<p>我们先处理二维平面的情况</p>
+<ul>
+<li>
+<p>平移Translation</p>
+<ul>
+<li>$$
+    P'\to\begin{bmatrix}x + t_x\\y + t_y\\1\end{bmatrix} = 
+    \begin{bmatrix}
+    1 & 0 & t_x\\
+    0 & 1 & t_y \\
+    0 & 0 & 1\\
+    \end{bmatrix} 
+    \begin{bmatrix}x \\y \\1\end{bmatrix}
+    $$</li>
+</ul>
+</li>
+<li>
+<p>缩放Scaling</p>
+<ul>
+<li>
+<p>注意是围绕原点进行缩放</p>
+</li>
+<li>
+<p>当$s_x=s_y$时，称为<strong>相似变换</strong></p>
+</li>
+<li>
+$$
+    P'\to\begin{bmatrix}s_xx\\s_yy\\1\end{bmatrix} = 
+    \begin{bmatrix}
+    s_x & 0 & 0\\
+    0 & s_y & 0 \\
+    0 & 0 & 1\\
+    \end{bmatrix} 
+    \begin{bmatrix}x \\y \\1\end{bmatrix}
+    $$</li>
+</ul>
+</li>
+<li>
+<p>旋转Rotation</p>
+</li>
+</ul>
+$$
+    P'\to\begin{bmatrix}x'\\y'\\1\end{bmatrix} = 
+    \begin{bmatrix}
+    \cos\theta & -\sin\theta & 0\\
+    \sin\theta & \cos\theta & 0 \\
+    0 & 0 & 1\\
+    \end{bmatrix} 
+    \begin{bmatrix}x \\y \\1\end{bmatrix}
+$$<ul>
+<li>同样是围绕原点进行旋转</li>
+</ul>
+<p>我们可以组合上述的矩阵：同时进行平移缩放旋转</p>
+<p>即对$P$先后进行变换矩阵的左乘即可</p>
+<p>对于三维情况：</p>
+<ul>
+<li>
+<p>平移Translation</p>
+<ul>
+<li>$$
+    P'\to\begin{bmatrix}
+    I & T\\
+    0 & 1
+    \end{bmatrix} 
+    \begin{bmatrix}x \\y \\z \\1\end{bmatrix}
+    $$</li>
+</ul>
+</li>
+<li>
+<p>缩放Scaling</p>
+<ul>
+<li>$$
+    P'\to
+    \begin{bmatrix}
+    S & 0\\
+    0 & 1
+    \end{bmatrix} 
+    \begin{bmatrix}x \\y \\z\\1\end{bmatrix}
+    $$</li>
+</ul>
+</li>
+<li>
+<p>旋转Rotation</p>
+<ul>
+<li>绕x轴旋转$\alpha$，绕y轴旋转$\beta$，绕z轴旋转$\gamma$</li>
+</ul>
+</li>
+</ul>
+$$
+ R_x(\alpha)=
+\begin{bmatrix}
+1 &0&0\\
+0 & \cos\alpha & -\sin\alpha \\
+0 & \sin\alpha & \cos\alpha  \\
+\end{bmatrix} \\
+R_y(\beta)=\begin{bmatrix}
+\cos\beta & 0 & -\sin\beta\\
+0 &1&0\\
+\sin\beta  & 0& \cos\beta  \\
+\end{bmatrix} \\
+R_z(\gamma)=\begin{bmatrix}
+\cos\gamma& -\sin\gamma & 0 \\
+\sin\gamma & \cos\gamma  & 0\\
+0 &0&1\\
+\end{bmatrix}
+$$<ul>
+<li>
+<p>任意绕轴旋转都可以进行分解成绕三轴先后旋转</p>
+</li>
+<li>
+<p>$R = R_x(\alpha)R_y(\beta)R_z(\gamma)$，合成三个矩阵</p>
+</li>
+<li>
+$$
+    P'\to
+    \begin{bmatrix}
+    R & 0\\
+    0 & 1
+    \end{bmatrix} 
+    \begin{bmatrix}x \\y \\z\\1\end{bmatrix}
+    $$</li>
+<li></li>
+</ul>
+<p>在这里，我们一般不考虑缩放（刚体是不会缩放的）</p>
+$$
+P' \to \begin{bmatrix}R & T \\ 0 & 1\end{bmatrix}
+$$<p>
+即可完成旋转后，再平移</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326193012179.png"
+	width="632"
+	height="193"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326193012179_hu_cfbbdca8fed1234b.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326193012179_hu_c96fb118b54057f4.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326193012179"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="327"
+		data-flex-basis="785px"
+	
+></p>
+<ul>
+<li>从世界坐标系，通过$R,T$转化到相机坐标系</li>
+<li>从相机坐标系通过投影，转化为图像坐标系</li>
+</ul>
+$$
+P'=K\begin{bmatrix}I & 0\end{bmatrix}P=K\begin{bmatrix}I & 0\end{bmatrix}\begin{bmatrix}R & T \\ 0 & 1\end{bmatrix}P_w\\
+P'=K\begin{bmatrix}R & T\end{bmatrix}P_w
+$$<p>
+其中$\begin{bmatrix}R &amp; T\end{bmatrix}$被称为外参数</p>
+<h5 id="weak-perspective-projection弱透视投影">Weak Perspective Projection（弱透视投影）
+</h5><p>当物体离相机足够远时，深度$z$其实可以近似为一个常数$z_0$，从而简化计算</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240328195920736.png"
+	width="986"
+	height="447"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240328195920736_hu_39c66bde6fb3f5f1.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240328195920736_hu_82958602ef591119.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240328195920736"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="220"
+		data-flex-basis="529px"
+	
+></p>
+<h2 id="l8-fitting-and-matching">L8: Fitting and Matching
+</h2><h3 id="fitting">Fitting
+</h3><blockquote>
+<ul>
+<li>
+<p>Choose a parametric model to fit a certain quantity from data</p>
+</li>
+<li>
+<p>Estimate model parameters</p>
+</li>
+</ul></blockquote>
+<h4 id="critical-issues">Critical issues
+</h4><ul>
+<li>noisy data
+<ul>
+<li>数据中存在的随机误差或不确定性，测量、记录或传输过程中的各种因素引起</li>
+<li>对整体趋势影响较小</li>
+<li>处理噪声数据的方法包括平滑技术（如移动平均）、滤波方法、数据清洗等</li>
+</ul>
+</li>
+<li>outliers
+<ul>
+<li>数据集中与其他观测值<strong>明显不同</strong>的值，测量错误、录入错误、实际现象的稀有事件</li>
+<li>具有明显的偏离，可能对分析结果产生较大的影响</li>
+</ul>
+</li>
+<li>missing data</li>
+</ul>
+<h4 id="techniques">Techniques
+</h4><p>目标：拟合点集$(x_i,y_i)$</p>
+<h5 id="least-square-methods最小二乘法">Least Square methods（最小二乘法）
+</h5><ul>
+<li>直线模型：$y-mx-b = 0$</li>
+<li>找到$(m,b)$使得最小化误差$E = \sum(y_i-mx_i-b)^2$</li>
+</ul>
+$$
+E = \sum(y_i-\begin{bmatrix}
+x_i  & 1
+\end{bmatrix}
+\begin{bmatrix}
+  m\\b
+\end{bmatrix})^2 \\
+= \left \| \begin{bmatrix}
+y_1  \\ ... \\ y_n
+\end{bmatrix}- \begin{bmatrix}
+x_1 & 1 \\ ... & 1\\ x_n & 1
+\end{bmatrix} \begin{bmatrix}
+m \\ b
+\end{bmatrix}\right \| ^2 \\
+= \left \| Y - Xh \right \| ^2 \\
+= (Y-Xh)^T(Y-Xh) \\
+= Y^TY-2(Xh)^TY+(Xh)^TXh
+$$<p>对$h$求导</p>
+$$
+\frac{dE}{dh} = -2X^TY+2X^TXh=0
+$$$$
+h = (X^TX)^{-1}X^TY
+$$<p>
+但是这样是<strong>代数意义</strong>上的最优解</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022250550.png"
+	width="1066"
+	height="882"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022250550_hu_ea26c5e7384b3a53.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022250550_hu_8fcd8001d050c35.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022250550"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="120"
+		data-flex-basis="290px"
+	
+></p>
+<p>考虑几何意义上的最优解：</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022302839.png"
+	width="1089"
+	height="815"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022302839_hu_56efd3c2190f319c.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022302839_hu_167c22badd3abbc0.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022302839"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="133"
+		data-flex-basis="320px"
+	
+></p>
+$$
+dis=\frac{|ax+by+d|}{\sqrt{a^2+b^2}}
+$$<p>
+我们可以$a,b$的存在表示了斜率，因此我们可以通过类似归一化的操作，使得$\sqrt{a^2+b^2}$为1，或者为一个定值</p>
+<p>因此我们事实上只需要关心$|ax+by+d|$，代表了相对大小，不需要具体的真实值</p>
+<p>故定义：$E = \sum |ax+by+d|^2$</p>
+<p>我们需要寻找最优的$(a,b,d)$</p>
+<p>令矩阵</p>
+$$
+A = \begin{bmatrix}
+ x_1 & y_1 & 1 \\ x_2 & y_2 & 1 \\ ...&...&...\\x_n&y_n&1\end{bmatrix}\\
+ h = \begin{bmatrix}
+a\\b\\d\end{bmatrix}
+$$<p>则问题转化为：最小化 $||Ah||$，并且限制$||h|| = 1$</p>
+<p>使用<strong>SVD分解</strong>即可完成优化问题（留坑待填）</p>
+<p>最后：</p>
+<ul>
+<li>噪声：鲁棒的</li>
+<li>外点：影响巨大</li>
+</ul>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022314924.png"
+	width="1494"
+	height="634"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022314924_hu_c4c27030d0b11f52.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022314924_hu_8145b20ae8bfdea0.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022314924"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="235"
+		data-flex-basis="565px"
+	
+></p>
+<blockquote>
+<p><strong>conclusion: Least Square is not robust w.r.t. outliers.</strong></p>
+<p>&ldquo;w.r.t.&rdquo; 是英文表达中的缩写，意思是 &ldquo;with respect to&rdquo;，翻译成中文是 &ldquo;关于&rdquo;、&ldquo;针对&rdquo;、&ldquo;就&hellip;而言&rdquo; 等等。</p></blockquote>
+<h5 id="least-squares-robust-estimators-鲁棒估计器">Least Squares: Robust Estimators （鲁棒估计器）
+</h5><p>令残差$\mu = ax+by-d$</p>
+$$
+\rho(u;\sigma) = \frac{\mu^2}{\sigma^2+\mu^2}
+$$<p>
+<img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022343561.png"
+	width="1207"
+	height="1234"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022343561_hu_80c54b30222ba984.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022343561_hu_60f451972b050627.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022343561"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="97"
+		data-flex-basis="234px"
+	
+></p>
+<ul>
+<li>$\mu$越大，函数值接近1</li>
+<li>$\mu$越小，函数是一个关于$\mu^2$的函数</li>
+</ul>
+<p>较大的残差，原本会极大影响损失函数的值</p>
+<p>通过此方法，我们限制了大残差的贡献，从而降低了对损失函数的影响，故能拟合的鲁棒性提升</p>
+<h5 id="random-sample-consensusransac">RANdom SAmple Consensus(RANSAC)
+</h5><ul>
+<li>假设1：嘈杂的数据不会为任何单一模型投一致的票</li>
+<li>假设2：有足够的数据点来商定一个好的模型</li>
+</ul>
+<p>我们定义好阈值$\delta$，与给定直线的距离在阈值范围内的点，被称为内点；否则是外点</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022424569.png"
+	width="1105"
+	height="930"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022424569_hu_8bb8b0a352eb618f.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022424569_hu_c2b58dd1c6fe5e64.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022424569"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="118"
+		data-flex-basis="285px"
+	
+></p>
+<p>算法流程</p>
+<ul>
+<li>随机选择出需要确定模型的最小数量的点（例如：确定直线需要两个点，因此随机两个点）</li>
+<li>对于随机选出的点，计算出模型</li>
+<li>计算出内点和外点</li>
+</ul>
+<p>重复多次，外点数量最小的模型即为我们需要的</p>
+<p>因此我们比较好奇重复多少次可以基本保证能找到最优解</p>
+<p>设重复次数为$N$，算法成功概率为$p$（一般取0.99），$e$表示内点数量与点数之比，$s$表示采样点的数量</p>
+$$
+1-p = (1-e^s)^N
+$$$$
+N = \frac{\log (1-p)}{\log (1-e^s)}
+$$<p>
+<img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022438387.png"
+	width="1653"
+	height="545"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022438387_hu_52b28d76fea94918.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022438387_hu_f754c0fb80960ca9.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022438387"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="303"
+		data-flex-basis="727px"
+	
+></p>
+<p>不管是需要采样的点变多，还是内点比例下降，都会使得次数增加</p>
+<blockquote>
+<p><strong>conclusion: Cannot be used if ratio inliers is too small</strong></p></blockquote>
+<p>但对于大部分场景，外点是占较大部分的，因此很难使用</p>
+<h5 id="hough-transform霍夫变换">Hough transform(霍夫变换)
+</h5><p>设一条直线：$y=mx+n$，其中$(x_i,y_i)$是该直线上一点</p>
+<p>我们考虑将$m,n$看作自变量与因变量：$n = -x_im-y_i$</p>
+<p>因此我们得到了</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022447459.png"
+	width="1417"
+	height="593"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022447459_hu_c52c9bb3ef21a383.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022447459_hu_508b964d7d915c2a.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022447459"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="238"
+		data-flex-basis="573px"
+	
+></p>
+<p>经过霍夫变换后得到的被称为是霍夫空间</p>
+<p><strong>笛卡尔坐标系中的一个点，对应霍夫空间中的一条直线</strong></p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022457114.png"
+	width="1307"
+	height="519"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022457114_hu_6d682975f63f8fd.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022457114_hu_ed406c6eceb4432.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022457114"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="251"
+		data-flex-basis="604px"
+	
+></p>
+<p>同理，<strong>笛卡尔坐标系中的一条直线，对应霍夫空间中的一个点</strong></p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022513705.png"
+	width="1826"
+	height="568"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022513705_hu_ce7972da00d8463.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022513705_hu_8d54b6de437ca92e.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022513705"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="321"
+		data-flex-basis="771px"
+	
+></p>
+<p>因此在笛卡尔坐标系中，同一直线上的点，其在霍夫空间中将交于同一点</p>
+<p>理论上我们只需要知道哪些点被投票得最多，这条直线就是我们需要的</p>
+<p>但问题还很多：<strong>我们无法表示垂直的线</strong></p>
+<p>考虑切换为<strong>极坐标系</strong></p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022522360.png"
+	width="1557"
+	height="639"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022522360_hu_6295ba1bd4f2ee00.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022522360_hu_59a4f44a950135a6.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022522360"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="243"
+		data-flex-basis="584px"
+	
+></p>
+$$
+x\cos\theta +y\sin\theta = \rho
+$$<p>
+<img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022532822.png"
+	width="1581"
+	height="745"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022532822_hu_cfd5ad4322699b8a.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022532822_hu_44c15c8d9fc7f123.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022532822"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="212"
+		data-flex-basis="509px"
+	
+></p>
+<p>我们将霍夫空间看作一个网格</p>
+<p>其中高度为原图像对角线长度（$\rho$的最大值），宽度为$\theta$的最大值$2\pi$</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022542627.png"
+	width="1086"
+	height="914"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022542627_hu_6729ac3eae5a4497.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022542627_hu_b2774d67ce126a12.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022542627"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="118"
+		data-flex-basis="285px"
+	
+></p>
+<p>枚举网格点，估计一下其中的交点数量</p>
+<blockquote>
+<p>对于高维数据非常难以处理</p></blockquote>
+<h2 id="l9-detectors-and-descriptors">L9. Detectors and descriptors
+</h2><h3 id="detectors">Detectors
+</h3><h4 id="edge-detectors">Edge detectors
+</h4><h5 id="edge产生的要素">Edge产生的要素
+</h5><ul>
+<li><strong>深度</strong>不连续性</li>
+<li><strong>表面方向</strong>不连续性（物体表面不同部分的朝向或法线方向发生突然变化）</li>
+<li>反射率不连续性（即，表面材料性质的变化、颜色）</li>
+<li><strong>光照</strong>不连续性（例如，高光; 阴影）</li>
+</ul>
+<p>边缘检测的例子</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022552308.png"
+	width="586"
+	height="573"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022552308_hu_dd9253ef1936c03e.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022552308_hu_c4c6cd259ad7982e.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022552308"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="102"
+		data-flex-basis="245px"
+	
+></p>
+<h5 id="检测标准">检测标准
+</h5><ul>
+<li>Good detection accuracy：不误检测噪声，漏检测真实边缘</li>
+<li>Good localization：检测边缘应该尽可能接近真实边缘</li>
+<li>Single response constraint：单一的回应</li>
+</ul>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022559357.png"
+	width="952"
+	height="504"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022559357_hu_3bb5856a04f766aa.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022559357_hu_7011cb969efe27e1.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022559357"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="188"
+		data-flex-basis="453px"
+	
+></p>
+<h5 id="detectors的设计">Detectors的设计
+</h5><ul>
+<li>使用导数，定义了梯度较高（也就是变化较为激烈）的地方</li>
+<li>对图像进行了平滑处理，提取导数之前减少噪音</li>
+</ul>
+$$
+\frac{df}{dx} = f_x - f_{x-1}
+$$<p>
+因为是离散的，所以单位长度是一个像素，我们对一个像素作一个差值就是变化率，即导数</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022607900.png"
+	width="976"
+	height="231"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022607900_hu_d931fa5ed9a52085.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022607900_hu_e56162696d6afb2d.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022607900"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="422"
+		data-flex-basis="1014px"
+	
+></p>
+<p>考虑如上的一个图像，我们若直接求出导数图像，你会发现并没有特别显著的大导数</p>
+<p>原因是本身图像的波动大概就是5左右，而上升部分的差值也差不多是5</p>
+<p>所以你会发现导数基本都一样</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022615022.png"
+	width="1111"
+	height="523"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022615022_hu_8915f4b7694c7926.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022615022_hu_2e83d6200424dbd4.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022615022"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="212"
+		data-flex-basis="509px"
+	
+></p>
+<p>因此我们使用高斯模糊的卷积核进行平滑处理</p>
+$$
+S = \bigtriangledown(g\ast I) = (\bigtriangledown g)\ast I \\ =  \begin{bmatrix}
+ \frac{\partial  g}{\partial  x} \\
+ \frac{\partial  g}{\partial  y}
+\end{bmatrix}\ast I = \begin{bmatrix}
+g_x\ast I \\
+ g_y\ast I
+\end{bmatrix} \\
+= \begin{bmatrix}
+S_x & S_y
+\end{bmatrix}
+$$<h4 id="cornerblob-detectors">Corner/blob detectors
+</h4><ul>
+<li><strong>可重复性</strong>：尽管存在几何和光度变换，但同一特征可以在多幅图像中被找到。</li>
+<li><strong>显著性</strong>：每个特征都位于图像的“有趣”区域。（反正基本不是空白区域）</li>
+<li><strong>局部性</strong>：一个特征占据图像的“相对较小”区域。</li>
+</ul>
+<h5 id="harris-corner-detector">Harris corner detector
+</h5><p>在窗口位置变化时探索窗口内的<strong>强度变化</strong></p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022623347.png"
+	width="1282"
+	height="441"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022623347_hu_b6db5bd0224e4628.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022623347_hu_e1857047c55be46d.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022623347"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="290"
+		data-flex-basis="697px"
+	
+></p>
+<ul>
+<li>flat：在所有方向上都没有变化</li>
+<li>edge：沿着边缘方向没有变化</li>
+<li>corner：在<strong>所有方向</strong>上都有显著变化</li>
+</ul>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022632821.png"
+	width="1319"
+	height="874"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022632821_hu_94886b8847ef9a75.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022632821_hu_8fcf6f8d9d766c47.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022632821"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="150"
+		data-flex-basis="362px"
+	
+></p>
+<p><strong>我们无法知道corner的尺度变化</strong></p>
+<h5 id="blob-detection">Blob detection
+</h5><p>回到边缘探测，我们可以把卷积后的结果的导数</p>
+<p>修改为二阶导</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022643978.png"
+	width="1390"
+	height="327"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022643978_hu_b1d7bb674c30fff1.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022643978_hu_538015615e28b923.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022643978"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="425"
+		data-flex-basis="1020px"
+	
+></p>
+<p>因此我们的高斯算子可以换成拉普拉斯算子（高斯的导数）</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022651285.png"
+	width="1220"
+	height="224"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022651285_hu_619768f6ba5c3141.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022651285_hu_26fa020152e6952c.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022651285"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="544"
+		data-flex-basis="1307px"
+	
+></p>
+<p>对原图像使用拉普拉斯算子进行处理即可</p>
+<p>因此对于一个比较宽的图形，两侧边缘会分别导出两个波动</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022658579.png"
+	width="1138"
+	height="286"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022658579_hu_736f5d6c0583a334.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022658579_hu_88c53341e8c6653.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022658579"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="397"
+		data-flex-basis="954px"
+	
+></p>
+<p>我们先尝试固定拉普拉斯算子，当图形宽度变化时</p>
+<p>某种情况下，两个波动会融合在一起，并且幅度最大值取在了图形中央</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022705631.png"
+	width="1452"
+	height="657"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022705631_hu_c25616eb9271c440.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022705631_hu_a3f856808087a3d4.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022705631"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="221"
+		data-flex-basis="530px"
+	
+></p>
+<p>所以我们调一下参数，就可以找到幅度最大的点，从而估计出<strong>尺度大小</strong></p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022712160.png"
+	width="1322"
+	height="558"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022712160_hu_9b2b9afcc26f67d3.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022712160_hu_b514d7a41245bccc.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022712160"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="236"
+		data-flex-basis="568px"
+	
+></p>
+<p>并且对于半径为$r$的圆，取到最大值的参数是可以计算的</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022719594.png"
+	width="946"
+	height="444"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022719594_hu_79df132facd27b87.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022719594_hu_8eb90fbc300a3c8d.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022719594"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="213"
+		data-flex-basis="511px"
+	
+></p>
+<h5 id="dog">DoG
+</h5><p>高斯差分，你只需知道这个算子会更常用一点</p>
+<h3 id="descriptors">Descriptors
+</h3><p>描述信息一般需要：</p>
+<p>特征保证</p>
+<ul>
+<li><strong>光照不变性（Invariant w.r.t Illumination）</strong>：特征应该不受光照变化的影响。</li>
+<li><strong>姿势不变性（Invariant w.r.t Pose）</strong>：特征应该不受物体姿势变化的影响。</li>
+<li><strong>尺度不变性（Invariant w.r.t Scale）</strong>：特征应该不受尺度变化的影响。</li>
+<li><strong>类内变异不变性（Invariant w.r.t Intraclass variability）</strong>：特征应该能够在相同类别的不同实例之间保持稳定性。</li>
+</ul>
+<p>特征要有</p>
+<ul>
+<li><strong>高度独特性（Highly distinctive）</strong>：特征应该具有足够的独特性，以便在大型特征数据库中能够以高概率找到其正确匹配的特征。</li>
+</ul>
+<h4 id="simplest-descriptor---patch">Simplest Descriptor - Patch
+</h4><blockquote>
+<p>图像中的一个小区域或局部区域，通常由一组相邻像素组成</p></blockquote>
+<p>将特征周围的像素$n\times m$的小图片展开为$[1,nm]$大小的一维向量$w$</p>
+$$
+w = \frac{w-\bar{w}}{||w-\bar{w}||}
+$$<p>
+减去均值除以模长</p>
+<p>无论图像的光照条件如何变化，这种归一化保证了描述符的生成不会受到影响，从而增强了描述符的稳定性和可靠性</p>
+<p>缺点</p>
+<ul>
+<li>对于位置、姿势、尺度和类内变异的小变化敏感</li>
+<li>特征区分度较差</li>
+</ul>
+<h4 id="filter">Filter
+</h4><p>提供卷积核做点事情，然后提取特征</p>
+<p>只能说鲁棒性有所提升</p>
+<h4 id="sift">SIFT
+</h4><blockquote>
+<p>大致理解即可，并不准确</p></blockquote>
+<ul>
+<li>使用DoG确定位置和特征尺度</li>
+</ul>
+<p>对于一个$N\times N$的窗口，我们对每个像素计算梯度</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022731222.png"
+	width="521"
+	height="473"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022731222_hu_cc18e1bcefc1aecb.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022731222_hu_19407029f81e9fc8.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022731222"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="110"
+		data-flex-basis="264px"
+	
+></p>
+<p>我们把$[0,2\pi]$分成若干份，对所有方向进行计数</p>
+<p>数量最多的即为主方向</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022741296.png"
+	width="1329"
+	height="494"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022741296_hu_5763f0002aab630d.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022741296_hu_e64a24d12e9530b9.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022741296"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="269"
+		data-flex-basis="645px"
+	
+></p>
+<p>那么只需要按照主方向的角度进行旋转即可</p>
+<p>打包后得到的向量即为描述符</p>
+<p>显然</p>
+<ul>
+<li>强度：DoG的归一化、梯度足够处理</li>
+<li>姿势：按照主方向把所有箭头旋转成一样的角度，无视了姿势变化</li>
+<li>尺度：DoG处理完毕</li>
+<li>类内变异：直方图有一定的粗略计算，有一定鲁棒性</li>
+</ul>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022751181.png"
+	width="1272"
+	height="380"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022751181_hu_89ced602842fe642.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022751181_hu_23e6fbf7d6bb0c7.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022751181"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="334"
+		data-flex-basis="803px"
+	
+></p>
+<h2 id="l11-visual-recognition">L11. Visual recognition
+</h2><h2 id="数学补坑">数学补坑
+</h2><h3 id="svd分解未完成">SVD分解（未完成）
+</h3><h3 id="卷积">卷积
+</h3><p><a class="link" href="https://www.bilibili.com/video/BV1Vd4y1e7pj"  target="_blank" rel="noopener"
+    >【官方双语】那么……什么是卷积？</a></p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022801282.png"
+	width="1218"
+	height="857"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022801282_hu_253be7fba8ef9085.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022801282_hu_b902826269466ced.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022801282"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="142"
+		data-flex-basis="341px"
+	
+></p>
+<p>在这里我们主要理解一下离散的情况即可</p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022811109.png"
+	width="985"
+	height="898"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022811109_hu_52d23d38c2e65e60.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022811109_hu_f9fd1846fd7ade5b.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022811109"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="109"
+		data-flex-basis="263px"
+	
+></p>
+$$
+P(n) = \sum_{i+j=n}a_ib_j
+$$<p>
+<img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022819009.png"
+	width="1418"
+	height="773"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022819009_hu_eb05afcf21eedfde.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022819009_hu_994932f024e1ff45.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022819009"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="183"
+		data-flex-basis="440px"
+	
+></p>
+<p><img src="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022828890.png"
+	width="1637"
+	height="891"
+	srcset="/p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022828890_hu_99f33e8bebc6449a.png 480w, /p/cs231acomputer-vision-from-3d-reconstruction-to-recognition/assets/image-20240326022828890_hu_d87c5b2cfc08e63e.png 1024w"
+	loading="lazy"
+	
+		alt="image-20240326022828890"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="183"
+		data-flex-basis="440px"
+	
+></p>
+<blockquote>
+<p>高斯模糊：</p>
+<p>在二维图像上，使用一个$n\times n$的卷积核，卷积核的值从中心开始符合二维高斯分布，对整个图像的颜色进行加权平均</p></blockquote>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/cv/">CV</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

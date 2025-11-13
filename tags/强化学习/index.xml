@@ -1,0 +1,957 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>强化学习 on BiribiriBird</title>
+        <link>https://example.com/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/</link>
+        <description>Recent content in 强化学习 on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Tue, 04 Nov 2025 22:53:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>强化学习的数学原理 · Chap6 · Stochastic Approximation and SGD</title>
+        <link>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap6-stochastic-approximation-and-sgd/</link>
+        <pubDate>Tue, 04 Nov 2025 22:53:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap6-stochastic-approximation-and-sgd/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1sd4y167NS&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.bilibili.com/video/BV1sd4y167NS&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;以计算采样数据的平均数为例&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;采样大量数据，最后一次性计算平均值&lt;/li&gt;
+&lt;li&gt;采样一个算一次，迭代计算，手上的均值最终会趋向真实&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们采样第二种方法，记：&lt;/p&gt;
+$$
+w_{k+1} = \frac{1}{k}\sum_{i=1}^k x_i
+$$&lt;p&gt;
+则：&lt;/p&gt;
+$$
+\begin{split}
+w_{k+1} &amp;= \frac{1}{k}\sum_{i=1}^k x_i = \frac{1}{k}(\sum_{i=1}^{k-1}x_i+x_k)\\
+&amp;= \frac{1}{k}\left [ (k-1)w_k + x_k \right ] = w_k - \frac{1}{k}(w_k-x_k)
+\end{split}
+$$&lt;h2 id=&#34;robbins-monro-algorithm&#34;&gt;Robbins-Monro Algorithm
+&lt;/h2&gt;&lt;p&gt;对于一个方程：&lt;/p&gt;
+$$
+g(w) = 0
+$$&lt;p&gt;
+我们希望求出解$w^&lt;em&gt;$，使得$g(w^&lt;/em&gt;) = 0$&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;为了简化问题，$g(w)$是一个单调递增的函数&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;如果函数已知，我们可以通过牛顿迭代法求解&lt;/p&gt;
+&lt;p&gt;但是如果函数未知，我们通过采样：&lt;/p&gt;
+$$
+y_k = g(w_k)
+$$&lt;p&gt;
+往往带有噪声：&lt;/p&gt;
+$$
+\widetilde{g}(w_k,\eta_k) = g(w_k) + \eta_k
+$$&lt;p&gt;
+我们定义一个迭代过程：&lt;/p&gt;
+$$
+w_{k+1} = w_k - a_k\widetilde{g}(w_k,\eta_k)
+$$&lt;ul&gt;
+&lt;li&gt;当$w_k&amp;gt;w^*$时，$g(w_k)&amp;gt;0$时
+&lt;ul&gt;
+&lt;li&gt;$w_{k+1} = w_k - a_k\widetilde{g}(w_k,\eta_k) &amp;lt; w_k$&lt;/li&gt;
+&lt;li&gt;所以会往$w^*$走一步&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;当$w_k&amp;lt;w^*$时，$g(w_k)&amp;lt;0$​时
+&lt;ul&gt;
+&lt;li&gt;$w_{k+1} = w_k - a_k\widetilde{g}(w_k,\eta_k) &amp;gt; w_k$&lt;/li&gt;
+&lt;li&gt;所以会往$w^*$走一步&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;但其实这个非常理想，条件也比较苛刻，需要满足&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;$0&amp;lt;c_1\leq \nabla g(w)\leq c_2,\text{ for all } w$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$c_1$保证函数单调递增，且必然存在0解&lt;/li&gt;
+&lt;li&gt;$c_2$​保证梯度有界，防止垂直&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$\sum a_k = \infty, \sum a_k^2 &amp;lt; \infty$​&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;促进探索：$a_k$​是步长，若不趋近无穷，代表调整幅度与范围是有限的&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;抑制噪声：噪声的方差大致是$\sum a_k^2 \mathbb{E}\left| \eta_k^2\right |$，$\sum a_k^2 &amp;lt; \infty$​保证方差不会发散&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;同时暗含了$a_k\to 0$，使得最后的$w^*$趋于定值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$\mathbb{E}(\eta_k|\mathcal{H}_k) =0, \text{ and }\mathbb{E}(\eta_k^2|\mathcal{H}_k &amp;lt; \infty)$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;噪声条件期望为0，可以保证噪声是不依赖于历史的（不会随着采样步数增加而增加/减少，即不存在系统性偏移）&lt;/li&gt;
+&lt;li&gt;条件方差不会无穷大，从而避免出现极端大的扰动，保证理论分析（如大数定律、中心极限定理）可用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;懒得纠结太多了&lt;/p&gt;
+&lt;h2 id=&#34;stochastic-gradient-descent&#34;&gt;Stochastic Gradient Descent
+&lt;/h2&gt;&lt;p&gt;随机梯度下降的目标是：&lt;/p&gt;
+$$
+\min_w \mathcal{J}(w) = \mathbb{E}\left[f(w,X)\right]
+$$&lt;p&gt;
+是一个含有随机变量的式子，需要优化一个参数$w$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Method1：&lt;strong&gt;Gradient Descent&lt;/strong&gt;，沿梯度的反方向走一个步长&lt;/li&gt;
+&lt;/ul&gt;
+$$
+w_{k+1} = w_k -\alpha_k \nabla_w \mathbb{E}[f(w_k,X)]
+$$&lt;p&gt;
+但是实际上我们很难获得所有样本分布$X$（数据是收集不完的）&lt;/p&gt;
+&lt;p&gt;所以这是一个理想的情况&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Method2：&lt;strong&gt;Batch Gradient Descent&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;考虑使用一个Batch进行近似&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+\mathbb{E}[\nabla_wf(w_k,X)] \approx \frac{1}{n}\sum_i^n\nabla_w f(w_k,x_i)\\
+w_{k+1} = w_k - \alpha_k  \frac{1}{n}\sum_i^n\nabla_w f(w_k,x_i)
+$$&lt;p&gt;
+但是每次迭代，都需把每一个Batch进行扫描，并不是很轻松&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Method3：&lt;strong&gt;Stochastic Gradient Descent&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;其实就是batch变成1了&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+w_{k+1} = w_k - \alpha_k  \nabla_w f(w_k,x_i)
+$$&lt;p&gt;
+为了证明SGD算法是收敛的，我们可以尝试构造一个方程：&lt;/p&gt;
+$$
+g(w) = \mathbb{E}\left[\nabla_w f(w,X)\right] = 0
+$$&lt;p&gt;
+我们使用RM算法求解，则有：&lt;/p&gt;
+$$
+\widetilde{g}(w,\eta) = g(w) + \eta = \mathbb{E}\left[\nabla_w f(w,X)\right] + \eta
+$$&lt;p&gt;
+则有迭代式：&lt;/p&gt;
+$$
+w_{k+1} = w_k - a_k\widetilde{g}(w_k,\eta_k) = w_k - a_k\nabla_wf(w_k,x_k) 
+$$&lt;p&gt;
+所以事实上SGD就是一个RM&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;截止到此，后续内容我应该不会继续深入，理论性比较强&lt;/p&gt;
+&lt;p&gt;之后如果有涉猎到的话再进行学习&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>强化学习的数学原理 · Chap5 · Monte Carlo Learning</title>
+        <link>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap5-monte-carlo-learning/</link>
+        <pubDate>Mon, 03 Nov 2025 01:10:34 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap5-monte-carlo-learning/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1sd4y167NS&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.bilibili.com/video/BV1sd4y167NS&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;model&#34;&gt;Model
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;model-based：概率模型已知&lt;/li&gt;
+&lt;li&gt;model-free：概率模型未知&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;抛硬币模型：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;model-based: 基于0.5的概率直接把期望、分布全部都算出来&lt;/li&gt;
+&lt;li&gt;model-free: 重复采样多次，以样本均值作为期望&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;mc-basic&#34;&gt;MC Basic
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;最简单的基于蒙特卡洛的强化学习算法&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;本质上是转化Policy Iteration为Model-Free&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;其中Policy Iteration中的一步：&lt;/p&gt;
+$$
+\pi_{k+1}=\arg \max_\pi \sum_a \pi(a|s){\color{red}q_{\pi_k}(s,a)}, \quad s\in \mathcal{S}
+$$&lt;p&gt;
+其中这一步的action value可以表示为：&lt;/p&gt;
+$$
+\begin{split}
+q_{\pi_k}(s,a) &amp;=\sum_{r}p(r|s,a)r+\gamma\sum_{s&#39;}p(s&#39;|s,a)v_{\pi_k}(s&#39;) \\ 
+&amp;= \mathbb{E}\left[ G_t \mid S_t = s, A_t = a\right]
+\end{split}
+$$&lt;p&gt;
+第一个公式是依赖于模型$p$的，而第二个公式就可以通过采样去近似&lt;/p&gt;
+&lt;p&gt;基于状态$s$采取动作$a$，依据策略$\pi_k$，生成一个episode，记return为$g(s,a)$&lt;/p&gt;
+&lt;p&gt;则我们可以将$g(s,a)$看作一个$G_t$的采样&lt;/p&gt;
+&lt;p&gt;因此我们大量重复采样，得到序列$\left { g^{(j)}(s,a)\right }$&lt;/p&gt;
+&lt;p&gt;则可以近似：&lt;/p&gt;
+$$
+q_{\pi_k}(s,a) = \mathbb{E}\left [ G_t\mid S_t = s,A_t = a \right] \approx\frac{1}{N}\sum_jg^{(j)}(s,a)
+$$&lt;blockquote&gt;
+&lt;p&gt;没有模型的时候，你最好有数据（统计学叫Sample，强化学习叫Experience）&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;因此整个算法的流程：&lt;/p&gt;
+&lt;p&gt;从$\pi_0$出发，迭代到$k$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Step1：Policy Evaluation
+&lt;ul&gt;
+&lt;li&gt;本质上就是希望得到所有的$q$&lt;/li&gt;
+&lt;li&gt;对&lt;strong&gt;每一个$(s,a)$对&lt;/strong&gt;，生成大量的episodes&lt;/li&gt;
+&lt;li&gt;计算均值，作为$q_{\pi_k}(s,a)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Step2：Policy Improvement
+&lt;ul&gt;
+&lt;li&gt;贪心策略：$\pi_{k+1}$基于最大的$q$去选择&lt;/li&gt;
+&lt;li&gt;这里和model-based是一样的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;因此我们可以直接通过这个方法得到$\pi$，而不是state value&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;但是算法效率比较差 后续有优化&lt;/p&gt;
+&lt;p&gt;甚至这个算法也只是一个idea 没有具体的名字&lt;/p&gt;
+&lt;p&gt;是作者取的&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Eposide Length是重要的、需要够长：采样的步数太短，会导致均值不够准确&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;mc-exploring-starts&#34;&gt;MC Exploring Starts
+&lt;/h2&gt;&lt;p&gt;MC Basic的数据采样效率非常低&lt;/p&gt;
+&lt;p&gt;需要对每一个$(s,a)$对进行大量采样&lt;/p&gt;
+$$
+s_1,a_1 \to s_2,a_5 \to {\color{red}s_1,a_2} \to s_2,a_3 \to a_5,a_1 \to ...
+$$&lt;p&gt;
+在MC Basic中，这一条episode只会用来计算最开始的$s_1,a_1$​的action value&lt;/p&gt;
+&lt;p&gt;但其实中间的$s,a$对是可以当成一次采样的&lt;/p&gt;
+&lt;p&gt;我们可以从两个角度开始优化：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;复用&lt;/strong&gt;：我们希望一整条episode都能被利用，有两个方法
+&lt;ul&gt;
+&lt;li&gt;First Visit：只采样每个episode中每个$(s,a)$​第一次出现
+&lt;ul&gt;
+&lt;li&gt;样本独立&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Every Visit：每次出现$(s,a)$​都当成一次采样
+&lt;ul&gt;
+&lt;li&gt;样本更多，但是相关性会变强&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;即时更新&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;Basic：跑完所有的episode，统一做一次Policy Improvement&lt;/li&gt;
+&lt;li&gt;但可以用单个 episode的return来立即更新action value
+&lt;ul&gt;
+&lt;li&gt;本质上可以看作是Truncated Policy Improvement&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;算法流程：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;初始化策略$\pi_0$​&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;“Exploring starts”&lt;/strong&gt; 意思是：所有 (s, a) 都有可能成为 episode 的起点。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;随机选择一个起点$s_0,a_0$​​——&lt;strong&gt;Exploring Starts&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;需要保证所有的状态都是非0的概率能作为起点&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;按照当前策略$\pi$生成一个episode&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;反向更新&lt;/strong&gt;（相当于后缀和，方便计算return）
+&lt;ul&gt;
+&lt;li&gt;每个$s,a$​会维护一个列表&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;First Visit&lt;/strong&gt;：如果当前$s,a$对是$(s_0,a_0,s_1,a_1,s_2,a_2,&amp;hellip;)$中没有出现过的（第一次出现）
+&lt;ul&gt;
+&lt;li&gt;将当前的return加入到对应列表&lt;/li&gt;
+&lt;li&gt;计算列表中的均值，更新$q(s,a)$&lt;/li&gt;
+&lt;li&gt;根据$q$实时更新$\pi$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;mc-epsilon-greedy&#34;&gt;MC Epsilon Greedy
+&lt;/h2&gt;&lt;p&gt;但现实中Exploring Starts难以实现，有时候我们很难自由选择一个起点开始采样&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;你总不能每次采样一个起点，就搬动机器人过去一次吧&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;前两个算法之所以要对不同的$s,a$做采样，本质原因是：&lt;/p&gt;
+$$
+\pi(a|s) = \begin{cases}
+ 1 &amp; \text{ if } a=a^*(s) \\
+ 0 &amp; \text{ if } a\neq a^*(s)
+\end{cases}
+$$&lt;p&gt;
+我们的策略是greedy的，因此会导致从真实起点出发，非常多的状态无法被覆盖到&lt;/p&gt;
+&lt;p&gt;因此无法针对单一起点做反复采样&lt;/p&gt;
+&lt;p&gt;所以我们可以考虑引入一点随机性：&lt;/p&gt;
+$$
+\pi(a|s) = \begin{cases}
+ 1-\frac{\varepsilon}{|\mathcal{A}(s)|}(|\mathcal{A}(s)|-1) &amp; \text{ for the greedy action }\\
+ \frac{\varepsilon}{|\mathcal{A}(s)|} &amp; \text{ for the other }|\mathcal{A}(s)|-1 \text{ actions} 
+\end{cases} \\
+\text{where } \varepsilon \in [0,1] \text{ and } |\mathcal{A}(s)| \text{ is the number of actions.}
+$$&lt;p&gt;
+假设有5个action，其中greedy action是$a_0$，定义$\varepsilon=0.2$&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;action&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;$a_0$&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;$a_1$&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;$a_2$&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;$a_3$&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;$a_4$&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;probability&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;0.84&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;0.04&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;0.04&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;0.04&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;0.04&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;同时，我们可以保证任意时刻greedy action的概率都是最大的&lt;/p&gt;
+&lt;p&gt;$\varepsilon=1$时，所有action概率相同&lt;/p&gt;
+$$
+1-\frac{\varepsilon}{|\mathcal{A}(s)|}(|\mathcal{A}(s)|-1)=1-\varepsilon + \frac{\varepsilon}{|\mathcal{A}(s)|} \geq \frac{\varepsilon}{|\mathcal{A}(s)|}
+$$&lt;p&gt;算法维持了一个平衡：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;探索性：越大的$\varepsilon$带来越强的探索性，只要episode足够长，就能探索所有状态&lt;/li&gt;
+&lt;li&gt;最优性：越大的$\varepsilon$带来的策略自然是更差的，因为每一步走向greedy的概率变低了&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;可以动态调整，一开始大，逐渐变小&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;算法流程：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;去掉了Exploring Starts的条件：&lt;strong&gt;需要保证所有的状态都是非0的概率能作为起点&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;修改策略更新的分布&lt;/li&gt;
+&lt;/ul&gt;
+$$
+\pi(a|s) = \begin{cases}
+ 1-\frac{\varepsilon}{|\mathcal{A}(s)|}(|\mathcal{A}(s)|-1) &amp;  a=a^*(s)\\
+ \frac{\varepsilon}{|\mathcal{A}(s)|} &amp;  a\neq a^*(s)
+\end{cases} \\
+$$&lt;p&gt;
+其他都是和前文算法一致&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>强化学习的数学原理 · Chap4 · Value Iteration and Policy Iteration</title>
+        <link>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/</link>
+        <pubDate>Fri, 31 Oct 2025 14:05:34 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1sd4y167NS&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.bilibili.com/video/BV1sd4y167NS&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;value-iteration&#34;&gt;Value Iteration
+&lt;/h2&gt;&lt;p&gt;基于BOE：&lt;/p&gt;
+$$
+v = f(v) = \max_\pi(r_\pi+\gamma P_\pi v)
+$$&lt;p&gt;
+我们不断做迭代：&lt;/p&gt;
+$$
+v_{k+1} = f(v_k), k=1,2,3,...
+$$&lt;p&gt;
+这个就是&lt;strong&gt;value iteration&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;整个算法可以拆成以下步骤：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Step1：&lt;strong&gt;Policy Update&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+$$
+\pi_{k+1} = \arg\max_\pi (r_\pi+\gamma P_\pi v_k)
+$$&lt;p&gt;
+基于上一步的state value，找出当前最优的策略&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Step2：&lt;strong&gt;Value Update&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+$$
+v_{k+1} = r_{\pi_{k+1}} + \gamma P_{\pi_{k+1}}v_k
+$$&lt;p&gt;基于该策略，更新所有的state value&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;理论上$v_k$不能被称为state value&lt;/p&gt;
+&lt;p&gt;由于所有的state都是在优化过程，因此不能保证所有state都符合贝尔曼公式&lt;/p&gt;
+&lt;p&gt;因此只是一个临时状态&lt;/p&gt;&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;p&gt;从代码实现的角度：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Step0：若$\left| v_k - v_{k-1}\right | &amp;gt; \text{eps}$
+&lt;ul&gt;
+&lt;li&gt;否则结束，说明收敛&lt;/li&gt;
+&lt;li&gt;对所有的state，计算出所有的$q(s,a)$&lt;/li&gt;
+&lt;li&gt;得到$a^*_k(s,a) = \arg \max_a q_k(s,a)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Step1：&lt;/li&gt;
+&lt;/ul&gt;
+$$
+\pi_{k+1}(a|s) = \begin{cases}
+ 1 &amp; \text{ if } a=a^*_k(s) \\
+ 0 &amp; \text{ if } a\neq a^*_k(s)
+\end{cases}
+$$&lt;p&gt;
+这是一个&lt;strong&gt;贪心的策略&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Step2：&lt;/li&gt;
+&lt;/ul&gt;
+$$
+v_{k+1}(s) = \max_a q_k(s,a)
+$$&lt;hr&gt;
+&lt;p&gt;Value Iteration从当前的state value出发，决定了下一个Policy&lt;/p&gt;
+&lt;p&gt;使用新的Policy去更新state value&lt;/p&gt;
+&lt;h2 id=&#34;policy-iteration&#34;&gt;Policy Iteration
+&lt;/h2&gt;&lt;p&gt;与之相比，还有一种迭代方式是以Policy作为基础&lt;/p&gt;
+&lt;p&gt;与Value Iteration不同，我们的出发点是一个初始策略$\pi_0$&lt;/p&gt;
+&lt;p&gt;进行如下迭代：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Step1：Policy Evaluation
+&lt;ul&gt;
+&lt;li&gt;计算基于当前策略$\pi_k$的state value&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+v_{\pi_k} = r_{\pi_k} + \gamma P_{\pi_k} v_{\pi_k}
+$$&lt;blockquote&gt;
+&lt;p&gt;这里的求解依赖于一个迭代的过程&lt;/p&gt;
+&lt;p&gt;因此整个Policy Iteration，内含一个小的迭代&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Step2：Policy Improvement
+&lt;ul&gt;
+&lt;li&gt;基于当前state value，找出最优策略&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+\pi_{k+1} = \arg \max_\pi (r_\pi + \gamma P_\pi v_{\pi_k})
+$$&lt;hr&gt;
+&lt;p&gt;从代码实现的角度&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Step1：$v_{\pi_k}$基于策略$\pi_k$不断迭代，直到$v_{\pi_k}$收敛&lt;/li&gt;
+&lt;li&gt;Step2：基于$v_{\pi_k}$算出所有的$q_{\pi_k}$
+&lt;ul&gt;
+&lt;li&gt;得到$a^*_k(s,a) = \arg \max_a q_k(s,a)$​&lt;/li&gt;
+&lt;li&gt;同样做以下事情：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+\pi_{k+1}(a|s) = \begin{cases}
+ 1 &amp; \text{ if } a=a^*_k(s) \\
+ 0 &amp; \text{ if } a\neq a^*_k(s)
+\end{cases}
+$$&lt;hr&gt;
+&lt;p&gt;策略迭代会出现一个现象：接近终点的策略会先变好&lt;/p&gt;
+&lt;p&gt;因为一开始都是乱七八糟的，接近终点的策略会更先找到方向&lt;/p&gt;
+&lt;h3 id=&#34;truncated-policy-iteration&#34;&gt;Truncated Policy Iteration
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;policy：基于$\pi$进行policy evaluation，得到$v_\pi$，再policy improvement得到新的$\pi$&lt;/li&gt;
+&lt;li&gt;value：基于$v$做policy update更新得到当前最优$\pi$，根据$\pi$做value update得到新的$v$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/assets/image-20251102232322563.png&#34;
+	width=&#34;1123&#34;
+	height=&#34;383&#34;
+	srcset=&#34;https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/assets/image-20251102232322563_hu_95e27971edd8aef.png 480w, https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/assets/image-20251102232322563_hu_19b5b271771fb834.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;293&#34;
+		data-flex-basis=&#34;703px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;对两个算法进行对齐&lt;/p&gt;
+&lt;p&gt;前面说了：Policy Iteration是一个大的迭代包含一个小的迭代过程&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/assets/image-20251102232520153.png&#34;
+	width=&#34;1035&#34;
+	height=&#34;516&#34;
+	srcset=&#34;https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/assets/image-20251102232520153_hu_aa0a2884d994f8cb.png 480w, https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/assets/image-20251102232520153_hu_be811e6b22dd5706.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;200&#34;
+		data-flex-basis=&#34;481px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;而value iteration的第一次迭代得到的$v_1$，&lt;strong&gt;事实上就是Policy iteration小迭代中的第一个中间量&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;我们显然不会在这里进行无穷次的迭代&lt;/p&gt;
+&lt;p&gt;所以这个&lt;strong&gt;迭代次数&lt;/strong&gt;就可以一般化成&lt;strong&gt;Truncated Policy Iteration（截断策略迭代）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;当迭代次数为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1次：value iteration&lt;/li&gt;
+&lt;li&gt;无穷次：policy iteration（因此这个算法不存在）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以Truncated Policy Iteration是两个算法的一般化形式&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/assets/image-20251102232946384.png&#34;
+	width=&#34;523&#34;
+	height=&#34;464&#34;
+	srcset=&#34;https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/assets/image-20251102232946384_hu_13a39a4c8381ed16.png 480w, https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/assets/image-20251102232946384_hu_e384f76161ea82cf.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;112&#34;
+		data-flex-basis=&#34;270px&#34;
+	
+&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>强化学习的数学原理 · Chap3 · Bellman Optimality Equation</title>
+        <link>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap3-bellman-optimality-equation/</link>
+        <pubDate>Thu, 30 Oct 2025 23:38:34 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap3-bellman-optimality-equation/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1sd4y167NS&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.bilibili.com/video/BV1sd4y167NS&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;笔记丢失了一次&lt;/p&gt;
+&lt;p&gt;这是补档版本，稍微粗略一点……心态小炸&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;optimal-policy&#34;&gt;Optimal Policy
+&lt;/h2&gt;&lt;p&gt;当一个策略，在任意状态都比另一个策略的state value更好（或者相等）&lt;/p&gt;
+&lt;p&gt;我们就认为这个策略优于另一个策略&lt;/p&gt;
+&lt;p&gt;当一个策略比所有策略都好，它就是&lt;strong&gt;最优策略&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;bellman-optimality-equation&#34;&gt;Bellman Optimality Equation
+&lt;/h2&gt;$$
+\begin{split}
+v(s) &amp;= {\color{red}\max_\pi} \sum_a \pi(a|s) \left( \sum_r p(r|s,a)r + \gamma \sum_{s&#39;} p(s&#39;|s,a)v(s&#39;)\right), \quad \forall s\in \mathcal{S} \\
+&amp;= {\color{red}\max_\pi} \sum_a \pi(a|s) q(s,a), \quad \forall s\in \mathcal{S}
+\end{split}
+$$&lt;p&gt;
+相比于贝尔曼公式，BOE实质上就是多了一个优化问题&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;已知：$p(r|s,a),p(s&amp;rsquo;|s,a)$&lt;/li&gt;
+&lt;li&gt;未知：$v(s),v(s&amp;rsquo;)$，需要我们针对不同的$\pi$​去计算&lt;/li&gt;
+&lt;li&gt;求解：$\pi$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;自然有向量形式：&lt;/p&gt;
+$$
+v = \max_\pi (r_\pi + \gamma P_\pi v)
+$$&lt;h3 id=&#34;maximization&#34;&gt;Maximization
+&lt;/h3&gt;&lt;p&gt;我们先考虑固定$v$，看看能不能求解$\pi$​&lt;/p&gt;
+$$
+v = \max_\pi\sum_a \pi(a|s)q(s,a)
+$$&lt;p&gt;
+其中$q(s,a)$自然也是一个已知的量（所有的$v$都可以知道，自然可以算出$q$）&lt;/p&gt;
+&lt;p&gt;同时有：&lt;/p&gt;
+$$
+\sum_a \pi(a|s) = 1
+$$&lt;p&gt;
+那么本质上$\sum_a \pi(a|s)q(s,a)$是对action value做加权平均&lt;/p&gt;
+&lt;p&gt;为了最大化这一项，我们肯定需要给最大的$q$最多的权值，也就是1&lt;/p&gt;
+&lt;p&gt;可以得到策略：选择action最大的行动$a^*$&lt;/p&gt;
+$$
+\pi(a|s) = \begin{cases}
+ 1 &amp; \text{ if } a= a^*\\
+ 0 &amp; \text{ if } a\neq a^*
+\end{cases}
+$$&lt;p&gt;
+这样我们就能得到原式：&lt;/p&gt;
+$$
+v = \max_\pi\sum_a \pi(a|s)q(s,a) = \max_{a\in \mathcal{A}(s)}q(s,a) \\
+\text{where }a^* = \arg \max_a q(s,a)
+$$&lt;p&gt;
+只要我们固定$v$，我们肯定就能得到最优策略，自然计算出右边的值&lt;/p&gt;
+&lt;p&gt;因此右边的值可以直接表示成一个只关于$v$的函数：$v=f(v)$&lt;/p&gt;
+&lt;p&gt;表达成向量形式：&lt;/p&gt;
+$$
+f(v):=\max_\pi (r_\pi+\gamma P_\pi v)
+$$&lt;blockquote&gt;
+&lt;p&gt;搜索一下不动点定理或叫Contraction mapping theorem&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;基于这个定理，可以证明$f(v)$是符合这个定理的条件的&lt;/p&gt;
+&lt;p&gt;大概就是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;函数具有压缩性：有$\left|v_1-v_2\right | \leq \gamma\left|f(v_1)-f(v_2)\right |$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;也就是满足这个条件，就会有&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;必然存在&lt;strong&gt;唯一的&lt;/strong&gt;一个不动点$f(v) =v$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因此，我们可以不断套用$v,f(v),f(f(v)),&amp;hellip;$&lt;/p&gt;
+&lt;p&gt;最后会&lt;strong&gt;收敛得到不动点&lt;/strong&gt;，具体证明略过&lt;/p&gt;
+&lt;p&gt;实际上的操作就是：&lt;/p&gt;
+$$
+v_{k+1}=f(v_k) =\max_\pi (r_\pi+\gamma P_\pi v_k)
+$$&lt;p&gt;
+那么如何证明最后收敛到的结果$v^*$就是最优解呢？&lt;/p&gt;
+&lt;p&gt;固定$v=v^&lt;em&gt;$，自然可以得到当前的策略$\pi^&lt;/em&gt;$&lt;/p&gt;
+$$
+\pi^* = \arg \max_\pi (r_\pi+\gamma P_\pi v^*)
+$$&lt;p&gt;
+将$\pi^*$代入：&lt;/p&gt;
+$$
+v^* = \max_\pi (r_\pi+\gamma P_\pi v_*) = r_{\pi^*}+\gamma P_{\pi^*} v^*
+$$&lt;p&gt;
+你会发现变成state value的公式了&lt;/p&gt;
+&lt;p&gt;也就是说$v^&lt;em&gt;$，就是策略$\pi^&lt;/em&gt;$​的state value&lt;/p&gt;
+&lt;p&gt;我们考虑策略替换成任意其他的策略$\pi$时：&lt;/p&gt;
+$$
+v^* = r_{\pi^*}+\gamma P_{\pi^*} v^* \geq r_\pi + \gamma P_\pi v^*
+$$&lt;p&gt;
+令该策略对应state value的贝尔曼公式：&lt;/p&gt;
+$$
+v = r_{\pi}+\gamma P_{\pi} v
+$$&lt;p&gt;
+做一个减法则有：&lt;/p&gt;
+$$
+v^*-v \geq (r_\pi + \gamma P_\pi v^*)-(r_{\pi}+\gamma P_{\pi} v) = \gamma P_\pi(v^*-v)
+$$&lt;p&gt;令$\Delta = v^*-v$，则有：&lt;/p&gt;
+$$
+\Delta \geq \gamma P_\pi\Delta
+$$&lt;p&gt;
+我们只需要把右边的$\Delta$不停代换为$\gamma P_\pi\Delta$：&lt;/p&gt;
+$$
+\Delta \geq \gamma P_\pi\Delta \geq \gamma^2 P_\pi^2\Delta \geq ...  \geq \gamma^n P_\pi^n\Delta \geq 0
+$$&lt;p&gt;
+故对于策略$\pi^*$，其state value始终是最大的&lt;/p&gt;
+&lt;p&gt;因此是最优策略&lt;/p&gt;
+&lt;h3 id=&#34;analysis&#34;&gt;Analysis
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Change $r\to ar+b$会发生什么？
+&lt;ul&gt;
+&lt;li&gt;什么都不会发生&lt;/li&gt;
+&lt;li&gt;可以证明 $v&amp;rsquo; = av^*+\frac{b}{1-\gamma}I$，所有state value的相对大小没有发生变化&lt;/li&gt;
+&lt;li&gt;自然action value不会有其他选择，policy不改变&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;如何鼓励走最短路径？
+&lt;ul&gt;
+&lt;li&gt;其实不用一直给agent做-1（损失能量），催促agent&lt;/li&gt;
+&lt;li&gt;$\gamma$本身就在催促agent尽快到终点，否则终点的贡献变少了&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>强化学习的数学原理 · Chap2 · Bellman Equation</title>
+        <link>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap2-bellman-equation/</link>
+        <pubDate>Thu, 30 Oct 2025 20:25:34 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap2-bellman-equation/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1sd4y167NS&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.bilibili.com/video/BV1sd4y167NS&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;state-value&#34;&gt;State Value
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;return 用来衡量不同的trajectory的好坏&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;首先有如下定义&lt;/p&gt;
+$$
+S_t \overset{A_t}{\rightarrow}R_{t+1}, S_{t+1}
+$$&lt;ul&gt;
+&lt;li&gt;$t$表示时间步&lt;/li&gt;
+&lt;li&gt;从状态$S_t$出发，采取$A_t$，转移到$S_{t+1}$，获得了$R_{t+1}$的奖励&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$S,A,R$​这里表示的是一个&lt;strong&gt;随机变量&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;因此上述内容服从以下概率分布：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$S_t \to A_t$ ：$\pi(A_t| S_t)$&lt;/li&gt;
+&lt;li&gt;$S_t, A_t \to R_{t+1}$：$p(R_{t+1}| S_t,A_t)$&lt;/li&gt;
+&lt;li&gt;$S_t, A_t \to S_{t+1}$：$p(S_{t+1}| S_t,A_t)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;推广到多步骤之后：&lt;/p&gt;
+$$
+S_t \overset{A_t}{\rightarrow}R_{t+1}, S_{t+1} \overset{A_{t+1}}{\rightarrow}R_{t+2}, S_{t+2}\overset{A_{t+2}}{\rightarrow}R_{t+3} ...
+$$&lt;p&gt;
+则可以定义这个trajectory的reward是：&lt;/p&gt;
+$$
+G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + ...
+$$&lt;blockquote&gt;
+&lt;p&gt;$G_t$也表示一个随机变量&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;我们定义所有从$t$出发的trajectory的期望$G_t$，即为&lt;code&gt;state-value function&lt;/code&gt;or&lt;code&gt;state value&lt;/code&gt;&lt;/p&gt;
+$$
+v_\pi(s) = \mathbb{E}(G_t| S_t = s)
+$$&lt;blockquote&gt;
+&lt;p&gt;return 针对单个、单次的尝试（确定性的）&lt;/p&gt;
+&lt;p&gt;state value是一种平均情况&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;bellman-equation&#34;&gt;Bellman Equation
+&lt;/h2&gt;&lt;h3 id=&#34;递推形式&#34;&gt;递推形式
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;描述不同state的state value之间的关系&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;对于单个trajectory：&lt;/p&gt;
+$$
+\begin{split} 
+G_t &amp;= R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + ...\\
+ &amp;= R_{t+1} + \gamma \left(   R_{t+2} + \gamma^2 R_{t+3} + ...\right)\\
+&amp;=  R_{t+1} + \gamma G_{t+1}
+\end{split}
+$$&lt;p&gt;
+非常动态规划（或者叫递推）的一个步骤&lt;/p&gt;
+&lt;p&gt;因此可以推广到期望的情况（事实上可以直接写）&lt;/p&gt;
+$$
+\begin{split}
+v_\pi(s) &amp;= \mathbb{E}(G_t| S_t = s) \\
+&amp;= \mathbb{E}(R_{t+1} + \gamma G_{t+1}| S_t = s) \\
+&amp;=  \mathbb{E}(R_{t+1}| S_t = s) + \gamma  \mathbb{E}(G_{t+1}| S_t = s)
+\end{split}
+$$&lt;p&gt;
+我们考虑去代换两个期望符号&lt;/p&gt;
+&lt;p&gt;对于第一个期望，其意义是：从$s$出发，得到奖励的均值&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;始终注意：$R_{t+1}$代表是一个随机变量&lt;/p&gt;&lt;/blockquote&gt;
+$$
+\begin{split}
+\mathbb{E}(R_{t+1}| S_t = s) &amp;= \sum_{a} \pi(a|s) \mathbb{E}(R_{t+1}| S_t=s,A_t = a) \\
+ &amp;=\sum_a \pi(a|s) \sum_r p(r|s,a) r
+\end{split}
+$$&lt;p&gt;
+对于第二个期望，其意义是：从下一个时刻$t+1$出发可以得到的期望奖励&lt;/p&gt;
+$$
+\begin{split}
+ \mathbb{E}(G_{t+1}| S_t = s) &amp;= \sum_{s&#39;} \mathbb{E}(G_{t+1}| S_{t+1} = s&#39;) p(s&#39;| s) \\
+ &amp;=\sum_{s&#39;} \mathbb{E}(G_{t+1}| S_{t+1} = s&#39;) \sum_{a}\pi(a| s)p(s&#39;| s,a)\\
+ &amp;=\sum_{s&#39;} v_{\pi}(s&#39;) \sum_{a}\pi(a| s)p(s&#39;| s,a)
+\end{split}
+$$&lt;p&gt;
+综上，整理一下原式子：&lt;/p&gt;
+$$
+\begin{split}
+v_\pi(s) &amp;=  \mathbb{E}(R_{t+1}| S_t = s) + \gamma  \mathbb{E}(G_{t+1}| S_t = s) \\\\
+&amp;= \sum_a \pi(a|s) \sum_r p(r|s,a) r+\gamma\sum_{s&#39;} v_{\pi}(s&#39;) \sum_{a}\pi(a| s)p(s&#39;| s,a)\\
+&amp;= \sum_a \pi(a| s) \left[ \sum_r p(r| s,a)r + \gamma \sum_{s&#39;}p(s&#39;| s,a){\color{Red} v_\pi(s&#39;)} \right], \forall s\in S
+\end{split}
+$$&lt;blockquote&gt;
+&lt;p&gt;这里的$S$是state space&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;这样我们就得到了贝尔曼公式，由两个部分组成：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;immediate reward&lt;/li&gt;
+&lt;li&gt;future reward&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;通常我们会使用给定的$\pi(a|s)$​，因此这个过程可以被视作&lt;strong&gt;Policy Evaluation&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$p(r|s,a),p(s&amp;rsquo;|s,a)$在这里是已知的&lt;/p&gt;
+&lt;p&gt;但其实不知道也有办法去求解&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;向量形式&#34;&gt;向量形式
+&lt;/h3&gt;&lt;p&gt;我们先把贝尔曼公式进行重写，用一些其他符号进行替代：&lt;/p&gt;
+$$
+v_\pi(s) = r_\pi(s) + \gamma \sum_{s&#39;} p_\pi(s&#39;|s)v_\pi(s&#39;)
+$$&lt;p&gt;
+表示基于策略$\pi$获取的当前奖励，以及之后的期望奖励&lt;/p&gt;
+&lt;p&gt;我们令所有的状态依次编号为：$1\to n$&lt;/p&gt;
+&lt;p&gt;对于状态$s_i$，其state value表示为：&lt;/p&gt;
+$$
+v_\pi(s_i) = r_\pi(s_i) + \gamma \sum_{s_j} p_\pi(s_j|s_i)v_\pi(s_j)
+$$&lt;p&gt;
+把所有$s_i$写在一起，自然就是向量形式：&lt;/p&gt;
+$$
+v_\pi = r_\pi + \gamma P_\pi v_\pi
+$$&lt;ul&gt;
+&lt;li&gt;$v_\pi = \left[ v_\pi(s_1), &amp;hellip;,v_\pi(s_n) \right ]^T \in  \mathbb{R}^n$&lt;/li&gt;
+&lt;li&gt;$r_\pi = \left[ r_\pi(s_1), &amp;hellip;,r_\pi(s_n) \right ]^T \in  \mathbb{R}^n$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;并且有：&lt;/p&gt;
+$$
+P_\pi \in \mathbb{R}^{n\times n}, \text{where} \space [P_\pi]_{i,j} = p_\pi(s_j|s_i)
+$$&lt;p&gt;理解一下图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap2-bellman-equation/assets/image-20251030221530292.png&#34;
+	width=&#34;596&#34;
+	height=&#34;430&#34;
+	srcset=&#34;https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap2-bellman-equation/assets/image-20251030221530292_hu_52e37a69891d55fb.png 480w, https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap2-bellman-equation/assets/image-20251030221530292_hu_d861de99c469b5a0.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;matrix&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;138&#34;
+		data-flex-basis=&#34;332px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;solve-state-values&#34;&gt;Solve State Values
+&lt;/h3&gt;&lt;p&gt;我们需要通过state value衡量当前的policy的表现&lt;/p&gt;
+&lt;p&gt;因此需要进行求解&lt;/p&gt;
+&lt;h4 id=&#34;method-1--closed-form-solution&#34;&gt;Method 1 · closed-form solution
+&lt;/h4&gt;$$
+v_\pi = r_\pi + \gamma P_\pi v_\pi\\
+(I-\gamma P_\pi)v_\pi = r_\pi\\
+v_\pi = (I-\gamma P_\pi)^{-1}r_\pi
+$$&lt;p&gt;
+但是由于需要求逆矩阵，计算量过高，这个方法一般不会使用&lt;/p&gt;
+&lt;h4 id=&#34;method-2--iterative-solution&#34;&gt;Method 2 · iterative solution
+&lt;/h4&gt;$$
+v_{\pi, k+1} = r_\pi + \gamma P_\pi v_{\pi,k}\\
+$$&lt;p&gt;
+我们不断迭代这个等式，可以使得最后有：&lt;/p&gt;
+$$
+v_{\pi,k} \to v_\pi = (I-\gamma P_\pi)^{-1}r_\pi, k \to \infty
+$$&lt;h2 id=&#34;action-value&#34;&gt;Action Value
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;与state value相比，不止固定了当前的状态，action value同时固定了当前执行的动作&lt;/li&gt;
+&lt;li&gt;action value意义很大，有时候我们倾向于采取能带来最大value的action&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;定义如下：&lt;/p&gt;
+$$
+q_\pi(s,a) = \mathbb{E}\left[G_t|S_t=s，A_t=a\right]
+$$&lt;p&gt;
+同时有：&lt;/p&gt;
+$$
+\underbrace{\mathbb{E}[G_t \mid S_t = s]}_{v_{\pi}(s)} = \sum_{a} \underbrace{\mathbb{E}[G_t \mid S_t = s, A_t = a]}_{q_{\pi}(s,a)} \pi(a \mid s)
+$$&lt;p&gt;
+因此：&lt;/p&gt;
+$$
+{\color{Red} v_\pi(s)}  = \sum_a \pi(a|s){\color{Red} q_\pi(s,a)}\\
+ q_\pi(s,a) = \sum_r p(r| s,a)r + \gamma \sum_{s&#39;}p(s&#39;| s,a){\color{Red} v_\pi(s&#39;)}
+$$&lt;ul&gt;
+&lt;li&gt;第一个式子：通过所有action value，求解当前state value&lt;/li&gt;
+&lt;li&gt;第二个式子：通过所有state value，求解当前action value&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;求解的方式比较多样&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通过state value&lt;/li&gt;
+&lt;li&gt;通过数据采样进行求解（后文）&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+</description>
+        </item>
+        <item>
+        <title>强化学习的数学原理 · Chap1 · 基本概念</title>
+        <link>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap1-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/</link>
+        <pubDate>Wed, 29 Oct 2025 23:38:34 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap1-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1sd4y167NS&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.bilibili.com/video/BV1sd4y167NS&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;概念定义&#34;&gt;概念定义
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;State&lt;/strong&gt;：$s$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;state space: the set of states $S = \left{ s_i \right }$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Action&lt;/strong&gt;：$a$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;action space of &lt;strong&gt;a state&lt;/strong&gt;: $\mathcal{A}(s_i) = \left{a_i \right}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;State Transition&lt;/strong&gt;：$s_i \overset{a}{\rightarrow} s_j$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在确定性的情况，可以使用S+A的表格进行标识&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;State Transition Probability&lt;/strong&gt;：表示成条件概率分布&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Policy&lt;/strong&gt;: determine what actions to take at a state&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\pi$：对于不确定的情况，同样是一个条件概率&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Reward&lt;/strong&gt;: a real number we get &lt;strong&gt;after taking an action&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;positive/negative: it represents encouragement or punishment&lt;/li&gt;
+&lt;li&gt;corner case
+&lt;ul&gt;
+&lt;li&gt;zero reward: no punishment&lt;/li&gt;
+&lt;li&gt;can positive mean punishment: 取决于怎么设计&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Reward本质上是一种人机交互的接口&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Trajectory&lt;/strong&gt;: a &lt;strong&gt;state-action-reward&lt;/strong&gt; chain&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$s_i\xrightarrow[a_i]{r_i}s_{i+1}\xrightarrow[a_{i+1}]{r_{i+1}}s_{i+2}$&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;return&lt;/strong&gt;: the sum of all the rewards along a trajectory&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;discounted return&lt;/strong&gt;：trajectory可能会无限长（走到终点之后仍有奇怪多余的操作），导致reward发散到无穷
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;discount rate&lt;/strong&gt;: $\gamma \in [0,1)$&lt;/li&gt;
+&lt;li&gt;防止return发散，通过指数级别的系数累乘，保证return是收敛的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Episode&lt;/strong&gt;: the agent may stop at some terminal states, the resulting trajectory is called an episode(or a trial)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Episodic task（有终止任务）&lt;/li&gt;
+&lt;li&gt;Continuing task（持续任务）&lt;/li&gt;
+&lt;li&gt;在数学上，可以通过把 &lt;strong&gt;episodic task 转换为 continuing task&lt;/strong&gt; 来统一处理两类任务
+&lt;ul&gt;
+&lt;li&gt;Option 1：吸收状态 (absorbing state)，当智能体到达目标状态后，就&lt;strong&gt;永远停留在那里&lt;/strong&gt;，之后的奖励永远设为0&lt;/li&gt;
+&lt;li&gt;Option2：普通状态 (normal state)，智能体可以离开目标状态，任务会继续，每次进入目标状态时都会获得奖励&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;数学与建模上使用Option2会更方便、统一，$\gamma$会控制一切&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;markov-decision-process--mdp&#34;&gt;Markov Decision Process · MDP
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Sets&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;State: the set of states$\mathcal{S}$&lt;/li&gt;
+&lt;li&gt;Action: the set of actions $\mathcal{A}(s)$ is associated for state$s \in \mathcal{S}$&lt;/li&gt;
+&lt;li&gt;Reward: the set of rewards $\mathcal{R}(s,a)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Probability distribution&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;State transition probability: at state $s$, taking action $a$, the probability to transit to state $s&amp;rsquo;$ is $p(s&amp;rsquo;|s, a)$&lt;/li&gt;
+&lt;li&gt;Reward probability: at state $s$, taking action $a$, the probability to get reward $r$ is $p(r|s, a)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Policy: at state $s$, the probability to choose action a is $\pi(a|s)$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Markov property&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$p(s_{t+1} | a_{t+1}, s_t, &amp;hellip;, a_1, s_0) = p(s_{t+1} | a_{t+1}, s_t)$&lt;/li&gt;
+&lt;li&gt;$p(r_{t+1} | a_{t+1}, s_t, &amp;hellip;, a_1, s_0) = p(r_{t+1} | a_{t+1}, s_t)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Markov decision process&lt;/strong&gt; becomes &lt;strong&gt;Markov process&lt;/strong&gt; once the policy is given.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;p&gt;似乎这里的定义和比较官方的定义有一些差别&lt;/p&gt;
+&lt;p&gt;MDP是一个在马尔可夫性质上的时序决策模型，由一个五元组定义：&lt;/p&gt;
+$$
+S,A,P,R,\gamma
+$$&lt;ul&gt;
+&lt;li&gt;状态集合State Space&lt;/li&gt;
+&lt;li&gt;动作集合Action Space&lt;/li&gt;
+&lt;li&gt;状态转移概率Transition Probability&lt;/li&gt;
+&lt;li&gt;奖励函数Reward&lt;/li&gt;
+&lt;li&gt;折扣因子Discount Factor&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;一个MDP的动态过程可以描述为一个与时间交互的循环：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;处于某个状态&lt;/li&gt;
+&lt;li&gt;执行一个动作&lt;/li&gt;
+&lt;li&gt;根据状态转移概率转移到某个状态&lt;/li&gt;
+&lt;li&gt;获得动作的即时奖励&lt;/li&gt;
+&lt;li&gt;重复&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
