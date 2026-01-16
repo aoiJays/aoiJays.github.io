@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="LLaDA Series">
+<title>LLaDA-Rec - Discrete Diffusion for Parallel Semantic ID Generation in Generative Recommendation</title>
+
+<link rel='canonical' href='https://example.com/p/llada-rec-discrete-diffusion-for-parallel-semantic-id-generation-in-generative-recommendation/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="LLaDA-Rec - Discrete Diffusion for Parallel Semantic ID Generation in Generative Recommendation">
+<meta property='og:description' content="LLaDA Series">
+<meta property='og:url' content='https://example.com/p/llada-rec-discrete-diffusion-for-parallel-semantic-id-generation-in-generative-recommendation/'>
+<meta property='og:site_name' content='BiribiriBird'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='DLM' /><meta property='article:published_time' content='2025-11-21T15:36:00&#43;08:00'/><meta property='article:modified_time' content='2025-11-21T15:36:00&#43;08:00'/>
+<meta name="twitter:title" content="LLaDA-Rec - Discrete Diffusion for Parallel Semantic ID Generation in Generative Recommendation">
+<meta name="twitter:description" content="LLaDA Series">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            localStorage.setItem(colorSchemeKey, "light");
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_bbc58a5457fc2680.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">BiribiriBird</a></h1>
+            <h2 class="site-description">Segmentation fault!</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/498088093'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648787418" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2107" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="2108" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:neworld1111@163.com'
+                        target="_blank"
+                        title="Email"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743649088353" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6924" width="24" height="24"><path d="M874.666667 181.333333H149.333333c-40.533333 0-74.666667 34.133333-74.666666 74.666667v512c0 40.533333 34.133333 74.666667 74.666666 74.666667h725.333334c40.533333 0 74.666667-34.133333 74.666666-74.666667V256c0-40.533333-34.133333-74.666667-74.666666-74.666667z m-725.333334 64h725.333334c6.4 0 10.666667 4.266667 10.666666 10.666667v25.6L512 516.266667l-373.333333-234.666667V256c0-6.4 4.266667-10.666667 10.666666-10.666667z m725.333334 533.333334H149.333333c-6.4 0-10.666667-4.266667-10.666666-10.666667V356.266667l356.266666 224c4.266667 4.266667 10.666667 4.266667 17.066667 4.266666s12.8-2.133333 17.066667-4.266666l356.266666-224V768c0 6.4-4.266667 10.666667-10.666666 10.666667z" fill="#666666" p-id="6925"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/aoiJays'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648734849" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5802" width="24" height="24"><path d="M511.957333 21.333333C241.024 21.333333 21.333333 240.981333 21.333333 512c0 216.832 140.544 400.725333 335.573334 465.664 24.490667 4.394667 32.256-10.069333 32.256-23.082667 0-11.690667 0.256-44.245333 0-85.205333-136.448 29.610667-164.736-64.64-164.736-64.64-22.314667-56.704-54.4-71.765333-54.4-71.765333-44.586667-30.464 3.285333-29.824 3.285333-29.824 49.194667 3.413333 75.178667 50.517333 75.178667 50.517333 43.776 75.008 114.816 53.333333 142.762666 40.789333 4.522667-31.658667 17.152-53.376 31.189334-65.536-108.970667-12.458667-223.488-54.485333-223.488-242.602666 0-53.546667 19.114667-97.322667 50.517333-131.669334-5.034667-12.330667-21.930667-62.293333 4.778667-129.834666 0 0 41.258667-13.184 134.912 50.346666a469.802667 469.802667 0 0 1 122.88-16.554666c41.642667 0.213333 83.626667 5.632 122.88 16.554666 93.653333-63.488 134.784-50.346667 134.784-50.346666 26.752 67.541333 9.898667 117.504 4.864 129.834666 31.402667 34.346667 50.474667 78.122667 50.474666 131.669334 0 188.586667-114.730667 230.016-224.042666 242.090666 17.578667 15.232 33.578667 44.672 33.578666 90.453334v135.850666c0 13.141333 7.936 27.605333 32.853334 22.869334C862.250667 912.597333 1002.666667 728.746667 1002.666667 512 1002.666667 240.981333 783.018667 21.333333 511.957333 21.333333z" p-id="5803" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About me</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/experience/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Experience</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friend/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>Friend</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#intro">Intro</a></li>
+    <li><a href="#preliminaries">Preliminaries</a></li>
+    <li><a href="#method">Method</a>
+      <ol>
+        <li><a href="#parallel-tokenization-via-multi-head-vq-vae">Parallel Tokenization via Multi-Head VQ-VAE</a></li>
+        <li><a href="#discrete-diffusion-training">Discrete Diffusion Training</a>
+          <ol>
+            <li><a href="#user-history-level-masking">User-History Level Masking</a></li>
+            <li><a href="#next-item-level-masking">Next-Item Level Masking</a></li>
+          </ol>
+        </li>
+        <li><a href="#discrete-diffusion-inference">Discrete Diffusion Inference</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" >
+                论文笔记
+            </a>
+        
+            <a href="/categories/dlm/" >
+                DLM
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/llada-rec-discrete-diffusion-for-parallel-semantic-id-generation-in-generative-recommendation/">LLaDA-Rec - Discrete Diffusion for Parallel Semantic ID Generation in Generative Recommendation</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            LLaDA Series
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Nov 21, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>[TOC]</p>
+<h2 id="intro">Intro
+</h2><p>Generative recommendation基于AR LLM，面临两个问题：</p>
+<ul>
+<li>unidirectional constraint：无法在建模item语义时，捕获全局依赖</li>
+<li>error accumulation：错误累积</li>
+</ul>
+<p>补充一些前置知识：</p>
+<ul>
+<li>RQ-VAE（Residual Quantized Variational Autoencoder）
+<ul>
+<li>需要把Item表示成一个离散的token序列（Semantic ID），使用类LLM的生成方式进行推荐</li>
+<li>RQ-VAE把Item的embedding压缩成离散token
+<ul>
+<li>RA-VAE是多层级的，每一层会拟合一点，最后输出一个token序列</li>
+<li>通过控制层数，控制token序列长度</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>将生成式推荐运用到dLMs上也面临若干问题：</p>
+<ul>
+<li>Mismatch between Residual Quantization (RQ) and Discrete Diffusion
+<ul>
+<li>多层级的方案与dlms的并行不是很契合，且dlms序列中所有token同等重要</li>
+</ul>
+</li>
+<li>Beam Search is Not Directly Applicable to Discrete Diffusion
+<ul>
+<li>Beam Search比较适合自回归的top k，但是固定从左到右</li>
+<li>dlms是双向的</li>
+</ul>
+</li>
+<li>Differences between Language Modeling and Recommendation</li>
+</ul>
+<p>Contribution</p>
+<ul>
+<li><strong>Parallel Tokenization</strong>：设计了多头VQ-VAE，将物品切分为多个子向量，每个向量并行查找独立的codebook，最终生成ID</li>
+<li><strong>Discrete Diffusion Training</strong>：使用两种mask机制
+<ul>
+<li>User-History Mask</li>
+<li>Next-Item Mask</li>
+</ul>
+</li>
+<li><strong>Discrete Diffusion Inference</strong>：适配了Beam Search</li>
+</ul>
+<h2 id="preliminaries">Preliminaries
+</h2><p>推荐任务的问题定义：</p>
+$$
+\mathcal{H} = \left [ i_1, i_2, ..., i_{n-1}\right] 
+$$<ul>
+<li>基于用户历史的物品信息，预测下一个可能的物品$i_n$</li>
+</ul>
+<p>生成式推荐将单个物品表示为<strong>定长</strong>的若干个token</p>
+$$
+\mathcal{S_H} = \left[c_{1,1},...,c_{1,M},...,c_{n-1,1},...,c_{n-1,M}\right]
+$$<p>
+我们需要找到一个最佳的模型$\theta$，使得：</p>
+$$
+\theta^* = \arg \max_\theta  P_\theta(s_n\mid \mathcal{S_H})
+$$<p>
+这个转化为AR LLM的建模还是非常方便的</p>
+<p>对于dLM：</p>
+<p>$$
+P_\theta(s_n\mid \mathcal{S_H}) = \prod_{t=1}^T\prod_{m=1}^M\begin{cases}
+P_\theta(c_{n,m}\mid s_n^t,\mathcal{S_H}) &amp; if \space [MASK]\
+1 &amp; otherwise</p>
+<p>\end{cases}
+$$</p>
+<h2 id="method">Method
+</h2><p><img src="/p/llada-rec-discrete-diffusion-for-parallel-semantic-id-generation-in-generative-recommendation/assets/image-20251127231720077.png"
+	width="1360"
+	height="636"
+	srcset="/p/llada-rec-discrete-diffusion-for-parallel-semantic-id-generation-in-generative-recommendation/assets/image-20251127231720077_hu_d91e9c45c767b211.png 480w, /p/llada-rec-discrete-diffusion-for-parallel-semantic-id-generation-in-generative-recommendation/assets/image-20251127231720077_hu_ed7572c2e81d9356.png 1024w"
+	loading="lazy"
+	
+		alt="Method"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="213"
+		data-flex-basis="513px"
+	
+></p>
+<h3 id="parallel-tokenization-via-multi-head-vq-vae">Parallel Tokenization via Multi-Head VQ-VAE
+</h3><blockquote>
+<p>希望多个 token 之间是“完全平等”的，不应该存在 RQ-VAE 那种“前面的 token 更重要</p></blockquote>
+<ul>
+<li>Embedding通过Bert、Sentence-T5等得到$v_i$</li>
+<li>通过Encoder（MLP实现），得到潜在空间$z$</li>
+<li>将向量切成多个子向量，每个向量送入不同的Head</li>
+<li>每个子向量查codebook，并行得到token(code index)</li>
+<li>将code index对应的向量（code embeddings），进行拼接</li>
+<li>Decoder重建$\hat v_i$</li>
+</ul>
+<p>整个Tokenizer的损失由两部分组成：</p>
+$$
+L_{Recon} = \left \| v_i-\hat v_i \right \|^2_2
+$$<p>
+（L2范数的平方）</p>
+<ul>
+<li>Encoder：学习如何编码到合适的latent space</li>
+<li>Codebook：学习到如何覆盖latent space</li>
+<li>Decoder：重建</li>
+</ul>
+$$
+L_{VQ} = \sum_{m=1}^M \left (  \left\| sg[z_{i,m}] - e_{c_i,m}\right\|_2^2 + \alpha \left\|z_{i,m}-sg[e_{c_{i,m}}]\right\|^2_2 \right)
+$$<ul>
+<li>对于第一项
+<ul>
+<li>sg代表阻止接受梯度，只有$e$会接受梯度</li>
+<li>这样只更新codebook，使得codebook更接近latent space向量$z$（请靠近encoder的输出）</li>
+</ul>
+</li>
+<li>对于第二项
+<ul>
+<li>sg阻止codebook的梯度</li>
+<li>更新encoder，贴近codebook</li>
+</ul>
+</li>
+</ul>
+<p>最终的损失：</p>
+$$
+\mathcal{L_{\text{VQ-VAE}}} = \mathcal{L_\text{Recon}} + \mathcal{L_\text{VQ}}
+$$<h3 id="discrete-diffusion-training">Discrete Diffusion Training
+</h3><h4 id="user-history-level-masking">User-History Level Masking
+</h4><p>参考LLaDA的预训练</p>
+<ul>
+<li>让模型学会用户序列内部的关系</li>
+</ul>
+<h4 id="next-item-level-masking">Next-Item Level Masking
+</h4><p>参考LLaDA的SFT</p>
+<ul>
+<li>理解同一 item 的 token 内部结构</li>
+</ul>
+<hr>
+<p>但是LLaDA-Rec的训练没有分成两个阶段</p>
+<p>提出了一个联合损失函数：</p>
+$$
+L_{total} = L_{Item-Mask} + \lambda_{His-Mask}L_{His-mask} + \lambda_{Reg}\left\|\theta\right\|^2
+$$<h3 id="discrete-diffusion-inference">Discrete Diffusion Inference
+</h3><p>直接使用模型不太行，没法做到生成前k个推荐项目</p>
+<p>所以如何把Beam-Search嵌入到dlms中</p>
+<p>一开始我们会有一个全部都是<code>[MASK]</code>的序列，长度为$M$​：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[MASK] [MASK] [MASK] ... [MASK] [MASK] 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>dlm可以预测所有位置的生成token的置信度</p>
+<p>假设我们要迭代$T$次，因此$K = M/T$</p>
+<p>每次依照置信度选择前$K$个token位置，其他位置remask</p>
+<p>根据这些位置，以及超参数$B$，迭代出$B$条置信度最高的路径</p>
+<p>做beam search</p>
+<p>不断迭代</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/dlm/">DLM</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/tidar-think-in-diffusion-talk-in-autoregression/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">TiDAR - Think in Diffusion, Talk in Autoregression</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/awesome-llada/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Awesome LLaDA</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/llada-moe-asparse-moediffusion-language-model/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">LLaDA-MoE ASparse MoEDiffusion Language Model</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">UltraLLaDA Scaling the Context Length to 128K for Diffusion Large Language Models</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/diffusion-language-model-birdresearch-202510/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Diffusion Language Model · BirdResearch · 202510</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

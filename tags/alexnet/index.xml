@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>AlexNet on BiribiriBird</title>
+        <link>http://localhost:1313/tags/alexnet/</link>
+        <description>Recent content in AlexNet on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Mon, 13 Oct 2025 19:51:55 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/alexnet/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Pytorch Learning · AlexNet</title>
+        <link>http://localhost:1313/p/pytorch-learning-alexnet/</link>
+        <pubDate>Mon, 13 Oct 2025 19:51:55 +0800</pubDate>
+        
+        <guid>http://localhost:1313/p/pytorch-learning-alexnet/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1 id=&#34;alexnet&#34;&gt;AlexNet
+&lt;/h1&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

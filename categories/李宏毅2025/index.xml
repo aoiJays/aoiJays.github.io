@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>李宏毅2025 on BiribiriBird</title>
+        <link>https://example.com/categories/%E6%9D%8E%E5%AE%8F%E6%AF%852025/</link>
+        <description>Recent content in 李宏毅2025 on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Sat, 06 Sep 2025 17:39:34 +0800</lastBuildDate><atom:link href="https://example.com/categories/%E6%9D%8E%E5%AE%8F%E6%AF%852025/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>李宏毅机器学习2025 · Transformer</title>
+        <link>https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-transformer/</link>
+        <pubDate>Sat, 06 Sep 2025 17:39:34 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-transformer/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1aiADewEBC&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;李宏毅机器学习2025&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;transformer&#34;&gt;Transformer
+&lt;/h1&gt;</description>
+        </item>
+        <item>
+        <title>李宏毅机器学习2025 · Agent</title>
+        <link>https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/</link>
+        <pubDate>Wed, 03 Sep 2025 17:13:34 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1aiADewEBC&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;李宏毅机器学习2025&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;agent&#34;&gt;Agent
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;传统AI：给定明确步骤、指令，AI完成任务&lt;/p&gt;
+&lt;p&gt;Agent：给定目标，由Agent想办法完成&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;Agent将通过观察Environment，采取特定的Action&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;强化学习：通过强化学习方法得到的Agent是可行的，但是不具备通用能力（围棋Agent不能处理五子棋）&lt;/li&gt;
+&lt;li&gt;LLM：通过文字描述进行交互，具备通用能力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Goal、Environment1、Action1、Environment2、Action2……&lt;/p&gt;
+&lt;p&gt;本质上也是在接龙&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;回合制的交互会比较好做，有时候会需要被实时打断&lt;/p&gt;
+&lt;p&gt;即：Action执行时，Environment变化，会需要Agent中断Action，进行新的Action&lt;/p&gt;
+&lt;p&gt;常见应用：语音聊天&lt;/p&gt;
+&lt;h2 id=&#34;memory&#34;&gt;Memory
+&lt;/h2&gt;&lt;p&gt;交互的次数足够多时，记忆量过大，会造成Agent性能下降&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903173912076.png&#34;
+	width=&#34;979&#34;
+	height=&#34;438&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903173912076_hu_367f3630cccba63d.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903173912076_hu_2b228b5efbfd68d5.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Relevant Experience&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;223&#34;
+		data-flex-basis=&#34;536px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;因此针对相关经验做一些记忆的检索和筛选是必要的&lt;/p&gt;
+&lt;p&gt;可以直接套RAG的技术&lt;/p&gt;
+&lt;p&gt;但这里最好不要提供模型&lt;strong&gt;过去的错误例子&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这里的情景似乎没有做一些纠错任务，给了错误的例子性能会发生下降&lt;/p&gt;
+&lt;p&gt;因此设计Agent时需要考虑一下哪些内容是应该提供或筛除的&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;模型的使用技巧：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;告诉模型&lt;strong&gt;应该做什么&lt;/strong&gt;比告诉模型&lt;strong&gt;不要做什么&lt;/strong&gt;效果更好&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903174906691.png&#34;
+	width=&#34;996&#34;
+	height=&#34;562&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903174906691_hu_f6af179a283dfdc5.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903174906691_hu_821175316e4721a6.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;其他模块&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;177&#34;
+		data-flex-basis=&#34;425px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;从存储角度出发&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;有些记忆没有存储的必要，因此可以引入一个Write模型去分类筛选&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;有些记忆可以被格式化、转化成更好、更通用的内容，可以引入Reflection模块做转化，存储到合适的载体中，方便Read去做RAG&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;function-call&#34;&gt;Function Call
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903175717235.png&#34;
+	width=&#34;914&#34;
+	height=&#34;506&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903175717235_hu_ed1a5d1a14bada8b.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903175717235_hu_e71df3da242a3060.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;180&#34;
+		data-flex-basis=&#34;433px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903175818476.png&#34;
+	width=&#34;917&#34;
+	height=&#34;467&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903175818476_hu_22c32e30ae66218a.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903175818476_hu_5c8473782c8d6e9a.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;196&#34;
+		data-flex-basis=&#34;471px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;通常会把调用方法、工具列表放在System Prompt中&lt;/p&gt;
+&lt;p&gt;让用户通过User Prompt进行交互&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Function过多时，可以参考上述的Memory方法去做选择&lt;/li&gt;
+&lt;li&gt;Agent也可以自己做一个Function，放入Memory中&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Agent有时候会过度相信工具&lt;/p&gt;
+&lt;p&gt;因此需要看看模型自己是否有辨别的能力（室温10000°？不对，这里是工具出错了）&lt;/p&gt;
+&lt;p&gt;但其实加一个Reflection也不错&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;课堂中探索了哪些信息是容易被模型采纳的&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903180638418.png&#34;
+	width=&#34;1004&#34;
+	height=&#34;447&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903180638418_hu_288966a3f1308ca0.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903180638418_hu_7fc90cbfb0772e7d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Ex1&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;224&#34;
+		data-flex-basis=&#34;539px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;当原始上下文逐渐被不切实际的值修改时，LLM（大语言模型）会越来越多地回归到其先验知识&lt;/li&gt;
+&lt;li&gt;LLM坚持遵循上下文中检索到的信息的可能性，与其在没有上下文时对自身回复的信心呈负相关。&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;省流：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;外部知识如果和模型知识差距越大，模型会对模型知识更有信心；差距越小，模型更愿意相信外部知识&lt;/li&gt;
+&lt;li&gt;模型对模型知识的likelihood越大，对外部知识的likelihood越小&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903181056340.png&#34;
+	width=&#34;980&#34;
+	height=&#34;345&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903181056340_hu_9337652e32037257.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903181056340_hu_4a48cefaca72e4f5.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Ex2&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;284&#34;
+		data-flex-basis=&#34;681px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;AI和人类分别给出两个意见不同的文章，AI倾向于相信AI&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Ex单独抽取了AI回答错误的例子（排除AI与AI回答类似，造成偏好的情况），但仍然是AI更相信AI&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;具体原因未知，猜测是AI的文章结构、表达上比人类更好&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;2401.11911&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903181530086.png&#34;
+	width=&#34;992&#34;
+	height=&#34;443&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903181530086_hu_ce69793f148b679b.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903181530086_hu_3f116d49e637459e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Ex3&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;223&#34;
+		data-flex-basis=&#34;537px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;（这里首先都是用了AI生成的文章做实验，避免偏好问题，并且文章都是假的）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Meta Data会影响模型的采纳&lt;/li&gt;
+&lt;li&gt;其中时间影响较大&lt;/li&gt;
+&lt;li&gt;资料来源写Wikipedia还是其他来源，似乎没有什么影响（这里比较反直觉）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;但是实验做得似乎比较粗糙，看看就好&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;总结：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;模型总会犯错&lt;/li&gt;
+&lt;li&gt;Function Call要不要采用取决模型本身能力，如果模型可以自己解决没必要Call&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;plan&#34;&gt;Plan
+&lt;/h2&gt;&lt;p&gt;目前的Agent都喜欢做一个Plan，再开始Action&lt;/p&gt;
+&lt;p&gt;但是Plan不能定太死&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;操作浏览器时突然出现一个广告弹窗&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903182236824.png&#34;
+	width=&#34;1040&#34;
+	height=&#34;351&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903182236824_hu_655a62e81b69f692.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903182236824_hu_9d822b41853c3318.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Plan&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;296&#34;
+		data-flex-basis=&#34;711px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;因此Plan需要灵活，一种方案是：每次思考一下Plan要不要重新制定&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;如何强化模型的规划能力？&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903182925762.png&#34;
+	width=&#34;1036&#34;
+	height=&#34;530&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903182925762_hu_e0ecbc68cec78b03.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903182925762_hu_c450aee5b61cfd30.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;搜索与剪枝&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;195&#34;
+		data-flex-basis=&#34;469px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;让模型实际去探索一下（本质是搜索）&lt;/li&gt;
+&lt;li&gt;可以剪枝（自问自答：当前还有机会完成任务吗？）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;（不适合不容易回溯状态的任务，例如：订餐）&lt;/p&gt;
+&lt;p&gt;（但是可以引入一个World Model，让模型扮演环境本身去做反馈，模拟）&lt;/p&gt;
+&lt;p&gt;从Agent的角度去看待模型Thinking Mode：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903183347542.png&#34;
+	width=&#34;1062&#34;
+	height=&#34;542&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903183347542_hu_7409da7ba96a6ac5.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-agent/assets/image-20250903183347542_hu_71f6bd0b8e42b3cb.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Thinking Mode&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;195&#34;
+		data-flex-basis=&#34;470px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;一些杂谈：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;做benchmark或一些实验的时候，思考一下这个任务LLM会不会在互联网数据中提前得到&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>李宏毅机器学习2025 · 前言</title>
+        <link>https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/</link>
+        <pubDate>Tue, 02 Sep 2025 20:46:34 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1aiADewEBC&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;李宏毅机器学习2025&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;被手搓大模型橄榄了，写BPE写的心态爆了&lt;/p&gt;
+&lt;p&gt;不如我们先停下来推一下一些比较有趣的课程&lt;/p&gt;
+&lt;h1 id=&#34;前言&#34;&gt;前言
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;Those token could be anything.&lt;/p&gt;
+&lt;p&gt;解析任何事物为若干有限的基本单位（token），你就可以使用生成式AI做任何事情&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;auto-regressive-generation&#34;&gt;Auto Regressive Generation
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;自回归生成（其实就是词语接龙）&lt;/li&gt;
+&lt;/ul&gt;
+$$
+x_1,x_2,...,x_j \to y_1\\
+x_1,x_2,...,x_j,y_1 \to y_2\\
+x_1,x_2,...,x_j,y_1,y_2 \to ...\\
+x_1,x_2,...,x_j,y_1,y_2,... \to \text{end token}\\
+$$&lt;p&gt;token作为文字时：语言模型&lt;/p&gt;
+&lt;p&gt;（但是不管是什么都会被称为语言模型，因为热度太大了）&lt;/p&gt;
+&lt;p&gt;本质上都是在有限的选择中做出选择完成输出&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902210520749.png&#34;
+	width=&#34;877&#34;
+	height=&#34;483&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902210520749_hu_c6d279eefb5346cf.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902210520749_hu_8732fdb1d4ca93a8.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;生成式AI&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;181&#34;
+		data-flex-basis=&#34;435px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通过Neural Network，得到的是各个token的概率分布
+&lt;ul&gt;
+&lt;li&gt;模型架构（超参数）：由人类确定&lt;/li&gt;
+&lt;li&gt;模型参数：由数据决定&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;thinking-mode&#34;&gt;Thinking Mode
+&lt;/h2&gt;&lt;p&gt;对于现实中的问题，往往足够复杂，哪怕模型足够巨大，层数足够多，可能也无法处理&lt;/p&gt;
+&lt;p&gt;而带有思考能力的LLM表现良好，可以从模型层数的角度进行解释&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902210943599.png&#34;
+	width=&#34;903&#34;
+	height=&#34;427&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902210943599_hu_6aee250c4eea9f13.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902210943599_hu_dc25cb538fafd38d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Thinking Mode&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;211&#34;
+		data-flex-basis=&#34;507px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;每次给定输入token集合，产生一个token的输出，模型会过一遍所有的Layer&lt;/p&gt;
+&lt;p&gt;所以只要不断思考，本质上是一直在重复这个模型Layer的堆积&lt;/p&gt;
+&lt;p&gt;因此思考长度足够，似乎是在使用一个&lt;strong&gt;巨深的模型&lt;/strong&gt;进行推理&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;训练时缩放（Training Time Scaling）&lt;/strong&gt;：通过训练来让模型变得更强大。这需要巨大的成本重新训练模型。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;增加模型参数量（scale up）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;增加训练数据&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;延长训练时间（增加计算量）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;测试时缩放（Testing Time Scaling）&lt;/strong&gt;：&lt;strong&gt;模型已经训练好了，参数固定不变。&lt;/strong&gt; 我们通过一些“技巧”，在&lt;strong&gt;使用&lt;/strong&gt;这个模型的时候投入更多的计算资源&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;生成多个答案然后挑最好的&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;更仔细地推理&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Testing Time Scaling：在不改变模型本身weights的情况下，仅通过改变inference或testing时的方法和计算量，就能显著提升模型性能的一种现象或技术集合。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902213913156.png&#34;
+	width=&#34;928&#34;
+	height=&#34;402&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902213913156_hu_492ada79126596e9.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902213913156_hu_6bb28dd1c56cb705.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;TTS&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;230&#34;
+		data-flex-basis=&#34;554px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;本质上是在叠加模型层数，如图，思考的token开销越多，性能确实越好&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;如何控制token？一个粗暴的方法，在结束的时候把end变成wait&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;development&#34;&gt;Development
+&lt;/h2&gt;&lt;p&gt;模型的演变经历了专用模型到通用模型的趋势&lt;/p&gt;
+&lt;p&gt;而通用模型的演变也非常迅速&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902215817397.png&#34;
+	width=&#34;938&#34;
+	height=&#34;485&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902215817397_hu_4de31912bfc26bb8.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902215817397_hu_83cd7663fa05fbf4.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Encoder&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;193&#34;
+		data-flex-basis=&#34;464px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Encoder：将文本encode成向量
+&lt;ul&gt;
+&lt;li&gt;配套专用模型完成输出&lt;/li&gt;
+&lt;li&gt;架构不同&lt;/li&gt;
+&lt;li&gt;参数不同&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902220023151.png&#34;
+	width=&#34;923&#34;
+	height=&#34;486&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902220023151_hu_1a956035b96d2c2b.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902220023151_hu_8a168de1792f4caa.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Fine-tune&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;189&#34;
+		data-flex-basis=&#34;455px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Fine-Tune：通过微调适配不同任务
+&lt;ul&gt;
+&lt;li&gt;架构相同&lt;/li&gt;
+&lt;li&gt;参数不同&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902220142932.png&#34;
+	width=&#34;920&#34;
+	height=&#34;482&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902220142932_hu_3f5c6b335bc46f46.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902220142932_hu_79525b51f8b740bb.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Prompt&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;190&#34;
+		data-flex-basis=&#34;458px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Prompt：直接给指令做不同任务
+&lt;ul&gt;
+&lt;li&gt;架构相同&lt;/li&gt;
+&lt;li&gt;参数相同&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;Homework1就不做了，一个RAG任务，之前做过类似的&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

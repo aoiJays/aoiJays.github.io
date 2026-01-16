@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Ask-Before-Detection - Identifying and Mitigating Conformity Bias in LLM-Powered Error Detector for Math Word Problem Solutions">
+<title>大语言模型教育纠错 · 论文笔记（一）</title>
+
+<link rel='canonical' href='https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="大语言模型教育纠错 · 论文笔记（一）">
+<meta property='og:description' content="Ask-Before-Detection - Identifying and Mitigating Conformity Bias in LLM-Powered Error Detector for Math Word Problem Solutions">
+<meta property='og:url' content='https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/'>
+<meta property='og:site_name' content='BiribiriBird'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='LLM' /><meta property='article:published_time' content='2025-06-23T15:13:55&#43;08:00'/><meta property='article:modified_time' content='2025-06-23T15:13:55&#43;08:00'/>
+<meta name="twitter:title" content="大语言模型教育纠错 · 论文笔记（一）">
+<meta name="twitter:description" content="Ask-Before-Detection - Identifying and Mitigating Conformity Bias in LLM-Powered Error Detector for Math Word Problem Solutions">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            localStorage.setItem(colorSchemeKey, "light");
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_bbc58a5457fc2680.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">BiribiriBird</a></h1>
+            <h2 class="site-description">Segmentation fault!</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/498088093'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648787418" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2107" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="2108" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:neworld1111@163.com'
+                        target="_blank"
+                        title="Email"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743649088353" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6924" width="24" height="24"><path d="M874.666667 181.333333H149.333333c-40.533333 0-74.666667 34.133333-74.666666 74.666667v512c0 40.533333 34.133333 74.666667 74.666666 74.666667h725.333334c40.533333 0 74.666667-34.133333 74.666666-74.666667V256c0-40.533333-34.133333-74.666667-74.666666-74.666667z m-725.333334 64h725.333334c6.4 0 10.666667 4.266667 10.666666 10.666667v25.6L512 516.266667l-373.333333-234.666667V256c0-6.4 4.266667-10.666667 10.666666-10.666667z m725.333334 533.333334H149.333333c-6.4 0-10.666667-4.266667-10.666666-10.666667V356.266667l356.266666 224c4.266667 4.266667 10.666667 4.266667 17.066667 4.266666s12.8-2.133333 17.066667-4.266666l356.266666-224V768c0 6.4-4.266667 10.666667-10.666666 10.666667z" fill="#666666" p-id="6925"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/aoiJays'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648734849" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5802" width="24" height="24"><path d="M511.957333 21.333333C241.024 21.333333 21.333333 240.981333 21.333333 512c0 216.832 140.544 400.725333 335.573334 465.664 24.490667 4.394667 32.256-10.069333 32.256-23.082667 0-11.690667 0.256-44.245333 0-85.205333-136.448 29.610667-164.736-64.64-164.736-64.64-22.314667-56.704-54.4-71.765333-54.4-71.765333-44.586667-30.464 3.285333-29.824 3.285333-29.824 49.194667 3.413333 75.178667 50.517333 75.178667 50.517333 43.776 75.008 114.816 53.333333 142.762666 40.789333 4.522667-31.658667 17.152-53.376 31.189334-65.536-108.970667-12.458667-223.488-54.485333-223.488-242.602666 0-53.546667 19.114667-97.322667 50.517333-131.669334-5.034667-12.330667-21.930667-62.293333 4.778667-129.834666 0 0 41.258667-13.184 134.912 50.346666a469.802667 469.802667 0 0 1 122.88-16.554666c41.642667 0.213333 83.626667 5.632 122.88 16.554666 93.653333-63.488 134.784-50.346667 134.784-50.346666 26.752 67.541333 9.898667 117.504 4.864 129.834666 31.402667 34.346667 50.474667 78.122667 50.474666 131.669334 0 188.586667-114.730667 230.016-224.042666 242.090666 17.578667 15.232 33.578667 44.672 33.578666 90.453334v135.850666c0 13.141333 7.936 27.605333 32.853334 22.869334C862.250667 912.597333 1002.666667 728.746667 1002.666667 512 1002.666667 240.981333 783.018667 21.333333 511.957333 21.333333z" p-id="5803" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About me</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/experience/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Experience</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friend/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>Friend</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#intro">Intro</a></li>
+    <li><a href="#preliminary-study">Preliminary Study</a>
+      <ol>
+        <li><a href="#automatic-solution-permutation">Automatic Solution Permutation</a></li>
+        <li><a href="#erroneous-solution-generation">Erroneous Solution Generation</a></li>
+        <li><a href="#analysis-and-findings">Analysis and Findings</a>
+          <ol>
+            <li><a href="#conformity-bias-identification">Conformity Bias Identification</a></li>
+            <li><a href="#solution-likelihood-score-analysis">Solution Likelihood Score Analysis</a></li>
+            <li><a href="#reference-based-detection-findings">Reference-based Detection Findings</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#method">Method</a></li>
+    <li><a href="#experiment">Experiment</a></li>
+    <li><a href="#limitation">Limitation</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99/" >
+                教育纠错
+            </a>
+        
+            <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" >
+                论文笔记
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/">大语言模型教育纠错 · 论文笔记（一）</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Ask-Before-Detection - Identifying and Mitigating Conformity Bias in LLM-Powered Error Detector for Math Word Problem Solutions
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jun 23, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 7 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p><a class="link" href="https://arxiv.org/abs/2412.16838"  target="_blank" rel="noopener"
+    >2412.16838 Ask-Before-Detection: Identifying and Mitigating Conformity Bias in LLM-Powered Error Detector for Math Word Problem Solutions</a></p>
+<p>[TOC]</p>
+<h2 id="intro">Intro
+</h2><ul>
+<li>AED（Automatic Error Detection）
+<ul>
+<li>本文定义为：给定问题-解答的输入对，识别错误步骤以及错误类型</li>
+</ul>
+</li>
+</ul>
+<p><img src="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250623164618186.png"
+	width="1119"
+	height="594"
+	srcset="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250623164618186_hu_529466cf46b0a084.png 480w, /p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250623164618186_hu_44cdd8acc43cea4e.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="188"
+		data-flex-basis="452px"
+	
+></p>
+<p>如图，paper点出传统的方法使用可以对问题的<strong>常规解法</strong>进行正确错误检测</p>
+<p>但是单个问题的解法可以<strong>存在多个</strong>，认为之前的做法泛用性较差</p>
+<p>常规解法与非常规解法会产生7%的性能差距，先进的闭源模型也无法避免</p>
+<ul>
+<li>LLM错误检测器表现<code>conformity bias</code>（从众偏差）
+<ul>
+<li>倾向“遵循主流答案（训练中经常出现的）”而忽略可能也正确但不常见的其他解法</li>
+<li>导致模型对标准答案的识别准确，却对非常规解法的识别薄弱</li>
+</ul>
+</li>
+</ul>
+<p>论文针对缓解模型的<code>conformity bias</code>进行工作</p>
+<p>提出AskBD框架，为每个Solution自适应生成参考答案（合适的参考答案能显著提升性能）</p>
+<ul>
+<li>直接调用模型，无微调，拓展性强</li>
+<li>自适应方式高度契合给定Solution，降低Bias</li>
+<li>框架可协同CoT技术增强性能</li>
+</ul>
+<h2 id="preliminary-study">Preliminary Study
+</h2><p>Paper构建了一个Alternative Solution数据集用于充分暴露模型的从众偏差效应，帮助进行后续的探索</p>
+<h3 id="automatic-solution-permutation">Automatic Solution Permutation
+</h3><p>paper希望构建一个高质量的Alternative Solution数据集</p>
+<p>给定问题和Solution，希望替换掉整个解决方案为Alternative Solution</p>
+<ul>
+<li><strong>低质量</strong>：对常规Solution只是简单的<strong>语义替换</strong>，并没有深层的逻辑变换</li>
+</ul>
+<p><img src="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250623172108657.png"
+	width="1094"
+	height="316"
+	srcset="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250623172108657_hu_c5b1e501f2aed034.png 480w, /p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250623172108657_hu_c24cb789034894c.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="346"
+		data-flex-basis="830px"
+	
+></p>
+<p><strong>ASP</strong>（自动解法置换），如图，对应了Solution和数学表达式的关系，使用LLM prompt独立执行：</p>
+<ul>
+<li>Extract：常规Solution -&gt; 数学表达式，完成后需要执行运算，检查是否能够得到正确计算结果，否则剔除</li>
+<li>Permute：因式分解、分配律，重新排列表达式（同样需要运算检验）</li>
+<li>Explain：置换后的表达式输入到LLM，引导生成高质量Alternative Solution</li>
+</ul>
+<blockquote>
+<p>paper采样GPT-4o，从GSM8K数据集抽取200组问答对，构建常规数据集D</p>
+<p>对D中的每个样本，3次ASP生成3个Alternative Solution，由教育系研究生评审质量，选择三个之中最优的一个</p>
+<p>完成替换数据集D&rsquo;的制作</p></blockquote>
+<h3 id="erroneous-solution-generation">Erroneous Solution Generation
+</h3><p>需要将错误注入到D和D‘之中，生成测试样本</p>
+<p>主要参考：<a class="link" href="https://arxiv.org/abs/2406.00755"  target="_blank" rel="noopener"
+    >2406.00755 Evaluating Mathematical Reasoning of Large Language Models: A Focus on Error Identification and Correction</a></p>
+<p>paper引入了四种错误：</p>
+<ul>
+<li>$\varepsilon_C$：calculation errors
+<ul>
+<li>Operands in expressions are correct but an error occurs in the calculated results.（表达式正确，计算结果出错）</li>
+<li><code>Each gust blows the leaf forward 5 feet, so 11 gusts will blow it forward 5 ×11 = 50 feet. </code></li>
+</ul>
+</li>
+<li>$\varepsilon_R$：reference errors
+<ul>
+<li>Expression are incorrectly referencing the question conditions or the results from prior steps.（错误引用了题目条件或之前的计算结果）</li>
+<li><code>Each gust blows the leaf forward 5 feet, so 10 gusts will blow it forward 5 ×10 = 50 feet. </code>（题目原条件是11，不是10）</li>
+</ul>
+</li>
+<li>$\varepsilon_M$ ：missing steps
+<ul>
+<li>Operands or expressions in the step that lack of references or support from the question conditions or prior steps.</li>
+<li><code>Each swirl after a gust blows it back 2 feet, so 11 swirls will blow it back 2 ×11 = 22feet. Step 2. After 11 gusts, the leaf has traveled 55 − 22 = 33 feet down the sidewalk.</code>（缺少了得到55这个数字的计算过程）</li>
+</ul>
+</li>
+<li>$\varepsilon_H$：hallucinations（幻觉）
+<ul>
+<li>Statements or operands in the listed expression are fabricated or inconsistent with the question’s conditions.（虚构或与条件不一致）</li>
+<li>……</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>It is worth noting that this study specifically aims to explore conformity bias, and therefore, <strong>we do not include all possible error types.</strong></p></blockquote>
+<p>针对D和D&rsquo;的每个样本，随机错误步骤的位置编号，每个样本生成了四种不同错误类型的样本，总共2000条</p>
+<p><img src="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154336790.png"
+	width="473"
+	height="212"
+	srcset="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154336790_hu_396c502f844b6a72.png 480w, /p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154336790_hu_4f52005375b8ff83.png 1024w"
+	loading="lazy"
+	
+		alt="Table 5"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="223"
+		data-flex-basis="535px"
+	
+></p>
+<h3 id="analysis-and-findings">Analysis and Findings
+</h3><h4 id="conformity-bias-identification">Conformity Bias Identification
+</h4><p>评估指标：The evaluation metric is the identification accuracy across both correct and erroneous solutions.</p>
+<ul>
+<li>需要识别错误位置、错误类型</li>
+</ul>
+<p>Paper使用提示词进行纠错，明确LLM本题存在替代解法，强调所有合理解决方案应该被接受，并且明确定义错误类别</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Given the &lt;question&gt;, please judge whether each step in &lt;solution&gt; is correct. **During the judging process, you should know that the &lt;question&gt; does not always have only one standard solution, and any reasonable &lt;solution&gt; should be accepted. You should pay attention to both the expressions and the statements in each step, and take care about the logic consistency between different steps. Additionally, consider arithmetic expression equivalency and avoid rejecting solutions solely because they use equivalent expressions.**
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">In each step, if no errors are found, respond with Step X: &lt;correct&gt;. If you find that the operands in the listed expressions are correct but an error occurs in the calculated result, respond with Step X: &lt;calculation error&gt;. If you find statements or operands in the listed expression are incorrectly referencing the question conditions or the results from prior steps, respond with Step X: &lt;reference error&gt;. If you find operands or expressions in the step that is lack of references or support from the question conditions or prior steps, respond with Step X: &lt;missing step&gt;. If you find statements or operands in the listed expression are fabricated or inconsistent with the question’s conditions, respond with: Step X: &lt;hallucination&gt;. If an error is a follow-on issue due to mistakes in previous steps rather than an independent error, respond with: Step X: &lt;secondary error&gt;.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">&lt;question&gt; [Question Text] &lt;solution&gt; [Solution Text]  
+</span></span><span class="line"><span class="cl">Now, please start to respond.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>参与测试的LLM：</p>
+<p><img src="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154400250.png"
+	width="441"
+	height="436"
+	srcset="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154400250_hu_926cdad944d5de03.png 480w, /p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154400250_hu_488d9a30ae5b5c.png 1024w"
+	loading="lazy"
+	
+		alt="Table 6"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="101"
+		data-flex-basis="242px"
+	
+></p>
+<p>平均错误检测准确率的测试结果：</p>
+<p><img src="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154615400.png"
+	width="423"
+	height="305"
+	srcset="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154615400_hu_e91b30da751b4c25.png 480w, /p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154615400_hu_4a904fb7a1a5feee.png 1024w"
+	loading="lazy"
+	
+		alt="Table 1"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="138"
+		data-flex-basis="332px"
+	
+></p>
+<p>证实了LLM在AED任务中存在明显的从众偏差</p>
+<h4 id="solution-likelihood-score-analysis">Solution Likelihood Score Analysis
+</h4><p>对于当前问题$q$，我们可以计算LLM生成答案$s$的概率$P(s|q)$</p>
+<p>我们可以把$s$拆分成多个token：$s_i$</p>
+$$
+P(s|q) = P(s_1, s_2, ...,s_{|s|} | q)
+$$$$
+P(s|q) = P(s_1|q) \times P(s_2|q,s_1) \times P(s_3|q,s_1,s_2) \times ...
+$$$$
+\log P(s|q) = \sum_{i=1}^{|s|} \log P(s_i|q,s_1:s_{i-1})
+$$<p>
+这个值就是<strong>对数似然分数</strong> （Log-Likelihood Score）</p>
+<p>它衡量了模型在给定问题 <em>q</em> 的情况下，对答案 <em>s</em> 的“信任度”或理解程度</p>
+$$
+\log L_{\theta}(s|q) = \frac{\log L_\theta(s|q)}{|s|}
+$$<p>
+其中$\theta$表示LLM的参数（闭源模型的似然分数无法获取，采取了开源模型的似然分数均值做伪指标）</p>
+<p><img src="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163200484.png"
+	width="562"
+	height="478"
+	srcset="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163200484_hu_9a5549ae053eac12.png 480w, /p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163200484_hu_cfa275c0f051adca.png 1024w"
+	loading="lazy"
+	
+		alt="Advance Model"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="117"
+		data-flex-basis="282px"
+	
+> <img src="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163307581.png"
+	width="564"
+	height="480"
+	srcset="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163307581_hu_49803f1626247f18.png 480w, /p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163307581_hu_926314100216a0c1.png 1024w"
+	loading="lazy"
+	
+		alt="Base Model"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="117"
+		data-flex-basis="282px"
+	
+></p>
+<p>同时喂入 了常规解法+替代解法，根据似然分数分成四个档进行对比</p>
+<p>显然似然值越高，Acc越高</p>
+<p><img src="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163347218.png"
+	width="577"
+	height="482"
+	srcset="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163347218_hu_f8a58aeee4e02655.png 480w, /p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163347218_hu_3fada5ac724549e7.png 1024w"
+	loading="lazy"
+	
+		alt="Likehood Distribution"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="119"
+		data-flex-basis="287px"
+	
+></p>
+<p>对于开源模型，替代解法的似然分数显然低于常规解法</p>
+<h4 id="reference-based-detection-findings">Reference-based Detection Findings
+</h4><ul>
+<li>不太可能直接提高替代Solution的似然值
+<ul>
+<li>通过改变数据集进行微调，但是无法解决根本问题，仍有可能碰见其他的未遇见情况</li>
+</ul>
+</li>
+</ul>
+<p>参考：<a class="link" href="https://arxiv.org/abs/2407.09136"  target="_blank" rel="noopener"
+    >2407.09136 Stepwise Verification and Remediation of Student Reasoning Errors with Large Language Model Tutors</a>，提出引入参考答案提升了常规解法的检测性能</p>
+<blockquote>
+<p>将学生解题步骤与标准答案对齐</p></blockquote>
+<p>本paper尝试推广到替代解法，但是：</p>
+<ul>
+<li>实际情况下，参考答案并不是总能获取</li>
+<li>即便能够获取，一般也是常规解法的参考答案</li>
+</ul>
+<p>paper采用了两条技术路线进行对比：</p>
+<ul>
+<li>使用常规解法作为参考答案</li>
+<li>自适应使用对应解法作为参考答案（？细节不太清楚，后文兴许会说）</li>
+</ul>
+<p><img src="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626171423880.png"
+	width="458"
+	height="343"
+	srcset="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626171423880_hu_38c9f63332d673bf.png 480w, /p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626171423880_hu_6c0b72c548df9ffd.png 1024w"
+	loading="lazy"
+	
+		alt="常规解法作为参考答案"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="133"
+		data-flex-basis="320px"
+	
+>  <img src="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626171459301.png"
+	width="459"
+	height="348"
+	srcset="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626171459301_hu_a726c1661fa683e4.png 480w, /p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626171459301_hu_a94969f7c01bb73c.png 1024w"
+	loading="lazy"
+	
+		alt="自适应选择参考答案"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="131"
+		data-flex-basis="316px"
+	
+></p>
+<p>根据与前文提示词的测试结果进行对比，引入参考答案对两个数据集的<strong>acc都有显著的提升</strong></p>
+<p>但是使用常规解法做参考答案加剧了bias，而自适应选择明显缓解了bias</p>
+<p><strong>因此选择合适的参考答案是能起到关键作用的</strong></p>
+<h2 id="method">Method
+</h2><p>提出AskBD（Ask-Before-Detection）框架，在评分过程中为每个待评答案动态生成适配的参考解法</p>
+<p><img src="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626172743783.png"
+	width="1227"
+	height="482"
+	srcset="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626172743783_hu_dcc20bd97ebdb160.png 480w, /p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626172743783_hu_1c39f4b9cd82f898.png 1024w"
+	loading="lazy"
+	
+		alt="Pipeline"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="254"
+		data-flex-basis="610px"
+	
+></p>
+<p>输入：问题文本$q$，解答文本$s$，LLM$f$，提示词$p$</p>
+<ul>
+<li>Condition and question extractor(CQE)
+<ul>
+<li>从问题文本中抽取条件$q_c$和提问文本$q_i$</li>
+<li>$(q_c, q_i) = f([p_{cqe}, q])$</li>
+</ul>
+</li>
+<li>Solution Step Inquirer(SSI)
+<ul>
+<li><strong>为提高生成结果的稳定性，SSI 会先总结每个步骤的结论再构建对应问题。</strong></li>
+<li>将解答文本转化为分步骤问题列表文本$Q$，<strong>末尾附加提问文本$q_i$</strong>，以确保生成的参考解答能够回应原始问题的核心任务。</li>
+<li>$Q = [f([p_{ssi},s]), q_i]$</li>
+</ul>
+</li>
+<li>Step Question Responder (SQR)
+<ul>
+<li>通过条件文本总结$Q$中每个问题的答案，生成参考答案$r$</li>
+<li>$r = f([p_{sqr},q_c, Q])$</li>
+</ul>
+</li>
+<li>Reference-Enhanced Grader (REG)
+<ul>
+<li>根据$q, s, r$生成错误位置$y_s$和错误类型$y_e$</li>
+<li>$y=f([p_{reg},q,s,r])$</li>
+</ul>
+</li>
+</ul>
+<p>输出：$y_s, y_e$</p>
+<h2 id="experiment">Experiment
+</h2><p>实验目的是验证核心的三个问题：</p>
+<ul>
+<li>是否缓解从众偏差</li>
+<li>是否有额外的性能优势</li>
+<li>与CoT等推理技术的兼容性</li>
+</ul>
+<p>实验方法：</p>
+<ul>
+<li>采用前文数据集，相同的10个LLM，用于对比前两个问题</li>
+<li>整合了CoT技术，评估兼容性</li>
+<li>所有实验分别实验三种不同的随机seed，报告平均错误检测准确率</li>
+<li>前文测试和CoT方案作为两个baseline</li>
+</ul>
+<p>CoT的提示词</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"> Before the &lt;response&gt;, you should provide your step-by-step &lt;thinking&gt; about your judging process.
+</span></span><span class="line"><span class="cl"> &lt;question&gt; [Question Text] &lt;solution&gt; [Solution Text]
+</span></span><span class="line"><span class="cl"> Now, please start to think first and then respond.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626175506489.png"
+	width="884"
+	height="476"
+	srcset="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626175506489_hu_bb07b79c8d6c3c11.png 480w, /p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626175506489_hu_5250d244aa5b549e.png 1024w"
+	loading="lazy"
+	
+		alt="实验结果"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="185"
+		data-flex-basis="445px"
+	
+></p>
+<p>对于问题1</p>
+<ul>
+<li>重点分析M0和M2在$\Delta$列的差距
+<ul>
+<li>Base版本的优化并不明显，认为是模型推理能力不足，限制了框架效用</li>
+<li>对比M1与M2，CoT也有缓解Bias的能力，在多数Advance模型中，框架的优化能力强于CoT</li>
+</ul>
+</li>
+</ul>
+<p>对于问题2</p>
+<ul>
+<li>在D、D&rsquo;列对比M2和M0
+<ul>
+<li>框架确实提升了acc性能</li>
+<li>对比M1 M2，CoT也体现出了性能提升
+<ul>
+<li>在base模型中CoT技术更胜一筹</li>
+<li>在Advance模型中框架更强（……）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>针对问题3</p>
+<ul>
+<li>M3和M1对比，确实变强了</li>
+<li>兼容性好</li>
+</ul>
+<h2 id="limitation">Limitation
+</h2><ul>
+<li>只考虑了四个错误类型，忽略了学生解答中那些更罕见却更具挑战性的错误类型</li>
+<li>仅聚焦于数学应用题</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/llm/">LLM</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型教育纠错 · 论文笔记（三）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型教育纠错 · 论文笔记（二）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E9%9B%B6/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型教育纠错 · 论文笔记（零）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型数据清洗 · 论文笔记（五）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E5%9B%9B/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型数据清洗 · 论文笔记（四）</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

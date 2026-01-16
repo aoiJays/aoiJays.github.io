@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Essential-Web v1.0 24T tokens of organized web data">
+<title>大语言模型数据清洗 · 论文笔记（五）</title>
+
+<link rel='canonical' href='https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="大语言模型数据清洗 · 论文笔记（五）">
+<meta property='og:description' content="Essential-Web v1.0 24T tokens of organized web data">
+<meta property='og:url' content='https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/'>
+<meta property='og:site_name' content='BiribiriBird'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='LLM' /><meta property='article:tag' content='模型蒸馏' /><meta property='article:published_time' content='2025-07-10T11:16:32&#43;08:00'/><meta property='article:modified_time' content='2025-07-10T11:16:32&#43;08:00'/>
+<meta name="twitter:title" content="大语言模型数据清洗 · 论文笔记（五）">
+<meta name="twitter:description" content="Essential-Web v1.0 24T tokens of organized web data">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            localStorage.setItem(colorSchemeKey, "light");
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_bbc58a5457fc2680.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">BiribiriBird</a></h1>
+            <h2 class="site-description">Segmentation fault!</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/498088093'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648787418" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2107" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="2108" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:neworld1111@163.com'
+                        target="_blank"
+                        title="Email"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743649088353" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6924" width="24" height="24"><path d="M874.666667 181.333333H149.333333c-40.533333 0-74.666667 34.133333-74.666666 74.666667v512c0 40.533333 34.133333 74.666667 74.666666 74.666667h725.333334c40.533333 0 74.666667-34.133333 74.666666-74.666667V256c0-40.533333-34.133333-74.666667-74.666666-74.666667z m-725.333334 64h725.333334c6.4 0 10.666667 4.266667 10.666666 10.666667v25.6L512 516.266667l-373.333333-234.666667V256c0-6.4 4.266667-10.666667 10.666666-10.666667z m725.333334 533.333334H149.333333c-6.4 0-10.666667-4.266667-10.666666-10.666667V356.266667l356.266666 224c4.266667 4.266667 10.666667 4.266667 17.066667 4.266666s12.8-2.133333 17.066667-4.266666l356.266666-224V768c0 6.4-4.266667 10.666667-10.666666 10.666667z" fill="#666666" p-id="6925"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/aoiJays'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648734849" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5802" width="24" height="24"><path d="M511.957333 21.333333C241.024 21.333333 21.333333 240.981333 21.333333 512c0 216.832 140.544 400.725333 335.573334 465.664 24.490667 4.394667 32.256-10.069333 32.256-23.082667 0-11.690667 0.256-44.245333 0-85.205333-136.448 29.610667-164.736-64.64-164.736-64.64-22.314667-56.704-54.4-71.765333-54.4-71.765333-44.586667-30.464 3.285333-29.824 3.285333-29.824 49.194667 3.413333 75.178667 50.517333 75.178667 50.517333 43.776 75.008 114.816 53.333333 142.762666 40.789333 4.522667-31.658667 17.152-53.376 31.189334-65.536-108.970667-12.458667-223.488-54.485333-223.488-242.602666 0-53.546667 19.114667-97.322667 50.517333-131.669334-5.034667-12.330667-21.930667-62.293333 4.778667-129.834666 0 0 41.258667-13.184 134.912 50.346666a469.802667 469.802667 0 0 1 122.88-16.554666c41.642667 0.213333 83.626667 5.632 122.88 16.554666 93.653333-63.488 134.784-50.346667 134.784-50.346666 26.752 67.541333 9.898667 117.504 4.864 129.834666 31.402667 34.346667 50.474667 78.122667 50.474666 131.669334 0 188.586667-114.730667 230.016-224.042666 242.090666 17.578667 15.232 33.578667 44.672 33.578666 90.453334v135.850666c0 13.141333 7.936 27.605333 32.853334 22.869334C862.250667 912.597333 1002.666667 728.746667 1002.666667 512 1002.666667 240.981333 783.018667 21.333333 511.957333 21.333333z" p-id="5803" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About me</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/experience/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Experience</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friend/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>Friend</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#preview">Preview</a></li>
+    <li><a href="#实验设置">实验设置</a></li>
+    <li><a href="#chinchilla最优计算比例">Chinchilla最优计算比例</a></li>
+    <li><a href="#蒸馏">蒸馏</a>
+      <ol>
+        <li><a href="#蒸馏方案">蒸馏方案</a>
+          <ol>
+            <li><a href="#数据来源与规模"><strong>数据来源与规模</strong></a></li>
+            <li><a href="#数据预处理"><strong>数据预处理</strong></a></li>
+            <li><a href="#模型架构"><strong>模型架构</strong></a></li>
+            <li><a href="#训练参数"><strong>训练参数</strong></a></li>
+            <li><a href="#教师模型选择"><strong>教师模型选择</strong></a></li>
+            <li><a href="#蒸馏步骤"><strong>蒸馏步骤</strong></a></li>
+          </ol>
+        </li>
+        <li><a href="#评估方案">评估方案</a>
+          <ol>
+            <li><a href="#metrics">Metrics</a></li>
+            <li><a href="#dataset">Dataset</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97/" >
+                数据清洗
+            </a>
+        
+            <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" >
+                论文笔记
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/">大语言模型数据清洗 · 论文笔记（五）</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Essential-Web v1.0 24T tokens of organized web data
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 10, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>[TOC]</p>
+<h1 id="essential-web-v10-24t-tokens-of-organized-web-data">Essential-Web v1.0 24T tokens of organized web data
+</h1><h2 id="preview">Preview
+</h2><p>构建了多维度的分类体系，适合通过SQL等方式进行数据筛选出新的数据集</p>
+<ul>
+<li>使用开源模型进行数据标签的标注，得到了EAI-Distill-0.5b</li>
+<li>推理清洗了23.6B的数据，花费了90000 AMD MI300x GPU-hours</li>
+</ul>
+<blockquote>
+<p>The inference job ran on 512 AMD MI300x for about 1 week.</p></blockquote>
+<p>分类体系：</p>
+<ul>
+<li>一个有限的类别集合 $T=\left { C_1, C_2, &hellip;, C_k \right } $。</li>
+<li>每个类别$C_i$都有一个非空、有限的标签集$L_i$。</li>
+</ul>
+<p>标注形式为$T(d) = \left { (\lambda_1, \mu_1), &hellip;\right}$</p>
+<ul>
+<li>其中，$λ_i\in L_i$ 是类别$C_i$的主要标签</li>
+<li>$\mu_i \in (L_i \setminus {\lambda_i}) \cup {\bot}$ 是一个可选的次要标签，必须与$\lambda_i$不同
+<ul>
+<li>当文档适合两个标签时非常有用</li>
+<li>$\bot$表示弃权（abstention）。</li>
+</ul>
+</li>
+<li>所有类别和标签集都是预先固定的，这允许训练一个单一的静态分类器</li>
+</ul>
+<p><img src="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/assets/image-20250710141259250.png"
+	width="923"
+	height="234"
+	srcset="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/assets/image-20250710141259250_hu_35e32e8ea56e9d9f.png 480w, /p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/assets/image-20250710141259250_hu_7dca944e0ae04e92.png 1024w"
+	loading="lazy"
+	
+		alt="PipeLine"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="394"
+		data-flex-basis="946px"
+	
+></p>
+<h2 id="实验设置">实验设置
+</h2><blockquote>
+<h2 id="chinchilla最优计算比例">Chinchilla最优计算比例
+</h2><p>Chinchilla缩放定律发现了一个最优比例：大约每个参数需要20个训练token <a class="link" href="https://epoch.ai/blog/chinchilla-scaling-a-replication-attempt"  target="_blank" rel="noopener"
+    >Epoch AI</a><a class="link" href="https://www.analyticsvidhya.com/blog/2024/09/chinchilla-scaling-law/"  target="_blank" rel="noopener"
+    >Analytics Vidhya</a>。这个比例是DeepMind通过训练400多个语言模型得出的计算最优配置。</p>
+<p>具体来说：</p>
+<ul>
+<li>Chinchilla模型有70B参数，在1.4万亿tokens上训练，达到20 tokens per parameter的比例 <a class="link" href="https://epoch.ai/blog/chinchilla-scaling-a-replication-attempt"  target="_blank" rel="noopener"
+    >Chinchilla Scaling: A Replication Attempt | Epoch AI</a></li>
+<li>这个20:1的比例被认为是在给定计算预算下实现最佳性能的理想配置</li>
+</ul></blockquote>
+<p><img src="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/assets/image-20250710142401273.png"
+	width="608"
+	height="269"
+	srcset="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/assets/image-20250710142401273_hu_1c12a53edcfe7eaf.png 480w, /p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/assets/image-20250710142401273_hu_1c71ffbb1c3f701e.png 1024w"
+	loading="lazy"
+	
+		alt="Train"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="226"
+		data-flex-basis="542px"
+	
+></p>
+<p>所有数据集在训练前均使用了 13-gram Bloom Filter</p>
+<p>选用了两个2.3B模型对数据进行评估</p>
+<ul>
+<li>
+<p>预训练（3200亿Token）：该阶段帮助模型学到广泛的语言知识</p>
+<ul>
+<li>
+<p>General-base：仅使用网络数据（DCLM-baseline）做<strong>预训练</strong></p>
+</li>
+<li>
+<p>Code-base：使用网络数据（DCLM-baseline）+代码数据（Stack v2 Dedup中的Python），各占50%做<strong>预训练</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p>退火（800亿token）：为了评估特定领域数据集的性能，采用需要评估的新数据集</p>
+<ul>
+<li>学习率接近零的目的是在新的领域数据上进行“微调”，而不是进行大规模的“重新训练”</li>
+</ul>
+</li>
+</ul>
+<p>每个模型总计处理 4000 亿 token 数据量，是Chinchilla的10倍数据</p>
+<h2 id="蒸馏">蒸馏
+</h2><h3 id="蒸馏方案">蒸馏方案
+</h3><h4 id="数据来源与规模"><strong>数据来源与规模</strong>
+</h4><ul>
+<li><strong>标注数据</strong>：使用Qwen2.5-32B-Instruct对104.6M文档共82Btoken进行两轮标注，生成合成标签用于蒸馏训练。
+<ul>
+<li><strong>第一轮</strong>：标注8个分类类别（如FDC、Document Type V1/V2等）。</li>
+<li><strong>第二轮</strong>：扩展至12个类别（新增Bloom、Technical Correctness等）。</li>
+</ul>
+</li>
+</ul>
+<h4 id="数据预处理"><strong>数据预处理</strong>
+</h4><ul>
+<li><strong>子采样</strong>：对超过30,000字符的文档，截取开头、随机中间段和结尾（Algorithm 12），避免长文本影响推理速度。</li>
+<li><strong>质量过滤</strong>：通过统计和模型信号（如DCLM分类器）过滤低质量文档（Algorithm 1）。</li>
+</ul>
+<h4 id="模型架构"><strong>模型架构</strong>
+</h4><ul>
+<li><strong>基础模型</strong>：Qwen2.5-0.5b-Instruct（5亿参数），基于Gemma 3架构，使用QK-norm稳定注意力。</li>
+<li><strong>序列长度</strong>：16,384 tokens，支持长上下文。</li>
+</ul>
+<h4 id="训练参数"><strong>训练参数</strong>
+</h4><ul>
+<li><strong>优化器</strong>：AdamW（β1=0.9, β2=0.95），权重衰减0.1。</li>
+<li><strong>学习率</strong>：峰值1e-4，线性预热2B tokens，余弦衰减至1e-5，最后线性退火至0。</li>
+<li><strong>批量大小</strong>：全局2M tokens，梯度累积实现大批次训练。</li>
+<li><strong>训练量</strong>：82B tokens（合成标签数据）。</li>
+<li><strong>损失计算</strong>：仅对教师模型生成的标签token计算损失，输入文档和系统提示被掩码。</li>
+</ul>
+<h4 id="教师模型选择"><strong>教师模型选择</strong>
+</h4><ul>
+<li><strong>教师</strong>：Qwen2.5-32B-Instruct，因其标注一致性（κ=0.74）与推理速度平衡（1.4 RPS/GPU）。</li>
+</ul>
+<h4 id="蒸馏步骤"><strong>蒸馏步骤</strong>
+</h4><ol>
+<li><strong>标签生成</strong>：
+<ul>
+<li>教师模型生成多分类标签（如FDC层级、Document Type等），格式为<code>主标签,次标签</code>（Algorithm 13）。</li>
+<li>压缩输出：从平均791 tokens缩短至51 tokens，提升推理速度50倍（Table 12）。</li>
+</ul>
+</li>
+<li><strong>上下文蒸馏</strong>：
+<ul>
+<li>移除教师模型的提示模板（Prompt 1/2），直接训练学生模型生成压缩格式标签。</li>
+</ul>
+</li>
+</ol>
+<h3 id="评估方案">评估方案
+</h3><h4 id="metrics">Metrics
+</h4><ul>
+<li>正确性：多人分类的结果应该类似，验证模型打标签是否标准一致
+<ul>
+<li>使用GPT-4o和Claude Sonnet-3.5作为专家模型</li>
+<li>使用kappa系数作为指标</li>
+<li>取对4o的系数和对claude的系数的均值作为结果</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>检测方式是验证模型与专家模型的标准是否一致，对于指标paper中进行了变种</p>
+<p>对于某个模型的分类结果$S\in \left { \phi, (\text{label}), (\text{label1, label2}) \right }$​</p>
+<p>最少是一个标签（主标签），有时可以加一个次标签</p>
+<ul>
+<li>标注结果一致的判定：两模型的$S$​有交集</li>
+</ul>
+<p>然后套公式</p>
+<p>Qwen2.5-32B-Instruct ≈ 0.74</p>
+<p>EAI-Distill-0.5b ≈ 0.71~0.73</p></blockquote>
+<ul>
+<li>正交性：不同分类体系之间的标签应该是独立的
+<ul>
+<li>例如在某分类A下打了a，分类B始终是b，发生了绑定</li>
+<li>需计算互信息、香农熵</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+$$
+>\text{NMI}(X, Y) = \frac{2 I(X; Y)}{H(X) + H(Y)}
+>$$<p>其中：</p>
+<ul>
+<li>$p(x)$按$x$出现的频率，$p(x,y)$按$x,y$同时出现的频率计算</li>
+</ul>
+<ul>
+<li>$I(X; Y)$：互信息</li>
+</ul>
+$$
+>  I(X; Y) = \sum_{x, y} p(x, y) \cdot \log \frac{p(x, y)}{p(x)p(y)}
+>  $$<ul>
+<li>$H(X)$：X 的香农熵</li>
+</ul>
+$$
+>  H(X) = -\sum_{x} p(x) \cdot \log p(x)
+>  $$<p>Qwen2.5-32B 平均 NMI ≈ 0.079</p>
+<p>EAI-Distill-0.5b 平均 NMI ≈ 0.092</p></blockquote>
+<ul>
+<li>Domain Recall
+<ul>
+<li>定了Golden URL（认为arxiv和……30 个 base URL的都是高质量数据）</li>
+<li>统计有多少能被模型召回</li>
+</ul>
+</li>
+</ul>
+<h4 id="dataset">Dataset
+</h4><ul>
+<li>Random Set：随机采样（需要避免撞车训练数据）</li>
+<li>STEM Set：从特定领域集合（科学领域）随机采样</li>
+<li>通过Golden URL采样</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/llm/">LLM</a>
+        
+            <a href="/tags/%E6%A8%A1%E5%9E%8B%E8%92%B8%E9%A6%8F/">模型蒸馏</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E5%9B%9B/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型数据清洗 · 论文笔记（四）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型数据清洗 · 论文笔记（三）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型数据清洗 · 论文笔记（二）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型数据清洗 · 论文笔记（一）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型教育纠错 · 论文笔记（三）</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

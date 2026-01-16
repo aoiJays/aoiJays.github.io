@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Transformer on BiribiriBird</title>
+        <link>https://example.com/tags/transformer/</link>
+        <description>Recent content in Transformer on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Fri, 14 Nov 2025 20:15:32 +0800</lastBuildDate><atom:link href="https://example.com/tags/transformer/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Happy LLM · Part1 · Transformer</title>
+        <link>https://example.com/p/happy-llm-part1-transformer/</link>
+        <pubDate>Fri, 14 Nov 2025 20:15:32 +0800</pubDate>
+        
+        <guid>https://example.com/p/happy-llm-part1-transformer/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1 id=&#34;transformer&#34;&gt;Transformer
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;[参考资料](&lt;a class=&#34;link&#34; href=&#34;https://datawhalechina.github.io/happy-llm/#/./chapter2/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://datawhalechina.github.io/happy-llm/#/./chapter2/&lt;/a&gt;第二章 Transformer架构)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;注意力机制&#34;&gt;注意力机制
+&lt;/h2&gt;&lt;p&gt;对于一个token序列，注意力机制建立了三个键值：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;query：表示想找什么特征&lt;/li&gt;
+&lt;li&gt;key：表示我有什么特征&lt;/li&gt;
+&lt;li&gt;value：信息正文&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因此为了衡量query和key的特征之间的相似度，我们可以引入&lt;strong&gt;点积&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;所有的query向量和所有的key做点积&lt;/p&gt;
+$$
+QK^\top
+$$&lt;p&gt;
+得到&lt;strong&gt;注意力矩阵&lt;/strong&gt;，点积越大越相似&lt;/p&gt;
+&lt;p&gt;同时为了防止数值爆炸（维数$d_k$越大，累加的数值会越多）&lt;/p&gt;
+&lt;p&gt;做一下缩放：&lt;/p&gt;
+$$
+\frac{QK^\top}{\sqrt{d_k}}
+$$&lt;p&gt;
+然后通过softmax做一下归一化，确保所有权重之和为1，方便约束数值&lt;/p&gt;
+&lt;p&gt;最后对应权重乘上对应的Value&lt;/p&gt;
+&lt;p&gt;这样我们计算得到的是上下文文本内容的vector&lt;/p&gt;
+$$
+\text{attention}(Q,K,V) = \text{softmax}\left(\frac{QK^\top}{\sqrt{d_k}}\right)V
+$$&lt;h3 id=&#34;self-attention&#34;&gt;Self-Attention
+&lt;/h3&gt;&lt;p&gt;注意力机制处理了两个序列（Q、K来自不同序列）之间互相的查询&lt;/p&gt;
+&lt;p&gt;自注意力理所当然是查询自己&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;检查自己所说过的内容，确保逻辑一致&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于自注意力，每个Token都会有自己的Q、K、V&lt;/p&gt;
+&lt;p&gt;自然三个矩阵的维度是匹配的（跟序列长度有关），&lt;code&gt;(batch_size, seq_len, d_model)&lt;/code&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;**Question：**如果你的输入序列有 4 个 token，那么计算 self-attention 的注意力矩阵 size 会是多少？&lt;/p&gt;
+&lt;p&gt;**Answer：**每个token对应另外4个token的注意力分数，所以是(4,4)&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;mask-self-attention&#34;&gt;Mask Self-Attention
+&lt;/h3&gt;&lt;p&gt;模型学习过程中，有时候会遮蔽一些token，以该机制阻止计算注意力&lt;/p&gt;
+&lt;p&gt;最常用的就是通过Mask，遮蔽未来的信息，只允许模型利用历史信息&lt;/p&gt;
+&lt;p&gt;如果待学习的文本序列是&lt;code&gt;[BOS] I like you [EOS]&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BOS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;【&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MASK&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;】【&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MASK&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;】【&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MASK&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;】【&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MASK&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;】&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BOS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;I&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;【&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MASK&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;】&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;【&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MASK&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;】【&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MASK&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;】&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BOS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;I&lt;/span&gt;     &lt;span class=&#34;n&#34;&gt;like&lt;/span&gt;  &lt;span class=&#34;err&#34;&gt;【&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MASK&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;】【&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MASK&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;】&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BOS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;I&lt;/span&gt;     &lt;span class=&#34;n&#34;&gt;like&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;you&lt;/span&gt;  &lt;span class=&#34;err&#34;&gt;【&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MASK&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;】&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BOS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;I&lt;/span&gt;     &lt;span class=&#34;n&#34;&gt;like&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;you&lt;/span&gt;   &lt;span class=&#34;o&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;EOS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;模型能看到的内容就是未被MASK的token&lt;/p&gt;
+&lt;p&gt;MASK是一个典型的上三角矩阵，因此我们可以创建一个上三角矩阵作为注意力掩码&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入：&lt;code&gt;(batch_size, seq_len, hidden_size)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;注意力掩码：&lt;code&gt;(1, seq_len, seq_len)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;batch中所有内容都可以通用（一般seq_len是一样的）&lt;/p&gt;
+&lt;h3 id=&#34;multi-head-attention&#34;&gt;Multi-Head Attention
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;一次注意力计算只能拟合&lt;strong&gt;一种相关关系&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;代词关系、主谓关系、定语修饰……token之间的关系非常多余&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们希望能从&lt;strong&gt;多个维度&lt;/strong&gt;去寻找注意力的相关，自然引入&lt;strong&gt;多头注意力机制&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;同时对一个语料进行&lt;strong&gt;多次注意力计算&lt;/strong&gt;，每次注意力计算都能拟合不同的关系&lt;/li&gt;
+&lt;li&gt;最后的多次结果拼接起来作为最后的输出&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/happy-llm-part1-transformer/assets/image-20251115211906122.png&#34;
+	width=&#34;579&#34;
+	height=&#34;560&#34;
+	srcset=&#34;https://example.com/p/happy-llm-part1-transformer/assets/image-20251115211906122_hu_720130ccf2a5fc62.png 480w, https://example.com/p/happy-llm-part1-transformer/assets/image-20251115211906122_hu_6b5712e82b4fab67.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Multi-Head Attention&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;103&#34;
+		data-flex-basis=&#34;248px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;如图，不同的注意力查询，每个token所关注的其他token都不太一样&lt;/p&gt;
+&lt;p&gt;假设文本的输入序列矩阵是$X$，对于第$i$个头&lt;/p&gt;
+$$
+Q_i = XW_i^Q, K_i=XW_i^K, V_i = XW_i^V
+$$&lt;p&gt;
+其对应的注意力为：&lt;/p&gt;
+$$
+\text{head}_i = \text{attention}(Q_i, K_i,V_i)
+$$&lt;p&gt;
+多头注意力表示为：&lt;/p&gt;
+$$
+\text{MultiHead}(Q,K,V) = \text{Concat}(head_i)W^O
+$$</description>
+        </item>
+        <item>
+        <title>李宏毅机器学习2025 · Transformer</title>
+        <link>https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-transformer/</link>
+        <pubDate>Sat, 06 Sep 2025 17:39:34 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-transformer/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1aiADewEBC&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;李宏毅机器学习2025&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;transformer&#34;&gt;Transformer
+&lt;/h1&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

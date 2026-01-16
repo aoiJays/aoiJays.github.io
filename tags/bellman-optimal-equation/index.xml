@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Bellman Optimal Equation on BiribiriBird</title>
+        <link>http://localhost:1313/tags/bellman-optimal-equation/</link>
+        <description>Recent content in Bellman Optimal Equation on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Fri, 31 Oct 2025 15:58:34 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/bellman-optimal-equation/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>强化学习的数学原理 · Chap3 · Bellman Optimal Equation</title>
+        <link>http://localhost:1313/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap3-bellman-optimal-equation/</link>
+        <pubDate>Fri, 31 Oct 2025 15:58:34 +0800</pubDate>
+        
+        <guid>http://localhost:1313/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap3-bellman-optimal-equation/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1sd4y167NS&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.bilibili.com/video/BV1sd4y167NS&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;optimal-policy&#34;&gt;Optimal Policy
+&lt;/h2&gt;&lt;p&gt;如何改进当前的Policy，提高它的reward？&lt;/p&gt;
+&lt;p&gt;比较直观的是，对于当前的状态$s$，我们希望它选择action value&lt;strong&gt;最大的那一个action&lt;/strong&gt;&lt;/p&gt;
+$$
+\pi_{new}(a|s) = \left\{\begin{matrix}
+ 1 &amp; a=a^*\\
+ 0 &amp; a\neq a^*
+\end{matrix}\right.\\
+\text{where} \space a^* = \arg \max_a q_\pi(s,a)
+$$&lt;p&gt;
+这个过程需要不断去迭代&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;所有状态在未被优化的情况下，选择最大的action value不代表是全局最优&lt;/li&gt;
+&lt;li&gt;需要不断迭代优化action value，才能保证所有state的action value是准确的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这个过程需要通过数学工具去进行透彻地分析——&lt;strong&gt;Bellman Optimal Equation&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;首先如何判断一个Policy比另一个Policy好？&lt;/p&gt;
+$$
+v_{\pi_1}(s) \geq v_{\pi_2}(s) , \forall s\in \mathcal{S}
+$$&lt;p&gt;
+当采取$\pi_1$时，&lt;strong&gt;任意状态的state value&lt;/strong&gt;都好于$\pi_2$，则认为：$\pi_1$好于$\pi_2$&lt;/p&gt;
+&lt;p&gt;此时&lt;strong&gt;Optimal Policy&lt;/strong&gt;的定义为：&lt;/p&gt;
+&lt;p&gt;一个策略$\pi^*$是最优策略时，相对于任意其他策略$\pi$有：&lt;/p&gt;
+$$
+v_{\pi^*}(s) \geq v_\pi(s) , \forall s \in \mathcal{S}
+$$&lt;h2 id=&#34;bellman-optimal-equation&#34;&gt;Bellman Optimal Equation
+&lt;/h2&gt;$$
+\begin{split}
+v(s) &amp;= {\color{red}\max_\pi}\sum_a \pi(a| s) \left[ \sum_r p(r| s,a)r + \gamma \sum_{s&#39;}p(s&#39;| s,a) v_\pi(s&#39;) \right], \forall s\in S \\
+&amp;={\color{red}\max_\pi}\sum_a \pi(a| s) q(s,a), \forall s\in S 
+\end{split}
+$$&lt;p&gt;
+在贝尔曼公式的基础上，进行了一个优化问题&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;已知：$p(r|s,a),p(s&amp;rsquo;|s,a)$&lt;/li&gt;
+&lt;li&gt;未知：$v(s), v(s&amp;rsquo;)$，需要进行求解&lt;/li&gt;
+&lt;li&gt;$\pi(s)$也是未知的
+&lt;ul&gt;
+&lt;li&gt;如果已知，这就是贝尔曼公式而非贝尔曼最优公式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;同样我们也有一个向量形式的BOE：&lt;/p&gt;
+$$
+v = \max_\pi (r_\pi + \gamma P_\pi v)
+$$&lt;hr&gt;
+&lt;h3 id=&#34;maximizaition&#34;&gt;Maximizaition
+&lt;/h3&gt;&lt;p&gt;一个式子有两个未知量：$v,\pi$&lt;/p&gt;
+&lt;p&gt;可以先参考如下例子进行一个练手：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;求解$x = \max_a(2x-1-a^2), \quad x,a\in \mathbb{R}$&lt;/p&gt;
+&lt;p&gt;只考虑右边的部分：找到$a$，最大化$2x-1-a^2$这一项（把$x$当作常数）&lt;/p&gt;
+&lt;p&gt;显然$-a^2 \leq 0$，$a=0$时右边是最大的&lt;/p&gt;
+&lt;p&gt;因此问题转化为：$x = 2x-1$，解得$x = 1$&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;我们先固定$v(s&amp;rsquo;)$，此时认为$q(s,a)$是定值&lt;/p&gt;
+$$
+v(s) = \max_\pi\sum_a \pi(a| s) {\color{red}q(s,a)}
+$$&lt;p&gt;
+其中$\sum_a \pi(a|s) = 1$&lt;/p&gt;
+&lt;p&gt;那么右边这一项可以看作是针对不同动作$a$​​的加权平均值&lt;/p&gt;
+&lt;p&gt;我们显然希望$q$最大的$a$占有最大的比重（事实上就是全部比重）&lt;/p&gt;
+&lt;p&gt;因此则有：&lt;/p&gt;
+$$
+v(s) = \max_\pi\sum_a \pi(a| s)q(s,a) = \max_{a\in \mathcal{A}(s)}q(s,a)
+$$&lt;p&gt;此时策略$\pi$满足：&lt;/p&gt;
+$$
+\pi(a|s) = \left\{\begin{matrix}
+ 1 &amp; a=a^*\\
+ 0 &amp; a\neq a^*
+\end{matrix}\right.\\
+\text{where} \space a^* = \arg \max_a q(s,a)
+$$&lt;p&gt;
+我们把这部分写成一个关于$v$的函数：&lt;/p&gt;
+$$
+[f(v)]_s= \max_\pi \sum_a \pi(a|s)q(s,a), s\in\mathcal{S}
+$$&lt;p&gt;
+在给定$v$的情况下，$f(v)$的最大值就可以通过求解$\pi$去得到（见上文）&lt;/p&gt;
+&lt;p&gt;至于怎么得到无所谓，直接理解成只跟$v$有关的函数$v=f(v)$即可&lt;/p&gt;
+&lt;p&gt;自然可以写成：&lt;/p&gt;
+$$
+v = f(v) = \max_\pi(r_\pi+\gamma P_\pi v)
+$$&lt;p&gt;
+这里可以套一个&lt;strong&gt;巴拿赫不动点定理&lt;/strong&gt;或是叫&lt;strong&gt;Contraction Mapping Theorem&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;为什么可以套是能够证明的，但是这里忽略一下&lt;/p&gt;
+&lt;p&gt;直觉上就是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;函数存在不动点（$f(x) = x$）&lt;/li&gt;
+&lt;li&gt;$\left | f(x_1)-f(x_2)\right |  \leq \gamma\left | x_1-x_2 \right | $，函数可以压缩&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;那我们不断套用$x,f(x),f(f(x)),&amp;hellip;$，最后总能让该函数收敛到一个不动点&lt;/p&gt;
+&lt;p&gt;我们上述的$v=f(v)$可以证明符合该性质&lt;/p&gt;
+&lt;p&gt;通过不断迭代，可以得到一个解$v^* = \max_\pi (r_\pi+\gamma P_\pi v^*)$&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

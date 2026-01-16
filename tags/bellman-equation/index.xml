@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Bellman Equation on BiribiriBird</title>
+        <link>https://example.com/tags/bellman-equation/</link>
+        <description>Recent content in Bellman Equation on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Thu, 30 Oct 2025 20:25:34 +0800</lastBuildDate><atom:link href="https://example.com/tags/bellman-equation/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>强化学习的数学原理 · Chap2 · Bellman Equation</title>
+        <link>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap2-bellman-equation/</link>
+        <pubDate>Thu, 30 Oct 2025 20:25:34 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap2-bellman-equation/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1sd4y167NS&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.bilibili.com/video/BV1sd4y167NS&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;state-value&#34;&gt;State Value
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;return 用来衡量不同的trajectory的好坏&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;首先有如下定义&lt;/p&gt;
+$$
+S_t \overset{A_t}{\rightarrow}R_{t+1}, S_{t+1}
+$$&lt;ul&gt;
+&lt;li&gt;$t$表示时间步&lt;/li&gt;
+&lt;li&gt;从状态$S_t$出发，采取$A_t$，转移到$S_{t+1}$，获得了$R_{t+1}$的奖励&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$S,A,R$​这里表示的是一个&lt;strong&gt;随机变量&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;因此上述内容服从以下概率分布：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$S_t \to A_t$ ：$\pi(A_t| S_t)$&lt;/li&gt;
+&lt;li&gt;$S_t, A_t \to R_{t+1}$：$p(R_{t+1}| S_t,A_t)$&lt;/li&gt;
+&lt;li&gt;$S_t, A_t \to S_{t+1}$：$p(S_{t+1}| S_t,A_t)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;推广到多步骤之后：&lt;/p&gt;
+$$
+S_t \overset{A_t}{\rightarrow}R_{t+1}, S_{t+1} \overset{A_{t+1}}{\rightarrow}R_{t+2}, S_{t+2}\overset{A_{t+2}}{\rightarrow}R_{t+3} ...
+$$&lt;p&gt;
+则可以定义这个trajectory的reward是：&lt;/p&gt;
+$$
+G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + ...
+$$&lt;blockquote&gt;
+&lt;p&gt;$G_t$也表示一个随机变量&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;我们定义所有从$t$出发的trajectory的期望$G_t$，即为&lt;code&gt;state-value function&lt;/code&gt;or&lt;code&gt;state value&lt;/code&gt;&lt;/p&gt;
+$$
+v_\pi(s) = \mathbb{E}(G_t| S_t = s)
+$$&lt;blockquote&gt;
+&lt;p&gt;return 针对单个、单次的尝试（确定性的）&lt;/p&gt;
+&lt;p&gt;state value是一种平均情况&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;bellman-equation&#34;&gt;Bellman Equation
+&lt;/h2&gt;&lt;h3 id=&#34;递推形式&#34;&gt;递推形式
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;描述不同state的state value之间的关系&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;对于单个trajectory：&lt;/p&gt;
+$$
+\begin{split} 
+G_t &amp;= R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + ...\\
+ &amp;= R_{t+1} + \gamma \left(   R_{t+2} + \gamma^2 R_{t+3} + ...\right)\\
+&amp;=  R_{t+1} + \gamma G_{t+1}
+\end{split}
+$$&lt;p&gt;
+非常动态规划（或者叫递推）的一个步骤&lt;/p&gt;
+&lt;p&gt;因此可以推广到期望的情况（事实上可以直接写）&lt;/p&gt;
+$$
+\begin{split}
+v_\pi(s) &amp;= \mathbb{E}(G_t| S_t = s) \\
+&amp;= \mathbb{E}(R_{t+1} + \gamma G_{t+1}| S_t = s) \\
+&amp;=  \mathbb{E}(R_{t+1}| S_t = s) + \gamma  \mathbb{E}(G_{t+1}| S_t = s)
+\end{split}
+$$&lt;p&gt;
+我们考虑去代换两个期望符号&lt;/p&gt;
+&lt;p&gt;对于第一个期望，其意义是：从$s$出发，得到奖励的均值&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;始终注意：$R_{t+1}$代表是一个随机变量&lt;/p&gt;&lt;/blockquote&gt;
+$$
+\begin{split}
+\mathbb{E}(R_{t+1}| S_t = s) &amp;= \sum_{a} \pi(a|s) \mathbb{E}(R_{t+1}| S_t=s,A_t = a) \\
+ &amp;=\sum_a \pi(a|s) \sum_r p(r|s,a) r
+\end{split}
+$$&lt;p&gt;
+对于第二个期望，其意义是：从下一个时刻$t+1$出发可以得到的期望奖励&lt;/p&gt;
+$$
+\begin{split}
+ \mathbb{E}(G_{t+1}| S_t = s) &amp;= \sum_{s&#39;} \mathbb{E}(G_{t+1}| S_{t+1} = s&#39;) p(s&#39;| s) \\
+ &amp;=\sum_{s&#39;} \mathbb{E}(G_{t+1}| S_{t+1} = s&#39;) \sum_{a}\pi(a| s)p(s&#39;| s,a)\\
+ &amp;=\sum_{s&#39;} v_{\pi}(s&#39;) \sum_{a}\pi(a| s)p(s&#39;| s,a)
+\end{split}
+$$&lt;p&gt;
+综上，整理一下原式子：&lt;/p&gt;
+$$
+\begin{split}
+v_\pi(s) &amp;=  \mathbb{E}(R_{t+1}| S_t = s) + \gamma  \mathbb{E}(G_{t+1}| S_t = s) \\\\
+&amp;= \sum_a \pi(a|s) \sum_r p(r|s,a) r+\gamma\sum_{s&#39;} v_{\pi}(s&#39;) \sum_{a}\pi(a| s)p(s&#39;| s,a)\\
+&amp;= \sum_a \pi(a| s) \left[ \sum_r p(r| s,a)r + \gamma \sum_{s&#39;}p(s&#39;| s,a){\color{Red} v_\pi(s&#39;)} \right], \forall s\in S
+\end{split}
+$$&lt;blockquote&gt;
+&lt;p&gt;这里的$S$是state space&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;这样我们就得到了贝尔曼公式，由两个部分组成：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;immediate reward&lt;/li&gt;
+&lt;li&gt;future reward&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;通常我们会使用给定的$\pi(a|s)$​，因此这个过程可以被视作&lt;strong&gt;Policy Evaluation&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$p(r|s,a),p(s&amp;rsquo;|s,a)$在这里是已知的&lt;/p&gt;
+&lt;p&gt;但其实不知道也有办法去求解&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;向量形式&#34;&gt;向量形式
+&lt;/h3&gt;&lt;p&gt;我们先把贝尔曼公式进行重写，用一些其他符号进行替代：&lt;/p&gt;
+$$
+v_\pi(s) = r_\pi(s) + \gamma \sum_{s&#39;} p_\pi(s&#39;|s)v_\pi(s&#39;)
+$$&lt;p&gt;
+表示基于策略$\pi$获取的当前奖励，以及之后的期望奖励&lt;/p&gt;
+&lt;p&gt;我们令所有的状态依次编号为：$1\to n$&lt;/p&gt;
+&lt;p&gt;对于状态$s_i$，其state value表示为：&lt;/p&gt;
+$$
+v_\pi(s_i) = r_\pi(s_i) + \gamma \sum_{s_j} p_\pi(s_j|s_i)v_\pi(s_j)
+$$&lt;p&gt;
+把所有$s_i$写在一起，自然就是向量形式：&lt;/p&gt;
+$$
+v_\pi = r_\pi + \gamma P_\pi v_\pi
+$$&lt;ul&gt;
+&lt;li&gt;$v_\pi = \left[ v_\pi(s_1), &amp;hellip;,v_\pi(s_n) \right ]^T \in  \mathbb{R}^n$&lt;/li&gt;
+&lt;li&gt;$r_\pi = \left[ r_\pi(s_1), &amp;hellip;,r_\pi(s_n) \right ]^T \in  \mathbb{R}^n$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;并且有：&lt;/p&gt;
+$$
+P_\pi \in \mathbb{R}^{n\times n}, \text{where} \space [P_\pi]_{i,j} = p_\pi(s_j|s_i)
+$$&lt;p&gt;理解一下图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap2-bellman-equation/assets/image-20251030221530292.png&#34;
+	width=&#34;596&#34;
+	height=&#34;430&#34;
+	srcset=&#34;https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap2-bellman-equation/assets/image-20251030221530292_hu_52e37a69891d55fb.png 480w, https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap2-bellman-equation/assets/image-20251030221530292_hu_d861de99c469b5a0.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;matrix&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;138&#34;
+		data-flex-basis=&#34;332px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;solve-state-values&#34;&gt;Solve State Values
+&lt;/h3&gt;&lt;p&gt;我们需要通过state value衡量当前的policy的表现&lt;/p&gt;
+&lt;p&gt;因此需要进行求解&lt;/p&gt;
+&lt;h4 id=&#34;method-1--closed-form-solution&#34;&gt;Method 1 · closed-form solution
+&lt;/h4&gt;$$
+v_\pi = r_\pi + \gamma P_\pi v_\pi\\
+(I-\gamma P_\pi)v_\pi = r_\pi\\
+v_\pi = (I-\gamma P_\pi)^{-1}r_\pi
+$$&lt;p&gt;
+但是由于需要求逆矩阵，计算量过高，这个方法一般不会使用&lt;/p&gt;
+&lt;h4 id=&#34;method-2--iterative-solution&#34;&gt;Method 2 · iterative solution
+&lt;/h4&gt;$$
+v_{\pi, k+1} = r_\pi + \gamma P_\pi v_{\pi,k}\\
+$$&lt;p&gt;
+我们不断迭代这个等式，可以使得最后有：&lt;/p&gt;
+$$
+v_{\pi,k} \to v_\pi = (I-\gamma P_\pi)^{-1}r_\pi, k \to \infty
+$$&lt;h2 id=&#34;action-value&#34;&gt;Action Value
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;与state value相比，不止固定了当前的状态，action value同时固定了当前执行的动作&lt;/li&gt;
+&lt;li&gt;action value意义很大，有时候我们倾向于采取能带来最大value的action&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;定义如下：&lt;/p&gt;
+$$
+q_\pi(s,a) = \mathbb{E}\left[G_t|S_t=s，A_t=a\right]
+$$&lt;p&gt;
+同时有：&lt;/p&gt;
+$$
+\underbrace{\mathbb{E}[G_t \mid S_t = s]}_{v_{\pi}(s)} = \sum_{a} \underbrace{\mathbb{E}[G_t \mid S_t = s, A_t = a]}_{q_{\pi}(s,a)} \pi(a \mid s)
+$$&lt;p&gt;
+因此：&lt;/p&gt;
+$$
+{\color{Red} v_\pi(s)}  = \sum_a \pi(a|s){\color{Red} q_\pi(s,a)}\\
+ q_\pi(s,a) = \sum_r p(r| s,a)r + \gamma \sum_{s&#39;}p(s&#39;| s,a){\color{Red} v_\pi(s&#39;)}
+$$&lt;ul&gt;
+&lt;li&gt;第一个式子：通过所有action value，求解当前state value&lt;/li&gt;
+&lt;li&gt;第二个式子：通过所有state value，求解当前action value&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;求解的方式比较多样&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通过state value&lt;/li&gt;
+&lt;li&gt;通过数据采样进行求解（后文）&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="从头开始补习一下Deep learning">
+<title>RethinkFun深度学习 · Part 1 linear algebra</title>
+
+<link rel='canonical' href='https://example.com/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="RethinkFun深度学习 · Part 1 linear algebra">
+<meta property='og:description' content="从头开始补习一下Deep learning">
+<meta property='og:url' content='https://example.com/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/'>
+<meta property='og:site_name' content='BiribiriBird'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='线性代数' /><meta property='article:tag' content='Deep Learning' /><meta property='article:published_time' content='2025-08-11T01:47:32&#43;08:00'/><meta property='article:modified_time' content='2025-08-11T01:47:32&#43;08:00'/>
+<meta name="twitter:title" content="RethinkFun深度学习 · Part 1 linear algebra">
+<meta name="twitter:description" content="从头开始补习一下Deep learning">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            localStorage.setItem(colorSchemeKey, "light");
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_bbc58a5457fc2680.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">BiribiriBird</a></h1>
+            <h2 class="site-description">Segmentation fault!</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/498088093'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648787418" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2107" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="2108" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:neworld1111@163.com'
+                        target="_blank"
+                        title="Email"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743649088353" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6924" width="24" height="24"><path d="M874.666667 181.333333H149.333333c-40.533333 0-74.666667 34.133333-74.666666 74.666667v512c0 40.533333 34.133333 74.666667 74.666666 74.666667h725.333334c40.533333 0 74.666667-34.133333 74.666666-74.666667V256c0-40.533333-34.133333-74.666667-74.666666-74.666667z m-725.333334 64h725.333334c6.4 0 10.666667 4.266667 10.666666 10.666667v25.6L512 516.266667l-373.333333-234.666667V256c0-6.4 4.266667-10.666667 10.666666-10.666667z m725.333334 533.333334H149.333333c-6.4 0-10.666667-4.266667-10.666666-10.666667V356.266667l356.266666 224c4.266667 4.266667 10.666667 4.266667 17.066667 4.266666s12.8-2.133333 17.066667-4.266666l356.266666-224V768c0 6.4-4.266667 10.666667-10.666666 10.666667z" fill="#666666" p-id="6925"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/aoiJays'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648734849" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5802" width="24" height="24"><path d="M511.957333 21.333333C241.024 21.333333 21.333333 240.981333 21.333333 512c0 216.832 140.544 400.725333 335.573334 465.664 24.490667 4.394667 32.256-10.069333 32.256-23.082667 0-11.690667 0.256-44.245333 0-85.205333-136.448 29.610667-164.736-64.64-164.736-64.64-22.314667-56.704-54.4-71.765333-54.4-71.765333-44.586667-30.464 3.285333-29.824 3.285333-29.824 49.194667 3.413333 75.178667 50.517333 75.178667 50.517333 43.776 75.008 114.816 53.333333 142.762666 40.789333 4.522667-31.658667 17.152-53.376 31.189334-65.536-108.970667-12.458667-223.488-54.485333-223.488-242.602666 0-53.546667 19.114667-97.322667 50.517333-131.669334-5.034667-12.330667-21.930667-62.293333 4.778667-129.834666 0 0 41.258667-13.184 134.912 50.346666a469.802667 469.802667 0 0 1 122.88-16.554666c41.642667 0.213333 83.626667 5.632 122.88 16.554666 93.653333-63.488 134.784-50.346667 134.784-50.346666 26.752 67.541333 9.898667 117.504 4.864 129.834666 31.402667 34.346667 50.474667 78.122667 50.474666 131.669334 0 188.586667-114.730667 230.016-224.042666 242.090666 17.578667 15.232 33.578667 44.672 33.578666 90.453334v135.850666c0 13.141333 7.936 27.605333 32.853334 22.869334C862.250667 912.597333 1002.666667 728.746667 1002.666667 512 1002.666667 240.981333 783.018667 21.333333 511.957333 21.333333z" p-id="5803" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About me</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/experience/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Experience</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/plan/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Plan</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#pre">Pre</a></li>
+    <li><a href="#线性代数">线性代数</a>
+      <ol>
+        <li><a href="#线性相关">线性相关</a></li>
+        <li><a href="#线性变换">线性变换</a></li>
+        <li><a href="#行列式">行列式</a></li>
+        <li><a href="#线性方程组">线性方程组</a>
+          <ol>
+            <li><a href="#rank">Rank</a></li>
+            <li><a href="#非方阵">非方阵</a></li>
+          </ol>
+        </li>
+        <li><a href="#点积">点积</a>
+          <ol>
+            <li><a href="#对偶向量">对偶向量</a></li>
+          </ol>
+        </li>
+        <li><a href="#叉积">叉积</a></li>
+        <li><a href="#基变换">基变换</a></li>
+        <li><a href="#特征变换与特征值">特征变换与特征值</a></li>
+      </ol>
+    </li>
+    <li><a href="#抽象向量空间">抽象向量空间</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/deep-learning/" >
+                Deep Learning
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/">RethinkFun深度学习 · Part 1 linear algebra</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            从头开始补习一下Deep learning
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 11, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 7 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>[TOC]</p>
+<p><a class="link" href="https://www.rethink.fun/"  target="_blank" rel="noopener"
+    >RethinkFun深度学习 · GitBook</a></p>
+<p><a class="link" href="https://www.bilibili.com/video/BV1A9tszhEpp/"  target="_blank" rel="noopener"
+    >https://www.bilibili.com/video/BV1A9tszhEpp/</a></p>
+<p>不知道开了第几个坑，这里需要从头开始补一下深度学习</p>
+<p>但是这里会比较浅，稍微过一下我忘记的知识</p>
+<h2 id="pre">Pre
+</h2><ul>
+<li>传统：专家系统、知识图谱，本质上都是设定好规则，没什么美感
+<ul>
+<li>适合已有既定规则、规律的任务（物理规则、计算）</li>
+</ul>
+</li>
+<li>机器学习：从数据中自动挖掘规律
+<ul>
+<li>难以描述的规律、规则（识别猫和狗）</li>
+<li>黑盒</li>
+</ul>
+</li>
+<li>深度学习：机器学习的子集
+<ul>
+<li>更黑盒</li>
+</ul>
+</li>
+</ul>
+<h2 id="线性代数">线性代数
+</h2><ul>
+<li>标量（scalar）：年龄、身高……等单一数值</li>
+<li>向量（vector）
+<ul>
+<li>物理中的意义非凡</li>
+<li>机器学习中其实就是一个对象的在不同维度的属性，简称一组有序的数</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>区分一下向量的缩放，缩放的英语单词为scaling</p></blockquote>
+<p>请阅读：<a class="link" href="https://www.bilibili.com/video/BV1Ys411k7yQ"  target="_blank" rel="noopener"
+    >3blue1brown 线性代数的本质</a></p>
+<h3 id="线性相关">线性相关
+</h3><p><img src="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250811022056661.png"
+	width="212"
+	height="133"
+	srcset="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250811022056661_hu_e7b7f8b6d9e37cd4.png 480w, /p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250811022056661_hu_84de81f9b410d5f9.png 1024w"
+	loading="lazy"
+	
+		alt="线性不相关的向量"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="159"
+		data-flex-basis="382px"
+	
+></p>
+<ul>
+<li>
+<p><strong>线性相关</strong>：如果一组向量里至少有一个向量可以表示为其他向量的线性组合，那么就称这一组向量线性相关。</p>
+</li>
+<li>
+<p>基：向量空间的一组基是指张成该空间的<strong>一个线性无关的向量组</strong>。</p>
+</li>
+</ul>
+<h3 id="线性变换">线性变换
+</h3><p>可以理解为对向量的一个函数：</p>
+<ul>
+<li>输入：一个向量</li>
+<li>输出：一个向量</li>
+</ul>
+<p>但这个函数需要满足：</p>
+<ul>
+<li>加法封闭性：$T(u+v) = T(u) + T(v)$</li>
+<li>数乘封闭性：$T(cu) = cT(u)$</li>
+</ul>
+<blockquote>
+<p>向量的基本操作就两个：一个是数乘，一个是向量加法</p></blockquote>
+<p>但是这样对理解来说过于复杂，不如把线性变换定义为：</p>
+<p><img src="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812012420942.png"
+	width="599"
+	height="325"
+	srcset="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812012420942_hu_858a757222182e0d.png 480w, /p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812012420942_hu_f9d8a240b6ab3bd.png 1024w"
+	loading="lazy"
+	
+		alt="线性变换"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="184"
+		data-flex-basis="442px"
+	
+></p>
+<ul>
+<li>平面上任意直线都不会扭曲</li>
+<li>原点不变</li>
+</ul>
+<p>通过基向量在变换前后的变换情况，我们可以推出平面上所有向量的变换后结果：</p>
+<p><img src="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812013525403.png"
+	width="1482"
+	height="273"
+	srcset="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812013525403_hu_11694879bc89226e.png 480w, /p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812013525403_hu_d8d2bfefcd7bb3bc.png 1024w"
+	loading="lazy"
+	
+		alt="矩阵"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="542"
+		data-flex-basis="1302px"
+	
+></p>
+<blockquote>
+<p>(a,c)和(b,d)就是(1,0)和(0,1)在二维平面上变换后的向量</p></blockquote>
+<p>同理，线性变换可以复合，因此可以表示为矩阵乘法：</p>
+<p><img src="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812014116036.png"
+	width="1102"
+	height="454"
+	srcset="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812014116036_hu_250776a2caad13f9.png 480w, /p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812014116036_hu_737da9bd7b66540a.png 1024w"
+	loading="lazy"
+	
+		alt="矩阵乘法"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="242"
+		data-flex-basis="582px"
+	
+></p>
+<h3 id="行列式">行列式
+</h3><blockquote>
+<p>反映了<strong>线性变换</strong>对空间的**“体积”**影响</p></blockquote>
+<p><img src="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812153841621.png"
+	width="853"
+	height="388"
+	srcset="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812153841621_hu_59085455a22ad3ed.png 480w, /p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812153841621_hu_e5e65e49b269d466.png 1024w"
+	loading="lazy"
+	
+		alt="行列式"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="219"
+		data-flex-basis="527px"
+	
+></p>
+<p>线性变换后，平面的面积会由于变换发生变换，行列式恰好反应了这一变换系数</p>
+<p>同时面积是具有方向的（A向量到B向量之间的面积与B向量到A向量之间的面积相反）</p>
+<p>因此行列式可以是负数</p>
+<ul>
+<li>对于二维的线性变换矩阵，若行列式为0
+<ul>
+<li>所有向量被线性变换压缩到一条直线或点上</li>
+<li>两个新的基向量是线性相关的</li>
+</ul>
+</li>
+<li>对于三维，可能被压缩到平面、直线、点中……</li>
+</ul>
+<p>根据以上内容，证明以下结论会非常简单：</p>
+$$
+\det(M_1M_2)=\det(M_1)\det(M_2)
+$$<h3 id="线性方程组">线性方程组
+</h3><p><img src="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812154645760.png"
+	width="2387"
+	height="887"
+	srcset="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812154645760_hu_fc668b8edf628647.png 480w, /p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812154645760_hu_b626eef399dba9e6.png 1024w"
+	loading="lazy"
+	
+		alt="线性方程组"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="269"
+		data-flex-basis="645px"
+	
+></p>
+<p>我们通过将线性方程组写成矩阵方程的形式</p>
+<p>似乎可以表示为：求解一个向量$x$，通过线性变换$A$，与向量$v$重叠</p>
+<ul>
+<li>当$A$的行列式不为0时
+<ul>
+<li>显然线性变化是可逆的（空间并没有被压缩）</li>
+<li>因此逆矩阵是存在的，且逆矩阵可以使得$AA^{-1}$的结果为一个什么都没做的线性变换，即单位矩阵</li>
+<li>所以只需要对$v$应用一个逆线性变换即可求解</li>
+<li>且解唯一</li>
+</ul>
+</li>
+<li>当行列式为0，此时不存在逆矩阵（无法恢复被压缩的空间）
+<ul>
+<li>因此此时解的情况非常复杂</li>
+</ul>
+</li>
+</ul>
+<h4 id="rank">Rank
+</h4><p>从线性变换后的空间出发，秩被定义为：<strong>线性变换后的空间的维数</strong></p>
+<p>对于线性变换矩阵$A$​，其每一个列向量就是基向量的一部分</p>
+<h5 id="列空间">列空间
+</h5><p>由其列向量的线性组合张成的空间即为<strong>列空间</strong></p>
+<p>秩就是列空间的维数</p>
+<h5 id="零空间">零空间
+</h5><p>线性变换后落在零点的向量，构成<strong>零空间</strong>，或者<strong>核</strong></p>
+<p>即：</p>
+$$
+Ax = 0
+$$<h4 id="非方阵">非方阵
+</h4><p><img src="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812170428764.png"
+	width="2229"
+	height="1010"
+	srcset="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812170428764_hu_49821499805589c7.png 480w, /p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812170428764_hu_eab7e9b58689921a.png 1024w"
+	loading="lazy"
+	
+		alt="线性变换"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="220"
+		data-flex-basis="529px"
+	
+></p>
+<ul>
+<li>$n\times m$维的矩阵，表示$m$维空间转化到$n$维的一个线性变换</li>
+</ul>
+<h3 id="点积">点积
+</h3><p><img src="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812170729176.png"
+	width="2318"
+	height="953"
+	srcset="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812170729176_hu_d3186a71a8d14d6f.png 480w, /p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812170729176_hu_1f18f293f6c62e2d.png 1024w"
+	loading="lazy"
+	
+		alt="点积"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="243"
+		data-flex-basis="583px"
+	
+></p>
+<p>同样从几何意义出发，两个向量的点积，象征了一个向量在另一个向量的投影与该向量长度的乘积</p>
+<p>通过这一层意义，我们可以知道点积的正、负、零的关系所带来的一些意义</p>
+<p>但是为什么点积的计算是符合这个几何意义的？</p>
+<p><img src="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812172043278.png"
+	width="1476"
+	height="827"
+	srcset="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812172043278_hu_518b9ff5f69c3dfa.png 480w, /p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812172043278_hu_8ef2ba0470544917.png 1024w"
+	loading="lazy"
+	
+		alt="点积-&gt;线性变换"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="178"
+		data-flex-basis="428px"
+	
+></p>
+<p>两个列向量的点积，其实可以看做一个向量基于一个线性变换，最终被压缩到了一个一维空间</p>
+<p><img src="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812172746673.png"
+	width="1637"
+	height="1113"
+	srcset="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812172746673_hu_961c31f6e0a49fb6.png 480w, /p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812172746673_hu_4a0b5bf7a154be33.png 1024w"
+	loading="lazy"
+	
+		alt="证明"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="147"
+		data-flex-basis="352px"
+	
+></p>
+<p>我们可以构造任意一条过原点的向量，且引入一个二维向量$u$，长度为1，恰好在这条直线的刻度1上</p>
+<p>我们可以把空间中所有点都线性变换到这个直线所在的一维空间</p>
+<p>显然这个过程可以使用一个$1\times 2$矩阵表示</p>
+<p>因此我们只需要求解$i,j$变换后在直线上的刻度值，即可得到这个矩阵</p>
+<p><img src="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812172958533.png"
+	width="2221"
+	height="1103"
+	srcset="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812172958533_hu_23c4eaa7c7853dd4.png 480w, /p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250812172958533_hu_e006ac23ca4119f6.png 1024w"
+	loading="lazy"
+	
+		alt="投影"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="201"
+		data-flex-basis="483px"
+	
+></p>
+<p>由于$i,j,u$的长度都是相同的（都是1），因此实质上具备对称性：</p>
+<ul>
+<li>$i$线性变换后的刻度值 = $u$投影到$i$的长度 = $u_x$</li>
+<li>$j$线性变换后的刻度值 = $u$投影到$j$的长度 = $u_y$</li>
+</ul>
+<p>因此这个$1\times 2$矩阵可以表示为：</p>
+$$
+\begin{bmatrix}
+u_x  & u_y
+\end{bmatrix}
+$$<p>因此空间中任意向量的线性变换可以表示为：</p>
+<p>$$
+\begin{bmatrix}</p>
+<p>u_x  &amp; u_y</p>
+<p>\end{bmatrix} \begin{bmatrix}</p>
+<p>x\y</p>
+<p>\end{bmatrix} = u_x\times x+u_y\times y
+$$</p>
+<p>因此任意向量在指定<strong>单位向量</strong>上的投影值，可以表示为与这个<strong>单位向量</strong>的点积</p>
+<p>对于非单位向量，似乎只是$u_x,u_y$乘上了一个长度系数</p>
+<p>对于点积的结果，正是投影长度乘以这个长度系数</p>
+<h4 id="对偶向量">对偶向量
+</h4><p>对于一个向量$v$，我们可以定义一个线性变换（点积）</p>
+$$
+f_v(w) = v \cdot w
+$$<p>此时向量$f_v(w)$就是一个通过线性变换$v$，由$w$得到的一个一维向量</p>
+<p>这一类向量$f_v$被称为对偶向量</p>
+<p>即：构造了一个等价的线性函数，描述了一类操作</p>
+<h3 id="叉积">叉积
+</h3><p><img src="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250813021248650.png"
+	width="1487"
+	height="525"
+	srcset="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250813021248650_hu_7c856fabd8bb14eb.png 480w, /p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250813021248650_hu_2cc69a71a9d9e6cb.png 1024w"
+	loading="lazy"
+	
+		alt="叉积"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="283"
+		data-flex-basis="679px"
+	
+></p>
+<ul>
+<li>对于二维平面，在几何意义上，叉积代表了两向量之间的<strong>有向面积</strong></li>
+<li>并且这个值可以通过行列式（反应面积）衍生而来</li>
+</ul>
+<p>更具意义的是，两个向量的叉积，实质上得到的是一个<strong>新向量</strong></p>
+<p><img src="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250813022058195.png"
+	width="1709"
+	height="597"
+	srcset="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250813022058195_hu_3bfb2d549d8ab813.png 480w, /p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250813022058195_hu_22abe970db1950a9.png 1024w"
+	loading="lazy"
+	
+		alt="叉积的实质"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="286"
+		data-flex-basis="687px"
+	
+></p>
+<ul>
+<li>法向量的长度等于两个向量的有向面积</li>
+<li>方向符合右手定则</li>
+</ul>
+<p>这里我们仿造点积部分，我们希望定义一个线性变换，找到其对偶向量，并且说明对偶向量就是叉积的结果</p>
+<p>对于两个三维的向量，其叉积的结果：</p>
+<p>$$
+\begin{bmatrix}</p>
+<p>x_1\y_1\z_1</p>
+<p>\end{bmatrix} \times \begin{bmatrix}
+x_2\y_2\z_2</p>
+<p>\end{bmatrix} = \det (\begin{bmatrix}</p>
+<p>i &amp; x_1 &amp; x_2\</p>
+<p>j &amp; y_1 &amp; y_2\</p>
+<p>k &amp; z_1 &amp; z_2</p>
+<p>\end{bmatrix} )
+$$</p>
+<p>最后得到的$(i,j,k)$系数，即为对应的叉积向量</p>
+<p>我们不如把$(i,j,k)$抽象成一个函数：</p>
+<p>$$
+f(\begin{bmatrix}</p>
+<p>x\y\z</p>
+<p>\end{bmatrix}) = \det (\begin{bmatrix}</p>
+<p>x &amp; x_1 &amp; x_2\</p>
+<p>y &amp; y_1 &amp; y_2\</p>
+<p>z &amp; z_1 &amp; z_2</p>
+<p>\end{bmatrix} )
+$$</p>
+<p>我们的目标是找到一个对偶向量$p$，使得：</p>
+<p>$$
+p\cdot \begin{bmatrix}</p>
+<p>x\y\z</p>
+<p>\end{bmatrix} =\begin{bmatrix}</p>
+<p>p_1\p_2\p_3</p>
+<p>\end{bmatrix}\cdot \begin{bmatrix}</p>
+<p>x\y\z</p>
+<p>\end{bmatrix} = f(\begin{bmatrix}</p>
+<p>x\y\z</p>
+<p>\end{bmatrix}) = \det (\begin{bmatrix}</p>
+<p>x &amp; x_1 &amp; x_2\</p>
+<p>y &amp; y_1 &amp; y_2\</p>
+<p>z &amp; z_1 &amp; z_2</p>
+<p>\end{bmatrix} )
+$$</p>
+<p>则有：</p>
+$$
+p_1x+p_2y+p_3z = x(y_1z_2-z_1y_2)+y(z_1x_2-x_1z_2)+z(z_1y_2-y_1z_2)
+$$<p>因此：</p>
+<p>$$
+p = \begin{bmatrix}</p>
+<p>y_1z_2-z_1y_2\z_1x_2-x_1z_2\z_1y_2-y_1z_2</p>
+<p>\end{bmatrix}
+$$</p>
+<p>当我们构造出这个对偶向量时，回到点积的几何意义上</p>
+<ul>
+<li>将向量$(x,y,z)^T$投影到$p$上，并且将长度与$|p|$相乘</li>
+</ul>
+<p>再回到三维叉积的几何意义上：</p>
+<ul>
+<li>三个向量所围成的平行六面体的有向体积</li>
+</ul>
+<p>我们可以计算一下这个六面体的有向体积：</p>
+<p>定义$v = (x_1,y_1,w_1)^T, w = (x_2,y_2,w_2)^T$</p>
+<p><img src="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250813025248690.png"
+	width="1626"
+	height="759"
+	srcset="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250813025248690_hu_7ad640f3115c8072.png 480w, /p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250813025248690_hu_6e6885dc7eb9a775.png 1024w"
+	loading="lazy"
+	
+		alt="以v和w为底部的体积计算"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="214"
+		data-flex-basis="514px"
+	
+></p>
+<p>因此可以说明为：将$(x,y,z)^T$投影到$v,w$法向量上，并且与$v,w$的平行四边形的有向面积相乘</p>
+<p>注意：法向量的长度，恰好等于$v,w$的平行四边形的有向面积</p>
+<p>因此整个过程可以被概括为：$(x,y,z)^T$与$v,w$法向量的点积</p>
+<h3 id="基变换">基变换
+</h3><p>选用不同的基向量，表达的方式自然会有些不同</p>
+<ul>
+<li>选用$i,j$：网格方方正正</li>
+<li>选用其他基向量：网格有一定倾斜</li>
+</ul>
+<p><img src="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250813031140856.png"
+	width="735"
+	height="455"
+	srcset="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250813031140856_hu_341701f1a6e49a0e.png 480w, /p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250813031140856_hu_d63c09008d23ae6c.png 1024w"
+	loading="lazy"
+	
+		alt="基向量"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="161"
+		data-flex-basis="387px"
+	
+></p>
+<p>对于空间中的同一个向量，不同的基向量选择，自然会使用不同的线性组合进行表示</p>
+<p>假设选取一组基向量：</p>
+<p>$$
+b_1 = \begin{bmatrix}</p>
+<p>2\1</p>
+<p>\end{bmatrix},b_2 = \begin{bmatrix}</p>
+<p>-1\1</p>
+<p>\end{bmatrix}
+$$</p>
+<p>对于向量$(-4,1)^T$，可以表示为以下两种方式：</p>
+<ul>
+<li>$(-4,-1)^T = -4i+j$</li>
+<li>$(-4,1)^T = -b_1 + 2b_2$</li>
+</ul>
+<p>似乎可以通过矩阵表示：</p>
+<p>$$
+\begin{bmatrix}</p>
+<p>2 &amp; -1\1 &amp; 1</p>
+<p>\end{bmatrix}\begin{bmatrix}</p>
+<p>-1\2</p>
+<p>\end{bmatrix} = \begin{bmatrix}</p>
+<p>-4 \1</p>
+<p>\end{bmatrix}
+$$</p>
+<p>概括这个线性变换：</p>
+<p>$$
+\begin{bmatrix}</p>
+<p>2 &amp; -1\1 &amp; 1</p>
+<p>\end{bmatrix}v = w
+$$</p>
+<ul>
+<li>$v$代表$b_1,b_2$空间下的向量表示</li>
+<li>$w$代表$i,j$空间下的向量表示</li>
+</ul>
+<p>有趣的是，$b_1,b_2$的数值是基于$i,j$进行表示的</p>
+<p>也就是使用了$b_1,b_2$视角下的$v$，左乘了$i,j$视角下的基向量矩阵，得到$v$在$i,j$视角下的$w$</p>
+<hr>
+<p>假设我们使用一个线性变换：逆时针旋转90°</p>
+<p>对于$i,j$作为基向量的空间，只需要追踪$i,j$变换后的位置，这个线性变换可以轻松表示为：</p>
+<p>$$
+M = \begin{bmatrix}</p>
+<p>0 &amp; -1\1 &amp; 0</p>
+<p>\end{bmatrix}
+$$</p>
+<p>我们好奇在$b_1,b_2$视角下的旋转矩阵应该是怎么样的</p>
+<p>对于需要旋转的向量$v$（$b_1,b_2$视角），我们可以先把他转化到$i,j$下</p>
+<p>$$
+\begin{bmatrix}</p>
+<p>2 &amp; -1\1 &amp; 1</p>
+<p>\end{bmatrix}v
+$$</p>
+<p>然后就可以自然代入旋转矩阵：</p>
+<p>$$
+\begin{bmatrix}</p>
+<p>0 &amp; -1\1 &amp; 0</p>
+<p>\end{bmatrix}\begin{bmatrix}</p>
+<p>2 &amp; -1\1 &amp; 1</p>
+<p>\end{bmatrix}v
+$$</p>
+<p>最后我们需要转化回$b_1,b_2$视角，乘上一个逆矩阵即可：</p>
+<p>$$
+\begin{bmatrix}</p>
+<p>2 &amp; -1\1 &amp; 1</p>
+<p>\end{bmatrix}^{-1}\begin{bmatrix}</p>
+<p>0 &amp; -1\1 &amp; 0</p>
+<p>\end{bmatrix}\begin{bmatrix}</p>
+<p>2 &amp; -1\1 &amp; 1</p>
+<p>\end{bmatrix}v
+$$</p>
+<p>令这个转化矩阵为$A$，则整个旋转矩阵可以归纳为：</p>
+$$
+A^{-1}MA
+$$<h3 id="特征变换与特征值">特征变换与特征值
+</h3><p>对于一个线性变换$A$，总有一些向量在变换前后，仍然在同一条过原点的直线上</p>
+<p>这些向量被称为<strong>特征向量</strong>$v$</p>
+<p>同时由于存在一定比例的拉伸，这个比例被称为<strong>特征值</strong>$\lambda$</p>
+$$
+Av = \lambda v
+$$<p>由于右边是数乘，会比较麻烦，所以通常处理为：</p>
+<p>$$
+Av = (\lambda I)v \</p>
+<p>(A-\lambda I)v =0
+$$</p>
+<p>也就是说一个向量$v$要被线性变换$A-\lambda I$压缩成零向量</p>
+<p>能做到这一点的只能是$rank=0$的线性变换</p>
+<p>这里通过行列式就能求解</p>
+<h2 id="抽象向量空间">抽象向量空间
+</h2><p>接下来我们将超出2、3维，把线性抽象到函数层面</p>
+<p>我们对于函数也能做线性变化</p>
+<ul>
+<li>$L(f,g) = L(f) + L(g)$</li>
+<li>$L(f) = cL(f)$</li>
+</ul>
+<p>很巧，<strong>求导</strong>完美符合这两条性质</p>
+<p>因此对于一个多项式，求导可以使用矩阵进行表示</p>
+<p><img src="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250813034747091.png"
+	width="1695"
+	height="883"
+	srcset="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250813034747091_hu_13f3cb675576ae.png 480w, /p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-linear-algebra/assets/image-20250813034747091_hu_89bde6444f4c1e1.png 1024w"
+	loading="lazy"
+	
+		alt="线性变换 - 求导"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="191"
+		data-flex-basis="460px"
+	
+></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a>
+        
+            <a href="/tags/deep-learning/">Deep Learning</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/rethinkfun%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-part-1-calculus/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">RethinkFun深度学习 · Part 1 Calculus</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

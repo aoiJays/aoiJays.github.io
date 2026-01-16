@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="FinerWeb-10BT Refining Web Data with LLM-Based Line-Level Filtering">
+<title>大语言模型数据清洗 · 论文笔记（三）</title>
+
+<link rel='canonical' href='https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="大语言模型数据清洗 · 论文笔记（三）">
+<meta property='og:description' content="FinerWeb-10BT Refining Web Data with LLM-Based Line-Level Filtering">
+<meta property='og:url' content='https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/'>
+<meta property='og:site_name' content='BiribiriBird'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='LLM' /><meta property='article:published_time' content='2025-06-10T14:54:12&#43;08:00'/><meta property='article:modified_time' content='2025-06-10T14:54:12&#43;08:00'/>
+<meta name="twitter:title" content="大语言模型数据清洗 · 论文笔记（三）">
+<meta name="twitter:description" content="FinerWeb-10BT Refining Web Data with LLM-Based Line-Level Filtering">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            localStorage.setItem(colorSchemeKey, "light");
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_bbc58a5457fc2680.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">BiribiriBird</a></h1>
+            <h2 class="site-description">Segmentation fault!</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/498088093'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648787418" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2107" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="2108" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:neworld1111@163.com'
+                        target="_blank"
+                        title="Email"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743649088353" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6924" width="24" height="24"><path d="M874.666667 181.333333H149.333333c-40.533333 0-74.666667 34.133333-74.666666 74.666667v512c0 40.533333 34.133333 74.666667 74.666666 74.666667h725.333334c40.533333 0 74.666667-34.133333 74.666666-74.666667V256c0-40.533333-34.133333-74.666667-74.666666-74.666667z m-725.333334 64h725.333334c6.4 0 10.666667 4.266667 10.666666 10.666667v25.6L512 516.266667l-373.333333-234.666667V256c0-6.4 4.266667-10.666667 10.666666-10.666667z m725.333334 533.333334H149.333333c-6.4 0-10.666667-4.266667-10.666666-10.666667V356.266667l356.266666 224c4.266667 4.266667 10.666667 4.266667 17.066667 4.266666s12.8-2.133333 17.066667-4.266666l356.266666-224V768c0 6.4-4.266667 10.666667-10.666666 10.666667z" fill="#666666" p-id="6925"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/aoiJays'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648734849" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5802" width="24" height="24"><path d="M511.957333 21.333333C241.024 21.333333 21.333333 240.981333 21.333333 512c0 216.832 140.544 400.725333 335.573334 465.664 24.490667 4.394667 32.256-10.069333 32.256-23.082667 0-11.690667 0.256-44.245333 0-85.205333-136.448 29.610667-164.736-64.64-164.736-64.64-22.314667-56.704-54.4-71.765333-54.4-71.765333-44.586667-30.464 3.285333-29.824 3.285333-29.824 49.194667 3.413333 75.178667 50.517333 75.178667 50.517333 43.776 75.008 114.816 53.333333 142.762666 40.789333 4.522667-31.658667 17.152-53.376 31.189334-65.536-108.970667-12.458667-223.488-54.485333-223.488-242.602666 0-53.546667 19.114667-97.322667 50.517333-131.669334-5.034667-12.330667-21.930667-62.293333 4.778667-129.834666 0 0 41.258667-13.184 134.912 50.346666a469.802667 469.802667 0 0 1 122.88-16.554666c41.642667 0.213333 83.626667 5.632 122.88 16.554666 93.653333-63.488 134.784-50.346667 134.784-50.346666 26.752 67.541333 9.898667 117.504 4.864 129.834666 31.402667 34.346667 50.474667 78.122667 50.474666 131.669334 0 188.586667-114.730667 230.016-224.042666 242.090666 17.578667 15.232 33.578667 44.672 33.578666 90.453334v135.850666c0 13.141333 7.936 27.605333 32.853334 22.869334C862.250667 912.597333 1002.666667 728.746667 1002.666667 512 1002.666667 240.981333 783.018667 21.333333 511.957333 21.333333z" p-id="5803" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About me</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/experience/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Experience</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friend/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>Friend</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#概述">概述</a></li>
+    <li><a href="#method">Method</a></li>
+    <li><a href="#experiments">Experiments</a>
+      <ol>
+        <li><a href="#gpt-4o-mini-标签标注">GPT-4o mini 标签标注</a></li>
+        <li><a href="#标签分组">标签分组</a>
+          <ol>
+            <li><a href="#inter-annotator-agreement--人工标注者一致性iaa实验">Inter-Annotator Agreement  人工标注者一致性（IAA）实验</a></li>
+          </ol>
+        </li>
+        <li><a href="#分类器训练">分类器训练</a></li>
+        <li><a href="#数据清洗">数据清洗</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97/" >
+                数据清洗
+            </a>
+        
+            <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" >
+                论文笔记
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/">大语言模型数据清洗 · 论文笔记（三）</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            FinerWeb-10BT Refining Web Data with LLM-Based Line-Level Filtering
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jun 10, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 10 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="finerweb-10bt-refining-web-data-with-llm-based-line-level-filtering">FinerWeb-10BT: Refining Web Data with LLM-Based Line-Level Filtering
+</h1><p><a class="link" href="https://arxiv.org/abs/2501.07314"  target="_blank" rel="noopener"
+    >2501.07314FinerWeb-10BT: Refining Web Data with LLM-Based Line-Level Filtering</a></p>
+<p><a class="link" href="https://github.com/TurkuNLP/finerweb-10bt"  target="_blank" rel="noopener"
+    >https://github.com/TurkuNLP/finerweb-10bt</a></p>
+<p>[TOC]</p>
+<h2 id="概述">概述
+</h2><ul>
+<li>GPT-4o mini 对 FineWeb 中 20,000 份文档样本进行逐行标注，使模型能够为低质量文本行创建描述性标签</li>
+<li>标签被归纳为九大类别，并训练 DeBERTa-v3 分类器将过滤规模扩展至 FineWeb 的 100 亿 token 子集</li>
+<li>结果表明：使用过滤数据训练的模型在 HellaSwag 基准测试中准确率更高，且能以最多减少 25%的数据量更快达到性能目标</li>
+</ul>
+<p>核心问题：</p>
+<ul>
+<li>How well can an LLM identify low-quality content missed by <strong>heuristic filters</strong>?</li>
+<li>Does LLM-based <strong>quality filtering</strong> of training datasets <strong>improve model performance</strong>?</li>
+</ul>
+<p>paper定义高质量数据为：</p>
+<blockquote>
+<p>human-written, continuous English text from the main content of a website, reflecting natural language use across diverse contexts and domains.</p>
+<p>网站主体内容中人类撰写的连贯英文文本，能反映跨领域自然语言使用。</p>
+<ul>
+<li>典型实例包括访谈核心文本、论坛帖子、新闻文章、博客和食谱。</li>
+<li>与之相对，低质量内容则包含导航菜单、版权声明、编程代码和元数据等重复性元素。</li>
+</ul></blockquote>
+<p>过滤分为三个级别：</p>
+<ul>
+<li>文档级：基于简单规则整篇剔除文档
+<ul>
+<li>少于三句话的文档</li>
+<li>存在过度重复内容的文档</li>
+</ul>
+</li>
+<li>行级：
+<ul>
+<li>删除含<code>javascript</code>等术语的行、纯数字行或低于长度阈值的行</li>
+</ul>
+</li>
+<li>字符级：
+<ul>
+<li>移除维基百科常见的引用标记如<code>[1]</code>和<code>[citation needed]</code></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>现存的过滤方法具有数据集特异性，相关指标与数据集本身有关</p>
+<ul>
+<li>行末标点比例≤0.12的文档（移除10.14% token，相比C4终止标点过滤的30%更高效）</li>
+<li>重复行字符比例≥0.1的文档（移除12.47% token）</li>
+<li>短行（&lt;30字符）比例≥0.67的文档（移除3.73% token）</li>
+</ul></blockquote>
+<h2 id="method">Method
+</h2><ul>
+<li>数据来源：Fineweb，构建来自 FineWeb 的 100 亿 token（约 1500 万文档）样本，称为 FineWeb-10BT</li>
+<li>抽样20,000份文档进行GPT-4o mini 标注
+-   为每行生成描述性标签，分为高质量或低质量类别</li>
+<li>O1-preview将生成的大量标签归类为更小、更方便管理的集合</li>
+<li>训练基于encoder的分类器，scale到Fineweb10BT</li>
+<li>使用清洗前后的Fineweb10BT训练GPT-2，在HellaSwag上benchmark</li>
+</ul>
+<p>全过程是数据驱动的，不依赖于固定的类别</p>
+<h2 id="experiments">Experiments
+</h2><h3 id="gpt-4o-mini-标签标注">GPT-4o mini 标签标注
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl">    <span class="c1"># 系统提示词</span>
+</span></span><span class="line"><span class="cl">    <span class="n">system</span> <span class="o">=</span> <span class="s2">&#34;You are an expert text classifier specializing in LLM training data. Your task is to classify each line of text based on its suitability for inclusion in a language model training dataset. High-quality content is clean, meaningful, well-structured, and useful for training language models. Low-quality content includes boilerplate elements (e.g., navigation menus, footers), non-linguistic symbols, formatting tags, placeholders like &#39;Lorem ipsum&#39;, and spammy, irrelevant, or toxic language.&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># 用户提示词</span>
+</span></span><span class="line"><span class="cl">    <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">    **Instructions:**
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    1. **Line Identification and Separation**:
+</span></span></span><span class="line"><span class="cl"><span class="s2">       - Each line starts with &#34;Line X:&#34; where X is the line number. Treat each &#34;Line X:&#34; as a single unit, regardless of length; do not split lines.
+</span></span></span><span class="line"><span class="cl"><span class="s2">       - Lines are separated by newline characters (`</span><span class="se">\\</span><span class="s2">n`) and dashes (`------`). If there&#39;s no newline character, treat the entire text as a single line.
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    2. **Contextual Classification**:
+</span></span></span><span class="line"><span class="cl"><span class="s2">       - Use the context of all lines when classifying each one, as they are sequential and from the same document.
+</span></span></span><span class="line"><span class="cl"><span class="s2">       - For example, a line starting with a hyphen might be part of a list and should be classified as &#34;Clean.&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    3. **Assigning Labels**:
+</span></span></span><span class="line"><span class="cl"><span class="s2">       - Assign **exactly one label** to each line.
+</span></span></span><span class="line"><span class="cl"><span class="s2">       - If the line is suitable for inclusion, label it **&#34;Clean&#34;**.
+</span></span></span><span class="line"><span class="cl"><span class="s2">       - If not, assign a specific and descriptive label explaining why it&#39;s unsuitable.
+</span></span></span><span class="line"><span class="cl"><span class="s2">       - **Prefer labels from the provided list**. Only create a new label (max three words) if absolutely necessary.
+</span></span></span><span class="line"><span class="cl"><span class="s2">       - **Do not use vague labels** like &#34;Low-Quality,&#34; &#34;Bad,&#34; &#34;Unsuitable,&#34; etc. Labels must be specific and descriptive.
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    4. **Focus on Linguistic Content**:
+</span></span></span><span class="line"><span class="cl"><span class="s2">       - Retain valuable and diverse linguistic content suitable for language model pre-training, including natural language patterns, standard advertising copy, commercial language, and promotional content written in natural language.
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    5. **Tolerance for Minor Errors and Toxic Language**:
+</span></span></span><span class="line"><span class="cl"><span class="s2">       - Minor grammatical errors, typos, or small mistakes do not disqualify a line from being &#34;Clean.&#34; Only exclude lines with pervasive errors that significantly hinder understanding.
+</span></span></span><span class="line"><span class="cl"><span class="s2">       - Mild expletives and controversial opinions do not disqualify a line from being &#34;Clean.&#34; Only exclude lines with blatantly hateful, harmful or toxic content.
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    6. **Output Format**:
+</span></span></span><span class="line"><span class="cl"><span class="s2">       - Your output must have exactly the same number of lines as the input, matching each line number correctly.
+</span></span></span><span class="line"><span class="cl"><span class="s2">       - Output only the line number followed by the label, separated by a colon.
+</span></span></span><span class="line"><span class="cl"><span class="s2">       - Do not include any additional text or explanations.
+</span></span></span><span class="line"><span class="cl"><span class="s2">       - Do not output dashes between the lines.
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    **Guidelines for &#34;Clean&#34; Lines**:
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Assign &#34;Clean&#34; to lines that:
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    - Represent natural language suitable for training language models.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    - Include informal internet language, grammatical errors, questions, partial sentences, and common online expressions.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    - Contain standard advertising or commercial language in natural sentences.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    - Have properly formatted titles, headings, and readable content, even with stylistic elements.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    - Include minor in-text elements like email addresses, dates, or URLs within natural sentences.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    - Are general promotional content written in natural language.
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    **Guidelines for Non-&#34;Clean&#34; Lines**:
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Lines not classified as &#34;Clean&#34; need a specific and descriptive label. Examples include lines that:
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    - Contain blatantly hateful or harmful language. 
+</span></span></span><span class="line"><span class="cl"><span class="s2">    - Are long passages of non-English text (excluding common foreign phrases used in English).
+</span></span></span><span class="line"><span class="cl"><span class="s2">    - Include disclaimers, copyright notices, terms, and conditions.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    - Consist of menu items, login links, buttons, or navigation menus.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    - Contain random characters, garbled text, or excessive symbols.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    - Include programming code, HTML tags, or markup languages (when actual code or markup appears).
+</span></span></span><span class="line"><span class="cl"><span class="s2">    - Present keywords, tags, or similar data without sufficient context.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    - Are irrelevant or spam-like content not suitable for training.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    - Are **excessively** promotional without natural language structure (e.g., a list of product names and prices without sentences).
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    **Possible Labels for Non-&#34;Clean&#34; Lines**:
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    </span><span class="si">{</span><span class="n">non_quality_labels</span><span class="si">}</span><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    **Example Input:**
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Line 1: Welcome to our website!
+</span></span></span><span class="line"><span class="cl"><span class="s2">    ------
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Line 2: Contact us at support@example.com.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    ------
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Line 3: ***** $$$$$
+</span></span></span><span class="line"><span class="cl"><span class="s2">    ------
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Line 4: &lt;div&gt;Content&lt;/div&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">    ------
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    **Example Output:**
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Line 1: Clean  
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Line 2: Clean  
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Line 3: Encoding Errors  
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Line 4: HTML Tags
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    **Now, classify the following lines:**
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    </span><span class="si">{</span><span class="nb">input</span><span class="si">}</span><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;&#34;&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">**</span><span class="n">指令</span><span class="err">：</span><span class="o">**</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="mf">1.</span> <span class="o">**</span><span class="n">行标识与分隔</span><span class="o">**</span><span class="err">：</span>
+</span></span><span class="line"><span class="cl">   <span class="o">-</span> <span class="n">每行以</span><span class="err">“</span><span class="n">Line</span> <span class="n">X</span><span class="p">:</span><span class="err">”</span><span class="n">开头</span><span class="err">，</span><span class="n">X为行号</span><span class="err">。</span><span class="n">将每个</span><span class="err">“</span><span class="n">Line</span> <span class="n">X</span><span class="p">:</span><span class="err">”</span><span class="n">视为一个独立单元</span><span class="err">，</span><span class="n">无论长度如何</span><span class="err">；</span><span class="n">请勿拆分</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl">   <span class="o">-</span> <span class="n">行之间用换行符</span><span class="err">（`</span>\<span class="n">n</span><span class="err">`）</span><span class="n">和短横线</span><span class="err">（`</span><span class="o">------</span><span class="err">`）</span><span class="n">分隔</span><span class="err">。</span><span class="n">若无换行符</span><span class="err">，</span><span class="n">则将整个文本视为单行</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="o">**</span><span class="n">上下文分类</span><span class="o">**</span><span class="err">：</span>
+</span></span><span class="line"><span class="cl">   <span class="o">-</span> <span class="n">分类时需考虑所有行的上下文</span><span class="err">，</span><span class="n">因为它们来自同一文档且顺序相关</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl">   <span class="o">-</span> <span class="n">例如</span><span class="err">，</span><span class="n">以连字符开头的行可能是列表的一部分</span><span class="err">，</span><span class="n">应标记为</span><span class="err">“</span><span class="n">Clean</span><span class="err">”。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="o">**</span><span class="n">标签分配</span><span class="o">**</span><span class="err">：</span>
+</span></span><span class="line"><span class="cl">   <span class="o">-</span> <span class="n">每行</span><span class="o">**</span><span class="n">必须分配一个标签</span><span class="o">**</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl">   <span class="o">-</span> <span class="n">若适合纳入训练数据</span><span class="err">，</span><span class="n">标记为</span><span class="o">**</span><span class="err">“</span><span class="n">Clean</span><span class="err">”</span><span class="o">**</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl">   <span class="o">-</span> <span class="n">若不适合</span><span class="err">，</span><span class="n">需提供具体描述性标签说明原因</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl">   <span class="o">-</span> <span class="o">**</span><span class="n">优先使用提供的标签列表</span><span class="o">**</span><span class="err">。</span><span class="n">仅在必要时创建新标签</span><span class="err">（</span><span class="n">最多三个单词</span><span class="err">）。</span>
+</span></span><span class="line"><span class="cl">   <span class="o">-</span> <span class="o">**</span><span class="n">禁止使用模糊标签</span><span class="o">**</span><span class="err">，</span><span class="n">如</span><span class="err">“</span><span class="n">低质量</span><span class="err">”、“</span><span class="n">差</span><span class="err">”、“</span><span class="n">不合适</span><span class="err">”</span><span class="n">等</span><span class="err">。</span><span class="n">标签必须具体明确</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="o">**</span><span class="n">语言内容聚焦</span><span class="o">**</span><span class="err">：</span>
+</span></span><span class="line"><span class="cl">   <span class="o">-</span> <span class="n">保留对语言模型预训练有价值的多样化语言内容</span><span class="err">，</span><span class="n">包括自然语言模式</span><span class="err">、</span><span class="n">标准广告文案</span><span class="err">、</span><span class="n">商业用语和自然语言编写的推广内容</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="mf">5.</span> <span class="o">**</span><span class="n">对轻微错误和毒性内容的容忍</span><span class="o">**</span><span class="err">：</span>
+</span></span><span class="line"><span class="cl">   <span class="o">-</span> <span class="n">轻微语法错误</span><span class="err">、</span><span class="n">拼写问题或小错误不影响标记为</span><span class="err">“</span><span class="n">Clean</span><span class="err">”。</span><span class="n">仅当错误严重影响理解时才排除</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl">   <span class="o">-</span> <span class="n">轻度脏话或有争议的观点不影响标记为</span><span class="err">“</span><span class="n">Clean</span><span class="err">”。</span><span class="n">仅排除明显仇恨</span><span class="err">、</span><span class="n">有害或毒性内容</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="mf">6.</span> <span class="o">**</span><span class="n">输出格式</span><span class="o">**</span><span class="err">：</span>
+</span></span><span class="line"><span class="cl">   <span class="o">-</span> <span class="n">输出行数必须与输入完全一致</span><span class="err">，</span><span class="n">且行号对应正确</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl">   <span class="o">-</span> <span class="n">每行输出格式为</span><span class="err">“</span><span class="n">Line</span> <span class="n">X</span><span class="p">:</span> <span class="n">标签</span><span class="err">”，</span><span class="n">仅包含行号和标签</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl">   <span class="o">-</span> <span class="n">禁止额外解释或文本</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl">   <span class="o">-</span> <span class="n">行间禁止输出短横线</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">**</span><span class="err">“</span><span class="n">Clean</span><span class="err">”</span><span class="n">行标准</span><span class="o">**</span><span class="err">：</span>
+</span></span><span class="line"><span class="cl"><span class="n">符合以下条件的行标记为</span><span class="err">“</span><span class="n">Clean</span><span class="err">”：</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="n">代表适合训练的自然语言</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="n">包含网络用语</span><span class="err">、</span><span class="n">语法错误</span><span class="err">、</span><span class="n">问题</span><span class="err">、</span><span class="n">不完整句子或常见网络表达</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="n">含有自然句式中的标准广告或商业用语</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="n">格式正确的标题</span><span class="err">、</span><span class="n">题头或可读内容</span><span class="err">（</span><span class="n">即使包含样式元素</span><span class="err">）。</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="n">自然句子中的邮箱</span><span class="err">、</span><span class="n">日期或URL等次要元素</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="n">以自然语言编写的常规推广内容</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">**</span><span class="n">非</span><span class="err">“</span><span class="n">Clean</span><span class="err">”</span><span class="n">行标准</span><span class="o">**</span><span class="err">：</span>
+</span></span><span class="line"><span class="cl"><span class="n">需提供具体描述性标签</span><span class="err">，</span><span class="n">例如</span><span class="err">：</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="n">包含明显仇恨或有害内容</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="n">大段非英语文本</span><span class="err">（</span><span class="n">英语中常用的外语短语除外</span><span class="err">）。</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="n">免责声明</span><span class="err">、</span><span class="n">版权声明</span><span class="err">、</span><span class="n">条款协议</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="n">菜单项</span><span class="err">、</span><span class="n">登录链接</span><span class="err">、</span><span class="n">按钮或导航菜单</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="n">随机字符</span><span class="err">、</span><span class="n">乱码或过多符号</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="n">编程代码</span><span class="err">、</span><span class="n">HTML标签或标记语言</span><span class="err">（</span><span class="n">实际代码或标签出现时</span><span class="err">）。</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="n">缺乏上下文的关键词或标签</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="n">与训练无关的垃圾内容</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="o">**</span><span class="n">过度推广</span><span class="o">**</span><span class="n">且无自然语言结构</span><span class="err">（</span><span class="n">如纯产品名和价格列表</span><span class="err">）。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">**</span><span class="n">非</span><span class="err">“</span><span class="n">Clean</span><span class="err">”</span><span class="n">行标签示例</span><span class="o">**</span><span class="err">：</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="n">non_quality_labels</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">**</span><span class="n">输入示例</span><span class="o">**</span><span class="err">：</span>
+</span></span><span class="line"><span class="cl"><span class="n">Line</span> <span class="mi">1</span><span class="p">:</span> <span class="n">欢迎访问我们的网站</span><span class="err">！</span>
+</span></span><span class="line"><span class="cl"><span class="o">------</span>
+</span></span><span class="line"><span class="cl"><span class="n">Line</span> <span class="mi">2</span><span class="p">:</span> <span class="n">联系支持邮箱</span><span class="err">：</span><span class="n">support</span><span class="nd">@example.com</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl"><span class="o">------</span>
+</span></span><span class="line"><span class="cl"><span class="n">Line</span> <span class="mi">3</span><span class="p">:</span> <span class="o">*****</span> <span class="err">$$$$$</span>
+</span></span><span class="line"><span class="cl"><span class="o">------</span>
+</span></span><span class="line"><span class="cl"><span class="n">Line</span> <span class="mi">4</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">div</span><span class="o">&gt;</span><span class="n">内容</span><span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">------</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">**</span><span class="n">输出示例</span><span class="o">**</span><span class="err">：</span>
+</span></span><span class="line"><span class="cl"><span class="n">Line</span> <span class="mi">1</span><span class="p">:</span> <span class="n">Clean</span>  
+</span></span><span class="line"><span class="cl"><span class="n">Line</span> <span class="mi">2</span><span class="p">:</span> <span class="n">Clean</span>  
+</span></span><span class="line"><span class="cl"><span class="n">Line</span> <span class="mi">3</span><span class="p">:</span> <span class="n">编码错误</span>  
+</span></span><span class="line"><span class="cl"><span class="n">Line</span> <span class="mi">4</span><span class="p">:</span> <span class="n">HTML标签</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">**</span><span class="n">请对以下行进行分类</span><span class="o">**</span><span class="err">：</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nb">input</span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>一开始并不提供任何的非Clean标签，由模型逐渐生成，优先使用已有的标签，否则进行扩充</p>
+</li>
+<li>
+<p>未避免顺序带来的影响，每次迭代后随即打乱标签列表</p>
+</li>
+<li>
+<p>文档最多被分割为多个chunk，每个chunk最多15行，方便结合上下文</p>
+</li>
+<li>
+<p>单行不能超过200字符，否则按照标点进行切割为新的行</p>
+<ul>
+<li>paper提到：超长行会导致模型的错误输出</li>
+</ul>
+</li>
+</ul>
+<p><img src="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/assets/image-20250610184759762.png"
+	width="875"
+	height="596"
+	srcset="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/assets/image-20250610184759762_hu_77126521573083f.png 480w, /p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/assets/image-20250610184759762_hu_c2d6a7a748645646.png 1024w"
+	loading="lazy"
+	
+		alt="50个最常见的标签 - 二维UMAP投影"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="146"
+		data-flex-basis="352px"
+	
+></p>
+<blockquote>
+<p>其中每个圆点的大小对应相应类别的相对出现频率</p>
+<p>法律文本出现在左上角，成人及有害内容集中于右上方中部，而参考文献则靠近底部。联系方式（如时间、日期和电话号码）松散分布在左侧，技术类内容（如编程代码）则位于中部。这些分布模式表明，LLM 生成的标签能够有效区分文本行质量，为我们最终构建分类体系提供了可靠依据。</p></blockquote>
+<ul>
+<li>83%的数据被标记为清洁</li>
+<li>547个生成的标签，其中部分只出现了一次
+<ul>
+<li>人工复查，直接标记为清洁</li>
+</ul>
+</li>
+</ul>
+<h3 id="标签分组">标签分组
+</h3><p>对于实现剩下的382个标签，通过O1-preview（推理模型）归类为更简洁、更易管理的宽泛类别</p>
+<ul>
+<li>指导该模型创建清晰、明确的分类</li>
+<li>每个标签只能属于一个组别</li>
+</ul>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Categories</th>
+          <th>Lines</th>
+          <th>%</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><em>Clean</em></td>
+          <td>283,267</td>
+          <td>86.24</td>
+      </tr>
+      <tr>
+          <td><em>Formatting, Style &amp; Errors 格式、风格与错误</em></td>
+          <td>13,150</td>
+          <td>4.00</td>
+      </tr>
+      <tr>
+          <td><em>Bibliographical &amp; Citation References 参考文献与引用规范</em></td>
+          <td>8,768</td>
+          <td>2.67</td>
+      </tr>
+      <tr>
+          <td><em>Promotional &amp; Spam Content 促销与垃圾内容</em></td>
+          <td>7,339</td>
+          <td>2.23</td>
+      </tr>
+      <tr>
+          <td><em>Contact &amp; Identification Information 联系与身份识别信息</em></td>
+          <td>3,898</td>
+          <td>1.19</td>
+      </tr>
+      <tr>
+          <td><em>Navigation &amp; Interface Elements 导航与界面元素</em></td>
+          <td>3,327</td>
+          <td>1.01</td>
+      </tr>
+      <tr>
+          <td><em>Technical Specifications &amp; Metadata 技术规范与元数据</em></td>
+          <td>3,298</td>
+          <td>1.00</td>
+      </tr>
+      <tr>
+          <td><em>Legal &amp; Administrative Content 法律与行政内容</em></td>
+          <td>2,992</td>
+          <td>0.91</td>
+      </tr>
+      <tr>
+          <td><em>Offensive or Inappropriate Content 冒犯性或不当内容</em></td>
+          <td>2,433</td>
+          <td>0.74</td>
+      </tr>
+      <tr>
+          <td><strong>Total 总计</strong></td>
+          <td><strong>328,472</strong></td>
+          <td><strong>100</strong></td>
+      </tr>
+  </tbody>
+</table></div>
+<p>模型可能会发生错误，例如未能分配全部标签、标签归入多个类别……</p>
+<p>人工修正一下即可</p>
+<h4 id="inter-annotator-agreement--人工标注者一致性iaa实验">Inter-Annotator Agreement  人工标注者一致性（IAA）实验
+</h4><ul>
+<li>抽取50篇文档的726行，人工独立分类到九个标签之内</li>
+</ul>
+$$
+\kappa = \frac{p_o - p_e}{1 - p_e}
+$$<blockquote>
+<p>假设两位标注员（A 和 B）对 100 条文本进行情感分类，标签为 <strong>正面（Positive）</strong> 或 <strong>负面（Negative）</strong>。他们的标注结果如下表：</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th></th>
+          <th>B: Positive</th>
+          <th>B: Negative</th>
+          <th><strong>总计</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>A: Positive</strong></td>
+          <td>50</td>
+          <td>10</td>
+          <td>60</td>
+      </tr>
+      <tr>
+          <td><strong>A: Negative</strong></td>
+          <td>20</td>
+          <td>20</td>
+          <td>40</td>
+      </tr>
+      <tr>
+          <td><strong>总计</strong></td>
+          <td>70</td>
+          <td>30</td>
+          <td>100</td>
+      </tr>
+  </tbody>
+</table></div>
+<hr>
+<p>$p_o$是两位标注员<strong>实际一致的比例</strong>，即对角线单元格的和除以总数。</p>
+<ul>
+<li>两位标注员在 70 条样本上达成一致（50 条 Positive + 20 条 Negative），因此$p_o = 0.7$</li>
+</ul>
+<hr>
+<p>$p_e$ 是假设两位标注员<strong>随机标注</strong>时预期的一致比例。需分别计算每个类别随机一致的联合概率，再求和。</p>
+<ul>
+<li><strong>A 标注 Positive 的概率</strong>：$P_{\text{A+}} = \frac{60}{100} = 0.6$
+<ul>
+<li><strong>A 标注 Negative 的概率</strong>：$P_{\text{A-}} = \frac{40}{100} = 0.4$</li>
+<li><strong>B 标注 Positive 的概率</strong>：$P_{\text{B+}} = \frac{70}{100} = 0.7$</li>
+<li><strong>B 标注 Negative 的概率</strong>：$P_{\text{B-}} = \frac{30}{100} = 0.3$</li>
+</ul>
+</li>
+</ul>
+<p>已知以上概率，接下来计算在随机标注的情况下，两人同时一致的概率：</p>
+<ul>
+<li>随机都标为 Positive 的概率：$P_{\text{A+}} \times P_{\text{B+}} = 0.6 \times 0.7 = 0.42$
+<ul>
+<li>随机都标为 Negative 的概率：$P_{\text{A-}} \times P_{\text{B-}} = 0.4 \times 0.3 = 0.12$</li>
+</ul>
+</li>
+</ul>
+<p>因此：$p_e = 0.42 + 0.12 = 0.54$</p>
+<p><strong>解释</strong>：<br>
+如果两位标注员完全随机标注，预计会有 54% 的样本因巧合而一致。</p>
+<hr>
+$$
+>   \kappa = \frac{p_o - p_e}{1 - p_e} = \frac{0.7 - 0.54}{1 - 0.54} = \frac{0.16}{0.46} \approx 0.348
+>   $$<ul>
+<li><strong>κ ≈ 0.35</strong>：介于 0.2~0.4 之间，说明两位标注员的一致性为“一般”（仅略高于随机水平）。</li>
+<li><strong>对比简单一致率 70%</strong>：若直接用 70% 会高估一致性，而 Cohen&rsquo;s Kappa 通过剔除随机影响，给出了更严格的评估。</li>
+</ul>
+<hr>
+<ul>
+<li><strong>\( p_o \)</strong>：直接观察到的对角线比例。</li>
+<li><strong>\( p_e \)</strong>：基于边际分布的“随机一致”概率，反映巧合带来的虚假一致性。
+<ul>
+<li><strong>Kappa 的意义</strong>：量化了<strong>超越随机水平的一致性</strong>，避免高估可靠性。</li>
+</ul>
+</li>
+</ul></blockquote>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th style="text-align: left"><strong>κ值范围</strong></th>
+          <th style="text-align: left"><strong>一致性强度</strong></th>
+          <th style="text-align: left"><strong>解释</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>κ ≤ 0</strong></td>
+          <td style="text-align: left">比随机还差</td>
+          <td style="text-align: left">一致性低于随机猜测（罕见，可能表示系统性分歧或标注错误）。</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>0 &lt; κ ≤ 0.2</strong></td>
+          <td style="text-align: left">轻微一致（可忽略）</td>
+          <td style="text-align: left">一致性极低，几乎无实际意义。</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>0.2 &lt; κ ≤ 0.4</strong></td>
+          <td style="text-align: left">一般一致（弱）</td>
+          <td style="text-align: left">一致性较弱，但高于随机水平（需谨慎对待结果）。</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>0.4 &lt; κ ≤ 0.6</strong></td>
+          <td style="text-align: left">中等一致</td>
+          <td style="text-align: left">一致性适中，结果有一定可靠性（常见于人工标注任务）。</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>0.6 &lt; κ ≤ 0.8</strong></td>
+          <td style="text-align: left">高度一致</td>
+          <td style="text-align: left">一致性较强，结果可靠（如专业医生诊断或严格标注流程）。</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>0.8 &lt; κ ≤ 1</strong></td>
+          <td style="text-align: left">几乎完全一致</td>
+          <td style="text-align: left">一致性极高，接近完美（罕见，通常需检查是否过拟合或标注规则过于简单）。</td>
+      </tr>
+  </tbody>
+</table></div>
+<p>通过IAA实验，得到：</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th style="text-align: center"></th>
+          <th style="text-align: center">A1</th>
+          <th style="text-align: center"><strong>A2</strong></th>
+          <th style="text-align: center"><strong>Avg. 平均</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center">All labels 所有标签</td>
+          <td style="text-align: center">0.79</td>
+          <td style="text-align: center">0.60</td>
+          <td style="text-align: center">0.70</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">Clean vs. Non-clean 清洁与非清洁</td>
+          <td style="text-align: center">0.78</td>
+          <td style="text-align: center">0.67</td>
+          <td style="text-align: center">0.73</td>
+      </tr>
+  </tbody>
+</table></div>
+<blockquote>
+<p>基于 LLM 的分类方法总体上能为 FineWeb 文本生成可接受的标签。</p></blockquote>
+<h3 id="分类器训练">分类器训练
+</h3><ul>
+<li>DeBERTa-v3</li>
+<li>Stella-en-400M-v5</li>
+<li>XLM-RoBERTa-base（支持多语言）</li>
+</ul>
+<blockquote>
+<p>我们首先从文档中提取独立文本行，将每行作为单独样本。随后对数据进行随机打乱，并通过分层抽样划分为训练集（70%）、开发集（10%）和测试集（20%）。我们在每个模型上添加分类头，为每行文本生成 9 个类别的概率分布，同时微调分类头与基础模型。</p>
+<p>我们采用 bfloat16 精度，学习率设为 1e-5，批处理大小为 16。基于评估损失值实施早停机制（耐心值为 5），最大训练轮数设为 5 轮，但模型通常在首轮后即收敛。我们对交叉熵损失函数施加 0.1 的标签平滑处理以提升泛化能力。所有训练均在单块 A100 GPU 上完成。</p></blockquote>
+<p><img src="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/assets/image-20250610192229209.png"
+	width="899"
+	height="634"
+	srcset="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/assets/image-20250610192229209_hu_9bd47b2a1e06ee33.png 480w, /p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/assets/image-20250610192229209_hu_d11c68ec86e2dc63.png 1024w"
+	loading="lazy"
+	
+		alt="分类器混淆矩阵"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="141"
+		data-flex-basis="340px"
+	
+></p>
+<ul>
+<li>大多数误分类样本被归入 Clean 类别，表明其他类别间具有较强区分度</li>
+<li>冒犯性或不当内容区分度最低，源于 LLM 训练数据中对冒犯性材料定义边界存在固有困难</li>
+<li>参考文献与引用类别因其易于识别的格式和内容特征，成为区分度最高的类别</li>
+</ul>
+<p>分类器更倾向于将低质量文本行误标为&quot;清洁&quot;</p>
+<p>而非错误地将高质量行标记为低质量</p>
+<p>这种偏差有助于降低从数据集中丢弃有价值数据的风险</p>
+<h3 id="数据清洗">数据清洗
+</h3><p>Clean数据占比86%确实可能会带来模型预测过度自信的问题</p>
+<ul>
+<li>采用 Platt 缩放法
+<ul>
+<li>在保留测试集上训练 Platt 逻辑回归模型</li>
+<li>在为 FineWeb-10BT 数据集预测质量分数时将其叠加应用于分类器之上</li>
+<li>留坑，先不研究</li>
+</ul>
+</li>
+</ul>
+<p>对整个数据集进行分片，每个分片128行为一个批次</p>
+<ul>
+<li>转化为分类问题，只判断是否为Clean</li>
+<li>阈值分别设为0.5或0.9</li>
+</ul>
+<p><img src="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/assets/image-20250610194623280.png"
+	width="701"
+	height="485"
+	srcset="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/assets/image-20250610194623280_hu_f739427efcc7e2.png 480w, /p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/assets/image-20250610194623280_hu_31a6a550d7d615f5.png 1024w"
+	loading="lazy"
+	
+		alt="GPT-2训练结果"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="144"
+		data-flex-basis="346px"
+	
+></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/llm/">LLM</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型数据清洗 · 论文笔记（五）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E5%9B%9B/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型数据清洗 · 论文笔记（四）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型数据清洗 · 论文笔记（二）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型数据清洗 · 论文笔记（一）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型教育纠错 · 论文笔记（三）</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

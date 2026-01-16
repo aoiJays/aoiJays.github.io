@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Deep Learning on BiribiriBird</title>
+        <link>https://example.com/tags/deep-learning/</link>
+        <description>Recent content in Deep Learning on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Mon, 13 Oct 2025 19:51:55 +0800</lastBuildDate><atom:link href="https://example.com/tags/deep-learning/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Pytorch Learning with Papers</title>
+        <link>https://example.com/p/pytorch-learning-with-papers/</link>
+        <pubDate>Mon, 13 Oct 2025 19:51:55 +0800</pubDate>
+        
+        <guid>https://example.com/p/pytorch-learning-with-papers/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1 id=&#34;pytorch-learning-with-papers&#34;&gt;Pytorch Learning with Papers
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1hq4y157t1/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;论文精读 · 李沐&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;alexnet&#34;&gt;AlexNet
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;2025.10.13&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;狠狠喷了论文写的一般，事实上这是非常早的一篇工作，实现端到端的图像分类&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;之前的工作都是会对图像进行特征提取（例如SIFT），将特征作为输入&lt;/li&gt;
+&lt;li&gt;AlexNet直接输入图像，但可惜论文没有重点说明这个&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;ReLU的引入带来了更快的训练速度&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;但是后续的工作发现其实没什么差别，但是ReLU简单好用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;阻止过拟合&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;数据增强&lt;/li&gt;
+&lt;li&gt;dropout&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;acc&lt;/th&gt;
+          &lt;th&gt;激活函数&lt;/th&gt;
+          &lt;th&gt;dropout&lt;/th&gt;
+          &lt;th&gt;batch_size&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;91.73%&lt;/td&gt;
+          &lt;td&gt;relu&lt;/td&gt;
+          &lt;td&gt;0.5&lt;/td&gt;
+          &lt;td&gt;256&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;92.18%&lt;/td&gt;
+          &lt;td&gt;relu&lt;/td&gt;
+          &lt;td&gt;0.5&lt;/td&gt;
+          &lt;td&gt;512&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;88.14%&lt;/td&gt;
+          &lt;td&gt;tanh&lt;/td&gt;
+          &lt;td&gt;0.5&lt;/td&gt;
+          &lt;td&gt;256&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;92.18%&lt;/td&gt;
+          &lt;td&gt;relu&lt;/td&gt;
+          &lt;td&gt;0.3&lt;/td&gt;
+          &lt;td&gt;256&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;91.72%&lt;/td&gt;
+          &lt;td&gt;relu&lt;/td&gt;
+          &lt;td&gt;0.1&lt;/td&gt;
+          &lt;td&gt;256&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

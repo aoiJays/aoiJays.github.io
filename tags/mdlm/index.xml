@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>MDLM on BiribiriBird</title>
+        <link>https://example.com/tags/mdlm/</link>
+        <description>Recent content in MDLM on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Fri, 17 Oct 2025 13:39:00 +0800</lastBuildDate><atom:link href="https://example.com/tags/mdlm/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Multimodal Diffusion Language Model · BirdResearch · 202510</title>
+        <link>https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/</link>
+        <pubDate>Fri, 17 Oct 2025 13:39:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;mmada-multimodal-large-diffusion-language-models&#34;&gt;MMaDA: Multimodal Large Diffusion Language Models
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;问题&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;先前的多模态架构混合，不同模态需要不同组件、不同数据处理方式&lt;/li&gt;
+&lt;li&gt;扩散模型后训练策略欠缺研究&lt;/li&gt;
+&lt;li&gt;如何文本与视觉模态协同学习、各方面性能超过各领域现有模型&lt;/li&gt;
+&lt;li&gt;如何确保模型具有泛化能力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021144451915.png&#34;
+	width=&#34;1127&#34;
+	height=&#34;554&#34;
+	srcset=&#34;https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021144451915_hu_a5cdfff39a893f5f.png 480w, https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021144451915_hu_a6e35a99ffe8ad82.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;compared to other llms&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;203&#34;
+		data-flex-basis=&#34;488px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;核心贡献&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;统一Diffusion架构：消除模态专用组件，保持跨任务性能&lt;/li&gt;
+&lt;li&gt;混合Long-CoT的后训练：统一CoT格式，对齐跨模态推理过程，协同训练&lt;/li&gt;
+&lt;li&gt;UniGRPO：专用的强化学习方法&lt;/li&gt;
+&lt;li&gt;SOTA：文本推理、多模态理解、文生图三方面均是SOTA（AR、混合、扩散）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021150351731.png&#34;
+	width=&#34;987&#34;
+	height=&#34;772&#34;
+	srcset=&#34;https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021150351731_hu_7714d48219f97e9f.png 480w, https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021150351731_hu_c7254ad29497536a.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;TASKs&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;127&#34;
+		data-flex-basis=&#34;306px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;method&#34;&gt;Method
+&lt;/h3&gt;&lt;h4 id=&#34;pretrain&#34;&gt;Pretrain
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Data Tokenization
+&lt;ul&gt;
+&lt;li&gt;文本：采用&lt;strong&gt;LLaDA&lt;/strong&gt;的tokenizer&lt;/li&gt;
+&lt;li&gt;图像：采用&lt;strong&gt;Show-o&lt;/strong&gt;所使用的pretrained image quantizer
+&lt;ul&gt;
+&lt;li&gt;基于&lt;strong&gt;MAGVIT-v2&lt;/strong&gt;架构（一个图像离散化模型）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;MAGVIT-v2的输入与输出&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入：单张静态图片的像素阵列、由多帧图像组成的序列&lt;/li&gt;
+&lt;li&gt;输出：一个token序列&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;论文中采用$F=16$的下采样因子&lt;/p&gt;
+&lt;p&gt;对于$H\times W$的图像，转化为一维的$\frac{H\times W}{F^2}$长度序列&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;统一的概率建模与目标
+&lt;ul&gt;
+&lt;li&gt;定义MMaDA为一个Mask Token Predictor，直接预测文本与图像的&lt;code&gt;[MASK]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;仅在&lt;code&gt;[MASK]&lt;/code&gt;的图像或文本Token上做统一交叉熵损失&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+L_{unity}(\theta) = -E_{t,x_0,x_t}\left[\frac{1}{t}\sum_{i=1}^L I(x_t^i = [MASK])\log p_\theta (x_0^i|x_t)\right]
+$$&lt;h4 id=&#34;post-training-with-mixed-long-cot-finetuning&#34;&gt;Post-Training with Mixed Long-CoT Finetuning
+&lt;/h4&gt;&lt;p&gt;MMaDA明确面向：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;推理密集型任务（例如数学）&lt;/li&gt;
+&lt;li&gt;具备World-knowledge-aware的文生图
+&lt;ul&gt;
+&lt;li&gt;事实一致性非常重要&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021161828920.png&#34;
+	width=&#34;1344&#34;
+	height=&#34;583&#34;
+	srcset=&#34;https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021161828920_hu_6214c2797a50c125.png 480w, https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021161828920_hu_4b28f5ab45f1859e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Long-CoT Finetuning&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;230&#34;
+		data-flex-basis=&#34;553px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;为进行稳定的后训练，论文整理了一个包含三类核心任务（文本推理、多模态推理、文本到图像生成）CoT数据集&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;利用这篇数据，在RL之前通过SFT做冷启动&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;统一的CoT格式：消除不同任务的输出异构性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;|&amp;lt;special_token&amp;gt;| &amp;lt;reasoning_process&amp;gt; |&amp;lt;special_token&amp;gt;| &amp;lt;result&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;后续证明了有益于跨模态的协同训练与对齐&lt;/p&gt;
+&lt;p&gt;希望文本推理逻辑指导图像生成&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;多样性、复杂性、准确性
+&lt;ul&gt;
+&lt;li&gt;通过已有的LLM、VLM，合成多样化的数据&lt;/li&gt;
+&lt;li&gt;使用模型过滤，只保留高质量、长形式的CoT样本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;MMaDA进行了混合任务的CoT微调&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;保留提示词，对response进行加噪&lt;/li&gt;
+&lt;li&gt;通过预训练得到的Predictor进行损失计算&lt;/li&gt;
+&lt;/ul&gt;
+$$
+L_{Mixed-SFT}(\theta) = -E_{t,p_0,r_0,r_t}\left[\frac{1}{t}\sum_{i=1}^{L&#39;} I(r_t^i = [MASK])\log p_\theta (r_0^i|p_0,r_t)\right]
+$$&lt;h4 id=&#34;post-training-with-unified-rl&#34;&gt;Post-Training with Unified RL
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021163518810.png&#34;
+	width=&#34;2085&#34;
+	height=&#34;1055&#34;
+	srcset=&#34;https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021163518810_hu_909d17c24076e0b.png 480w, https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021163518810_hu_a2527497ddba309b.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Training&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;197&#34;
+		data-flex-basis=&#34;474px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;自回归模型：每个Token的条件概率都非常好计算，适合RL&lt;/li&gt;
+&lt;li&gt;Diffusion：过程复杂，无法直接使用传统强化学习方法
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;局部掩码依赖&lt;/strong&gt;：只有&lt;code&gt;[MASK]&lt;/code&gt;处有预测概率，其他位置已知&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;掩码比例敏感&lt;/strong&gt;：训练必须兼容不同噪声程度的恢复
+&lt;ul&gt;
+&lt;li&gt;LLaDA采样大量样本，造成RL开销巨大&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;非自回归序列似然&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;AR模型：句子概率可以通过token概率乘积计算&lt;/li&gt;
+&lt;li&gt;Diffusion：很难计算&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;unigrpo&#34;&gt;UniGRPO
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;这部分搁置一下 后续补一下RL的知识&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;主要有三个关键点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;结构化加噪策略&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;序列对数似然近似为：被遮位置对数概率的平均&lt;/li&gt;
+&lt;li&gt;用&lt;strong&gt;旧策略&lt;/strong&gt;和&lt;strong&gt;当前策略&lt;/strong&gt;的“近似序列似然”做&lt;strong&gt;比值&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;UniGPRO的奖励是多样化的&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;文本推理奖励
+&lt;ul&gt;
+&lt;li&gt;答案正确奖励&lt;/li&gt;
+&lt;li&gt;格式奖励（&lt;code&gt;&amp;lt;think&amp;gt;&amp;lt;think&amp;gt;&lt;/code&gt;）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;多模态推理奖励
+&lt;ul&gt;
+&lt;li&gt;同上&lt;/li&gt;
+&lt;li&gt;CLIP奖励：使用原始 CLIP 分数衡量文本-图像的语义一致性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;文生图奖励
+&lt;ul&gt;
+&lt;li&gt;同上&lt;/li&gt;
+&lt;li&gt;图像奖励：反映人类偏好得分&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;inference&#34;&gt;Inference
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;文本生成：采用半自回归采样
+&lt;ul&gt;
+&lt;li&gt;Masking Schedule采用线性计划，与LLaDA一致&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;图像生成：采用低置信度重掩码
+&lt;ul&gt;
+&lt;li&gt;余弦噪声调度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;experiments&#34;&gt;Experiments
+&lt;/h3&gt;&lt;p&gt;一般的benchmark跳过&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

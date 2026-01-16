@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Pages on BiribiriBird</title>
+        <link>https://example.com/page/</link>
+        <description>Recent content in Pages on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Tue, 28 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/page/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Archives</title>
+        <link>https://example.com/archives/</link>
+        <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+        
+        <guid>https://example.com/archives/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>About me</title>
+        <link>https://example.com/about-me/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://example.com/about-me/</guid>
+        <description>&lt;p&gt;你好！我是BiribiriBird！又名Neworld1111、AoiJays（超多id&lt;/p&gt;
+&lt;p&gt;本科就读于：东华大学&lt;/p&gt;
+&lt;p&gt;硕士：华东师范大学（2025.6 录取通知书get）&lt;/p&gt;
+&lt;p&gt;前ACM选手&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;第46届ICPC国际大学生程序设计竞赛 亚洲区决赛（西安）&lt;strong&gt;铜牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第47届ICPC国际大学生程序设计竞赛 亚洲区域赛（沈阳）&lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第47届ICPC国际大学生程序设计竞赛 亚洲区域赛（合肥）&lt;strong&gt;铜牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第48届ICPC国际大学生程序设计竞赛 亚洲区域赛（南京）&lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第48届ICPC国际大学生程序设计竞赛 亚洲区域赛（杭州）&lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第49届ICPC国际大学生程序设计竞赛 亚洲区域赛（沈阳）&lt;strong&gt;铜牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;第49届ICPC国际大学生程序设计竞赛 亚洲区决赛（西安）&lt;strong&gt;铜牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;2022年中国大学生程序设计竞赛广州站 &lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;2023年中国大学生程序设计竞赛秦皇岛站 &lt;strong&gt;铜牌&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;2023年中国大学生程序设计竞赛深圳站 &lt;strong&gt;银牌&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>Experience</title>
+        <link>https://example.com/experience/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://example.com/experience/</guid>
+        <description>&lt;h2 id=&#34;科研经历&#34;&gt;科研经历
+&lt;/h2&gt;&lt;h3 id=&#34;cv&#34;&gt;CV
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;东华大学CSCV实验室（2024.2-2024.7）
+&lt;ul&gt;
+&lt;li&gt;寒假开始看3DGS的paper，但是寒假后被告知相关科研已结束&lt;/li&gt;
+&lt;li&gt;被安排自己去弄CUDA核心加速，但是完全走歪路且没有指导，我也不知道我在做什么&lt;/li&gt;
+&lt;li&gt;跑路，组会确实对我没有任何意义&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;机械式指针仪表读数（2024.9 - 2025.6）
+&lt;ul&gt;
+&lt;li&gt;直接当毕业设计做，同时是一个研究生组的横向&lt;/li&gt;
+&lt;li&gt;被论文极大误导，传统视觉方法早死了，踩入惊天大坑&lt;/li&gt;
+&lt;li&gt;毕设最后改成系统而非研究，根本做不出来&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;大语言模型&#34;&gt;大语言模型
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;中国教育大模型（2025.2 - ）华东师范大学+上海创智学院智能教育联合实验室
+&lt;ul&gt;
+&lt;li&gt;创智真富啊&lt;/li&gt;
+&lt;li&gt;跑路了&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>Friend</title>
+        <link>https://example.com/friend/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://example.com/friend/</guid>
+        <description>&lt;h2 id=&#34;friend&#34;&gt;Friend
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://zz.hanhan.live&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://zz.hanhan.live&lt;/a&gt;：曾姓男子，擅长画饼&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.zenewbee.top&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://blog.zenewbee.top&lt;/a&gt;：王姓男子，擅长擅长&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://sophilex.top&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://sophilex.top&lt;/a&gt;：林姓男子，擅长骑车&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>Search</title>
+        <link>https://example.com/search/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://example.com/search/</guid>
+        <description></description>
+        </item>
+        
+    </channel>
+</rss>

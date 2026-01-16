@@ -1,0 +1,862 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>个性化 on BiribiriBird</title>
+        <link>https://example.com/categories/%E4%B8%AA%E6%80%A7%E5%8C%96/</link>
+        <description>Recent content in 个性化 on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Sat, 13 Dec 2025 21:20:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/%E4%B8%AA%E6%80%A7%E5%8C%96/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Personalization Survey</title>
+        <link>https://example.com/p/personalization-survey/</link>
+        <pubDate>Sat, 13 Dec 2025 21:20:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/personalization-survey/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;rap-retrieval-augmented-personalization-for-multimodal-large--language-models&#34;&gt;RAP Retrieval-Augmented Personalization for Multimodal Large  Language Models
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/pdf/2410.13360&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;RAP Retrieval-Augmented Personalization for Multimodal Large  Language Models&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;intro&#34;&gt;Intro
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;对每个concept进行微调是昂贵的&lt;/li&gt;
+&lt;li&gt;MyVLM和Yo&amp;rsquo;LLaVA都需要进行额外的训练去添加新的concept从而实现个性化&lt;/li&gt;
+&lt;li&gt;都需要一些样本的正例与负例进行学习&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/personalization-survey/assets/image-20251217212521296.png&#34;
+	width=&#34;1485&#34;
+	height=&#34;343&#34;
+	srcset=&#34;https://example.com/p/personalization-survey/assets/image-20251217212521296_hu_507ae72255eda6a9.png 480w, https://example.com/p/personalization-survey/assets/image-20251217212521296_hu_eca083438ec3aa1c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;432&#34;
+		data-flex-basis=&#34;1039px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;RAP只需要一张图以及一些相关的信息&lt;/li&gt;
+&lt;li&gt;支持用户&lt;strong&gt;实时修改&lt;/strong&gt;database，从而调整模型的个性化输出&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;同时RAP构建了一个Pipeline，用于收集大量训练数据，帮助模型先学会理解如何使用用户个人concept的范式&lt;/p&gt;
+&lt;p&gt;paper的贡献总结为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;提出RAP-MLLM框架，支持用户在不需要训练的情况下让模型适应新的concept&lt;/li&gt;
+&lt;li&gt;开发了一个训练数据收集pipeline，支持训练个性化assistant&lt;/li&gt;
+&lt;li&gt;最终模型在image captioning and question answering等个性化任务中表现优异&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;method&#34;&gt;Method
+&lt;/h3&gt;&lt;h4 id=&#34;rap-framework&#34;&gt;RAP Framework
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/personalization-survey/assets/image-20251218223432497.png&#34;
+	width=&#34;1205&#34;
+	height=&#34;562&#34;
+	srcset=&#34;https://example.com/p/personalization-survey/assets/image-20251218223432497_hu_61d054f981efd32d.png 480w, https://example.com/p/personalization-survey/assets/image-20251218223432497_hu_18772be850246792.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;framework&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;214&#34;
+		data-flex-basis=&#34;514px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;建立一个数据库，记录每个concept的一个头像、描述，使用视觉特征作为检索键
+&lt;ul&gt;
+&lt;li&gt;视觉特征通过一个现有的已经过训练的Encoder&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;检索
+&lt;ul&gt;
+&lt;li&gt;对于用户的图片输入
+&lt;ul&gt;
+&lt;li&gt;基于YOLO系列做detector，根据设定好的参数识别出ROI区域&lt;/li&gt;
+&lt;li&gt;将ROI区域送入Encoder，得到视觉特征，进行检索&lt;/li&gt;
+&lt;li&gt;计算欧拉距离最近的top-k组concept&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;对于用户文本输入
+&lt;ul&gt;
+&lt;li&gt;通过文本中的name，检索是否存在于database中，进行提取&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;生成：将多组（图片，描述）以及用户输入图片及描述送入MLM进行回答&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;personalization-dataset&#34;&gt;Personalization Dataset
+&lt;/h4&gt;&lt;p&gt;如果只是这样，当时的模型也不一定总能生成准确的回复&lt;/p&gt;
+&lt;p&gt;因此希望构建一个数据集，用于提升模型的生成能力&lt;/p&gt;
+&lt;h5 id=&#34;视觉定位visual--grounding&#34;&gt;视觉定位Visual  grounding
+&lt;/h5&gt;&lt;p&gt;基于RefCOCO（单物体目标检测数据集）、ILSVRC2015-VID（ 视频目标检测数据集）、TAO 以及 CustomConcept101、Object365 （多对象数据集）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入：裁剪出物体对应的标注图像，使用Gemini1.5生成描述&lt;/li&gt;
+&lt;li&gt;训练输出：对应物体的边界框&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;指令遵循instruction-following&#34;&gt;指令遵循Instruction Following
+&lt;/h5&gt;&lt;p&gt;该部分包括：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;图像标题生成 (Image Captioning)：将目标概念的裁剪图、名称及描述注入模型输入，要求模型生成能反映这些特定概念的标题&lt;/li&gt;
+&lt;li&gt;问答 (Question Answering) ：利用种子问题迭代生成多样化的对话，涵盖视觉相关问题和纯文本查询&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;trick&#34;&gt;trick
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;为了让模型对检索器返回的噪声更加鲁棒，在训练输入中加入噪声概念，但是要求模型的输出仍然不变，学会过滤信息&lt;/li&gt;
+&lt;li&gt;对裁剪出的图片进行旋转、翻转、3D合成新视角……&lt;/li&gt;
+&lt;li&gt;加入LLaVA模型原有的数据集LLaVA-Instruct-665k，防止灾难性遗忘&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;training-free-personalization-via-retrieval-and-reasoning&#34;&gt;Training-Free Personalization via Retrieval and Reasoning
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/html/2503.18623v1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Training-Free Personalization via Retrieval and Reasoning on Fingerprints&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;intro-1&#34;&gt;Intro
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;现有方法都需要进行训练&lt;/li&gt;
+&lt;li&gt;但是VLMs实际上接触的语义概念是足够多的，内部知识丰富&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Paper同样构建了一个带有参考图像、描述的数据库&lt;/p&gt;
+&lt;p&gt;使用VLM通过&lt;strong&gt;distinctive attributes&lt;/strong&gt;对描述进行enrich&lt;/p&gt;
+&lt;h3 id=&#34;method-1&#34;&gt;Method
+&lt;/h3&gt;&lt;h4 id=&#34;database&#34;&gt;Database
+&lt;/h4&gt;&lt;p&gt;首先构建database&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;输入：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;参考图像 ($I_i$)&lt;/strong&gt;：用户提供的包含特定个性化概念图片&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;概念名称 ($c_i$)&lt;/strong&gt;：用户为该概念起的名称&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;类别 ($g_i$)&lt;/strong&gt;：该概念所属的语义类别（如“毛绒玩具”或“猫”）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;中间处理：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;利用 VLM 提取&lt;strong&gt;指纹属性 ($A_i$)&lt;/strong&gt;（即能将该物体与其同类区分开的关键特征，如“粉色领结”、“Nashville 吉他标志”）和&lt;strong&gt;判别性描述 ($d_i$)&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;利用&lt;strong&gt;视觉编码器&lt;/strong&gt;和&lt;strong&gt;文本编码器&lt;/strong&gt;生成图像特征 ($f_i^V$) 和文本特征 ($f_i^T$)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;输出（存入数据库 $\mathcal{D}$）：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;包含 ${I_i, c_i, g_i, d_i, A_i, f_i^V, f_i^T}$ 的完整条目&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;文本特征由$d_i$作为输入生成&lt;/p&gt;&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-plain&#34; data-lang=&#34;plain&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Describe the &amp;lt; g_i &amp;gt; in the image identified by the
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;concept-identifier &amp;lt; c_i &amp;gt; and highlight what makes it
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;unique.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Your response MUST be in valid JSON format and must
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;follow EXACTLY the format below:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;general: a brief description of the object in one sentence.,
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;category: category of the object,
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;distinct features: [List of distinct features that makes the
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;object unique],
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;IMPORTANT:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;* List only the most distinguishing features that set this
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  object apart.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;* Avoid generic descriptions that apply to every object in
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  this category.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;* Do not include any extra text or commentary. Any devi-
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  ation from this format will be considered incorrect.
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;假设传入一张毛绒玩具的图像，及其名字和物体类别，该阶段返回内容为：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;general&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;A brown and white Shiba-inu dog plush toy in a sleeping posture.&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;category&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Stuffed animal&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;distinct features&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;s2&#34;&gt;&amp;#34;Brown and white fur color&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;s2&#34;&gt;&amp;#34;Closed eyes indicating a sleeping posture&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;s2&#34;&gt;&amp;#34;Small pointed ears&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;s2&#34;&gt;&amp;#34;Soft, plush texture&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;同时保存视觉特征和文本特征向量进入database&lt;/p&gt;
+&lt;h4 id=&#34;multimodal-retrieval&#34;&gt;Multimodal Retrieval
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;输入：查询图像
+&lt;ul&gt;
+&lt;li&gt;将图像的视觉向量，分别与数据库中的视觉特征和文本特征进行相似度计算&lt;/li&gt;
+&lt;li&gt;最终的相似度分数由两者均值得到&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;输出：top-k的候选concepts&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;结合两者，避免出现视觉误导&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h4 id=&#34;attribute-focused-cot-reasoning&#34;&gt;Attribute-focused CoT reasoning
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;48
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;You&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;are&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;helpful&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AI&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;agent&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;specializing&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;image&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;analysis&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;ow&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;object&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;recognition&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Your&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;task&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;analyze&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;compare&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;image&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;with&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;three&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;provided&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;descriptions&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Below&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;are&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;description&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ci1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;n&#34;&gt;Info&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;     &lt;span class=&#34;n&#34;&gt;general&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;generic&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;description&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;about&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ci1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;     &lt;span class=&#34;n&#34;&gt;category&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;category&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ci1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;     &lt;span class=&#34;n&#34;&gt;distinct&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;features&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;distinct&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;feature&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;distinct&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;feature&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;B&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ci2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;n&#34;&gt;Info&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;     &lt;span class=&#34;n&#34;&gt;general&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;generic&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;description&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;about&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ci2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;     &lt;span class=&#34;n&#34;&gt;category&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;category&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ci2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;     &lt;span class=&#34;n&#34;&gt;distinct&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;features&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;distinct&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;feature&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;distinct&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;feature&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;C&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ci3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;n&#34;&gt;Info&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;     &lt;span class=&#34;n&#34;&gt;general&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;generic&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;description&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;about&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ci3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;     &lt;span class=&#34;n&#34;&gt;category&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;category&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;of&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ci3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;     &lt;span class=&#34;n&#34;&gt;distinct&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;features&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;distinct&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;feature&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;distinct&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;feature&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Your&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Task&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Compare&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;query&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;image&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;each&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;description&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;answer&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;following&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;question&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;Which&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;description&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;matches&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;subject&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;image&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;?&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;Answer&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;B&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;or&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;C&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;List&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;shared&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;attributes&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;between&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;image&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;each&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;description&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;very&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;concisely&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;If&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;no&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;attributes&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;match&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;certain&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;option&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;generate&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;None&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Provide&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;brief&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;reasoning&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;your&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;final&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;answer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Respond&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;strictly&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;the&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;following&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;JSON&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;format&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;s2&#34;&gt;&amp;#34;A&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;[Matching attributes for option A]&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;s2&#34;&gt;&amp;#34;B&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;[Matching attributes for option B]&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;s2&#34;&gt;&amp;#34;C&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;[Matching attributes for option C]&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;s2&#34;&gt;&amp;#34;Reasoning&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;lt;Brief justification&amp;gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;s2&#34;&gt;&amp;#34;Answer&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;lt;one of A, B, C&amp;gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Any&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;deviation&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;this&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;format&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;will&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;be&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;considered&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;incorrect&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Do&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;output&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;any&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;additional&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;text&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;输入：查询图像 + &lt;strong&gt;候选concepts的文本描述&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;任务：模型需要列出查询图像与每个候选概念之间&lt;strong&gt;共同拥有&lt;/strong&gt;的属性&lt;/li&gt;
+&lt;li&gt;输出：预测最佳匹配概念以及共享属性列表&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这部分需要使用CoT&lt;/p&gt;
+&lt;h4 id=&#34;cross-modal-attribute-verification&#34;&gt;Cross-modal Attribute Verification
+&lt;/h4&gt;&lt;p&gt;这部分的主要目的是排查模型幻觉&lt;/p&gt;
+&lt;p&gt;有些属性可能根本没有出现在图像中，造成了模型误判&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用文本编码器对&lt;strong&gt;每个&lt;/strong&gt;&lt;u&gt;共享的指纹属性&lt;/u&gt;进行编码&lt;/li&gt;
+&lt;li&gt;依次计算与查询图像的相似度&lt;/li&gt;
+&lt;li&gt;计算得到相似度均值最高的concept（代表共享属性和对应图像最匹配）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果该concept就是CoT推理得到的最优concept，那么就结束算法&lt;/p&gt;
+&lt;p&gt;否则我们需要更加精确的CoT&lt;/p&gt;
+&lt;h4 id=&#34;pairwise-reasoning&#34;&gt;Pairwise Reasoning
+&lt;/h4&gt;&lt;p&gt;只提供了文本描述看来是不够的，我们需要结合所有信息进行昂贵的推理&lt;/p&gt;
+&lt;p&gt;保证这步确实完成任务&lt;/p&gt;
+&lt;p&gt;转化为多个二分类任务：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入
+&lt;ul&gt;
+&lt;li&gt;查询图像&lt;/li&gt;
+&lt;li&gt;一个候选concept的原始图像+文本描述&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;输出
+&lt;ul&gt;
+&lt;li&gt;VLM 输出层中 &amp;ldquo;Yes&amp;rdquo; 和 &amp;ldquo;No&amp;rdquo; Token 的置信度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;因此全过程先通过&lt;strong&gt;检索&lt;/strong&gt;缩小范围，再通过&lt;strong&gt;CoT&lt;/strong&gt;快速筛选，最后只在&lt;strong&gt;属性验证&lt;/strong&gt;失败时才调用最重的&lt;strong&gt;配对推理&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;repic-reinforced-post-training-for-personalizing-multi-modallanguagemodels&#34;&gt;RePIC: Reinforced Post-Training for Personalizing Multi ModalLanguageModels
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/pdf/2506.18369&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;RePIC: Reinforced Post-Training for Personalizing Multi-Modal Language Models&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;intro-2&#34;&gt;Intro
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;在多概念图像描述任务中，SFT模型的效果一般不行，依赖大量高质量数据&lt;/li&gt;
+&lt;li&gt;同一对象的不同视觉图片可能差异较大，特别是姿势、位置、光照、背景变化&lt;/li&gt;
+&lt;li&gt;整合信息时可能遗漏和不准确&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;method-2&#34;&gt;Method
+&lt;/h3&gt;&lt;p&gt;通过强化学习GRPO进行训练&lt;/p&gt;
+&lt;p&gt;数据集采用Subject200K以及合成数据（扩散模型生成）&lt;/p&gt;
+&lt;p&gt;提供了大量同一物体在不同光照、姿态下的多样化视觉特征&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/personalization-survey/assets/image-20251221154116222.png&#34;
+	width=&#34;1680&#34;
+	height=&#34;425&#34;
+	srcset=&#34;https://example.com/p/personalization-survey/assets/image-20251221154116222_hu_7399cdb17f748286.png 480w, https://example.com/p/personalization-survey/assets/image-20251221154116222_hu_539093feff2888ae.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;395&#34;
+		data-flex-basis=&#34;948px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;oct---object-consistency-tuning&#34;&gt;OCT - Object Consistency Tuning
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;构造正负图像对
+&lt;ul&gt;
+&lt;li&gt;正例：图像对包含相同对象&lt;/li&gt;
+&lt;li&gt;负例：图像对包含不同对象&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;模型回答：图像A是否包含图像B的同一个物体？
+&lt;ul&gt;
+&lt;li&gt;正例需要回答Yes&lt;/li&gt;
+&lt;li&gt;负例需要回答No&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;vlt---visual-localization-tuning&#34;&gt;VLT - Visual Localization Tuning
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;模型根据指令，预测指定物体的边界框&lt;/li&gt;
+&lt;li&gt;若IoU大于等于0.5，给出对应奖励&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;ict---identity-consistency-tuning&#34;&gt;ICT - Identity Consistency Tuning
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;要求模型生成一段描述，并且需要包含正确的个性化标签，如&lt;code&gt;&amp;lt;name&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;若场景中有m个，模型提到了n个，则获得&lt;code&gt;n/m&lt;/code&gt;的奖励&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;为了避免模型通过生成 &lt;code&gt;This is &amp;lt;name&amp;gt;&lt;/code&gt; 这种无意义的简短废话刷分&lt;/p&gt;
+&lt;p&gt;要求模型至少输出100个token&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;preferthinker-reasoning-based-personalized-image-preference-assessment&#34;&gt;PreferThinker: Reasoning-based Personalized Image Preference Assessment
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/pdf/2511.00609&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PreferThinker: Reasoning-based Personalized Image Preference Assessment&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;intro-3&#34;&gt;Intro
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;任务：仅给少量“喜欢/不喜欢”参考图，判断候选图哪个更合用户口味
+&lt;ul&gt;
+&lt;li&gt;个性化数据极其稀缺&lt;/li&gt;
+&lt;li&gt;个人的喜好往往是多维度、复杂、难以描述的，无法用一个数值描述&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;method-3&#34;&gt;Method
+&lt;/h3&gt;&lt;p&gt;个体偏好常涉及多维度视觉要素（如艺术风格、颜色、媒介、饱和度、细节等）&lt;/p&gt;
+&lt;p&gt;远超“文本-图像对齐”或“美观度”等通用偏好所能刻画&lt;/p&gt;
+&lt;p&gt;但是组成“&lt;strong&gt;复杂口味&lt;/strong&gt;”的基本组成要素，多多少少是能够列举出来的、通用的&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;要么喜欢“高饱和度”，要么喜欢“低饱和度”&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;paper根据参考图像，构建用户画像&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;喜欢：……&lt;/li&gt;
+&lt;li&gt;讨厌：……&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;按照画像进行评估与推理&lt;/p&gt;
+&lt;h4 id=&#34;profile&#34;&gt;Profile
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;从Lexica中提取prompt中频率最高、且对生成结果影响最大的视觉元素（15个）&lt;/li&gt;
+&lt;li&gt;找了 100 个受试者进行投票，让大家选出“最能代表个人偏好”的元素（缩小到5个）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;结果：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Art Style（艺术风格）： 比如 Anime, Realistic, Surrealism。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Color（颜色）： 比如 Pastel, Neon, Grayscale。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Art Medium（艺术媒介）： 比如 Oil Painting, Digital Art, Sketch。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Saturation（饱和度）： 比如 Vibrant, Muted。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Detail（细节度）： 比如 Intricate, Minimalist。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Profile将基于这五个维度进行描述，但问题的关键是如何用丰富的词汇描述准这五个维度&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;针对每一个维度，都收集了大量的细粒度描述词&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;对于颜色，不能只是红、蓝……&lt;/p&gt;
+&lt;p&gt;应该包含“Blush Pink”（腮红粉）、“Electric Lime”（电光绿）等具体词汇&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/personalization-survey/assets/image-20251223191929206.png&#34;
+	width=&#34;2361&#34;
+	height=&#34;537&#34;
+	srcset=&#34;https://example.com/p/personalization-survey/assets/image-20251223191929206_hu_94642b68d864d90a.png 480w, https://example.com/p/personalization-survey/assets/image-20251223191929206_hu_9ef4b02375216792.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;439&#34;
+		data-flex-basis=&#34;1055px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;dataset&#34;&gt;Dataset
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;模拟8w个用户&lt;/li&gt;
+&lt;li&gt;随机采样五个视觉偏好要素，为每个用户分配其&lt;strong&gt;视觉偏好画像&lt;/strong&gt;与&lt;strong&gt;非偏好画像&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;真实用户可能同时具有多种偏好：为部分用户分配了&lt;strong&gt;多个偏好画像&lt;/strong&gt;（2w）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;基于profile，结合从 Lexica/COCO 等数据集里选的初始 Prompt（19w条） ，扔给 Text-to-Image进行图像生成
+&lt;ul&gt;
+&lt;li&gt;生成一组 &lt;strong&gt;参考图 (Reference Images)&lt;/strong&gt;：代表用户的历史喜好&lt;/li&gt;
+&lt;li&gt;生成两张 &lt;strong&gt;候选图 (Candidate Images)&lt;/strong&gt;：一张符合偏好，一张符合“厌恶偏好”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/personalization-survey/assets/image-20251223194930780.png&#34;
+	width=&#34;2199&#34;
+	height=&#34;646&#34;
+	srcset=&#34;https://example.com/p/personalization-survey/assets/image-20251223194930780_hu_4d5eef3832252e38.png 480w, https://example.com/p/personalization-survey/assets/image-20251223194930780_hu_1b626db433b8d0fc.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;340&#34;
+		data-flex-basis=&#34;816px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;使用Claude3.7做&lt;strong&gt;先预测后评价&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入（相当于直接给了答案）
+&lt;ul&gt;
+&lt;li&gt;参考图（喜欢的 &amp;amp; 不喜欢的）&lt;/li&gt;
+&lt;li&gt;两张候选图&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;输出：（需要CoT）
+&lt;ul&gt;
+&lt;li&gt;预测：基于参考图，把用户的画像（Art Style: xxx, Color: xxx）写出来&lt;/li&gt;
+&lt;li&gt;评估：对比两张候选图，在 5 个维度上分别进行解释和打分&lt;/li&gt;
+&lt;li&gt;作答：给出A和B哪个更喜欢&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对数据进行清洗：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;偏好画像预测与真实标签明显不匹配的样本&lt;/li&gt;
+&lt;li&gt;结论与推理过程矛盾的样本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;最后得到：60,000 名用户样本&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/personalization-survey/assets/image-20251223195620396.png&#34;
+	width=&#34;2227&#34;
+	height=&#34;478&#34;
+	srcset=&#34;https://example.com/p/personalization-survey/assets/image-20251223195620396_hu_8a28a8d7a69aef5d.png 480w, https://example.com/p/personalization-survey/assets/image-20251223195620396_hu_42f38761ac763757.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;465&#34;
+		data-flex-basis=&#34;1118px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;training&#34;&gt;Training……
+&lt;/h4&gt;&lt;p&gt;pass&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Yo LLaVA Your Personalized Language and Vision Assistant</title>
+        <link>https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/</link>
+        <pubDate>Sat, 13 Dec 2025 21:20:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/</guid>
+        <description>&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.alphaxiv.org/abs/2406.09400&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Yo&amp;rsquo;LLaVA: Your Personalized Language and Vision Assistant | alphaXiv&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;intro&#34;&gt;Intro
+&lt;/h2&gt;&lt;h3 id=&#34;personalization&#34;&gt;Personalization
+&lt;/h3&gt;&lt;p&gt;用户有时候想问的不是&lt;code&gt;我该给一只狗买什么生日礼物&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;而是&lt;code&gt;我该给我的狗买什么生日礼物&lt;/code&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;模型能够&lt;strong&gt;识别、理解并谈论用户特定的概念或对象&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;但是模型一般来说学的都是通用的内容，并不知道用户自身的setting&lt;/p&gt;
+&lt;h3 id=&#34;yollava&#34;&gt;Yo&amp;rsquo;LLaVA
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;给定少量（几张）特定对象的照片，模型学会将该对象嵌入为一组&lt;strong&gt;潜在 Token（Latent Tokens）&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;比单纯的文本提示更加到位&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;contribution&#34;&gt;Contribution
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;防止灾难性遗忘：Yo&amp;rsquo;LLaVA冻结了大部分的预训练参数，只针对一些特殊token&lt;/li&gt;
+&lt;li&gt;捕捉细粒度视觉细节：引入了&lt;strong&gt;困难负样本挖掘（Hard Negative Mining）&lt;/strong&gt;，即使用视觉上相似但并非该对象的图片进行训练，迫使模型学习更具辨别力的特征&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;abstract&#34;&gt;Abstract
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;读入：五张个性化subject的图片&lt;/li&gt;
+&lt;li&gt;构造对比学习：检索clip相似的若干图片和随机图片，进行recognition训练（带图）&lt;/li&gt;
+&lt;li&gt;构造对话文本数据：使用LLaVA对图片进行描述，生成通用对话文本，进行纯文本训练&lt;/li&gt;
+&lt;li&gt;输出：能够识别图片中的subject和直接描述subject的模型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;related-work&#34;&gt;Related Work
+&lt;/h2&gt;&lt;h3 id=&#34;soft-prompt-tuning&#34;&gt;Soft Prompt Tuning
+&lt;/h3&gt;&lt;p&gt;Soft Prompt Tuning 并不修改预训练模型的核心权重，而是通过在&lt;strong&gt;输入端&lt;/strong&gt;引入一组&lt;strong&gt;可学习的Tokens&lt;/strong&gt;来进行优化&lt;/p&gt;
+&lt;h2 id=&#34;method&#34;&gt;Method
+&lt;/h2&gt;&lt;p&gt;Yo&amp;rsquo;LLaVA的目标是只给若干张subjec的图片，能够做到&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通过视觉识别subject
+&lt;ul&gt;
+&lt;li&gt;whether &lt;sks&gt; is in a photo or not&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;支持关于subject的VQA任务
+&lt;ul&gt;
+&lt;li&gt;ask about &lt;code&gt;&amp;lt;sks&amp;gt;&lt;/code&gt;’s location&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;缺乏图片输入的情况下，在纯文本环境中回答subject的视觉特征
+&lt;ul&gt;
+&lt;li&gt;ask questions about intrinsic attributes of &lt;code&gt;&amp;lt;sks&amp;gt;&lt;/code&gt; like its color, shape&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;personalizing-the-subject-as-a-learnable-prompt&#34;&gt;Personalizing the Subject as a Learnable Prompt
+&lt;/h3&gt;&lt;p&gt;为了识别图片中是否存在特定的subject&lt;/p&gt;
+&lt;p&gt;native的做法是：使用prompt详尽地描述subject的每一个细节，但要么很困难要么做不到&lt;/p&gt;
+&lt;p&gt;需要引入Soft Prompt Tuning，对Prompt层进行学习&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;lt;sks&amp;gt; is &amp;lt;token1&amp;gt;&amp;lt;token2&amp;gt;...&amp;lt;tokenk&amp;gt;. 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Can you recognize &amp;lt;sks&amp;gt; in this photo?
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;只需要增加几个新的token和对应输出权重&lt;/li&gt;
+&lt;li&gt;不需要修改MLMs的预训练权重&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因此，对于参数的变化总结为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输出层增加的参数：最后输出的分类头参数矩阵由$C\times N$扩展到$C\times (N+1)$
+&lt;ul&gt;
+&lt;li&gt;$C$表示上一个hidden feature的维度&lt;/li&gt;
+&lt;li&gt;$N$表示词表维度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;token1&amp;gt;&amp;lt;token2&amp;gt;. . . &amp;lt;tokenk&amp;gt;&lt;/code&gt;Prompt层中的可学习token，以及&lt;code&gt;&amp;lt;sks&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;定义可训练的参数:&lt;/p&gt;
+$$
+\theta = \left\{\text{&lt;sks&gt;, &lt;token1&gt;,...&lt;tokenk&gt;},W_{(:,N+1)}\right\}
+$$&lt;p&gt;
+构造大量对话文本$(I,X_q,X_a)$，分别表示图片、提问、标准回答，进行训练&lt;/p&gt;
+&lt;p&gt;从而让模型学习到新的concept（注意冻结其他参数）&lt;/p&gt;
+&lt;h3 id=&#34;enhancing-recognition-with-hard-negative-mining&#34;&gt;Enhancing Recognition with Hard Negative Mining
+&lt;/h3&gt;&lt;p&gt;对于识别问题，比较简单的训练方式就是询问subject是否在图片中&lt;/p&gt;
+&lt;p&gt;显然不能全是正例，不然会训崩&lt;/p&gt;
+&lt;p&gt;paper从LAION中抽样了100张图片作为负例，混合训练&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251215230809533.png&#34;
+	width=&#34;1208&#34;
+	height=&#34;492&#34;
+	srcset=&#34;https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251215230809533_hu_5319841205a1c781.png 480w, https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251215230809533_hu_1eadf14d5e4847f6.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;245&#34;
+		data-flex-basis=&#34;589px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;同时我们需要避免模型过度泛化&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;subject：yellow + dog&lt;/p&gt;
+&lt;p&gt;model: any yellow animal&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;为了增强训练，paper采用了&lt;strong&gt;hard negative mining&lt;/strong&gt;的方法&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;若subject是一只毛绒狗，则负例应该选择其他不是狗的毛绒动物&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251215231211500.png&#34;
+	width=&#34;700&#34;
+	height=&#34;828&#34;
+	srcset=&#34;https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251215231211500_hu_2eef17c8d9139b2e.png 480w, https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251215231211500_hu_4df7f716972627da.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Hard Negative&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;84&#34;
+		data-flex-basis=&#34;202px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;因此最后训练数据图片的组成为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;100张随机抽取&lt;/li&gt;
+&lt;li&gt;100张通过CLIP计算相似度得到top-m张图（m=100）&lt;/li&gt;
+&lt;li&gt;正样本（5张左右）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;然后paper构造了30条左右的prompt，以不同方式询问与回答：&lt;code&gt;&amp;lt;sks&amp;gt;&lt;/code&gt;在图里吗？&lt;/p&gt;
+&lt;h3 id=&#34;learning-to-engage-in-natural-conversations-about-the-subject&#34;&gt;Learning to Engage in Natural Conversations about the Subject
+&lt;/h3&gt;&lt;p&gt;通过上述算法，模型掌握了识别的能力，但未必掌握了如何描述subject：&lt;code&gt;Describe &amp;lt;sks&amp;gt; in detail.&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;因此需要进一步训练，使得模型能够在对话中熟悉掌握subject的本质特性&lt;/p&gt;
+&lt;p&gt;paper定义了10份通用对话模板，分为&lt;strong&gt;人类&lt;/strong&gt;、&lt;strong&gt;物体&lt;/strong&gt;两种（方便套用任何需要进行个性化训练的subject）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;避免过于细节的问题，例如：subject的尾巴是什么颜色的？&lt;/p&gt;
+&lt;p&gt;显然不是所有物体都有这个特征&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;对于每一张图像，使用LLaVA针对问题生成回答，完成数据集构建&lt;/p&gt;
+&lt;p&gt;为了让模型真实地记住subject的特征，避免模型通过图像泄露得到答案&lt;/p&gt;
+&lt;p&gt;这一阶段训练是&lt;strong&gt;纯文本&lt;/strong&gt;的，只使用问题-答案对进行训练&lt;/p&gt;
+&lt;h2 id=&#34;experiment&#34;&gt;Experiment
+&lt;/h2&gt;&lt;h3 id=&#34;train&#34;&gt;Train
+&lt;/h3&gt;&lt;p&gt;对于单个subject，使用5张图像作为输入，软提示的视角token数量设定为16&lt;/p&gt;
+&lt;p&gt;使用LLaVA-1.5-13B，进行单轮对话训练，GPU选择单卡A6000&lt;/p&gt;
+&lt;h3 id=&#34;dataset&#34;&gt;Dataset
+&lt;/h3&gt;&lt;p&gt;数据集的初始构建由40个subject构成：&lt;code&gt;Person (10), Pets (5), Landmarks (5), Objects (15), and Fiction Characters (5).&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;每个subject含有10-20张图片，切分为训练集和测试集&lt;/p&gt;
+&lt;h3 id=&#34;baselines&#34;&gt;Baselines
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Naive LLaVA&lt;/li&gt;
+&lt;li&gt;LLaVA + Prompt：通过提示词提供subject信息给LLaVA&lt;/li&gt;
+&lt;li&gt;GPT-4V
+&lt;ul&gt;
+&lt;li&gt;+Prompt&lt;/li&gt;
+&lt;li&gt;+Images（GPT-4V支持多轮图像对话，因此可以提供多个subject的图片，单张图片1k token）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;图片信息显著比文本提示更加丰富，因此GPT-4V+Images应当是性能的理论上界（提供了充足的描述）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;文本提示的获得方法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;人工（约 16 token）&lt;/li&gt;
+&lt;li&gt;模型生成&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为了方便对比，准备了两组文本提示词：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;拼接人工+模型生成（约1.3k的token）&lt;/li&gt;
+&lt;li&gt;模型再总结（约16 token）&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;results&#34;&gt;Results
+&lt;/h3&gt;&lt;h4 id=&#34;recognition-ability&#34;&gt;Recognition Ability
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;40 个主体，每个主体有 5 到 10 张包含该对应主体的test图像&lt;/li&gt;
+&lt;li&gt;对于每个主体，其所有的测试图像均作为&lt;strong&gt;正样本&lt;/strong&gt;，而来自其余 39 个类别的测试图像则作为&lt;strong&gt;负样本&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;总共有 333 个正向测试样本和 13,320 个负向测试样本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;实验提供图像+问题&lt;code&gt;Can you see if &amp;lt;sks&amp;gt; is in this photo? Answer with a single word or phrase.&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251217091440247.png&#34;
+	width=&#34;2038&#34;
+	height=&#34;974&#34;
+	srcset=&#34;https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251217091440247_hu_2bcbcc9cf4482e3d.png 480w, https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251217091440247_hu_5bf7089a10cc7438.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;results&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;209&#34;
+		data-flex-basis=&#34;502px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Weighted是正负样本准确率的均值&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;过长的描述会对性能产生负面影响（即使用 1.3k 个 token 仅达到 0.650），可能描述了多余内容&lt;/li&gt;
+&lt;li&gt;给出的参考图像越多，性能越好&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251217091828473.png&#34;
+	width=&#34;765&#34;
+	height=&#34;530&#34;
+	srcset=&#34;https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251217091828473_hu_7f4e43661a201c7f.png 480w, https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251217091828473_hu_ed1a2e03807f7567.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;144&#34;
+		data-flex-basis=&#34;346px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;question-answering&#34;&gt;Question Answering
+&lt;/h4&gt;&lt;p&gt;准备了多道A或者B的选择题&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;171道视觉（基于图片提问）&lt;/li&gt;
+&lt;li&gt;400纯文本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;comparison-with-myvlm&#34;&gt;Comparison with MyVLM
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251217092656075.png&#34;
+	width=&#34;2051&#34;
+	height=&#34;414&#34;
+	srcset=&#34;https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251217092656075_hu_faca1316d356e695.png 480w, https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251217092656075_hu_eccb22db9d4a8924.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;495&#34;
+		data-flex-basis=&#34;1188px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;ablation-studies&#34;&gt;Ablation Studies
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251217093115393.png&#34;
+	width=&#34;2146&#34;
+	height=&#34;869&#34;
+	srcset=&#34;https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251217093115393_hu_f0cefe64659a01c9.png 480w, https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251217093115393_hu_25314fe91eb4172e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20251217093115393&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;246&#34;
+		data-flex-basis=&#34;592px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;对Prompt的可学习token长度的消融：越长越好，为了均衡性能，选择16&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;对subject传入的图像数的消融：越多越好，选择5&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;数据集构建消融&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;纯LLaVA：
+&lt;ul&gt;
+&lt;li&gt;识别能力随机&lt;/li&gt;
+&lt;li&gt;描述能力完全不行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;构造识别数据：&lt;code&gt;&amp;lt;sks&amp;gt;&lt;/code&gt;是否在图中？
+&lt;ul&gt;
+&lt;li&gt;识别能力提升&lt;/li&gt;
+&lt;li&gt;描述能力完全不行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;构造文本对话数据
+&lt;ul&gt;
+&lt;li&gt;识别能力略微提升&lt;/li&gt;
+&lt;li&gt;描述能力具备&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;构造Hard Negative样本
+&lt;ul&gt;
+&lt;li&gt;识别能力显著提升&lt;/li&gt;
+&lt;li&gt;描述能力具备&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251217154719910.png&#34;
+	width=&#34;1610&#34;
+	height=&#34;344&#34;
+	srcset=&#34;https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251217154719910_hu_cc43ccd0a36ec226.png 480w, https://example.com/p/yo-llava-your-personalized-language-and-vision-assistant/assets/image-20251217154719910_hu_baaee4f1f0248f3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;数据集消融&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;468&#34;
+		data-flex-basis=&#34;1123px&#34;
+	
+&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

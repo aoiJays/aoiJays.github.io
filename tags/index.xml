@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Tags on BiribiriBird</title>
+        <link>https://example.com/tags/</link>
+        <description>Recent content in Tags on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Fri, 16 Jan 2026 21:55:42 +0800</lastBuildDate><atom:link href="https://example.com/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>VsCode</title>
+        <link>https://example.com/tags/vscode/</link>
+        <pubDate>Fri, 16 Jan 2026 21:55:42 +0800</pubDate>
+        
+        <guid>https://example.com/tags/vscode/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>多模态</title>
+        <link>https://example.com/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/</link>
+        <pubDate>Sat, 13 Dec 2025 21:20:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>个性化</title>
+        <link>https://example.com/tags/%E4%B8%AA%E6%80%A7%E5%8C%96/</link>
+        <pubDate>Sat, 13 Dec 2025 21:20:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/%E4%B8%AA%E6%80%A7%E5%8C%96/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>DLM</title>
+        <link>https://example.com/tags/dlm/</link>
+        <pubDate>Fri, 21 Nov 2025 15:36:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/dlm/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Transformer</title>
+        <link>https://example.com/tags/transformer/</link>
+        <pubDate>Fri, 14 Nov 2025 20:15:32 +0800</pubDate>
+        
+        <guid>https://example.com/tags/transformer/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Survey</title>
+        <link>https://example.com/tags/survey/</link>
+        <pubDate>Thu, 13 Nov 2025 12:56:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/survey/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>LLaDA</title>
+        <link>https://example.com/tags/llada/</link>
+        <pubDate>Tue, 11 Nov 2025 13:54:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/llada/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>SGD</title>
+        <link>https://example.com/tags/sgd/</link>
+        <pubDate>Tue, 04 Nov 2025 22:53:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/sgd/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>强化学习</title>
+        <link>https://example.com/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/</link>
+        <pubDate>Tue, 04 Nov 2025 22:53:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Monte Carlo</title>
+        <link>https://example.com/tags/monte-carlo/</link>
+        <pubDate>Mon, 03 Nov 2025 01:10:34 +0800</pubDate>
+        
+        <guid>https://example.com/tags/monte-carlo/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Policy Iteration</title>
+        <link>https://example.com/tags/policy-iteration/</link>
+        <pubDate>Fri, 31 Oct 2025 14:05:34 +0800</pubDate>
+        
+        <guid>https://example.com/tags/policy-iteration/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Value Iteration</title>
+        <link>https://example.com/tags/value-iteration/</link>
+        <pubDate>Fri, 31 Oct 2025 14:05:34 +0800</pubDate>
+        
+        <guid>https://example.com/tags/value-iteration/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Bellman Optimality Equation</title>
+        <link>https://example.com/tags/bellman-optimality-equation/</link>
+        <pubDate>Thu, 30 Oct 2025 23:38:34 +0800</pubDate>
+        
+        <guid>https://example.com/tags/bellman-optimality-equation/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Bellman Equation</title>
+        <link>https://example.com/tags/bellman-equation/</link>
+        <pubDate>Thu, 30 Oct 2025 20:25:34 +0800</pubDate>
+        
+        <guid>https://example.com/tags/bellman-equation/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>DLM&#34;</title>
+        <link>https://example.com/tags/dlm/</link>
+        <pubDate>Fri, 17 Oct 2025 13:39:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/dlm/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>MDLM</title>
+        <link>https://example.com/tags/mdlm/</link>
+        <pubDate>Fri, 17 Oct 2025 13:39:00 +0800</pubDate>
+        
+        <guid>https://example.com/tags/mdlm/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>WSL</title>
+        <link>https://example.com/tags/wsl/</link>
+        <pubDate>Thu, 16 Oct 2025 21:55:42 +0800</pubDate>
+        
+        <guid>https://example.com/tags/wsl/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>LaTeX</title>
+        <link>https://example.com/tags/latex/</link>
+        <pubDate>Sun, 12 Oct 2025 01:20:42 +0800</pubDate>
+        
+        <guid>https://example.com/tags/latex/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Python</title>
+        <link>https://example.com/tags/python/</link>
+        <pubDate>Thu, 02 Oct 2025 16:20:42 +0800</pubDate>
+        
+        <guid>https://example.com/tags/python/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Uv</title>
+        <link>https://example.com/tags/uv/</link>
+        <pubDate>Thu, 02 Oct 2025 16:20:42 +0800</pubDate>
+        
+        <guid>https://example.com/tags/uv/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Diffusion</title>
+        <link>https://example.com/tags/diffusion/</link>
+        <pubDate>Mon, 22 Sep 2025 20:32:34 +0800</pubDate>
+        
+        <guid>https://example.com/tags/diffusion/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Colab</title>
+        <link>https://example.com/tags/colab/</link>
+        <pubDate>Mon, 08 Sep 2025 16:18:42 +0800</pubDate>
+        
+        <guid>https://example.com/tags/colab/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Ssh</title>
+        <link>https://example.com/tags/ssh/</link>
+        <pubDate>Mon, 08 Sep 2025 16:18:42 +0800</pubDate>
+        
+        <guid>https://example.com/tags/ssh/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>LLM</title>
+        <link>https://example.com/tags/llm/</link>
+        <pubDate>Sat, 06 Sep 2025 20:45:55 +0800</pubDate>
+        
+        <guid>https://example.com/tags/llm/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Agent</title>
+        <link>https://example.com/tags/agent/</link>
+        <pubDate>Wed, 03 Sep 2025 17:13:34 +0800</pubDate>
+        
+        <guid>https://example.com/tags/agent/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Test-Time Scaled</title>
+        <link>https://example.com/tags/test-time-scaled/</link>
+        <pubDate>Tue, 02 Sep 2025 20:46:34 +0800</pubDate>
+        
+        <guid>https://example.com/tags/test-time-scaled/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>模型蒸馏</title>
+        <link>https://example.com/tags/%E6%A8%A1%E5%9E%8B%E8%92%B8%E9%A6%8F/</link>
+        <pubDate>Thu, 10 Jul 2025 11:16:32 +0800</pubDate>
+        
+        <guid>https://example.com/tags/%E6%A8%A1%E5%9E%8B%E8%92%B8%E9%A6%8F/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>LLM自动标注</title>
+        <link>https://example.com/tags/llm%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8/</link>
+        <pubDate>Sat, 14 Jun 2025 16:35:54 +0800</pubDate>
+        
+        <guid>https://example.com/tags/llm%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>MinHash</title>
+        <link>https://example.com/tags/minhash/</link>
+        <pubDate>Mon, 07 Apr 2025 16:31:31 +0800</pubDate>
+        
+        <guid>https://example.com/tags/minhash/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>N-Gram</title>
+        <link>https://example.com/tags/n-gram/</link>
+        <pubDate>Mon, 07 Apr 2025 16:31:31 +0800</pubDate>
+        
+        <guid>https://example.com/tags/n-gram/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>算法</title>
+        <link>https://example.com/tags/%E7%AE%97%E6%B3%95/</link>
+        <pubDate>Mon, 07 Apr 2025 16:31:31 +0800</pubDate>
+        
+        <guid>https://example.com/tags/%E7%AE%97%E6%B3%95/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>文本去重</title>
+        <link>https://example.com/tags/%E6%96%87%E6%9C%AC%E5%8E%BB%E9%87%8D/</link>
+        <pubDate>Mon, 07 Apr 2025 16:31:31 +0800</pubDate>
+        
+        <guid>https://example.com/tags/%E6%96%87%E6%9C%AC%E5%8E%BB%E9%87%8D/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Dataset</title>
+        <link>https://example.com/tags/dataset/</link>
+        <pubDate>Thu, 03 Apr 2025 15:10:53 +0800</pubDate>
+        
+        <guid>https://example.com/tags/dataset/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Paper</title>
+        <link>https://example.com/tags/paper/</link>
+        <pubDate>Thu, 03 Apr 2025 15:10:53 +0800</pubDate>
+        
+        <guid>https://example.com/tags/paper/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Reward Model</title>
+        <link>https://example.com/tags/reward-model/</link>
+        <pubDate>Thu, 03 Apr 2025 15:06:24 +0800</pubDate>
+        
+        <guid>https://example.com/tags/reward-model/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Blog</title>
+        <link>https://example.com/tags/blog/</link>
+        <pubDate>Thu, 03 Apr 2025 13:57:51 +0800</pubDate>
+        
+        <guid>https://example.com/tags/blog/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Github</title>
+        <link>https://example.com/tags/github/</link>
+        <pubDate>Thu, 03 Apr 2025 13:57:51 +0800</pubDate>
+        
+        <guid>https://example.com/tags/github/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Hugo</title>
+        <link>https://example.com/tags/hugo/</link>
+        <pubDate>Thu, 03 Apr 2025 13:57:51 +0800</pubDate>
+        
+        <guid>https://example.com/tags/hugo/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>机器学习</title>
+        <link>https://example.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
+        <pubDate>Sun, 11 Aug 2024 18:19:55 +0800</pubDate>
+        
+        <guid>https://example.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>深度学习</title>
+        <link>https://example.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</link>
+        <pubDate>Sun, 11 Aug 2024 18:19:55 +0800</pubDate>
+        
+        <guid>https://example.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Pytorch</title>
+        <link>https://example.com/tags/pytorch/</link>
+        <pubDate>Wed, 29 May 2024 20:46:34 +0800</pubDate>
+        
+        <guid>https://example.com/tags/pytorch/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Cuda</title>
+        <link>https://example.com/tags/cuda/</link>
+        <pubDate>Tue, 02 Apr 2024 20:46:34 +0800</pubDate>
+        
+        <guid>https://example.com/tags/cuda/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>CV</title>
+        <link>https://example.com/tags/cv/</link>
+        <pubDate>Tue, 26 Mar 2024 02:45:55 +0800</pubDate>
+        
+        <guid>https://example.com/tags/cv/</guid>
+        <description></description>
+        </item>
+        
+    </channel>
+</rss>

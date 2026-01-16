@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="LLM生成评估指标，协助标注数据完成Reward模型训练">
+<title>CritiQ 工作文档</title>
+
+<link rel='canonical' href='https://example.com/p/critiq-%E5%B7%A5%E4%BD%9C%E6%96%87%E6%A1%A3/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="CritiQ 工作文档">
+<meta property='og:description' content="LLM生成评估指标，协助标注数据完成Reward模型训练">
+<meta property='og:url' content='https://example.com/p/critiq-%E5%B7%A5%E4%BD%9C%E6%96%87%E6%A1%A3/'>
+<meta property='og:site_name' content='BiribiriBird'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='LLM' /><meta property='article:tag' content='Reward Model' /><meta property='article:published_time' content='2025-04-03T15:06:24&#43;08:00'/><meta property='article:modified_time' content='2025-04-03T15:06:24&#43;08:00'/>
+<meta name="twitter:title" content="CritiQ 工作文档">
+<meta name="twitter:description" content="LLM生成评估指标，协助标注数据完成Reward模型训练">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            localStorage.setItem(colorSchemeKey, "light");
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_bbc58a5457fc2680.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">BiribiriBird</a></h1>
+            <h2 class="site-description">Segmentation fault!</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/498088093'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648787418" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2107" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="2108" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:neworld1111@163.com'
+                        target="_blank"
+                        title="Email"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743649088353" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6924" width="24" height="24"><path d="M874.666667 181.333333H149.333333c-40.533333 0-74.666667 34.133333-74.666666 74.666667v512c0 40.533333 34.133333 74.666667 74.666666 74.666667h725.333334c40.533333 0 74.666667-34.133333 74.666666-74.666667V256c0-40.533333-34.133333-74.666667-74.666666-74.666667z m-725.333334 64h725.333334c6.4 0 10.666667 4.266667 10.666666 10.666667v25.6L512 516.266667l-373.333333-234.666667V256c0-6.4 4.266667-10.666667 10.666666-10.666667z m725.333334 533.333334H149.333333c-6.4 0-10.666667-4.266667-10.666666-10.666667V356.266667l356.266666 224c4.266667 4.266667 10.666667 4.266667 17.066667 4.266666s12.8-2.133333 17.066667-4.266666l356.266666-224V768c0 6.4-4.266667 10.666667-10.666666 10.666667z" fill="#666666" p-id="6925"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/aoiJays'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648734849" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5802" width="24" height="24"><path d="M511.957333 21.333333C241.024 21.333333 21.333333 240.981333 21.333333 512c0 216.832 140.544 400.725333 335.573334 465.664 24.490667 4.394667 32.256-10.069333 32.256-23.082667 0-11.690667 0.256-44.245333 0-85.205333-136.448 29.610667-164.736-64.64-164.736-64.64-22.314667-56.704-54.4-71.765333-54.4-71.765333-44.586667-30.464 3.285333-29.824 3.285333-29.824 49.194667 3.413333 75.178667 50.517333 75.178667 50.517333 43.776 75.008 114.816 53.333333 142.762666 40.789333 4.522667-31.658667 17.152-53.376 31.189334-65.536-108.970667-12.458667-223.488-54.485333-223.488-242.602666 0-53.546667 19.114667-97.322667 50.517333-131.669334-5.034667-12.330667-21.930667-62.293333 4.778667-129.834666 0 0 41.258667-13.184 134.912 50.346666a469.802667 469.802667 0 0 1 122.88-16.554666c41.642667 0.213333 83.626667 5.632 122.88 16.554666 93.653333-63.488 134.784-50.346667 134.784-50.346666 26.752 67.541333 9.898667 117.504 4.864 129.834666 31.402667 34.346667 50.474667 78.122667 50.474666 131.669334 0 188.586667-114.730667 230.016-224.042666 242.090666 17.578667 15.232 33.578667 44.672 33.578666 90.453334v135.850666c0 13.141333 7.936 27.605333 32.853334 22.869334C862.250667 912.597333 1002.666667 728.746667 1002.666667 512 1002.666667 240.981333 783.018667 21.333333 511.957333 21.333333z" p-id="5803" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About me</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/experience/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Experience</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friend/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>Friend</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#目标">目标</a></li>
+    <li><a href="#训练数据准备">训练数据准备</a>
+      <ol>
+        <li><a href="#knowledge-base">Knowledge Base</a></li>
+      </ol>
+    </li>
+    <li><a href="#training">Training</a>
+      <ol>
+        <li><a href="#环境">环境</a></li>
+        <li><a href="#数据集">数据集</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%AF%AD%E6%96%99%E8%B4%A8%E9%87%8F%E6%A3%80%E6%B5%8B/" >
+                语料质量检测
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/critiq-%E5%B7%A5%E4%BD%9C%E6%96%87%E6%A1%A3/">CritiQ 工作文档</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            LLM生成评估指标，协助标注数据完成Reward模型训练
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Apr 03, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="critiq-记录">CritiQ 记录
+</h1><p>[TOC]</p>
+<h2 id="目标">目标
+</h2><ul>
+<li>训练模型，由模型判断语料文本数据的质量（高/低），完成质量检测，帮助后续模型训练</li>
+</ul>
+<h2 id="训练数据准备">训练数据准备
+</h2><ul>
+<li>至少需要300正例+300负例，希望是人类专家的标注</li>
+</ul>
+<p>在训练数据不足1w的情况，使用CritiQ去做数据标注</p>
+<blockquote>
+<p>传统训练都是训练集&gt;测试集</p>
+<p>这里是通过挖掘人类偏好，测试集合远大于训练集，使用训练集挖掘出来的指标，对测试集进行标注</p></blockquote>
+<p>当训练数据超过1w的时候，可以直接跳过这个部分去做分类模型训练</p>
+<h3 id="knowledge-base">Knowledge Base
+</h3><p>对于数据质量评估，如果完全交由模型生成评估指标，从各个角度来说都很水</p>
+<p>参考：<a class="link" href="https://arxiv.org/abs/2502.19279"  target="_blank" rel="noopener"
+    >2502.19279] CritiQ: Mining Data Quality Criteria from Human Preferences</a></p>
+<p>workflow：</p>
+<ul>
+<li>从huggingface的数据集中寻找参考论文列表</li>
+<li>从arxiv能找到的论文中爬取摘要</li>
+<li>通过制作agent分析摘要，判断论文中是否有关于数据集评价等内容</li>
+<li>提取评估指标</li>
+</ul>
+<p>最后论文作者得到了一个370+数量的指标</p>
+<p>根据不同的待测数据集，跑一遍，选择准确度较高的</p>
+<p>数量不够让模型生成</p>
+<h2 id="training">Training
+</h2><p><a class="link" href="https://github.com/KYLN24/CritiQ"  target="_blank" rel="noopener"
+    >github</a></p>
+<h3 id="环境">环境
+</h3><blockquote>
+<p>cuda 12.4 + torch 2.6 + Python3.10</p></blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">conda create -n critiq_env <span class="nv">python</span><span class="o">=</span>3.10 -y
+</span></span><span class="line"><span class="cl">conda activate critiq_env
+</span></span><span class="line"><span class="cl">pip3 install torch torchvision torchaudio
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&#34;import torch; print(&#39;PyTorch版本:&#39;, torch.__version__); print(&#39;GPU可用:&#39;, torch.cuda.is_available()); print(&#39;GPU名称:&#39;, torch.cuda.get_device_name(0) if torch.cuda.is_available() else &#39;无可用GPU&#39;)&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git clone https://github.com/KYLN24/CritiQ
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> CritiQ
+</span></span><span class="line"><span class="cl">pip install -e <span class="s2">&#34;.[vllm,train]&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>之后如果网络不太行，换一个源：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl"><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&#34;HF_ENDPOINT&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&#34;https://hf-mirror.com&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="数据集">数据集
+</h3><p>Pair Data格式如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">PairData</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span><span class="p">:</span> <span class="nb">str</span>
+</span></span><span class="line"><span class="cl">    <span class="n">B</span><span class="p">:</span> <span class="nb">str</span>
+</span></span><span class="line"><span class="cl">    <span class="n">answer</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&#34;A&#34;</span><span class="p">,</span> <span class="s2">&#34;B&#34;</span><span class="p">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>训练数据格式（保存为<code>train_reward.jsonl</code>）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;A&#34;</span><span class="p">:</span> <span class="s2">&#34;金属的导热系数显著高于木材（铁约80 W/m·K vs 木材约0.1 W/m·K），根据傅里叶定律q=-k∇T，更高的导热系数导致更快的热传导速率，使手部热量迅速流失。&#34;</span><span class="p">,</span><span class="nt">&#34;B&#34;</span><span class="p">:</span> <span class="s2">&#34;金属传热特别快，能迅速把你手上的热量带走，所以摸起来凉；木头传热慢，热量不容易流失，感觉就没那么凉。就像夏天坐金属凳子比坐木凳子感觉更凉快。&#34;</span><span class="p">,</span><span class="nt">&#34;answer&#34;</span><span class="p">:</span> <span class="s2">&#34;B&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;A&#34;</span><span class="p">:</span> <span class="s2">&#34;由牛顿第一定律可知，物体保持原有运动状态。当汽车以加速度a减速时，乘客因惯性保持原速v，直到受到座椅摩擦力f=μN的作用才减速。&#34;</span><span class="p">,</span><span class="nt">&#34;B&#34;</span><span class="p">:</span> <span class="s2">&#34;因为你的身体想保持原来的运动状态。车停了，但你的身体还在往前，所以会往前倾。就像跑步时突然停下，身体还会往前冲一样。&#34;</span><span class="p">,</span><span class="nt">&#34;answer&#34;</span><span class="p">:</span> <span class="s2">&#34;B&#34;</span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Reward模型输入格式（保存为<code>predict_reward.jsonl</code>）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;金属的导热系数显著高于木材（铁约80 W/m·K vs 木材约0.1 W/m·K），根据傅里叶定律q=-k∇T，更高的导热系数导致更快的热传导速率，使手部热量迅速流失。&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;金属传热特别快，能迅速把你手上的热量带走，所以摸起来凉；木头传热慢，热量不容易流失，感觉就没那么凉。就像夏天坐金属凳子比坐木凳子感觉更凉快。&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;由牛顿第一定律可知，物体保持原有运动状态。当汽车以加速度a减速时，乘客因惯性保持原速v，直到受到座椅摩擦力f=μN的作用才减速。&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;因为你的身体想保持原来的运动状态。车停了，但你的身体还在往前，所以会往前倾。就像跑步时突然停下，身体还会往前冲一样。&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;光从光密介质（水，n=1.33）进入光疏介质（空气，n≈1）时发生折射，根据斯涅尔定律n₁sinθ₁=n₂sinθ₂，折射角大于入射角导致视觉偏移。&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;因为光从水进入空气时会拐弯，让我们看到的位置和实际位置不一样，所以筷子看起来像是弯的。就像把吸管插进水里也会看起来弯折一样。&#34;</span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>一共准备了137条数据：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl">请生成100个初中物理现象问题与解答，要求：  
+</span></span><span class="line"><span class="cl">1. 每个问题包含两种回答：  
+</span></span><span class="line"><span class="cl">   - **A**：专业严谨的物理解释（含公式、原理名称、数据等）  
+</span></span><span class="line"><span class="cl">   - **B**：通俗易懂的讲解（用比喻、生活实例，语言口语化）  
+</span></span><span class="line"><span class="cl">   - **answer**：固定标注&#34;B&#34;  
+</span></span><span class="line"><span class="cl">2. 数据格式：每行一个完整JSON对象，严格遵循以下结构：  
+</span></span><span class="line"><span class="cl">   {&#34;A&#34;: &#34;...&#34;, &#34;B&#34;: &#34;...&#34;, &#34;answer&#34;: &#34;B&#34;}  
+</span></span><span class="line"><span class="cl">3. 内容要求：  
+</span></span><span class="line"><span class="cl">   - 物理现象需贴近日常生活（如热学、光学、力学等）  
+</span></span><span class="line"><span class="cl">   - B回答必须正确且易于理解，避免专业术语  
+</span></span><span class="line"><span class="cl">   - 示例类比需直观（如&#34;像磁铁吸住&#34;&#34;像气球爆炸&#34;）  
+</span></span><span class="line"><span class="cl">4. 输出：直接给出结果，无需注释，禁止使用```包裹  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">示例格式：  
+</span></span><span class="line"><span class="cl">{&#34;A&#34;: &#34;金属导热系数较高（铁80 W/m·K），根据傅里叶定律q=-k∇T...&#34;, &#34;B&#34;: &#34;金属像‘传热快手’，迅速带走热量，所以摸起来更凉&#34;, &#34;answer&#34;: &#34;B&#34;}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>由模型生成</p>
+<p>先做一个预测：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python ./critiq/scripts/reward_predict.py --model Qwen/Qwen2.5-1.5B-Instruct --data ./data/predict_reward.jsonl --output_dir ./output
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出结果在<code>output</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;金属的导热系数显著高于木材（铁约80 W/m·K vs 木材约0.1 W/m·K），根据傅里叶定律q=-k∇T，更高的导热系数导致更快的热传导速率，使手部热量迅速流失。&#34;</span><span class="p">,</span> <span class="nt">&#34;reward&#34;</span><span class="p">:</span> <span class="mf">0.9465966820716858</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;金属传热特别快，能迅速把你手上的热量带走，所以摸起来凉；木头传热慢，热量不容易流失，感觉就没那么凉。就像夏天坐金属凳子比坐木凳子感觉更凉快。&#34;</span><span class="p">,</span> <span class="nt">&#34;reward&#34;</span><span class="p">:</span> <span class="mf">0.9046503901481628</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;由牛顿第一定律可知，物体保持原有运动状态。当汽车以加速度a减速时，乘客因惯性保持原速v，直到受到座椅摩擦力f=μN的作用才减速。&#34;</span><span class="p">,</span> <span class="nt">&#34;reward&#34;</span><span class="p">:</span> <span class="mf">0.9736446738243103</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;因为你的身体想保持原来的运动状态。车停了，但你的身体还在往前，所以会往前倾。就像跑步时突然停下，身体还会往前冲一样。&#34;</span><span class="p">,</span> <span class="nt">&#34;reward&#34;</span><span class="p">:</span> <span class="mf">0.9664104580879211</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;光从光密介质（水，n=1.33）进入光疏介质（空气，n≈1）时发生折射，根据斯涅尔定律n₁sinθ₁=n₂sinθ₂，折射角大于入射角导致视觉偏移。&#34;</span><span class="p">,</span> <span class="nt">&#34;reward&#34;</span><span class="p">:</span> <span class="mf">0.9532749652862549</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;因为光从水进入空气时会拐弯，让我们看到的位置和实际位置不一样，所以筷子看起来像是弯的。就像把吸管插进水里也会看起来弯折一样。&#34;</span><span class="p">,</span> <span class="nt">&#34;reward&#34;</span><span class="p">:</span> <span class="mf">0.9845753908157349</span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>给的分数都很高，因为两种风格的文本质量都不低</p>
+<p>为了让模型出现人类的偏好，我们开始训练一下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">python ./critiq/scripts/train_reward.py --data ./data/train_reward.jsonl --eval_steps 40
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>eval_steps</code>一定要开大一点……原代码是1，每一步保存一个模型，磁盘炸的很快</p>
+<p>训练的模型保存路径：<code>&lt;output_dir&gt;/&lt;job_name&gt;</code></p>
+<p>我这里是<code>./output/tmp</code></p>
+<p>再跑一下预测：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python ./critiq/scripts/reward_predict.py --model ./output/tmp/checkpoint-109 --data ./data/predict_reward.jsonl --output_dir ./output
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>还没fixed的bug：</p>
+<p>predict不知道为什么给的结果永远是：0.9以上</p>
+<p>我直接修改了train.py，训练完直接跑预测，结果是对的（</p></blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;突然关水龙头像‘管道撞车’，水流‘刹车不及’撞出巨响&#34;</span><span class="p">,</span> <span class="nt">&#34;reward&#34;</span><span class="p">:</span> <span class="mf">0.9999999586005831</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;磁致伸缩ΔL/L≈10^-5（镍），逆效应用于超声换能器&#34;</span><span class="p">,</span> <span class="nt">&#34;reward&#34;</span><span class="p">:</span> <span class="mf">2.2827974365423323e-05</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;磁致伸缩材料像‘会呼吸的磁铁’，磁场一变就‘伸缩’&#34;</span><span class="p">,</span> <span class="nt">&#34;reward&#34;</span><span class="p">:</span> <span class="mf">0.9999999123574378</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;防晒霜氧化锌散射UV，粒径d≈20 nm最优&#34;</span><span class="p">,</span> <span class="nt">&#34;reward&#34;</span><span class="p">:</span> <span class="mf">1.568953403843032e-05</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;物理防晒像‘纳米镜子’，把紫外线‘弹弹球’般反射&#34;</span><span class="p">,</span> <span class="nt">&#34;reward&#34;</span><span class="p">:</span> <span class="mf">0.9999999918479713</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;橡皮船浮力F=ρgV，PVC材料ρ≈1.4 g/cm³&#34;</span><span class="p">,</span> <span class="nt">&#34;reward&#34;</span><span class="p">:</span> <span class="mf">1.0129980850990629e-05</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;充气船像‘塑料泡泡’，空气‘内胆’让它漂水面&#34;</span><span class="p">,</span> <span class="nt">&#34;reward&#34;</span><span class="p">:</span> <span class="mf">0.9999985406223194</span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/llm/">LLM</a>
+        
+            <a href="/tags/reward-model/">Reward Model</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/fineweb-edu-chinese%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">FineWeb-Edu-Chinese数据集论文记录</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/fineweb%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AE%BA%E6%96%87%E8%AE%B0%E5%BD%95/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">FineWeb数据集论文记录</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Policy Iteration on BiribiriBird</title>
+        <link>https://example.com/tags/policy-iteration/</link>
+        <description>Recent content in Policy Iteration on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Fri, 31 Oct 2025 14:05:34 +0800</lastBuildDate><atom:link href="https://example.com/tags/policy-iteration/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>强化学习的数学原理 · Chap4 · Value Iteration and Policy Iteration</title>
+        <link>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/</link>
+        <pubDate>Fri, 31 Oct 2025 14:05:34 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1sd4y167NS&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.bilibili.com/video/BV1sd4y167NS&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;value-iteration&#34;&gt;Value Iteration
+&lt;/h2&gt;&lt;p&gt;基于BOE：&lt;/p&gt;
+$$
+v = f(v) = \max_\pi(r_\pi+\gamma P_\pi v)
+$$&lt;p&gt;
+我们不断做迭代：&lt;/p&gt;
+$$
+v_{k+1} = f(v_k), k=1,2,3,...
+$$&lt;p&gt;
+这个就是&lt;strong&gt;value iteration&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;整个算法可以拆成以下步骤：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Step1：&lt;strong&gt;Policy Update&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+$$
+\pi_{k+1} = \arg\max_\pi (r_\pi+\gamma P_\pi v_k)
+$$&lt;p&gt;
+基于上一步的state value，找出当前最优的策略&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Step2：&lt;strong&gt;Value Update&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+$$
+v_{k+1} = r_{\pi_{k+1}} + \gamma P_{\pi_{k+1}}v_k
+$$&lt;p&gt;基于该策略，更新所有的state value&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;理论上$v_k$不能被称为state value&lt;/p&gt;
+&lt;p&gt;由于所有的state都是在优化过程，因此不能保证所有state都符合贝尔曼公式&lt;/p&gt;
+&lt;p&gt;因此只是一个临时状态&lt;/p&gt;&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;p&gt;从代码实现的角度：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Step0：若$\left| v_k - v_{k-1}\right | &amp;gt; \text{eps}$
+&lt;ul&gt;
+&lt;li&gt;否则结束，说明收敛&lt;/li&gt;
+&lt;li&gt;对所有的state，计算出所有的$q(s,a)$&lt;/li&gt;
+&lt;li&gt;得到$a^*_k(s,a) = \arg \max_a q_k(s,a)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Step1：&lt;/li&gt;
+&lt;/ul&gt;
+$$
+\pi_{k+1}(a|s) = \begin{cases}
+ 1 &amp; \text{ if } a=a^*_k(s) \\
+ 0 &amp; \text{ if } a\neq a^*_k(s)
+\end{cases}
+$$&lt;p&gt;
+这是一个&lt;strong&gt;贪心的策略&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Step2：&lt;/li&gt;
+&lt;/ul&gt;
+$$
+v_{k+1}(s) = \max_a q_k(s,a)
+$$&lt;hr&gt;
+&lt;p&gt;Value Iteration从当前的state value出发，决定了下一个Policy&lt;/p&gt;
+&lt;p&gt;使用新的Policy去更新state value&lt;/p&gt;
+&lt;h2 id=&#34;policy-iteration&#34;&gt;Policy Iteration
+&lt;/h2&gt;&lt;p&gt;与之相比，还有一种迭代方式是以Policy作为基础&lt;/p&gt;
+&lt;p&gt;与Value Iteration不同，我们的出发点是一个初始策略$\pi_0$&lt;/p&gt;
+&lt;p&gt;进行如下迭代：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Step1：Policy Evaluation
+&lt;ul&gt;
+&lt;li&gt;计算基于当前策略$\pi_k$的state value&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+v_{\pi_k} = r_{\pi_k} + \gamma P_{\pi_k} v_{\pi_k}
+$$&lt;blockquote&gt;
+&lt;p&gt;这里的求解依赖于一个迭代的过程&lt;/p&gt;
+&lt;p&gt;因此整个Policy Iteration，内含一个小的迭代&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Step2：Policy Improvement
+&lt;ul&gt;
+&lt;li&gt;基于当前state value，找出最优策略&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+\pi_{k+1} = \arg \max_\pi (r_\pi + \gamma P_\pi v_{\pi_k})
+$$&lt;hr&gt;
+&lt;p&gt;从代码实现的角度&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Step1：$v_{\pi_k}$基于策略$\pi_k$不断迭代，直到$v_{\pi_k}$收敛&lt;/li&gt;
+&lt;li&gt;Step2：基于$v_{\pi_k}$算出所有的$q_{\pi_k}$
+&lt;ul&gt;
+&lt;li&gt;得到$a^*_k(s,a) = \arg \max_a q_k(s,a)$​&lt;/li&gt;
+&lt;li&gt;同样做以下事情：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+\pi_{k+1}(a|s) = \begin{cases}
+ 1 &amp; \text{ if } a=a^*_k(s) \\
+ 0 &amp; \text{ if } a\neq a^*_k(s)
+\end{cases}
+$$&lt;hr&gt;
+&lt;p&gt;策略迭代会出现一个现象：接近终点的策略会先变好&lt;/p&gt;
+&lt;p&gt;因为一开始都是乱七八糟的，接近终点的策略会更先找到方向&lt;/p&gt;
+&lt;h3 id=&#34;truncated-policy-iteration&#34;&gt;Truncated Policy Iteration
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;policy：基于$\pi$进行policy evaluation，得到$v_\pi$，再policy improvement得到新的$\pi$&lt;/li&gt;
+&lt;li&gt;value：基于$v$做policy update更新得到当前最优$\pi$，根据$\pi$做value update得到新的$v$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/assets/image-20251102232322563.png&#34;
+	width=&#34;1123&#34;
+	height=&#34;383&#34;
+	srcset=&#34;https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/assets/image-20251102232322563_hu_95e27971edd8aef.png 480w, https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/assets/image-20251102232322563_hu_19b5b271771fb834.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;293&#34;
+		data-flex-basis=&#34;703px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;对两个算法进行对齐&lt;/p&gt;
+&lt;p&gt;前面说了：Policy Iteration是一个大的迭代包含一个小的迭代过程&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/assets/image-20251102232520153.png&#34;
+	width=&#34;1035&#34;
+	height=&#34;516&#34;
+	srcset=&#34;https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/assets/image-20251102232520153_hu_aa0a2884d994f8cb.png 480w, https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/assets/image-20251102232520153_hu_be811e6b22dd5706.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;200&#34;
+		data-flex-basis=&#34;481px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;而value iteration的第一次迭代得到的$v_1$，&lt;strong&gt;事实上就是Policy iteration小迭代中的第一个中间量&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;我们显然不会在这里进行无穷次的迭代&lt;/p&gt;
+&lt;p&gt;所以这个&lt;strong&gt;迭代次数&lt;/strong&gt;就可以一般化成&lt;strong&gt;Truncated Policy Iteration（截断策略迭代）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;当迭代次数为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1次：value iteration&lt;/li&gt;
+&lt;li&gt;无穷次：policy iteration（因此这个算法不存在）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以Truncated Policy Iteration是两个算法的一般化形式&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/assets/image-20251102232946384.png&#34;
+	width=&#34;523&#34;
+	height=&#34;464&#34;
+	srcset=&#34;https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/assets/image-20251102232946384_hu_13a39a4c8381ed16.png 480w, https://example.com/p/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-chap4-value-iteration-and-policy-iteration/assets/image-20251102232946384_hu_e384f76161ea82cf.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;112&#34;
+		data-flex-basis=&#34;270px&#34;
+	
+&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

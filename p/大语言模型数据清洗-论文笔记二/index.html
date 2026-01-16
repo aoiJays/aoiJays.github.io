@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="The Pile An 800GB Dataset of Diverse Text for Language Modeling">
+<title>大语言模型数据清洗 · 论文笔记（二）</title>
+
+<link rel='canonical' href='https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="大语言模型数据清洗 · 论文笔记（二）">
+<meta property='og:description' content="The Pile An 800GB Dataset of Diverse Text for Language Modeling">
+<meta property='og:url' content='https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/'>
+<meta property='og:site_name' content='BiribiriBird'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='LLM' /><meta property='article:published_time' content='2025-06-06T13:12:32&#43;08:00'/><meta property='article:modified_time' content='2025-06-06T13:12:32&#43;08:00'/>
+<meta name="twitter:title" content="大语言模型数据清洗 · 论文笔记（二）">
+<meta name="twitter:description" content="The Pile An 800GB Dataset of Diverse Text for Language Modeling">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            localStorage.setItem(colorSchemeKey, "light");
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_bbc58a5457fc2680.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">BiribiriBird</a></h1>
+            <h2 class="site-description">Segmentation fault!</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/498088093'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648787418" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2107" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="2108" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:neworld1111@163.com'
+                        target="_blank"
+                        title="Email"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743649088353" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6924" width="24" height="24"><path d="M874.666667 181.333333H149.333333c-40.533333 0-74.666667 34.133333-74.666666 74.666667v512c0 40.533333 34.133333 74.666667 74.666666 74.666667h725.333334c40.533333 0 74.666667-34.133333 74.666666-74.666667V256c0-40.533333-34.133333-74.666667-74.666666-74.666667z m-725.333334 64h725.333334c6.4 0 10.666667 4.266667 10.666666 10.666667v25.6L512 516.266667l-373.333333-234.666667V256c0-6.4 4.266667-10.666667 10.666666-10.666667z m725.333334 533.333334H149.333333c-6.4 0-10.666667-4.266667-10.666666-10.666667V356.266667l356.266666 224c4.266667 4.266667 10.666667 4.266667 17.066667 4.266666s12.8-2.133333 17.066667-4.266666l356.266666-224V768c0 6.4-4.266667 10.666667-10.666666 10.666667z" fill="#666666" p-id="6925"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/aoiJays'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648734849" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5802" width="24" height="24"><path d="M511.957333 21.333333C241.024 21.333333 21.333333 240.981333 21.333333 512c0 216.832 140.544 400.725333 335.573334 465.664 24.490667 4.394667 32.256-10.069333 32.256-23.082667 0-11.690667 0.256-44.245333 0-85.205333-136.448 29.610667-164.736-64.64-164.736-64.64-22.314667-56.704-54.4-71.765333-54.4-71.765333-44.586667-30.464 3.285333-29.824 3.285333-29.824 49.194667 3.413333 75.178667 50.517333 75.178667 50.517333 43.776 75.008 114.816 53.333333 142.762666 40.789333 4.522667-31.658667 17.152-53.376 31.189334-65.536-108.970667-12.458667-223.488-54.485333-223.488-242.602666 0-53.546667 19.114667-97.322667 50.517333-131.669334-5.034667-12.330667-21.930667-62.293333 4.778667-129.834666 0 0 41.258667-13.184 134.912 50.346666a469.802667 469.802667 0 0 1 122.88-16.554666c41.642667 0.213333 83.626667 5.632 122.88 16.554666 93.653333-63.488 134.784-50.346667 134.784-50.346666 26.752 67.541333 9.898667 117.504 4.864 129.834666 31.402667 34.346667 50.474667 78.122667 50.474666 131.669334 0 188.586667-114.730667 230.016-224.042666 242.090666 17.578667 15.232 33.578667 44.672 33.578666 90.453334v135.850666c0 13.141333 7.936 27.605333 32.853334 22.869334C862.250667 912.597333 1002.666667 728.746667 1002.666667 512 1002.666667 240.981333 783.018667 21.333333 511.957333 21.333333z" p-id="5803" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About me</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/experience/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Experience</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friend/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>Friend</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#the-pile-datasets">The Pile Datasets</a>
+      <ol>
+        <li><a href="#pile-cc">Pile-CC</a></li>
+        <li><a href="#others">Others</a></li>
+      </ol>
+    </li>
+    <li><a href="#benchmarking-language-models-with-the-pile">Benchmarking Language Models with the Pile</a>
+      <ol>
+        <li><a href="#更加完整的解释">更加完整的解释</a></li>
+      </ol>
+    </li>
+    <li><a href="#评测">评测</a></li>
+    <li><a href="#清洗">清洗</a>
+      <ol>
+        <li><a href="#c1-pile-ccclean-common-crawl">C.1 Pile-CC（Clean Common Crawl）</a></li>
+        <li><a href="#c2-pubmed-centralpmc">C.2 PubMed Central（PMC）</a></li>
+        <li><a href="#c3-books3">C.3 Books3</a></li>
+        <li><a href="#c4-openwebtext2owt2">C.4 OpenWebText2（OWT2）</a></li>
+        <li><a href="#c5-arxiv">C.5 ArXiv</a></li>
+        <li><a href="#c6-github">C.6 GitHub</a></li>
+        <li><a href="#c7-freelaw">C.7 FreeLaw</a></li>
+        <li><a href="#c8-stack-exchange">C.8 Stack Exchange</a></li>
+        <li><a href="#c9-uspto-backgrounds">C.9 USPTO Backgrounds</a></li>
+        <li><a href="#c10-pubmed-abstracts">C.10 PubMed Abstracts</a></li>
+        <li><a href="#c11-project-gutenbergpg-19">C.11 Project Gutenberg（PG-19）</a></li>
+        <li><a href="#c12-opensubtitles">C.12 OpenSubtitles</a></li>
+        <li><a href="#c13-wikipedia-en">C.13 Wikipedia (en)</a></li>
+        <li><a href="#c14-deepmind-mathematicsdm-math">C.14 DeepMind Mathematics（DM Math）</a></li>
+        <li><a href="#c15-ubuntu-irc">C.15 Ubuntu IRC</a></li>
+        <li><a href="#c16-bookcorpus2">C.16 BookCorpus2</a></li>
+        <li><a href="#c17-europarl">C.17 EuroParl</a></li>
+        <li><a href="#c18-hackernews">C.18 HackerNews</a></li>
+        <li><a href="#c19-youtube-subtitles">C.19 YouTube Subtitles</a></li>
+        <li><a href="#c20-philpapers">C.20 PhilPapers</a></li>
+        <li><a href="#c21-nih-exporter">C.21 NIH ExPorter</a></li>
+        <li><a href="#c22-enron-emails">C.22 Enron Emails</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97/" >
+                数据清洗
+            </a>
+        
+            <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" >
+                论文笔记
+            </a>
+        
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AF%84%E6%B5%8B/" >
+                数据集评测
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/">大语言模型数据清洗 · 论文笔记（二）</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            The Pile An 800GB Dataset of Diverse Text for Language Modeling
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jun 06, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 8 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>[TOC]</p>
+<h1 id="the-pile-an-800gb-dataset-of-diverse-text-for-language-modeling">The Pile: An 800GB Dataset of Diverse Text for Language Modeling
+</h1><p><a class="link" href="https://arxiv.org/abs/2101.00027"  target="_blank" rel="noopener"
+    >arXiv 2101.00027 The Pile: An 800GB Dataset of Diverse Text for Language Modeling</a></p>
+<p><a class="link" href="https://github.com/EleutherAI/the-pile"  target="_blank" rel="noopener"
+    >Github EleutherAI/the-pile</a></p>
+<ul>
+<li>通过合成多个数据集，提升多样性，提升大规模语言模型的跨领域通用知识与下游任务泛化能力</li>
+</ul>
+<p>稍微看偏了，paper更多的精华在如何去衡量数据集对模型性能的提升水平</p>
+<p>和清洗关系不大</p>
+<h2 id="the-pile-datasets">The Pile Datasets
+</h2><ul>
+<li>由22个部分组成</li>
+<li>由于不同数据集存在差异（维基百科质量更高），因此进行了加权处理
+<ul>
+<li>权重越高，被使用的概率越高（更可能被重复使用次数）</li>
+<li>例如维基百科重复采用3次</li>
+</ul>
+</li>
+</ul>
+<p>部分表格：</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>Dataset Name</th>
+          <th>Raw Size (before sampling)</th>
+          <th>Weight (%)</th>
+          <th>Epochs</th>
+          <th>Effective Size</th>
+          <th>Mean Document Size</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Pile-CC</td>
+          <td>227.12 GiB</td>
+          <td>18.11%</td>
+          <td>1.0</td>
+          <td>227.12 GiB</td>
+          <td>4.33 KiB</td>
+      </tr>
+      <tr>
+          <td>PubMed Central</td>
+          <td>90.27 GiB</td>
+          <td>14.40%</td>
+          <td>2.0</td>
+          <td>180.55 GiB</td>
+          <td>30.55 KiB</td>
+      </tr>
+      <tr>
+          <td>Books3</td>
+          <td>100.96 GiB</td>
+          <td>12.07%</td>
+          <td>1.5</td>
+          <td>151.44 GiB</td>
+          <td>538.36 KiB</td>
+      </tr>
+      <tr>
+          <td>OpenWebText2</td>
+          <td>62.77 GiB</td>
+          <td>10.01%</td>
+          <td>2.0</td>
+          <td>125.54 GiB</td>
+          <td>3.85 KiB</td>
+      </tr>
+      <tr>
+          <td>ArXiv</td>
+          <td>56.21 GiB</td>
+          <td>8.96%</td>
+          <td>2.0</td>
+          <td>112.42 GiB</td>
+          <td>46.61 KiB</td>
+      </tr>
+      <tr>
+          <td>Github</td>
+          <td>95.16 GiB</td>
+          <td>7.59%</td>
+          <td>1.0</td>
+          <td>95.16 GiB</td>
+          <td>5.25 KiB</td>
+      </tr>
+      <tr>
+          <td>FreeLaw</td>
+          <td>51.15 GiB</td>
+          <td>6.12%</td>
+          <td>1.5</td>
+          <td>76.73 GiB</td>
+          <td>15.06 KiB</td>
+      </tr>
+      <tr>
+          <td>StackExchange</td>
+          <td>32.20 GiB</td>
+          <td>5.13%</td>
+          <td>2.0</td>
+          <td>64.39 GiB</td>
+          <td>2.16 KiB</td>
+      </tr>
+      <tr>
+          <td>USPTO Backgrounds</td>
+          <td>22.90 GiB</td>
+          <td>3.65%</td>
+          <td>2.0</td>
+          <td>45.81 GiB</td>
+          <td>4.08 KiB</td>
+      </tr>
+      <tr>
+          <td>PubMed Abstracts</td>
+          <td>19.26 GiB</td>
+          <td>3.07%</td>
+          <td>2.0</td>
+          <td>38.53 GiB</td>
+          <td>1.30 KiB</td>
+      </tr>
+      <tr>
+          <td>Gutenberg (PG-19)</td>
+          <td>10.88 GiB</td>
+          <td>2.17%</td>
+          <td>2.5</td>
+          <td>27.19 GiB</td>
+          <td>398.73 KiB</td>
+      </tr>
+      <tr>
+          <td>OpenSubtitles</td>
+          <td>12.98 GiB</td>
+          <td>1.55%</td>
+          <td>1.5</td>
+          <td>19.47 GiB</td>
+          <td>30.48 KiB</td>
+      </tr>
+      <tr>
+          <td>Wikipedia (en)</td>
+          <td>6.38 GiB</td>
+          <td>1.53%</td>
+          <td><strong>3.0</strong></td>
+          <td>19.13 GiB</td>
+          <td>1.11 KiB</td>
+      </tr>
+  </tbody>
+</table></div>
+<blockquote>
+<p>Raw Size：采样前的大小</p>
+<p><strong>Weight ：采样后的大小占比</strong></p>
+<p>Epochs：被采样次数</p>
+<p>Effective Size：采样后的有效大小</p>
+<p>Mean Document Size：平均文档大小</p></blockquote>
+<ul>
+<li>部分数据已被发布者清洗的很好，只进行了最小程度的预处理</li>
+</ul>
+<h3 id="pile-cc">Pile-CC
+</h3><ul>
+<li>由CC数据集清洗得到</li>
+<li>使用justText清洗raw HTTP responses including page HTML，相比于<code>.WET</code>的纯文本效果更好</li>
+</ul>
+<h3 id="others">Others
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th style="text-align: center">分类</th>
+          <th style="text-align: center">来源</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center">学术文献</td>
+          <td style="text-align: center">ArXiv、PubMed Central、NIH ExPorter</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">图书与出版物</td>
+          <td style="text-align: center">Books3、Project Gutenberg (PG-19)、BookCorpus2</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">代码与技术文档</td>
+          <td style="text-align: center">GitHub、StackExchange</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">法律与政府文件</td>
+          <td style="text-align: center">FreeLaw、USPTO Backgrounds</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">多语言与翻译文本</td>
+          <td style="text-align: center">EuroParl、OpenSubtitles</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">社交与对话数据</td>
+          <td style="text-align: center">HackerNews、Ubuntu IRC、Enron Emails</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">特殊领域数据</td>
+          <td style="text-align: center">DeepMind Mathematics、PhilPapers（哲学）、YouTube字幕</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">网络爬取内容</td>
+          <td style="text-align: center">Pile-CC（新构建的Clean Common Crawl子集）</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="benchmarking-language-models-with-the-pile">Benchmarking Language Models with the Pile
+</h2><ul>
+<li>
+<p>可以训练数据，同时因为涉及领域广泛，也可以基准测试</p>
+</li>
+<li>
+<p>划分为训练集、验证集、测试集（$0.1%$测试集+验证集，虽然比例很低但是仍各自超过1G）</p>
+</li>
+<li>
+<p>尽管去重，但是肯定还是存在重复</p>
+</li>
+</ul>
+<p>paper中首选了BPB作为评测指标：</p>
+<ol>
+<li>
+<p><strong>输入：负对数似然损失（Negative Log-Likelihood Loss）</strong></p>
+<ul>
+<li>模型在测试数据上输出一个损失值 $L$，表示其预测能力。</li>
+<li>越低的 $L$ 表示模型越能准确预测下一个词。</li>
+</ul>
+</li>
+<li>
+<p><strong>转换为 BPB：</strong>（bits per UTF-8 encoded byte）</p>
+<ul>
+<li>使用公式将损失 $L$ 转换为每字节的比特数</li>
+</ul>
+$$
+    BPB = \frac{L_T}{L_B}\log_2 e^L = \frac{L_T}{L_B}\times \frac{L}{\ln2}
+    $$<ul>
+<li>其中：
+<ul>
+<li>$L_T$：数据集以 token 为单位的长度</li>
+<li>$L_B$：数据集以 UTF-8 编码字节为单位的长度</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>和困惑度有一点相似，用于衡量模型对数据的压缩效率或预测能力</p>
+<p>与Bits per Character (bpc)不同的一点，字符不是一个很好的定义（Unicode 中字符的界定可能复杂（例如组合字符、emoji 等），导致统计不一致。）</p>
+<p>同时bpb不受到分词的影响，UTF-8的字节定义是准确的，适合基于不同模型、分词进行比较</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th style="text-align: left">指标</th>
+          <th style="text-align: left">优点</th>
+          <th style="text-align: left">缺点</th>
+          <th style="text-align: left">适用场景</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Bits per Byte</strong></td>
+          <td style="text-align: left">分词无关、字节标准明确</td>
+          <td style="text-align: left">对非字节级任务不直观</td>
+          <td style="text-align: left">跨模型比较、数据压缩评估</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Bits per Char</strong></td>
+          <td style="text-align: left">更贴近人类理解</td>
+          <td style="text-align: left">Unicode 字符定义模糊</td>
+          <td style="text-align: left">字符级生成任务（需统一字符定义）</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Perplexity</strong></td>
+          <td style="text-align: left">直接反映预测不确定性</td>
+          <td style="text-align: left">依赖分词、数值范围不稳定</td>
+          <td style="text-align: left">单一模型调参、生成质量评估</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="更加完整的解释">更加完整的解释
+</h3><ul>
+<li>自信息：指的是当我们接收到一个消息时所获得的信息量</li>
+</ul>
+<p>在信息论中，自信息衡量一个事件携带的信息量，由概率$p$决定。</p>
+$$
+I(p) = -\log_2(p)
+$$<p>为了编码这一事件，我们选择霍夫曼编码这类最优编码，同时为了最小化平均码长：</p>
+<ul>
+<li>高频事件：分配短码</li>
+<li>低频事件：分配长码</li>
+</ul>
+<blockquote>
+<ul>
+<li>如果事件 $A$ 的概率  $p = 1/2$ ，则  $I(A) = -\log_2(1/2) = 1$  比特。这表示需要用 1 位二进制码（如 <code>0</code> 或 <code>1</code>）编码。
+-   如果事件  $B$  的概率  $p = 1/8$ ，则  $I(B) = -\log_2(1/8) = 3$  比特。需要用 3 位二进制码（如 <code>000</code> 到 <code>111</code> 之一）编码。</li>
+</ul></blockquote>
+$$
+L = -\ln p
+$$<p>
+一般使用的是自然对数，同时其恰好表示了概率为$p$的事件的信息量（单位为纳特（底数取e））</p>
+$$
+Bits = I(p) = -\log_2(p) =-\frac{\ln p}{\ln 2} =\frac{L}{\ln 2}
+$$<p>
+<strong>同时，模型的损失是基于token计算的，即每个token的预测损失</strong></p>
+<p>所以这里的单位是：Bits per token</p>
+$$
+bpb =  \frac{L_T}{L_B}\times \frac{L}{\ln2}
+$$<p>
+这样就得到了：Bits per Byte，消除了分词器、语种编码等其他影响，可以直接衡量模型输出的质量</p>
+<h2 id="评测">评测
+</h2><blockquote>
+<p>然后paper实验验证了一下用训练集训练过的模型会更nb</p></blockquote>
+<ul>
+<li>通过分析哪些Pile子数据集的表现最差，就知道模型的训练数据分布在这块比较浅，就可以使用pile这块数据集进行补充</li>
+</ul>
+<p>为了探索哪些数据集是模型表现较差的，显然不能直接使用困惑度进行比较（数据集熵值不一样）</p>
+<ul>
+<li>结构化的数据（熵值低）困惑度天然会比非结构化的更低</li>
+</ul>
+<blockquote>
+<p>困惑度可以用于衡量一个数据集是否更接近另一个数据集</p>
+<ul>
+<li>如CCNet，在维基百科内训练一个模型，计算其他数据集的困惑度</li>
+</ul></blockquote>
+<p>所以如果要比较的话，可以通过模型的损失值，拟合得越好，说明训练数据中包含了这部分，否则就是缺失</p>
+<p>如果钱多的话，当然是直接把所有数据集用模型train一下，看看损失值，与没有train过的原模型（GPT-3），在测试集上比一下Loss</p>
+<p>paper这里钱不够，改用了GPT2做了一个trick：</p>
+<ul>
+<li>
+<p>首先需要知道GPT3比GPT2强多少</p>
+<ul>
+<li>参考数据集：OWT2（与GPT训练数据高度相似的一个数据集）</li>
+<li>用原生的GPT3和在Pile训练的GPT2进行比较</li>
+<li>得到一个基准差值</li>
+</ul>
+</li>
+</ul>
+$$
+L^{GPT-3}_{OWT2} - L^{GPT-2-Pile}_{OWT2}
+$$<ul>
+<li>
+$$
+L^{GPT-3}_{TargetSet} - L^{GPT-2-Pile}_{TargetSet}
+$$</li>
+<li>
+<p>两个值作差：大概能衡量出在目标数据集上的提升水平</p>
+</li>
+</ul>
+<p><img src="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250606162030021.png"
+	width="1172"
+	height="571"
+	srcset="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250606162030021_hu_c35f4776da27d503.png 480w, /p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250606162030021_hu_a020da3b1c3d156d.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="205"
+		data-flex-basis="492px"
+	
+></p>
+<ul>
+<li>Books3等数据集与GPT-3训练数据高度相似，因此不会有过多的提升（0）</li>
+</ul>
+<h2 id="清洗">清洗
+</h2><p>看不动了，以后再说，整理一下清洗的东西：</p>
+<h3 id="c1-pile-ccclean-common-crawl">C.1 Pile-CC（Clean Common Crawl）
+</h3><ul>
+<li><strong>来源</strong> ：Common Crawl 的 WARC 文件（2013–2020 年）。</li>
+<li>提取工具
+<ul>
+<li>使用 <code>jusText</code> 提取网页正文，去除菜单、页脚等模板文本。</li>
+<li>对比了 <code>Trafilatura</code>、<code>Newspaper</code>、<code>Goose3</code>、<code>DragNet</code>，最终选择 <code>jusText</code>。</li>
+</ul>
+</li>
+<li>语言过滤
+<ul>
+<li>使用 <code>pycld2</code> 检测网页语言，仅保留英文内容。</li>
+</ul>
+</li>
+<li>质量控制
+<ul>
+<li>使用 FastText 分类器对 OpenWebText2 和 Common Crawl 进行分类，过滤低质量页面。</li>
+<li>参数 α = 3，使用 Pareto 分布阈值进行过滤。</li>
+</ul>
+</li>
+<li>去重
+<ul>
+<li>使用 MinHash LSH 算法在内存中进行文档级去重。</li>
+</ul>
+</li>
+<li>其他说明
+<ul>
+<li>未使用 WET 文件，因其包含大量模板文本。</li>
+<li>与 Brown et al. (2020) 类似，但只处理了部分 WARC 文件。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c2-pubmed-centralpmc">C.2 PubMed Central（PMC）
+</h3><ul>
+<li><strong>来源</strong> ：美国国家生物技术信息中心（NCBI）提供。</li>
+<li>格式转换
+<ul>
+<li>使用 Pandoc 将 JATS 格式转为 Markdown。</li>
+</ul>
+</li>
+<li>清理步骤
+<ul>
+<li>删除以 <code>:::</code> 开头的行（Pandoc 添加的 HTML 类标签）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c3-books3">C.3 Books3
+</h3><ul>
+<li><strong>来源</strong> ：未具体说明，但为高质量书籍数据集。</li>
+<li><strong>处理细节</strong> ：无额外处理。</li>
+</ul>
+<hr>
+<h3 id="c4-openwebtext2owt2">C.4 OpenWebText2（OWT2）
+</h3><ul>
+<li><strong>来源</strong> ：Reddit 提交链接。</li>
+<li>处理步骤
+<ul>
+<li>提取 URL 及其元数据。</li>
+<li>去除得分低于 3 的链接。</li>
+<li>使用 Newspaper 抓取网页内容。</li>
+</ul>
+</li>
+<li>去重
+<ul>
+<li>使用 DataSketch 库进行文档级 MinHash LSH 去重。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c5-arxiv">C.5 ArXiv
+</h3><ul>
+<li><strong>来源</strong> ：arXiv.org 学术论文。</li>
+<li>处理步骤
+<ul>
+<li>转换为纯文本。</li>
+</ul>
+</li>
+<li>去重
+<ul>
+<li>使用与验证/测试集对比的方法去重。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c6-github">C.6 GitHub
+</h3><ul>
+<li><strong>来源</strong> ：GitHub 上的开源项目。</li>
+<li>获取方式
+<ul>
+<li>收集星标数 &gt; 100 的仓库。</li>
+</ul>
+</li>
+<li>提取内容
+<ul>
+<li>提取可用于语言建模的文本（代码、README、注释等）。</li>
+</ul>
+</li>
+<li>限制条件
+<ul>
+<li>单个仓库克隆和提取时间不超过 300 秒。</li>
+<li>文件大小上限为 100KB（避免大文件中的重复自动生成内容）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c7-freelaw">C.7 FreeLaw
+</h3><ul>
+<li><strong>来源</strong> ：法律数据库。</li>
+<li>处理方式
+<ul>
+<li>未提供详细清洗步骤。</li>
+<li>数据来自已有结构化格式，可能已做过预处理。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c8-stack-exchange">C.8 Stack Exchange
+</h3><ul>
+<li><strong>来源</strong> ：Stack Overflow 等问答网站。</li>
+<li>处理方式
+<ul>
+<li>提取问题、回答、评论。</li>
+<li>按照层级结构组织。</li>
+<li>保留 <code>/me</code> 类型的动作描述，删除系统消息。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c9-uspto-backgrounds">C.9 USPTO Backgrounds
+</h3><ul>
+<li><strong>来源</strong> ：美国专利商标局（USPTO）公开数据。</li>
+<li>处理方式
+<ul>
+<li>处理 XML 格式的专利文件。</li>
+<li>提取“Background”部分内容。</li>
+<li>处理不同格式变化（APS → XML）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c10-pubmed-abstracts">C.10 PubMed Abstracts
+</h3><ul>
+<li><strong>来源</strong> ：PubMed 数据库摘要。</li>
+<li>处理方式
+<ul>
+<li>排除缺失或格式错误的条目。</li>
+<li>合并标题和摘要，去除版权信息。</li>
+<li>排除已在 PMC 中出现的内容。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c11-project-gutenbergpg-19">C.11 Project Gutenberg（PG-19）
+</h3><ul>
+<li><strong>来源</strong> ：古登堡计划电子书。</li>
+<li><strong>处理方式</strong> ：无额外处理。</li>
+</ul>
+<hr>
+<h3 id="c12-opensubtitles">C.12 OpenSubtitles
+</h3><ul>
+<li><strong>来源</strong> ：Tiedemann (2016) 提供的英文字幕数据。</li>
+<li>处理方式
+<ul>
+<li>提取 XML 文件中的字幕文本。</li>
+<li>忽略元数据。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c13-wikipedia-en">C.13 Wikipedia (en)
+</h3><ul>
+<li><strong>来源</strong> ：Wikipedia English dataset from TensorFlow Datasets。</li>
+<li>处理方式
+<ul>
+<li>使用 <code>wikipedia/20200301.en</code> 数据集。</li>
+<li>在每篇文章开头添加标题。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c14-deepmind-mathematicsdm-math">C.14 DeepMind Mathematics（DM Math）
+</h3><ul>
+<li><strong>来源</strong> ：DeepMind 数学数据集。</li>
+<li>处理方式
+<ul>
+<li>包含 Easy、Medium、Hard 难度。</li>
+<li>将每个题目拆分为 8 KiB 块。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c15-ubuntu-irc">C.15 Ubuntu IRC
+</h3><ul>
+<li><strong>来源</strong> ：Ubuntu IRC 日志（2004–2020）。</li>
+<li>处理方式
+<ul>
+<li>删除系统消息（如加入、离开频道）。</li>
+<li>保留 <code>/me</code> 动作。</li>
+<li>去除时间戳。</li>
+<li>每周日志合并为一个文档，按日期分隔。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c16-bookcorpus2">C.16 BookCorpus2
+</h3><ul>
+<li><strong>来源</strong> ：基于 Kobayashi (2018) 方法重新构建。</li>
+<li>处理方式
+<ul>
+<li>收集更多书籍（共 17,868 本，原版为 11,038 本）。</li>
+<li>使用修改后的 EPUB 解析器提取文本。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c17-europarl">C.17 EuroParl
+</h3><ul>
+<li><strong>来源</strong> ：欧洲议会会议记录。</li>
+<li>处理方式
+<ul>
+<li>已经是干净文本，无需额外清洗。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c18-hackernews">C.18 HackerNews
+</h3><ul>
+<li><strong>来源</strong> ：Hacker News 提交链接。</li>
+<li>处理方式
+<ul>
+<li>提取文章标题、URL、子标题、作者。</li>
+<li>按照评论层级组织内容。</li>
+<li>使用 html2text 提取 HTML 文本。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c19-youtube-subtitles">C.19 YouTube Subtitles
+</h3><ul>
+<li><strong>来源</strong> ：YouTube 视频字幕。</li>
+<li>处理方式
+<ul>
+<li>三阶段构建：
+<ol>
+<li>GPT-3 生成搜索关键词。</li>
+<li>下载相关视频。</li>
+<li>提取字幕并按时间对齐。</li>
+</ol>
+</li>
+<li>多语言字幕按分钟段落对齐，并标注语言。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c20-philpapers">C.20 PhilPapers
+</h3><ul>
+<li><strong>来源</strong> ：PhilPapers 数据库（哲学论文）。</li>
+<li>处理方式
+<ul>
+<li>使用 OAI-MPH 协议抓取元数据。</li>
+<li>转换为纯文本。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c21-nih-exporter">C.21 NIH ExPorter
+</h3><ul>
+<li><strong>来源</strong> ：NIH Grant Application 数据。</li>
+<li>处理方式
+<ul>
+<li>合并 ExPORTER 和 CRISP 数据。</li>
+<li>按申请 ID 去重。</li>
+<li>删除空或太短的摘要。</li>
+<li>去除行政模板内容。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="c22-enron-emails">C.22 Enron Emails
+</h3><ul>
+<li><strong>来源</strong> ：Enron 公司邮件存档。</li>
+<li>处理方式
+<ul>
+<li>使用 <code>mailparser</code> 提取邮件正文作为文档。</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/llm/">LLM</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%94/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型数据清洗 · 论文笔记（五）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E5%9B%9B/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型数据清洗 · 论文笔记（四）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型数据清洗 · 论文笔记（三）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型数据清洗 · 论文笔记（一）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大语言模型教育纠错 · 论文笔记（三）</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

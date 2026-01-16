@@ -1,0 +1,827 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>教育纠错 on BiribiriBird</title>
+        <link>https://example.com/categories/%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99/</link>
+        <description>Recent content in 教育纠错 on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Sat, 06 Sep 2025 20:45:55 +0800</lastBuildDate><atom:link href="https://example.com/categories/%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>大语言模型教育纠错 · 论文笔记（三）</title>
+        <link>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/</link>
+        <pubDate>Sat, 06 Sep 2025 20:45:55 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%89/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.alphaxiv.org/abs/2412.09416v2&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Unifying AI Tutor Evaluation: An Evaluation Taxonomy for Pedagogical Ability Assessment of LLM-Powered AI Tutors | alphaXiv&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/kaushal0494/UnifyingAITutorEvaluation&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;kaushal0494/UnifyingAITutorEvaluation: An Evaluation Taxonomy for Pedagogical Ability Assessment of LLM-Powered AI Tutors&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;paper-cool&#34;&gt;Paper-Cool
+&lt;/h2&gt;&lt;h3 id=&#34;q1-这篇论文试图解决什么问题&#34;&gt;&lt;strong&gt;Q1&lt;/strong&gt;: 这篇论文试图解决什么问题？
+&lt;/h3&gt;&lt;p&gt;这篇论文试图解决的问题是如何有效地评估大型语言模型（LLMs）作为AI助教在教育对话中的表现，特别是在学生错误纠正方面。具体来说，论文试图解决以下几个问题：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;评估标准的统一性&lt;/strong&gt;：之前对AI助教的评估工作受限于主观协议和基准，缺乏统一的评估框架。论文提出了一个基于学习科学原则的统一评估分类体系，包含八个教学维度，旨在评估LLM驱动的AI助教在数学领域的学生错误纠正中的教学价值。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;评估的客观性和可靠性&lt;/strong&gt;：现有的评估方法往往依赖于主观评价，缺乏客观性和可比性。论文通过提出一个新的评估基准MRBench，并提供人工标注的八个教学维度，来提高评估的客观性和可靠性。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;AI助教的实际教学能力&lt;/strong&gt;：论文通过对比不同LLMs作为AI助教的能力和人类助教的表现，揭示了当前LLMs在教学能力上的不足，并指出了改进的方向。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;评估过程的简化和标准化&lt;/strong&gt;：论文希望通过提出的分类体系、基准和人工标注的标签，简化AI助教的评估过程，并帮助跟踪AI助教发展的进步。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;总的来说，这篇论文旨在通过提出一个新的评估框架和基准，来解决当前AI助教评估中存在的问题，推动AI助教的发展，并为未来的研究提供便利。&lt;/p&gt;
+&lt;h3 id=&#34;q2-有哪些相关研究&#34;&gt;&lt;strong&gt;Q2&lt;/strong&gt;: 有哪些相关研究？
+&lt;/h3&gt;&lt;p&gt;相关研究涵盖了以下几个领域：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;AI助教评估&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;Tack和Piech (2022) 以及 Tack 等人 (2023) 从教师语言、学生理解和帮助学生的角度评估模型的响应。&lt;/li&gt;
+&lt;li&gt;Macina 等人 (2023) 专注于连贯性、正确性和公平教学来评估模型作为教师的响应。&lt;/li&gt;
+&lt;li&gt;Wang 等人 (2024a) 评估了有用性、关怀和人类化。&lt;/li&gt;
+&lt;li&gt;Daheim 等人 (2024) 集中于针对性、正确性和可执行性来评估教师响应的质量。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;自然语言生成（NLG）和LLM基础评估&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;一般领域的NLG指标，如BLEU (Papineni et al., 2002)、BERTScore (Lin, 2004) 和 DialogRPT (Gao et al., 2020) 等，被用作衡量AI助教响应的连贯性和类人性，但这些指标不考虑教学价值，且常需要真实答案来评估匹配响应。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;面向教学的评估&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;传统学习科学中的评估方法主要设计用于评估人类教师，由于缺乏自我报告，不易直接应用于AI教师。&lt;/li&gt;
+&lt;li&gt;研究人员考虑不同的教学维度及其相关定义 (Wollny et al., 2021; Tack et al., 2023; Denny et al., 2024)。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;学生错误纠正任务&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;专注于数学领域的教育对话，特别是学生的失误或困惑，AI教师的目标是回应以纠正这些错误或困惑。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这些相关研究提供了评估AI助教的不同视角和方法，但存在评估方案和定义的差异，缺乏标准化，使得跟踪现有AI教师的进步和实际性能变得复杂。这篇论文提出的评估分类体系旨在统一这些评估方法，并提供一个基于学习科学原则的评估框架。&lt;/p&gt;
+&lt;h3 id=&#34;q3-论文如何解决这个问题&#34;&gt;&lt;strong&gt;Q3&lt;/strong&gt;: 论文如何解决这个问题？
+&lt;/h3&gt;&lt;p&gt;论文通过以下几个步骤解决AI助教评估的问题：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;提出统一评估分类体系&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;论文提出了一个基于学习科学原则的统一评估分类体系，包含八个教学维度，用于评估LLM驱动的AI助教在数学领域的学生错误纠正中的教学价值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;构建评估基准MRBench&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;论文编译并发布了一个新的评估基准MRBench，该基准包含来自两个公共数据集的192个对话和1596个响应，这些响应来自七个最先进的基于LLM的和人类助教，并提供了八个教学维度的黄金标注。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;人类和LLM评估&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;利用部分对话历史，展示了学生的失误，生成了七个最先进的LLM作为助教的响应，并通过人类和LLM基础评估来评估这些模型的教学能力。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;分析LLM作为评估者的可靠性&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;论文探讨了LLM作为评估者的可靠性，通过将LLM生成的评估与人类判断进行相关性分析，指出LLM在复杂教学维度上的评估是不可靠的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;讨论改进方向&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;论文基于人类评估指出了LLMs在响应中表现出的特定教学能力的不足，并讨论了改进AI助教教学能力的最相关方向。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;资源公开&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;论文承诺将公开分类体系、基准和人类标注，以促进未来在这一重要领域的研究。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;通过这些步骤，论文旨在简化AI助教的评估过程，并帮助跟踪AI助教发展的进步。此外，该研究还为创建和标注可用于强化学习和微调的数据集提供了可能性，帮助未来的AI助教与人类和教学价值观保持一致。&lt;/p&gt;
+&lt;h3 id=&#34;q4-论文做了哪些实验&#34;&gt;&lt;strong&gt;Q4&lt;/strong&gt;: 论文做了哪些实验？
+&lt;/h3&gt;&lt;p&gt;论文中进行了一系列实验来验证提出的评估分类体系的有效性，并评估不同LLM作为AI助教的教学能力。以下是主要的实验步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;评估分类体系验证&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;进行了验证实验，以确定提出的八个评估维度是否足够且无冗余。实验包括四名注释者对八个随机抽样的对话进行独立标注，并计算Fleiss&amp;rsquo; kappa值来衡量注释者间的一致性，结果表明有实质性的一致性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;基准准备&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;从Bridge和MathDial数据集中编译了MRBench评估基准，并为192个实例生成了基于七个最先进的LLM的响应。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;人类标注&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;四名训练有素的标注者使用验证过的分类体系对MRBench进行了标注，每个标注者负责48个对话，总共192个实例被标注，其中40个实例由两名标注者独立标注，以计算标注者间的一致性，平均Cohen&amp;rsquo;s kappa得分为0.71，表明有实质性的一致性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;LLM基础标注&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;使用Prometheus2 LLM作为评估者对MRBench进行标注，以评估LLM作为评估者的可靠性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;评估指标&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;使用期望标注匹配率（DAMR）和标注相关性（AC）两个关键指标来定量评估LLM和人类教师的教学效果，并进行比较分析。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;关键发现&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;基于人类和LLM对MRBench的评估，总结了不同LLM作为AI助教的教学能力的关键发现，并讨论了LLM作为评估者的可靠性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这些实验步骤不仅验证了提出的评估分类体系的有效性，而且提供了对不同LLM在教学能力方面的深入分析，并探讨了LLM作为评估者的可行性。通过这些实验，论文展示了当前LLM作为AI助教的能力和局限性，并指出了未来改进的方向。&lt;/p&gt;
+&lt;h3 id=&#34;q5-有什么可以进一步探索的点&#34;&gt;&lt;strong&gt;Q5&lt;/strong&gt;: 有什么可以进一步探索的点？
+&lt;/h3&gt;&lt;p&gt;论文在最后部分提出了一些可以进一步探索的点，这些包括：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;扩展到其他任务和学科领域&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;论文提出的评估分类体系主要集中在数学领域的学生错误纠正任务上。未来的研究可以验证并可能适应这个分类体系，以应用于其他任务（如概念学习）和学科（如科学、语言学习等）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;考虑学生视角&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;目前的分类体系和标注方案关注于教师响应的适当性，但未考虑辅导对话对学生学习过程和学习成果的整体影响。未来的研究可以将评估扩展到对话层面，以更好地评估AI教师的教学能力对学生学习的影响。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;使用其他LLM作为评估者&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;论文中限制了LLM基础评估到Prometheus2 LLM作为批评者的使用。未来的研究可以探索更多先进的LLM作为批评者，并尝试使用多种提示模板。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;创建和标注数据集&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;论文提到，创建和标注可用于强化学习和微调的数据集，可以帮助未来的AI教师与人类和教学价值观保持一致。这是一个重要的研究方向，可以促进AI教师的发展。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;改进LLM的教学能力&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;论文的研究发现，即使是最先进的LLM也缺乏一些有效的教学能力。未来的研究可以探索如何改进LLMs，使其更符合教学的有效性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;评估LLM生成内容的伦理和风险&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;考虑到LLM可能生成事实上不正确、无意义或甚至冒犯的内容，未来的研究需要考虑评估LLM在教育领域使用时的伦理风险，并探索如何减轻这些问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这些探索点为AI助教评估和开发的未来研究提供了明确的方向，并强调了需要进一步工作以提高AI教师的教学效果和可靠性。&lt;/p&gt;
+&lt;h3 id=&#34;q6-总结一下论文的主要内容&#34;&gt;&lt;strong&gt;Q6&lt;/strong&gt;: 总结一下论文的主要内容
+&lt;/h3&gt;&lt;p&gt;这篇论文的主要内容包括以下几个方面：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;研究动机&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;论文探讨了当前最先进的大型语言模型（LLMs）是否能够作为有效的AI助教，并展示必要的教学能力，特别是在教育对话中纠正学生错误和困惑的场景。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;评估分类体系&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;提出了一个统一的评估分类体系，包含八个基于学习科学原则的教学维度，用于评估LLM驱动的AI助教在数学领域的学生错误纠正中的教学价值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;评估基准MRBench&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;发布了一个新的评估基准MRBench，包含192个对话和1596个响应，这些响应来自七个最先进的基于LLM的和人类助教，并提供了八个教学维度的黄金标注。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;人类和LLM评估&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;通过人类和LLM基础评估，分析了不同LLM作为AI助教的教学能力，并讨论了LLM作为评估者的可靠性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;研究发现&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;发现尽管最先进的LLMs如GPT-4在回答问题方面表现良好，但作为教师时往往不够胜任，特别是在不立即透露答案和提供指导方面。&lt;/li&gt;
+&lt;li&gt;Llama-3.1-405B在评估中表现最好，而GPT-4作为教师时太快透露答案，Gemini的响应不够连贯，Sonnet虽然注重人类化和鼓励性，但在其他维度上效果较差，Phi3的表现最差。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;结论和未来工作&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;论文得出结论，当前的LLMs作为AI教师还不够好，有很大的改进空间，并指出了最相关的改进方向。&lt;/li&gt;
+&lt;li&gt;论文希望发布的资源能够简化评估过程，并帮助跟踪AI教师的发展。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;局限性和伦理声明&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;论文承认了研究的局限性，并强调了LLM输出可能带来的风险，尤其是在教育领域可能误导学生和传播偏见的问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这篇论文为AI助教的评估提供了一个统一的框架和基准，并通过对现有技术的评估，揭示了AI助教在教学能力上的不足和未来改进的方向。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>大语言模型教育纠错 · 论文笔记（二）</title>
+        <link>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/</link>
+        <pubDate>Wed, 16 Jul 2025 02:45:55 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/</guid>
+        <description>&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2406.19949&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2406.19949 Calibrating LLMs with Preference Optimization on Thought Trees for Generating Rationale in Science Question Scoring&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;intro&#34;&gt;Intro
+&lt;/h2&gt;&lt;p&gt;存在的问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;基于分类器的黑盒方法虽然准确，但无法提供解释性。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;现有生成评分理由的方法（如AERA框架(&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2305.12962&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2305.12962 Distilling ChatGPT for Explainable Automated Student Answer Assessment&lt;/a&gt;）存在以下问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;评分准确性不如分类器方法。&lt;/li&gt;
+&lt;li&gt;生成的评分理由可能不忠实于学生答案或评分标准。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;paper贡献&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;提出一种新框架，通过模仿人类评分过程生成更忠实的评分理由，同时匹配或超越分类器方法的评分性能。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;paper方法&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;模仿人类评分过程&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用大语言模型（LLM）生成“思维树”（Thought Tree），将评分任务分解为中间决策步骤。&lt;/li&gt;
+&lt;li&gt;每条树路径代表一个评分决策序列，最终汇总为评分理由。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;合成数据生成&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从思维树路径中提取合成评分理由和偏好数据。&lt;/li&gt;
+&lt;li&gt;通过两阶段训练校准LLM：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;监督微调（SFT）&lt;/strong&gt;：使用合成的评分理由数据。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;偏好优化（DPO）&lt;/strong&gt;：使用合成的偏好数据，提升评分理由的准确性和忠实性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;paper贡献&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;提出通过思维树生成更忠实的评分理由的方法。&lt;/li&gt;
+&lt;li&gt;开发基于思维树路径正确性的合成偏好数据生成技术。&lt;/li&gt;
+&lt;li&gt;实验表明，框架在QWK分数上比现有方法提升38%，同时生成更高质量的评分理由。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;framework&#34;&gt;Framework
+&lt;/h2&gt;&lt;h3 id=&#34;problem-set-up&#34;&gt;Problem Set Up
+&lt;/h3&gt;$$
+D = \left \{ (x_i, y_i)\right \}
+$$&lt;p&gt;
+表示学生$i$对某道题目的答案与得分&lt;/p&gt;
+&lt;p&gt;对于一道题目，可以划分出$M$个关键得分点$K = \left {k_j\right }$&lt;/p&gt;
+$$
+v(x_i, K)
+$$&lt;p&gt;
+该向量的第$j$维度若为1，则表示$x_i$成功回答了$k_j$，否则没有成功回答&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;独热向量 (One-hot Vector)&lt;/strong&gt;：用于表示一个样本&lt;strong&gt;只属于一个类别&lt;/strong&gt;的情况。例如，如果一个动物只能是“- 猫”或“狗”中的一种，那么“猫”可能表示为 &lt;code&gt;[1, 0]&lt;/code&gt;，“狗”表示为 &lt;code&gt;[0, 1]&lt;/code&gt;。向量中&lt;strong&gt;只有一个 1&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;多热向量 (Multi-hot Vector)&lt;/strong&gt;：用于表示一个样本&lt;strong&gt;可以同时属于多个类别&lt;/strong&gt;的情况。例如，一个人既是“学生”又是“运动员”，那么可能表示为 &lt;code&gt;[1, 1, 0]&lt;/code&gt;（假设第一个位置是学生，第二个是运动员）。向量中可以有&lt;strong&gt;多个 1&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+$$
+y_i = f_r(v(x_i,K))
+$$&lt;p&gt;
+省流：问题的关键在如何判断$x_i$正确回答了$k_j$，记为$1_{x_i}(k_j)$，是一个二分类任务&lt;/p&gt;
+&lt;h3 id=&#34;stage-1-imitate-human-assessment-process-via-thought-trees&#34;&gt;Stage 1: Imitate Human Assessment Process via Thought Trees
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250716031327371.png&#34;
+	width=&#34;961&#34;
+	height=&#34;611&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250716031327371_hu_72b7ba402e41067b.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%BA%8C/assets/image-20250716031327371_hu_9fdc14ddcae9f199.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Thought Trees&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;157&#34;
+		data-flex-basis=&#34;377px&#34;
+	
+&gt;&lt;/p&gt;
+$$
+z_j^{(t)} = \text{LLM}_\theta(x_i, k_j), \quad t=1,2,...,n,\ \forall k_j \in K
+$$&lt;p&gt;
+$z_j^{(t)}$ 表示第 $t$ 次采样的决策&lt;/p&gt;
+&lt;p&gt;我们将这些判定结果汇总，得到如下的平均决策概率：&lt;/p&gt;
+$$
+P(z_j^{\text{Yes}}) = \frac{|\{t : z_j^{(t)} = 1\}|}{n},\quad
+P(z_j^{\text{No}}) = \frac{|\{t : z_j^{(t)} = 0\}|}{n}
+$$&lt;p&gt;
+为了后续聚合，我们为每个关键要素生成简洁的解释性理由 $r_j$，例如：&lt;/p&gt;
+$$
+r_j = \text{LLM}_\theta(x_i, k_j, z_j)
+$$&lt;p&gt;
+一旦所有关键要素评估完成，我们便能根据每一组决策 $\mathbf{Z}$ 构造路径。假设总共 $d$ 条路径（最多 $2^{M-1}$ 条），每条路径表示一种判定组合：&lt;/p&gt;
+$$
+\text{path}_l = \hat{\mathbf{v}}(\mathbf{Z}),\quad l=1,2,...,d
+$$&lt;p&gt;其中，$\hat{\mathbf{v}}$ 是对向量 $\mathbf{v}$ 的估计，表示关键要素是否被覆盖；$\mathbf{Z}$ 是判定集合（由上面的判定概率组成）。路径的概率等于该路径上每个判定概率的乘积：&lt;/p&gt;
+$$
+P(\text{path}_l) = \prod_{j=1}^{M} P(z_j)
+$$&lt;p&gt;
+我们利用打分函数 $f_r$（例如程序化的rubric规则）对每条路径打分，获得预测得分：&lt;/p&gt;
+$$
+\hat{y}_{\text{path}_l} = f_r(\text{path}_l)
+$$&lt;blockquote&gt;
+&lt;p&gt;省流：蒙特卡洛树，从中抽取所有路径，计算概率和对应的分数，选择概率最高的&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;最后，选取概率最高的路径作为最终思维树输出结果：&lt;/p&gt;
+$$
+\hat{y}_{\text{tree}} = \hat{y}_{\text{path}_{l^*}} \quad l^* = \arg\max_l P(\text{path}_l)
+$$&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;在实际操作中，我们使用LLM动态地将rubric文本转换为可执行Python代码，该代码以关键要素评估决策为输入，输出最终分数。&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;人话：LLM会将打分标准生成Python代码，直接传入关键要素的多热向量就可以直接算分&lt;/p&gt;&lt;/blockquote&gt;
+</description>
+        </item>
+        <item>
+        <title>大语言模型教育纠错 · 论文笔记（一）</title>
+        <link>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/</link>
+        <pubDate>Mon, 23 Jun 2025 15:13:55 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/</guid>
+        <description>&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2412.16838&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2412.16838 Ask-Before-Detection: Identifying and Mitigating Conformity Bias in LLM-Powered Error Detector for Math Word Problem Solutions&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;intro&#34;&gt;Intro
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;AED（Automatic Error Detection）
+&lt;ul&gt;
+&lt;li&gt;本文定义为：给定问题-解答的输入对，识别错误步骤以及错误类型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250623164618186.png&#34;
+	width=&#34;1119&#34;
+	height=&#34;594&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250623164618186_hu_529466cf46b0a084.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250623164618186_hu_44cdd8acc43cea4e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;188&#34;
+		data-flex-basis=&#34;452px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;如图，paper点出传统的方法使用可以对问题的&lt;strong&gt;常规解法&lt;/strong&gt;进行正确错误检测&lt;/p&gt;
+&lt;p&gt;但是单个问题的解法可以&lt;strong&gt;存在多个&lt;/strong&gt;，认为之前的做法泛用性较差&lt;/p&gt;
+&lt;p&gt;常规解法与非常规解法会产生7%的性能差距，先进的闭源模型也无法避免&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;LLM错误检测器表现&lt;code&gt;conformity bias&lt;/code&gt;（从众偏差）
+&lt;ul&gt;
+&lt;li&gt;倾向“遵循主流答案（训练中经常出现的）”而忽略可能也正确但不常见的其他解法&lt;/li&gt;
+&lt;li&gt;导致模型对标准答案的识别准确，却对非常规解法的识别薄弱&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;论文针对缓解模型的&lt;code&gt;conformity bias&lt;/code&gt;进行工作&lt;/p&gt;
+&lt;p&gt;提出AskBD框架，为每个Solution自适应生成参考答案（合适的参考答案能显著提升性能）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;直接调用模型，无微调，拓展性强&lt;/li&gt;
+&lt;li&gt;自适应方式高度契合给定Solution，降低Bias&lt;/li&gt;
+&lt;li&gt;框架可协同CoT技术增强性能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;preliminary-study&#34;&gt;Preliminary Study
+&lt;/h2&gt;&lt;p&gt;Paper构建了一个Alternative Solution数据集用于充分暴露模型的从众偏差效应，帮助进行后续的探索&lt;/p&gt;
+&lt;h3 id=&#34;automatic-solution-permutation&#34;&gt;Automatic Solution Permutation
+&lt;/h3&gt;&lt;p&gt;paper希望构建一个高质量的Alternative Solution数据集&lt;/p&gt;
+&lt;p&gt;给定问题和Solution，希望替换掉整个解决方案为Alternative Solution&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;低质量&lt;/strong&gt;：对常规Solution只是简单的&lt;strong&gt;语义替换&lt;/strong&gt;，并没有深层的逻辑变换&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250623172108657.png&#34;
+	width=&#34;1094&#34;
+	height=&#34;316&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250623172108657_hu_c5b1e501f2aed034.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250623172108657_hu_c24cb789034894c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;346&#34;
+		data-flex-basis=&#34;830px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ASP&lt;/strong&gt;（自动解法置换），如图，对应了Solution和数学表达式的关系，使用LLM prompt独立执行：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Extract：常规Solution -&amp;gt; 数学表达式，完成后需要执行运算，检查是否能够得到正确计算结果，否则剔除&lt;/li&gt;
+&lt;li&gt;Permute：因式分解、分配律，重新排列表达式（同样需要运算检验）&lt;/li&gt;
+&lt;li&gt;Explain：置换后的表达式输入到LLM，引导生成高质量Alternative Solution&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;paper采样GPT-4o，从GSM8K数据集抽取200组问答对，构建常规数据集D&lt;/p&gt;
+&lt;p&gt;对D中的每个样本，3次ASP生成3个Alternative Solution，由教育系研究生评审质量，选择三个之中最优的一个&lt;/p&gt;
+&lt;p&gt;完成替换数据集D&amp;rsquo;的制作&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;erroneous-solution-generation&#34;&gt;Erroneous Solution Generation
+&lt;/h3&gt;&lt;p&gt;需要将错误注入到D和D‘之中，生成测试样本&lt;/p&gt;
+&lt;p&gt;主要参考：&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2406.00755&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2406.00755 Evaluating Mathematical Reasoning of Large Language Models: A Focus on Error Identification and Correction&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;paper引入了四种错误：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\varepsilon_C$：calculation errors
+&lt;ul&gt;
+&lt;li&gt;Operands in expressions are correct but an error occurs in the calculated results.（表达式正确，计算结果出错）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Each gust blows the leaf forward 5 feet, so 11 gusts will blow it forward 5 ×11 = 50 feet. &lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;$\varepsilon_R$：reference errors
+&lt;ul&gt;
+&lt;li&gt;Expression are incorrectly referencing the question conditions or the results from prior steps.（错误引用了题目条件或之前的计算结果）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Each gust blows the leaf forward 5 feet, so 10 gusts will blow it forward 5 ×10 = 50 feet. &lt;/code&gt;（题目原条件是11，不是10）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;$\varepsilon_M$ ：missing steps
+&lt;ul&gt;
+&lt;li&gt;Operands or expressions in the step that lack of references or support from the question conditions or prior steps.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Each swirl after a gust blows it back 2 feet, so 11 swirls will blow it back 2 ×11 = 22feet. Step 2. After 11 gusts, the leaf has traveled 55 − 22 = 33 feet down the sidewalk.&lt;/code&gt;（缺少了得到55这个数字的计算过程）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;$\varepsilon_H$：hallucinations（幻觉）
+&lt;ul&gt;
+&lt;li&gt;Statements or operands in the listed expression are fabricated or inconsistent with the question’s conditions.（虚构或与条件不一致）&lt;/li&gt;
+&lt;li&gt;……&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;It is worth noting that this study specifically aims to explore conformity bias, and therefore, &lt;strong&gt;we do not include all possible error types.&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;针对D和D&amp;rsquo;的每个样本，随机错误步骤的位置编号，每个样本生成了四种不同错误类型的样本，总共2000条&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154336790.png&#34;
+	width=&#34;473&#34;
+	height=&#34;212&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154336790_hu_396c502f844b6a72.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154336790_hu_4f52005375b8ff83.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Table 5&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;223&#34;
+		data-flex-basis=&#34;535px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;analysis-and-findings&#34;&gt;Analysis and Findings
+&lt;/h3&gt;&lt;h4 id=&#34;conformity-bias-identification&#34;&gt;Conformity Bias Identification
+&lt;/h4&gt;&lt;p&gt;评估指标：The evaluation metric is the identification accuracy across both correct and erroneous solutions.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;需要识别错误位置、错误类型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Paper使用提示词进行纠错，明确LLM本题存在替代解法，强调所有合理解决方案应该被接受，并且明确定义错误类别&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Given the &amp;lt;question&amp;gt;, please judge whether each step in &amp;lt;solution&amp;gt; is correct. **During the judging process, you should know that the &amp;lt;question&amp;gt; does not always have only one standard solution, and any reasonable &amp;lt;solution&amp;gt; should be accepted. You should pay attention to both the expressions and the statements in each step, and take care about the logic consistency between different steps. Additionally, consider arithmetic expression equivalency and avoid rejecting solutions solely because they use equivalent expressions.**
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;In each step, if no errors are found, respond with Step X: &amp;lt;correct&amp;gt;. If you find that the operands in the listed expressions are correct but an error occurs in the calculated result, respond with Step X: &amp;lt;calculation error&amp;gt;. If you find statements or operands in the listed expression are incorrectly referencing the question conditions or the results from prior steps, respond with Step X: &amp;lt;reference error&amp;gt;. If you find operands or expressions in the step that is lack of references or support from the question conditions or prior steps, respond with Step X: &amp;lt;missing step&amp;gt;. If you find statements or operands in the listed expression are fabricated or inconsistent with the question’s conditions, respond with: Step X: &amp;lt;hallucination&amp;gt;. If an error is a follow-on issue due to mistakes in previous steps rather than an independent error, respond with: Step X: &amp;lt;secondary error&amp;gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;lt;question&amp;gt; [Question Text] &amp;lt;solution&amp;gt; [Solution Text]  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Now, please start to respond.
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;参与测试的LLM：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154400250.png&#34;
+	width=&#34;441&#34;
+	height=&#34;436&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154400250_hu_926cdad944d5de03.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154400250_hu_488d9a30ae5b5c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Table 6&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;101&#34;
+		data-flex-basis=&#34;242px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;平均错误检测准确率的测试结果：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154615400.png&#34;
+	width=&#34;423&#34;
+	height=&#34;305&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154615400_hu_e91b30da751b4c25.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626154615400_hu_4a904fb7a1a5feee.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Table 1&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;138&#34;
+		data-flex-basis=&#34;332px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;证实了LLM在AED任务中存在明显的从众偏差&lt;/p&gt;
+&lt;h4 id=&#34;solution-likelihood-score-analysis&#34;&gt;Solution Likelihood Score Analysis
+&lt;/h4&gt;&lt;p&gt;对于当前问题$q$，我们可以计算LLM生成答案$s$的概率$P(s|q)$&lt;/p&gt;
+&lt;p&gt;我们可以把$s$拆分成多个token：$s_i$&lt;/p&gt;
+$$
+P(s|q) = P(s_1, s_2, ...,s_{|s|} | q)
+$$$$
+P(s|q) = P(s_1|q) \times P(s_2|q,s_1) \times P(s_3|q,s_1,s_2) \times ...
+$$$$
+\log P(s|q) = \sum_{i=1}^{|s|} \log P(s_i|q,s_1:s_{i-1})
+$$&lt;p&gt;
+这个值就是&lt;strong&gt;对数似然分数&lt;/strong&gt; （Log-Likelihood Score）&lt;/p&gt;
+&lt;p&gt;它衡量了模型在给定问题 &lt;em&gt;q&lt;/em&gt; 的情况下，对答案 &lt;em&gt;s&lt;/em&gt; 的“信任度”或理解程度&lt;/p&gt;
+$$
+\log L_{\theta}(s|q) = \frac{\log L_\theta(s|q)}{|s|}
+$$&lt;p&gt;
+其中$\theta$表示LLM的参数（闭源模型的似然分数无法获取，采取了开源模型的似然分数均值做伪指标）&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163200484.png&#34;
+	width=&#34;562&#34;
+	height=&#34;478&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163200484_hu_9a5549ae053eac12.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163200484_hu_cfa275c0f051adca.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Advance Model&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;117&#34;
+		data-flex-basis=&#34;282px&#34;
+	
+&gt; &lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163307581.png&#34;
+	width=&#34;564&#34;
+	height=&#34;480&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163307581_hu_49803f1626247f18.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163307581_hu_926314100216a0c1.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Base Model&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;117&#34;
+		data-flex-basis=&#34;282px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;同时喂入 了常规解法+替代解法，根据似然分数分成四个档进行对比&lt;/p&gt;
+&lt;p&gt;显然似然值越高，Acc越高&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163347218.png&#34;
+	width=&#34;577&#34;
+	height=&#34;482&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163347218_hu_f8a58aeee4e02655.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626163347218_hu_3fada5ac724549e7.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Likehood Distribution&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;119&#34;
+		data-flex-basis=&#34;287px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;对于开源模型，替代解法的似然分数显然低于常规解法&lt;/p&gt;
+&lt;h4 id=&#34;reference-based-detection-findings&#34;&gt;Reference-based Detection Findings
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;不太可能直接提高替代Solution的似然值
+&lt;ul&gt;
+&lt;li&gt;通过改变数据集进行微调，但是无法解决根本问题，仍有可能碰见其他的未遇见情况&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;参考：&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2407.09136&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2407.09136 Stepwise Verification and Remediation of Student Reasoning Errors with Large Language Model Tutors&lt;/a&gt;，提出引入参考答案提升了常规解法的检测性能&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;将学生解题步骤与标准答案对齐&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;本paper尝试推广到替代解法，但是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;实际情况下，参考答案并不是总能获取&lt;/li&gt;
+&lt;li&gt;即便能够获取，一般也是常规解法的参考答案&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;paper采用了两条技术路线进行对比：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用常规解法作为参考答案&lt;/li&gt;
+&lt;li&gt;自适应使用对应解法作为参考答案（？细节不太清楚，后文兴许会说）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626171423880.png&#34;
+	width=&#34;458&#34;
+	height=&#34;343&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626171423880_hu_38c9f63332d673bf.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626171423880_hu_6c0b72c548df9ffd.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;常规解法作为参考答案&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;133&#34;
+		data-flex-basis=&#34;320px&#34;
+	
+&gt;  &lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626171459301.png&#34;
+	width=&#34;459&#34;
+	height=&#34;348&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626171459301_hu_a726c1661fa683e4.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626171459301_hu_a94969f7c01bb73c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;自适应选择参考答案&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;131&#34;
+		data-flex-basis=&#34;316px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;根据与前文提示词的测试结果进行对比，引入参考答案对两个数据集的&lt;strong&gt;acc都有显著的提升&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;但是使用常规解法做参考答案加剧了bias，而自适应选择明显缓解了bias&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;因此选择合适的参考答案是能起到关键作用的&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;method&#34;&gt;Method
+&lt;/h2&gt;&lt;p&gt;提出AskBD（Ask-Before-Detection）框架，在评分过程中为每个待评答案动态生成适配的参考解法&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626172743783.png&#34;
+	width=&#34;1227&#34;
+	height=&#34;482&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626172743783_hu_dcc20bd97ebdb160.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626172743783_hu_1c39f4b9cd82f898.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Pipeline&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;254&#34;
+		data-flex-basis=&#34;610px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;输入：问题文本$q$，解答文本$s$，LLM$f$，提示词$p$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Condition and question extractor(CQE)
+&lt;ul&gt;
+&lt;li&gt;从问题文本中抽取条件$q_c$和提问文本$q_i$&lt;/li&gt;
+&lt;li&gt;$(q_c, q_i) = f([p_{cqe}, q])$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Solution Step Inquirer(SSI)
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;为提高生成结果的稳定性，SSI 会先总结每个步骤的结论再构建对应问题。&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;将解答文本转化为分步骤问题列表文本$Q$，&lt;strong&gt;末尾附加提问文本$q_i$&lt;/strong&gt;，以确保生成的参考解答能够回应原始问题的核心任务。&lt;/li&gt;
+&lt;li&gt;$Q = [f([p_{ssi},s]), q_i]$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Step Question Responder (SQR)
+&lt;ul&gt;
+&lt;li&gt;通过条件文本总结$Q$中每个问题的答案，生成参考答案$r$&lt;/li&gt;
+&lt;li&gt;$r = f([p_{sqr},q_c, Q])$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Reference-Enhanced Grader (REG)
+&lt;ul&gt;
+&lt;li&gt;根据$q, s, r$生成错误位置$y_s$和错误类型$y_e$&lt;/li&gt;
+&lt;li&gt;$y=f([p_{reg},q,s,r])$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;输出：$y_s, y_e$&lt;/p&gt;
+&lt;h2 id=&#34;experiment&#34;&gt;Experiment
+&lt;/h2&gt;&lt;p&gt;实验目的是验证核心的三个问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;是否缓解从众偏差&lt;/li&gt;
+&lt;li&gt;是否有额外的性能优势&lt;/li&gt;
+&lt;li&gt;与CoT等推理技术的兼容性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;实验方法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;采用前文数据集，相同的10个LLM，用于对比前两个问题&lt;/li&gt;
+&lt;li&gt;整合了CoT技术，评估兼容性&lt;/li&gt;
+&lt;li&gt;所有实验分别实验三种不同的随机seed，报告平均错误检测准确率&lt;/li&gt;
+&lt;li&gt;前文测试和CoT方案作为两个baseline&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;CoT的提示词&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; Before the &amp;lt;response&amp;gt;, you should provide your step-by-step &amp;lt;thinking&amp;gt; about your judging process.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; &amp;lt;question&amp;gt; [Question Text] &amp;lt;solution&amp;gt; [Solution Text]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; Now, please start to think first and then respond.
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626175506489.png&#34;
+	width=&#34;884&#34;
+	height=&#34;476&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626175506489_hu_bb07b79c8d6c3c11.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20250626175506489_hu_5250d244aa5b549e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;实验结果&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;185&#34;
+		data-flex-basis=&#34;445px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;对于问题1&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;重点分析M0和M2在$\Delta$列的差距
+&lt;ul&gt;
+&lt;li&gt;Base版本的优化并不明显，认为是模型推理能力不足，限制了框架效用&lt;/li&gt;
+&lt;li&gt;对比M1与M2，CoT也有缓解Bias的能力，在多数Advance模型中，框架的优化能力强于CoT&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于问题2&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在D、D&amp;rsquo;列对比M2和M0
+&lt;ul&gt;
+&lt;li&gt;框架确实提升了acc性能&lt;/li&gt;
+&lt;li&gt;对比M1 M2，CoT也体现出了性能提升
+&lt;ul&gt;
+&lt;li&gt;在base模型中CoT技术更胜一筹&lt;/li&gt;
+&lt;li&gt;在Advance模型中框架更强（……）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;针对问题3&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;M3和M1对比，确实变强了&lt;/li&gt;
+&lt;li&gt;兼容性好&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;limitation&#34;&gt;Limitation
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;只考虑了四个错误类型，忽略了学生解答中那些更罕见却更具挑战性的错误类型&lt;/li&gt;
+&lt;li&gt;仅聚焦于数学应用题&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>大语言模型教育纠错 · 论文笔记（零）</title>
+        <link>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E9%9B%B6/</link>
+        <pubDate>Fri, 20 Jun 2025 14:52:55 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E9%9B%B6/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1 id=&#34;temporal-consistency-for-llm-reasoning-process-error-identification&#34;&gt;Temporal Consistency for LLM Reasoning Process Error Identification
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2503.14495&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2503.14495 Temporal Consistency for LLM Reasoning Process Error Identification&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;无训练过程&lt;/li&gt;
+&lt;li&gt;纯迭代反思&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;应用领域主要是大模型自己的解题步骤的错误检测&lt;/p&gt;
+&lt;p&gt;算是一个比较通用的做法，数学题之外有分步性质的应该也ok&lt;/p&gt;
+&lt;p&gt;可以借鉴一下其&lt;strong&gt;Reflection&lt;/strong&gt;的方法&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;输入定义如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$P$：题目原文（例如数学问题）；&lt;/li&gt;
+&lt;li&gt;$S = [s_1, s_2, &amp;hellip;, s_n]$：模型生成的解题步骤，按步分段；&lt;/li&gt;
+&lt;li&gt;$L$：目标是预测哪一段 $s_i$ 是 &lt;strong&gt;首个错误步骤&lt;/strong&gt;（或无错误）；&lt;/li&gt;
+&lt;li&gt;$R_t$：第 $t$ 轮的模型判断（包含错误定位和解释）；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;总共准备了K个模型并行进行推理，对于单个模型需要做以下事情：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;给定题目、解题步骤、自己的上轮判断&lt;/li&gt;
+&lt;li&gt;模型需要结合该信息判断、解释&lt;/li&gt;
+&lt;li&gt;持续迭代&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对K个模型投票，票数最多的即为结果&lt;/p&gt;
+&lt;p&gt;设定的终止条件：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;单个模型连续$q$轮给出稳定结论&lt;/li&gt;
+&lt;li&gt;K个模型的过去$q$轮的主体结果投票比例不能下降&lt;/li&gt;
+&lt;li&gt;或者T轮迭代上限（防止死循环）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E9%9B%B6/assets/image-20250630152911616.png&#34;
+	width=&#34;1790&#34;
+	height=&#34;595&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E9%9B%B6/assets/image-20250630152911616_hu_d160ac2e2571813e.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E9%9B%B6/assets/image-20250630152911616_hu_970feda48933cee3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Pipeline&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;300&#34;
+		data-flex-basis=&#34;722px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;如图，三个模型进行迭代，最后得到一致的结果&lt;/p&gt;
+&lt;p&gt;下面两个模型一开始不能得到正确答案，但是经过迭代得到正确结果&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;实验结果：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E9%9B%B6/assets/image-20250630153824194.png&#34;
+	width=&#34;501&#34;
+	height=&#34;703&#34;
+	srcset=&#34;https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E9%9B%B6/assets/image-20250630153824194_hu_1377b258bcc30ccd.png 480w, https://example.com/p/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%95%99%E8%82%B2%E7%BA%A0%E9%94%99-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E9%9B%B6/assets/image-20250630153824194_hu_be26e3e2ea566e58.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Table&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;71&#34;
+		data-flex-basis=&#34;171px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;todo&#34;&gt;Todo
+&lt;/h1&gt;&lt;p&gt;2406.00755&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

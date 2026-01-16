@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="A Research on Diffusion Language Models">
+<title>Diffusion Language Model · BirdResearch · 202510</title>
+
+<link rel='canonical' href='https://example.com/p/diffusion-language-model-birdresearch-202510/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="Diffusion Language Model · BirdResearch · 202510">
+<meta property='og:description' content="A Research on Diffusion Language Models">
+<meta property='og:url' content='https://example.com/p/diffusion-language-model-birdresearch-202510/'>
+<meta property='og:site_name' content='BiribiriBird'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='DLM' /><meta property='article:tag' content='survey' /><meta property='article:published_time' content='2025-10-01T15:54:00&#43;08:00'/><meta property='article:modified_time' content='2025-10-01T15:54:00&#43;08:00'/>
+<meta name="twitter:title" content="Diffusion Language Model · BirdResearch · 202510">
+<meta name="twitter:description" content="A Research on Diffusion Language Models">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            localStorage.setItem(colorSchemeKey, "light");
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_bbc58a5457fc2680.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">BiribiriBird</a></h1>
+            <h2 class="site-description">Segmentation fault!</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/498088093'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648787418" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2107" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="2108" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:neworld1111@163.com'
+                        target="_blank"
+                        title="Email"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743649088353" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6924" width="24" height="24"><path d="M874.666667 181.333333H149.333333c-40.533333 0-74.666667 34.133333-74.666666 74.666667v512c0 40.533333 34.133333 74.666667 74.666666 74.666667h725.333334c40.533333 0 74.666667-34.133333 74.666666-74.666667V256c0-40.533333-34.133333-74.666667-74.666666-74.666667z m-725.333334 64h725.333334c6.4 0 10.666667 4.266667 10.666666 10.666667v25.6L512 516.266667l-373.333333-234.666667V256c0-6.4 4.266667-10.666667 10.666666-10.666667z m725.333334 533.333334H149.333333c-6.4 0-10.666667-4.266667-10.666666-10.666667V356.266667l356.266666 224c4.266667 4.266667 10.666667 4.266667 17.066667 4.266666s12.8-2.133333 17.066667-4.266666l356.266666-224V768c0 6.4-4.266667 10.666667-10.666666 10.666667z" fill="#666666" p-id="6925"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/aoiJays'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648734849" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5802" width="24" height="24"><path d="M511.957333 21.333333C241.024 21.333333 21.333333 240.981333 21.333333 512c0 216.832 140.544 400.725333 335.573334 465.664 24.490667 4.394667 32.256-10.069333 32.256-23.082667 0-11.690667 0.256-44.245333 0-85.205333-136.448 29.610667-164.736-64.64-164.736-64.64-22.314667-56.704-54.4-71.765333-54.4-71.765333-44.586667-30.464 3.285333-29.824 3.285333-29.824 49.194667 3.413333 75.178667 50.517333 75.178667 50.517333 43.776 75.008 114.816 53.333333 142.762666 40.789333 4.522667-31.658667 17.152-53.376 31.189334-65.536-108.970667-12.458667-223.488-54.485333-223.488-242.602666 0-53.546667 19.114667-97.322667 50.517333-131.669334-5.034667-12.330667-21.930667-62.293333 4.778667-129.834666 0 0 41.258667-13.184 134.912 50.346666a469.802667 469.802667 0 0 1 122.88-16.554666c41.642667 0.213333 83.626667 5.632 122.88 16.554666 93.653333-63.488 134.784-50.346667 134.784-50.346666 26.752 67.541333 9.898667 117.504 4.864 129.834666 31.402667 34.346667 50.474667 78.122667 50.474666 131.669334 0 188.586667-114.730667 230.016-224.042666 242.090666 17.578667 15.232 33.578667 44.672 33.578666 90.453334v135.850666c0 13.141333 7.936 27.605333 32.853334 22.869334C862.250667 912.597333 1002.666667 728.746667 1002.666667 512 1002.666667 240.981333 783.018667 21.333333 511.957333 21.333333z" p-id="5803" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About me</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/experience/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Experience</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friend/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>Friend</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#ar-llm">AR LLM</a></li>
+    <li><a href="#dream-7b-diffusion-large-language-models">Dream 7B: Diffusion Large Language Models</a>
+      <ol>
+        <li><a href="#approach">Approach</a>
+          <ol>
+            <li><a href="#ar-based-llm-initialization">AR-based LLM Initialization</a></li>
+            <li><a href="#context-adaptive-token-level-noise-rescheduling">Context-Adaptive Token-Level Noise Rescheduling</a></li>
+            <li><a href="#train">Train</a></li>
+          </ol>
+        </li>
+        <li><a href="#experiment">Experiment</a>
+          <ol>
+            <li><a href="#base模型">Base模型</a></li>
+            <li><a href="#dream-instruct">Dream-Instruct</a></li>
+            <li><a href="#ar-initialization的贡献">AR Initialization的贡献</a></li>
+            <li><a href="#planning-ability">Planning Ability</a></li>
+            <li><a href="#trade-off">Trade-off</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#llada-15-variance-reduced-preference-optimization-for-large-language-diffusion-models">LLaDA 1.5: Variance-Reduced Preference Optimization for Large Language Diffusion Models</a></li>
+    <li><a href="#longllada-unlocking-long-context-capabilities-in-diffusion-llms">LongLLaDA: Unlocking Long Context Capabilities in Diffusion LLMs</a>
+      <ol>
+        <li><a href="#long-context-phenomenology-of-diffusion-llms">Long-Context Phenomenology of Diffusion LLMs</a></li>
+        <li><a href="#机制分析">机制分析</a></li>
+        <li><a href="#context-extension">Context Extension</a></li>
+        <li><a href="#experiment-1">Experiment</a></li>
+      </ol>
+    </li>
+    <li><a href="#llada-v-large-language-diffusion-models-with-visual-instruction-tuning">LLaDA-V: Large Language Diffusion Models with Visual Instruction Tuning</a>
+      <ol>
+        <li><a href="#visual-instruction-tuning">Visual Instruction Tuning</a></li>
+        <li><a href="#method">Method</a>
+          <ol>
+            <li><a href="#training">Training</a></li>
+            <li><a href="#training-strategies">Training Strategies</a></li>
+            <li><a href="#inference">Inference</a></li>
+          </ol>
+        </li>
+        <li><a href="#experiment-2">Experiment</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+      </ol>
+    </li>
+    <li><a href="#llada-medv-exploring-large-language-diffusion-models-for-biomedical-image-understanding">LLaDA-MedV: Exploring Large Language Diffusion Models for Biomedical Image Understanding</a></li>
+    <li><a href="#lavida-a-large-diffusion-language-model-for-multimodal-understanding">LaViDa: A Large Diffusion Language Model for Multimodal Understanding</a>
+      <ol>
+        <li><a href="#method-1">Method</a>
+          <ol>
+            <li><a href="#vision-encoder">Vision Encoder</a></li>
+            <li><a href="#dlm">DLM</a></li>
+            <li><a href="#complementary-mask">Complementary Mask</a></li>
+            <li><a href="#prefix-dlm">Prefix-DLM</a></li>
+            <li><a href="#schedule-shift">Schedule Shift</a></li>
+          </ol>
+        </li>
+        <li><a href="#experiments">Experiments</a>
+          <ol>
+            <li><a href="#reasoning-distillation">Reasoning Distillation</a></li>
+            <li><a href="#text-infilling">Text Infilling</a></li>
+            <li><a href="#speed-vs-quality-trade-off">Speed vs. Quality Trade off</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" >
+                论文笔记
+            </a>
+        
+            <a href="/categories/dlm/" >
+                DLM
+            </a>
+        
+            <a href="/categories/birdresearch/" >
+                BirdResearch
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/diffusion-language-model-birdresearch-202510/">Diffusion Language Model · BirdResearch · 202510</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            A Research on Diffusion Language Models
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Oct 01, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 14 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="ar-llm">AR LLM
+</h2><p>对于自回归模型，假设输入是：<code>[你, 好, ！]</code></p>
+<p>词汇表是：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">0: &lt;pad&gt;
+</span></span><span class="line"><span class="cl">1: 你
+</span></span><span class="line"><span class="cl">2: 好
+</span></span><span class="line"><span class="cl">3: 我
+</span></span><span class="line"><span class="cl">4: 很
+</span></span><span class="line"><span class="cl">5: 好
+</span></span><span class="line"><span class="cl">6: ！
+</span></span><span class="line"><span class="cl">7: &lt;eos&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008181120131.png"
+	width="966"
+	height="655"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008181120131_hu_a8cad21da2d3ad7b.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251008181120131_hu_7c248c0bc453526d.png 1024w"
+	loading="lazy"
+	
+		alt="image-20251008181120131"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="147"
+		data-flex-basis="353px"
+	
+></p>
+<p>[TOC]</p>
+<h2 id="dream-7b-diffusion-large-language-models">Dream 7B: Diffusion Large Language Models
+</h2><p><a class="link" href="https://arxiv.org/abs/2508.15487"  target="_blank" rel="noopener"
+    >2508.15487 Dream 7B: Diffusion Large Language Models</a></p>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008113335209.png"
+	width="1492"
+	height="465"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008113335209_hu_640220d5a4a7936d.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251008113335209_hu_ebb3f34c95380aba.png 1024w"
+	loading="lazy"
+	
+		alt="Performance"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="320"
+		data-flex-basis="770px"
+	
+></p>
+<ul>
+<li>问题：
+<ul>
+<li>AR模型对于需要整体考虑的任务（长期规划、多约束）场景表现差</li>
+<li>AR模型对于长文本的一致性较差</li>
+<li>在各类通用任务中，要达到与Qwen2.5等顶尖自回归模型相当的性能仍存在显著差距</li>
+</ul>
+</li>
+<li>贡献：
+<ul>
+<li>基于<strong>自回归的LLM 初始化</strong>和<strong>上下文自适应噪声调度技术</strong>来实现扩散语言模型的规模化<strong>训练</strong></li>
+<li>Dream 7B Base和Dream 7B Instruct</li>
+</ul>
+</li>
+</ul>
+<h3 id="approach">Approach
+</h3><p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008193402415.png"
+	width="846"
+	height="343"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008193402415_hu_62334379a41411ae.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251008193402415_hu_287610e7745136e9.png 1024w"
+	loading="lazy"
+	
+		alt="Dream"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="246"
+		data-flex-basis="591px"
+	
+></p>
+<ul>
+<li>使用Transformer以偏移方式，预测所有<code>[MASK]</code></li>
+</ul>
+<p>常规的MDM是直接预测对应位置的<code>[MASK]</code>，需要重新训练一个新的Transformer</p>
+<h4 id="ar-based-llm-initialization">AR-based LLM Initialization
+</h4><p>自回归模型的训练目标就是使用第$i$个隐藏状态预测$i+1$的token</p>
+<p>因此我们以偏移方式进行预测，没有打破这种位置关系</p>
+<p>因此将已有的自回归模型参数作为初始值</p>
+<ul>
+<li>保留AR模型的知识</li>
+<li>加速收敛</li>
+</ul>
+<h4 id="context-adaptive-token-level-noise-rescheduling">Context-Adaptive Token-Level Noise Rescheduling
+</h4><p>先前衡量噪声程度一般都是句子级别的：LLaDA衡量某个句子在$t$时刻的权重是$\frac{1}{t}$</p>
+<p>本文发现不同token之间的上下文信息是不同的，因此需要对噪声的衡量更加精细，避免学习的不平衡</p>
+<p>公式化地，定义损失函数：</p>
+$$
+L(\theta) = -\mathbb{E}_{x_0,t,x_t}\sum_{i=1}^{L}1\left [x_t^i=M\right] \cdot w(t,x_t,i) \cdot \log p_\theta(x_0^i\mid x_t)
+$$<p>
+对于LLaDA，其$w(t,x_t,i) = \frac{1}{t}$</p>
+<p>考虑对于某个token的上下文信息：</p>
+<ul>
+<li>距离越近的<code>unmask</code>的token提供的信息越丰富</li>
+</ul>
+<p>因此论文定义为：</p>
+$$
+w(t,x_t,i) = \frac{1}{2}\sum_{j=1}^L\left [x_t^j\neq M\right] Geo(p, |i-j|-1)
+$$<p>
+其中$Geo$表示几何分布核：</p>
+$$
+Geo(p,d) = (1-p)^d\cdot p, \quad d\geq 0
+$$<ul>
+<li>距离$d$越大，贡献越小</li>
+<li>超参数$p$：</li>
+</ul>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008202642071.png"
+	width="1139"
+	height="602"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008202642071_hu_ad3745440641ea7f.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251008202642071_hu_9cf88da2296088af.png 1024w"
+	loading="lazy"
+	
+		alt="超参数p"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="189"
+		data-flex-basis="454px"
+	
+></p>
+<h4 id="train">Train
+</h4><ul>
+<li>
+<p>Dream-7B采用了与Qwen2.5-7B完全相同的Transformer架构配置</p>
+</li>
+<li>
+<p>Pretrain</p>
+</li>
+<li>
+<p>SFT</p>
+</li>
+</ul>
+<p>采用了之前的技巧，训练上与LLaDA没什么不同（注意损失函数）</p>
+<h3 id="experiment">Experiment
+</h3><h4 id="base模型">Base模型
+</h4><p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008211344486.png"
+	width="1013"
+	height="712"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008211344486_hu_530b344c72b58167.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251008211344486_hu_e41e555b15c86c6f.png 1024w"
+	loading="lazy"
+	
+		alt="benchmark"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="142"
+		data-flex-basis="341px"
+	
+></p>
+<ul>
+<li>
+<p>推理任务中（ARC-E、ARC-C）表现良好</p>
+</li>
+<li>
+<p>规划任务中领先幅度巨大</p>
+</li>
+<li>
+<p>训练数据量非常小</p>
+</li>
+</ul>
+<p>结论：</p>
+<ul>
+<li>初始化策略和上下文自适应噪声调度有效性</li>
+</ul>
+<h4 id="dream-instruct">Dream-Instruct
+</h4><p>180万条数据，进行3轮微调</p>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008212201828.png"
+	width="1224"
+	height="556"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008212201828_hu_215f137c20397b9a.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251008212201828_hu_de627354d9bd135e.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="220"
+		data-flex-basis="528px"
+	
+></p>
+<ul>
+<li>论文中没做分析</li>
+<li>这里和LLaDA一样，SFT之后效果落后，甚至出现了性能下降</li>
+</ul>
+<blockquote>
+<p>扩散大语言模型在遵循指令任务中具备与基于自回归的大语言模型相匹敌的潜力，为未来高级扩散大语言模型后训练方案奠定了基础</p></blockquote>
+<h4 id="ar-initialization的贡献">AR Initialization的贡献
+</h4><ul>
+<li>验证：AR LLM初始化是有效的</li>
+</ul>
+<p>实验设计：</p>
+<ul>
+<li>LLaMA3.2-1B参数初始化的Dream-1B和从头训练的Dream1B</li>
+</ul>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008213718155.png"
+	width="1266"
+	height="825"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008213718155_hu_e7ebe20ad61e1c37.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251008213718155_hu_81eed865a386611d.png 1024w"
+	loading="lazy"
+	
+		alt="Loss 对比"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="153"
+		data-flex-basis="368px"
+	
+></p>
+<ul>
+<li>Loss始终更低，证明了初始化是有效的</li>
+</ul>
+<p>同时在这个实验中，论文说明了学习率的影响非常大：</p>
+<ul>
+<li>大的学习率：破坏AR LLM的有益特性</li>
+<li>小的学习率：阻碍学习扩散的过程</li>
+</ul>
+<p>（但似乎没写上下文自适应噪声调度机制的消融实验）</p>
+<h4 id="planning-ability">Planning Ability
+</h4><p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008214118368.png"
+	width="1535"
+	height="458"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008214118368_hu_87ecdcf0260af463.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251008214118368_hu_66b211674994c51b.png 1024w"
+	loading="lazy"
+	
+		alt="规划能力对比"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="335"
+		data-flex-basis="804px"
+	
+></p>
+<ul>
+<li>Dream 模型在两项任务中始终优于其他同等规模的基线模型</li>
+<li>扩散语言模型在解决涉及多重约束或特定目标优化的问题时具有天然优势（？）</li>
+</ul>
+<h4 id="trade-off">Trade-off
+</h4><p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008214402200.png"
+	width="987"
+	height="692"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008214402200_hu_8669f15f499a63cc.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251008214402200_hu_34d18c98a9954339.png 1024w"
+	loading="lazy"
+	
+		alt="Trade-off"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="142"
+		data-flex-basis="342px"
+	
+></p>
+<blockquote>
+<p>Diffusion language models provide a unique advantage through their adjustable inference process</p></blockquote>
+<ul>
+<li>基于时间步长的方法为推理时缩放引入了新的维度，可与现有技术协同工作，例如 OpenAI o1和DeepSeek R1等大型语言模型中使用的思维链推理</li>
+<li>这种可调节的计算质量权衡代表了扩散模型区别于传统自回归模型的关键优势。</li>
+</ul>
+<h2 id="llada-15-variance-reduced-preference-optimization-for-large-language-diffusion-models">LLaDA 1.5: Variance-Reduced Preference Optimization for Large Language Diffusion Models
+</h2><p><a class="link" href="https://arxiv.org/abs/2505.19223"  target="_blank" rel="noopener"
+    >2505.19223 LLaDA 1.5: Variance-Reduced Preference Optimization for Large Language Diffusion Models</a></p>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008221825427.png"
+	width="1719"
+	height="730"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008221825427_hu_d7188d0aed1b164.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251008221825427_hu_6a39ec4afc25f7a1.png 1024w"
+	loading="lazy"
+	
+		alt="LLaDA1.5"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="235"
+		data-flex-basis="565px"
+	
+></p>
+<blockquote>
+<p>看不懂</p></blockquote>
+<p>大概就是通过VRPO这个方法，基于LLaDA的工作，对LLaDA-instruct进行RL</p>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008234343570.png"
+	width="877"
+	height="636"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008234343570_hu_66310da504c89ddc.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251008234343570_hu_5e68522af6e9a73.png 1024w"
+	loading="lazy"
+	
+		alt="LLaDA RL"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="137"
+		data-flex-basis="330px"
+	
+></p>
+<h2 id="longllada-unlocking-long-context-capabilities-in-diffusion-llms">LongLLaDA: Unlocking Long Context Capabilities in Diffusion LLMs
+</h2><p><a class="link" href="https://arxiv.org/abs/2506.14429"  target="_blank" rel="noopener"
+    >2506.14429  LongLLaDA: Unlocking Long Context Capabilities in Diffusion LLMs</a></p>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008235711746.png"
+	width="1304"
+	height="432"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251008235711746_hu_cdf13d8671fc9b92.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251008235711746_hu_37b525e60acea430.png 1024w"
+	loading="lazy"
+	
+		alt="长上下文对比"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="301"
+		data-flex-basis="724px"
+	
+></p>
+<ul>
+<li>
+<p>核心问题：扩散型LLMs在长文本处理领域的研究空白</p>
+<ul>
+<li>为什么扩散LLM在直接长度外推时保持稳定的困惑度并呈现<strong>局部感知特性</strong></li>
+<li>针对自回归 LLM 建立的长度扩展技术能否迁移至扩散架构</li>
+<li>自回归基线相比，扩散 LLM 在长上下文基准测试中表现如何？会显现哪些独特能力或局限性？</li>
+</ul>
+</li>
+<li>
+<p>贡献：</p>
+<ul>
+<li>揭示了其在上下文外推过程中保持稳定困惑度和局部感知的独特特性，并通过RoPE机制进行了解释</li>
+<li>基于 NTK 的 RoPE 外推法与缩放定律可无缝迁移至扩散 LLMs，实现 6 倍上下文扩展</li>
+<li>benchmark表明：扩散 LLMs 在<strong>检索任务</strong>中与自回归模型表现相当，在<strong>聚合任务</strong>中稍显不足，但在<strong>问答任务</strong>中表现卓越</li>
+</ul>
+</li>
+</ul>
+<h3 id="long-context-phenomenology-of-diffusion-llms">Long-Context Phenomenology of Diffusion LLMs
+</h3><blockquote>
+<p>大海捞针测试（Needle-In-A-Haystack, NIAH）</p>
+<p>在一个超长的上下文（haystack，干草堆）里，研究者会插入一小段关键信息（needle，针）</p>
+<p>模型的任务是：在生成或问答过程中，能否准确地“找到”并使用这段信息。</p>
+<p>这类测试会改变针的位置（例如放在靠前、中间或靠后部分）以及上下文的总长度，用来观察模型在不同深度和不同长度下的表现。</p></blockquote>
+<ul>
+<li>
+<p>实验目的：揭示扩散 LLM 在长上下文中出现的<strong>局部感知 (local perception)</strong></p>
+</li>
+<li>
+<p>实验设计：</p>
+<ul>
+<li>
+<p>输入：在不同长度（最多32k）的长上下文中插入一个needle</p>
+</li>
+<li>
+<p>输出：限定模型输出最多32个token</p>
+</li>
+<li>
+<p>实验对象</p>
+<ul>
+<li>DLM：block size = 32，采样步数 = 32</li>
+<li>LLM：默认</li>
+</ul>
+</li>
+<li>
+<p>评估指标</p>
+<ul>
+<li>找到Needle的成功率</li>
+<li>模型在不同深度（前文、中间、后文）找到Needle的能力</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009004938065.png"
+	width="1135"
+	height="686"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009004938065_hu_335374cd5412e855.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251009004938065_hu_befee1c766cd6b1e.png 1024w"
+	loading="lazy"
+	
+		alt="LLaDA与LLaMA系列实验结果"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="165"
+		data-flex-basis="397px"
+	
+></p>
+<blockquote>
+<p>附录中补充了其他DLM模型的实验</p></blockquote>
+<ul>
+<li>AR LLM在8K内的上下文表现完美，超过8K长度无法完成任何任务</li>
+<li>DLM出现了类似**滑动窗口（窗口长度为4k）**的表现</li>
+</ul>
+<p>DLM受采样步数影响较大，因此定量补充了实验：</p>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009005810059.png"
+	width="1169"
+	height="749"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009005810059_hu_546e20570a7401cb.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251009005810059_hu_181f5578c1ab51ce.png 1024w"
+	loading="lazy"
+	
+		alt="Sample Step"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="156"
+		data-flex-basis="374px"
+	
+></p>
+<ul>
+<li>表明扩散 LLMs 的长上下文性能虽受采样步数影响，但仍受限于模型支持的最大上下文长度</li>
+</ul>
+<h3 id="机制分析">机制分析
+</h3><ul>
+<li>自回归只能看见后续的：$[0, T_{train} - 1]$（LLaMA的$T_{train} = 8192$​）</li>
+<li>DLM是双向注意力：$[1-T_{train},T_{train}-1]$（LLaDA的$T_{train}=4096$）
+<ul>
+<li>对于单个token，可以同时出现在左边的上下文窗口，也可以出现在右边的上下文窗口</li>
+</ul>
+</li>
+</ul>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009100213544.png"
+	width="1890"
+	height="919"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009100213544_hu_57b583127a349bfd.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251009100213544_hu_9380a40281cc2024.png 1024w"
+	loading="lazy"
+	
+		alt="context"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="205"
+		data-flex-basis="493px"
+	
+></p>
+<blockquote>
+<p>留坑：RoPE</p></blockquote>
+<ul>
+<li>LLaMA完全丢失了负相对位置的信息，外推能力受限</li>
+<li>LLaDA虽然$T_{train}$比较小，但是能够接受到一个负正窗口</li>
+</ul>
+<blockquote>
+<p><strong>LLaMA：只学习了从头往后一个个token读取的能力</strong></p>
+<p>它可以知道，第2个token是第1个token的后一个……第1000个token是第999个token的后一个……</p>
+<p>（像翻书一样可以一页一页翻）</p>
+<p>但是一旦碰到第10000页，它推理不出这是9999页过来的（超出上下文，没有学习过这种关系）</p>
+<p><strong>LLaDA：双向上下文</strong></p>
+<p>可以推断出9999是10000的前一页</p></blockquote>
+<p>论文补充了t-SNE可视化实验</p>
+<p>观察了两个模型最后的Q和K states</p>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009140617445.png"
+	width="2054"
+	height="955"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009140617445_hu_3136df464a2be127.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251009140617445_hu_d78712eecfc63560.png 1024w"
+	loading="lazy"
+	
+		alt="t-SNE"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="215"
+		data-flex-basis="516px"
+	
+></p>
+<ul>
+<li>LLaDA随着上下文长度增加，仍然保持形状</li>
+<li>LLaMA出现了明显的聚类分离，表示内部出现了<code>distribution shift</code></li>
+</ul>
+<h3 id="context-extension">Context Extension
+</h3><p>将 <strong>NTK-based RoPE extrapolation</strong>（一种在自回归 LLM 中已验证的旋转位置嵌入扩展方法）迁移到扩散式 LLM</p>
+<blockquote>
+<p><strong>缩放旋转基数 β0</strong>，让正弦/余弦函数周期变长，相当于“拉伸坐标轴”，从而容纳更长的上下文</p></blockquote>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009142455144.png"
+	width="1226"
+	height="718"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009142455144_hu_c1933c2297845371.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251009142455144_hu_662f939c281b78cd.png 1024w"
+	loading="lazy"
+	
+		alt="base"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="170"
+		data-flex-basis="409px"
+	
+></p>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009142511056.png"
+	width="1223"
+	height="702"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009142511056_hu_2f6517f50f9ebb35.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251009142511056_hu_70ac19fca8c8e977.png 1024w"
+	loading="lazy"
+	
+		alt="instruct"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="174"
+		data-flex-basis="418px"
+	
+></p>
+<ul>
+<li>
+<p><strong>小幅扩展有效</strong>： 8k 或 16k，几乎在所有深度下都保持接近 100% 的检索准确率。</p>
+</li>
+<li>
+<p><strong>中等扩展出现性能下降</strong>：24k ，出现lost-in-the-middle现象</p>
+<ul>
+<li>自回归模型中同样有的现象</li>
+</ul>
+</li>
+<li>
+<p><strong>大规模扩展失败</strong>：模型无法再有效外推，说明方法的实际上限已到达。</p>
+</li>
+</ul>
+<blockquote>
+<p>附录中对同类的DLM做了相同的实验</p></blockquote>
+<h3 id="experiment-1">Experiment
+</h3><blockquote>
+<p>SD、MD、Sum 和 Syn 分别代表单文档问答、多文档问答、摘要和合成任务</p>
+<p>Avg 是所有子任务按评估数据数量加权的平均得分</p></blockquote>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009145901304.png"
+	width="2012"
+	height="745"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009145901304_hu_309eb6e92ee1f29a.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251009145901304_hu_99cab5b931fefe45.png 1024w"
+	loading="lazy"
+	
+		alt="LongBench"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="270"
+		data-flex-basis="648px"
+	
+></p>
+<ul>
+<li>平均得分媲美AR LLM</li>
+</ul>
+<blockquote>
+<p>检索（NIAH）/聚合（AGG）/问答（QA)</p></blockquote>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009150019639.png"
+	width="1978"
+	height="1185"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009150019639_hu_a472d06a9de10b3a.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251009150019639_hu_b08d80dfb6e4d0da.png 1024w"
+	loading="lazy"
+	
+		alt="Ruler"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="166"
+		data-flex-basis="400px"
+	
+></p>
+<ul>
+<li>检索任务：相当</li>
+<li>聚合任务：不如AR LLM</li>
+<li>问答任务：超过AR LLM</li>
+</ul>
+<h2 id="llada-v-large-language-diffusion-models-with-visual-instruction-tuning">LLaDA-V: Large Language Diffusion Models with Visual Instruction Tuning
+</h2><p><a class="link" href="https://arxiv.org/pdf/2505.16933"  target="_blank" rel="noopener"
+    >LLaDA-V: Large Language Diffusion Models with Visual Instruction Tuning</a></p>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009155310087.png"
+	width="1961"
+	height="949"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009155310087_hu_73052e8f451b3af2.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251009155310087_hu_31fdd1ed720a7b25.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="206"
+		data-flex-basis="495px"
+	
+></p>
+<ul>
+<li>
+<p>问题：完全基于扩散机制的多模态大语言模型能否达到与AR LLM相匹敌的性能？</p>
+</li>
+<li>
+<p>论文贡献</p>
+<ul>
+<li>首个完全基于扩散模型的多模态大语言模型</li>
+<li>在多个基准测试中展现出卓越的可扩展性</li>
+<li>在混合型及纯扩散式多模态大语言模型中均SOTA</li>
+</ul>
+<h3 id="visual-instruction-tuning">Visual Instruction Tuning
+</h3></li>
+<li>
+<p>Vison Tower（CLIP或SigLIP）：图像转视觉表征</p>
+</li>
+<li>
+<p>MLP connector：嵌入LLM词空间</p>
+</li>
+<li>
+<p>Language Tower：LLM</p>
+</li>
+</ul>
+<p>主流的多模态大模型架构之一，只需要相对较少的数据（less than 100w 图文数据对）</p>
+<p>本文主要研究如何在DLM中进行Visual Instruction Tuning</p>
+<h3 id="method">Method
+</h3><ul>
+<li>Language Tower：LLaDA 8B（与LLaMA3-8B相当的语言模型）</li>
+<li>Vison Tower：SigLIP</li>
+<li>MLP Connector：a two-layer MLP</li>
+</ul>
+<h4 id="training">Training
+</h4><p>训练阶段引入了含有多轮对话的数据</p>
+<p>为了简化描述，文章以2轮对话的数据进行说明，定义符号：</p>
+<ul>
+<li>$\mathcal{v}$：Vison Tower和MLP Connector生成的视觉表征向量</li>
+<li>$[M]$​：掩码标记</li>
+<li>数据：$(\mathcal{v}, p_0^1,r_0^1,p_0^2,r_0^2)$</li>
+<li>$p_0^1 = [ p_0^{1,i}]$：首轮提示文本</li>
+<li>$p_0^2 = [ p_0^{2,i}]$ ：次轮提示文本</li>
+</ul>
+<p>对于一个二轮对话，训练目标定义为：</p>
+$$
+L(\theta) = -\mathbb{E}_{\mathcal{v},t,p_0^1,r_0^1,r_t^1,p_0^2,r_0^2,r_t^2}\left[\frac{1}{t}\sum_{i=1}^{L_{p_1}}\sum_{j=1}^{L_{p_2}}1\left[r_t^{1,i}=M\wedge r_t^{2,j}=M\right] \cdot \log p_\theta(r_0^{1,i},r_0^{2,j}\mid \mathcal{v}, p_0^1,r_0^1,p_0^2,r_0^2 ) \right]
+$$<blockquote>
+<p>在多轮对话场景下，<strong>不同轮次的响应是强相关的</strong></p>
+<ul>
+<li>用户的问题可能在第 1 轮，答案在第 2 轮</li>
+<li>推理链条往往横跨多个回合，不能只看单独的 token</li>
+</ul>
+<p>模型必须在预测某个 token 时，同时考虑另一轮对话中的掩码 token</p>
+<p>这样就把 <strong>跨轮次的依赖关系</strong> 学进去，而不是每轮单独学</p>
+<p>联合约束迫使模型去捕捉 <strong>对话轮次之间的因果逻辑</strong></p></blockquote>
+<p>理论上这个式子在先前工作中已经被证明为整个任务的负对数似然上界</p>
+<ul>
+<li>在多轮对话中似乎可以采用causal mask，阻止早期对话轮次访问了后期的对话轮次</li>
+<li>后文消融实验证明双向注意力的效果更好（实现对整体对话语境的全面理解）</li>
+</ul>
+<blockquote>
+<p>该机制在近期<strong>视频扩散模型</strong>中已证实可有效提升生成视频的时间连贯性</p></blockquote>
+<p>本身训练的流程和LLaDA的SFT流程比较相似，加噪只会在Response中，且同时对多轮对话中的Response进行加噪</p>
+<p>一次性让模型恢复所有对话中的MASK</p>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009200659499.png"
+	width="1569"
+	height="545"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009200659499_hu_14f4dbdd112ab8a5.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251009200659499_hu_55f6d0881c6145a4.png 1024w"
+	loading="lazy"
+	
+		alt="AR &#43; Train &#43; Inference"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="287"
+		data-flex-basis="690px"
+	
+></p>
+<h4 id="training-strategies">Training Strategies
+</h4><p>整个训练过程参考了LLaVA的训练策略</p>
+<p>建立语言和视觉对齐关系并培养视觉指令跟随能力</p>
+<p>训练目标函数与上文相同</p>
+<ul>
+<li>阶段一：语言-图像对齐
+<ul>
+<li>目的：图像与语言的分布不一致，如果直接做指令调优，模型学习跨模态语义很困难</li>
+<li>方法：<strong>将视觉表征与 LLaDA 的词向量进行对齐</strong>
+<ul>
+<li>冻结Vison Tower和Language Tower（这两个本身进行过预训练），只训练MLP Connector</li>
+<li>数据集：LLaVA-Pretrain</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>阶段二：视觉指令调优Visual Instruction Tuning
+<ul>
+<li>目的：（单图像训练）建立基本的图像理解能力，（多图像训练）扩展到时序和跨图像推理</li>
+<li>方法：（两个阶段）解冻所有层
+<ul>
+<li><strong>单图像训练Single image</strong>：在 <strong>1,000 万单图像样本</strong>上训练，增强对单张图像的理解与响应能力。</li>
+<li><strong>统一视觉训练阶段one vision</strong>：在 <strong>约 200 万多模态样本</strong>（包括单图、多图和视频）上训练，使模型具备处理复杂场景的能力</li>
+</ul>
+</li>
+<li>数据集：<strong>MAmmoTH-VL</strong> 数据集</li>
+</ul>
+</li>
+<li>阶段三：多模态推理增强 Multimodal Reasoning Enhancement
+<ul>
+<li>目的：增强模型处理复杂任务的多模态推理能力，加入reasoning data提升数学、跨图像和逻辑推理任务的表现</li>
+<li>方法
+<ul>
+<li>推理训练：使用来自 VisualWebInstruct聚焦推理的多模态数据对 LLaDA-V 进行训练（90 万个问答对，详尽的推理链和最终答案）</li>
+<li>平衡训练：参考qwen系列，融合VisualWebInstruct（其中50%添加<code>\think</code>）和MAmmoTH-VL(one vison部分，全部添加<code>\no_think</code>，鼓励直接回答)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="inference">Inference
+</h4><p>推理时根据已有的对话记录，对当前的prompt进行单轮的response生成</p>
+<p>重掩码策略采用low-confidence strategy</p>
+<h3 id="experiment-2">Experiment
+</h3><p>可扩展性</p>
+<ul>
+<li>LLaDA-V 随着<strong>训练数据</strong>增加性能持续提升</li>
+<li>在 <strong>多学科与数学推理任务</strong> 上，LLaDA-V 扩展性明显优于 LLaMA3-V</li>
+<li>但在 <strong>图表/文档理解</strong> 和 <strong>真实场景理解</strong> 任务上，LLaMA3-V 表现更优</li>
+</ul>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009221821275.png"
+	width="1402"
+	height="695"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009221821275_hu_2a1887244b431296.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251009221821275_hu_3b1ccaa0b03d7012.png 1024w"
+	loading="lazy"
+	
+		alt="scalability"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="201"
+		data-flex-basis="484px"
+	
+></p>
+<p>Benchmark</p>
+<ul>
+<li>对于已有的混合或扩散模型，LLaDA-V是SOTA</li>
+<li>对比LLaMA3-V：6 个任务上超越</li>
+<li>对比Qwen2-VL：整体仍落后</li>
+<li>图表/文档理解和 RealWorldQA 上表现稍差</li>
+</ul>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009222242556.png"
+	width="1710"
+	height="757"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009222242556_hu_16fbc19e2c4d96ea.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251009222242556_hu_c8031429e440442.png 1024w"
+	loading="lazy"
+	
+		alt="benchmark"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="225"
+		data-flex-basis="542px"
+	
+></p>
+<p>消融实验</p>
+<ul>
+<li>对比了Causal Mask和无Mask（多轮对话）</li>
+<li>12个benchmark中7个更优</li>
+</ul>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009222503983.png"
+	width="953"
+	height="567"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251009222503983_hu_d09e07717de8958f.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251009222503983_hu_d4cffbcd05dc86ef.png 1024w"
+	loading="lazy"
+	
+		alt="消融实验"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="168"
+		data-flex-basis="403px"
+	
+></p>
+<h3 id="conclusion">Conclusion
+</h3><ul>
+<li>图像接入SigLIP的方式比较简单，会丢失分辨率和信息，造成图表问题表现差</li>
+</ul>
+<h2 id="llada-medv-exploring-large-language-diffusion-models-for-biomedical-image-understanding">LLaDA-MedV: Exploring Large Language Diffusion Models for Biomedical Image Understanding
+</h2><p><a class="link" href="https://arxiv.org/abs/2508.01617"  target="_blank" rel="noopener"
+    >2508.01617 LLaDA-MedV: Exploring Large Language Diffusion Models for Biomedical Image Understanding</a></p>
+<blockquote>
+<p>没怎么看，大概是把LLaDA-V的工作调整到了垂类领域</p></blockquote>
+<p>一些比较有趣的实验分析：</p>
+<ul>
+<li>DLM在一些垂类领域非常合适，可以<strong>显式地控制</strong>一个大概的生成长度</li>
+<li>模型可能出现重复 token（如 “the the the …”）的问题，尤其在<strong>采样步数较少</strong>或<strong>长度设定较大</strong>时</li>
+<li>直接使用LLaDA-V的参数做微调的性能反而更差，需要从LLaDA-instruct出发，重新走3个步骤</li>
+</ul>
+<h2 id="lavida-a-large-diffusion-language-model-for-multimodal-understanding">LaViDa: A Large Diffusion Language Model for Multimodal Understanding
+</h2><p><a class="link" href="https://arxiv.org/abs/2505.16839"  target="_blank" rel="noopener"
+    >https://arxiv.org/abs/2505.16839</a></p>
+<p><strong>问题：</strong></p>
+<ul>
+<li>
+<p>AR LLM对强双向上下文要求的任务（文本填充、从图像中提取信息填充到json格式）很弱</p>
+<ul>
+<li>视觉语言场景中对输出模式的要求特别严格</li>
+</ul>
+</li>
+<li>
+<p>标准扩散模型训练的数据效率低下，未被遮盖的token不参与损失函数计算，容易遗失关键语义信息（关键词）</p>
+</li>
+<li>
+<p>现有的推理方式缺少了KV cache的支持（双向上下文固有的缺陷）</p>
+<ul>
+<li>短文本环境中是可容忍的</li>
+<li>对于VLM任务无法接受，常常伴有数百个visual token</li>
+</ul>
+</li>
+<li>
+<p>固定比例的<code>unmask</code>在迭代次数较少时效果非常差</p>
+</li>
+</ul>
+<p><strong>贡献：</strong></p>
+<ul>
+<li>
+<p>第一个DLM视觉语言模型</p>
+</li>
+<li>
+<p>一种互补的mask方案，确保每个token都能参与到学习过程中，提高数据效率</p>
+</li>
+<li>
+<p>Prefix-DLM decoding：缓存多模态的提示词与图像输入，从而加速推理过程</p>
+</li>
+<li>
+<p>受文生图技术的启发，采用了时间步偏移策略，自适应调整每次迭代的解码数量</p>
+</li>
+</ul>
+<h3 id="method-1">Method
+</h3><p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251018171520779.png"
+	width="857"
+	height="381"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251018171520779_hu_83db3a345a7595c6.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251018171520779_hu_e775b30abb7e0603.png 1024w"
+	loading="lazy"
+	
+		alt="image-20251018171520779"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="224"
+		data-flex-basis="539px"
+	
+></p>
+<ul>
+<li>
+<p>Vision Encoder和DLM通过MLP进行连接</p>
+</li>
+<li>
+<p>模型输入：图像$I$和文本$P$</p>
+</li>
+</ul>
+<h4 id="vision-encoder">Vision Encoder
+</h4><ul>
+<li>$I \to_{resize} 768\times 768$</li>
+<li>切分成四个不重叠的部分（$I_{1:4} = (384,384)$）；直接resize原图为$(384,384)$，得到$I_5$</li>
+<li>每一个子图被独立地通过Vision Encoder（SigLIP-400M ）进行编码
+<ul>
+<li>$I_i \to V_i, \text{size} = 27 \times 27$，五个子图总共产生了3645个embeddings</li>
+<li>$2\times 2$平均池化（缩短序列，提升训练效率）：$14\times 14$，总共980个embeddings</li>
+<li>经过MLP构成的Projection Network，Flatten到1D</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>这里是输出5个一维向量，还是拼在一起的1个一维向量？</p>
+<p>暂时没去研究</p></blockquote>
+<h4 id="dlm">DLM
+</h4><p>DLM的输入：</p>
+<ul>
+<li>视觉嵌入向量</li>
+<li>文本提示词$P$</li>
+<li>带有掩码的$X_t$</li>
+</ul>
+<p>输出：</p>
+<ul>
+<li>概率分布，用于获取$X_0$</li>
+</ul>
+<p>论文采用LLaDA和Dream作为DLM</p>
+<h4 id="complementary-mask">Complementary Mask
+</h4><p>文本中信息量非常密集，一般就是几个词</p>
+<p>对于之前的加噪方法，不一定能恰好遮蔽需要的词</p>
+<p>例如<code>The answer is dog.</code>，加噪为：<code>The [MASK] [Mask] dog.</code></p>
+<p>事实上我们只需要引入它的互补形式：<code>[MASK] answer is [MASK]</code></p>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020151759246.png"
+	width="1264"
+	height="883"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020151759246_hu_6bc6d2d986ad22ba.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251020151759246_hu_3cdadd9f2c6fbffc.png 1024w"
+	loading="lazy"
+	
+		alt="complementary"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="143"
+		data-flex-basis="343px"
+	
+></p>
+<p>同时，这份数据会直接copy视觉以及提示词部分的嵌入</p>
+<p>因此对实际训练开销的影响较小</p>
+<h4 id="prefix-dlm">Prefix-DLM
+</h4><p>定义序列长度为$L$，推理的迭代次数$K$，我们有NFE（fraction of the number of functional evaluations）：</p>
+$$
+\text{NFE} = \frac{K}{L}
+$$<ul>
+<li>NFE=100%时，每次迭代生成一个Token</li>
+<li>NFE=50%时，每次迭代生成2个Token</li>
+</ul>
+<blockquote>
+<p>但实际上由于毫无推理优化，DLM的速度比自回归慢</p></blockquote>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020161428365.png"
+	width="1423"
+	height="417"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020161428365_hu_754ba3cf8053a3da.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251020161428365_hu_4f0aa1432c96e31f.png 1024w"
+	loading="lazy"
+	
+		alt="Attention"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="341"
+		data-flex-basis="818px"
+	
+></p>
+<ul>
+<li>Causal Mask：可以不断复用之前的token的kv矩阵（之前的token没有变化，且之前的token对未来的token不感兴趣）</li>
+<li>Full Mask：每个token都会看前后的内容，因此需要不断重新计算</li>
+<li>Prefix-DLM：I和P部分不会发生变化，遮蔽了对未来answer的token</li>
+</ul>
+<h4 id="schedule-shift">Schedule Shift
+</h4><p>喷了一下等步长的解码，提出了非线性的递推：</p>
+$$
+t'_i = \frac{\alpha t_i}{1+(\alpha -1)t_i}
+$$<p>
+设计一个时间重参数化的函数，要求满足：</p>
+<ul>
+<li>$t_0 = 0,t_1 = 1$，仍然保持边界</li>
+<li>单调递增</li>
+<li>曲率可控，方便控制早晚阶段的速度</li>
+<li>简单，防止数值不稳定或梯度爆炸</li>
+</ul>
+<p>论文希望早期降噪快，后期降噪慢</p>
+<blockquote>
+<p>希望先快速搭建一个骨架，后面慢慢填充</p></blockquote>
+<p>对这个式子求导：</p>
+$$
+\frac{dt_i'}{dt_i} =   \frac{\alpha}{(1+(\alpha-1)t)^2}
+$$<p>
+当$t=0$，导数为$\alpha$，$t=1$，导数为$\frac{1}{\alpha}$</p>
+<p>可以通过$\alpha$​和1的大小关系，控制是先快后慢，还是先慢后快</p>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251021190931428.png"
+	width="739"
+	height="681"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251021190931428_hu_afa6e273813b0639.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251021190931428_hu_ba9745771f5c5b65.png 1024w"
+	loading="lazy"
+	
+		alt="schedule"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="108"
+		data-flex-basis="260px"
+	
+></p>
+<h3 id="experiments">Experiments
+</h3><p>略过benchmark部分</p>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251021202137371.png"
+	width="1530"
+	height="1237"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251021202137371_hu_43223d13feada0c0.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251021202137371_hu_2a6ba790d8bb9229.png 1024w"
+	loading="lazy"
+	
+		alt="benchmark"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="123"
+		data-flex-basis="296px"
+	
+></p>
+<h4 id="reasoning-distillation">Reasoning Distillation
+</h4><p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020211558087.png"
+	width="519"
+	height="219"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020211558087_hu_73460ab98d2fb011.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251020211558087_hu_aa6c53100831621.png 1024w"
+	loading="lazy"
+	
+		alt="reasoning"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="236"
+		data-flex-basis="568px"
+	
+></p>
+<p>paper通过蒸馏VL-Rethinker-7B模型（19.2K CoT examples）</p>
+<p>训练得到LaViDa-Reason</p>
+<p>在MathVista、MathVerse和MathVision上均得到提升</p>
+<h4 id="text-infilling">Text Infilling
+</h4><p>对于实际的文本填充任务，不需要生成所有内容，只需要填写需要填写的</p>
+<blockquote>
+<p>任意时间步长开始生成</p></blockquote>
+<p>例如：</p>
+<p><code>There is a [M][M][M][M] in the image.</code></p>
+<p>这里我们希望是<code>dog</code>或者<code>traffic light</code>，也是就是variable-length completions</p>
+<p>因此利用了第二阶段（激活全部参数）的20%数据，进行第三阶段训练，得到LaViDa-FIM</p>
+<ul>
+<li>文本中插入<strong>随机长度</strong>的<code>[S][S]……[S][FIM]</code>序列</li>
+<li>推理时，在掩码段后面附加<code>[FIM]</code>，得到<code>There is a [M][M][M][M][FIM] in the image.</code></li>
+<li>模型自然可以生成：
+<ul>
+<li><code>There is a dog[S][S][S][FIM] in the image.</code></li>
+<li><code>There is a traffic light[S][S][FIM] in the image.</code></li>
+</ul>
+</li>
+</ul>
+<p>约束性诗歌生成：模型根据图像生成一首诗，每行以特定音节开头</p>
+<blockquote>
+<p>强调了结构性约束和上下文一致性，测试双向生成能力</p></blockquote>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020215449484.png"
+	width="886"
+	height="492"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020215449484_hu_7654eb8df0de9790.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251020215449484_hu_540b0ba14a6cc84c.png 1024w"
+	loading="lazy"
+	
+		alt="诗歌补全"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="180"
+		data-flex-basis="432px"
+	
+></p>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020215153081.png"
+	width="506"
+	height="199"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020215153081_hu_6c166c051812bb1a.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251020215153081_hu_f982c9463f0367e2.png 1024w"
+	loading="lazy"
+	
+		alt="poem completion"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="254"
+		data-flex-basis="610px"
+	
+></p>
+<ul>
+<li>Sentence：满足行级别的约束的比例</li>
+<li>Sample：满足样本级约束的比例</li>
+</ul>
+<h4 id="speed-vs-quality-trade-off">Speed vs. Quality Trade off
+</h4><p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020224259620.png"
+	width="557"
+	height="572"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020224259620_hu_994630fc0b694545.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251020224259620_hu_878a9a6de5bcea7.png 1024w"
+	loading="lazy"
+	
+		alt="Quality-Speed"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="97"
+		data-flex-basis="233px"
+	
+></p>
+<p>设定长度固定32，通过调整迭代次数K，进行实验</p>
+<p>（数据集COCO2017图像描述 500张，生成图像标题）</p>
+<ul>
+<li>NFE=100%，稍慢于AR LLM，但是性能更强</li>
+<li>50-75%的性能和速度都很不错</li>
+</ul>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020225129247.png"
+	width="560"
+	height="278"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020225129247_hu_10c5f2cf2970a1ff.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251020225129247_hu_1bf8e32d51acfc60.png 1024w"
+	loading="lazy"
+	
+		alt="Prefix-DLM"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="201"
+		data-flex-basis="483px"
+	
+></p>
+<ul>
+<li>有效的加速推理，性能下降少</li>
+</ul>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020225349258.png"
+	width="541"
+	height="233"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020225349258_hu_fdf1729242ac0fa8.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251020225349258_hu_48f7899bb17d908d.png 1024w"
+	loading="lazy"
+	
+		alt="Timestep-shifting"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="232"
+		data-flex-basis="557px"
+	
+></p>
+<ul>
+<li>先快后慢是对的</li>
+</ul>
+<hr>
+<p><strong>消融实验部分</strong></p>
+<ul>
+<li>验证了互补掩码</li>
+</ul>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020230652797.png"
+	width="575"
+	height="285"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020230652797_hu_c22d64ad30e12606.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251020230652797_hu_a75bfb12c4f27585.png 1024w"
+	loading="lazy"
+	
+		alt="Comp. Mask"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="201"
+		data-flex-basis="484px"
+	
+></p>
+<ul>
+<li>验证了图像分辨率的影响（输入分辨率）
+<ul>
+<li>OCR（上面四个）的提升更为明显</li>
+<li>一般视觉理解任务（最后一个）提升不多</li>
+</ul>
+</li>
+</ul>
+<p><img src="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020231154771.png"
+	width="409"
+	height="247"
+	srcset="/p/diffusion-language-model-birdresearch-202510/assets/image-20251020231154771_hu_240c4baf6b5065ba.png 480w, /p/diffusion-language-model-birdresearch-202510/assets/image-20251020231154771_hu_69ac30fdc1178978.png 1024w"
+	loading="lazy"
+	
+		alt="image revolution"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="165"
+		data-flex-basis="397px"
+	
+></p>
+<hr>
+<p>STOP，接下来需要进入any2any的调研</p>
+<p>这部分内容另开一篇</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/dlm/">DLM</a>
+        
+            <a href="/tags/survey/">Survey</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/multimodal-diffusion-language-model-birdresearch-202510/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Multimodal Diffusion Language Model · BirdResearch · 202510</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/awesome-llada/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Awesome LLaDA</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/llada-rec-discrete-diffusion-for-parallel-semantic-id-generation-in-generative-recommendation/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">LLaDA-Rec - Discrete Diffusion for Parallel Semantic ID Generation in Generative Recommendation</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tidar-think-in-diffusion-talk-in-autoregression/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">TiDAR - Think in Diffusion, Talk in Autoregression</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/llada-moe-asparse-moediffusion-language-model/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">LLaDA-MoE ASparse MoEDiffusion Language Model</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

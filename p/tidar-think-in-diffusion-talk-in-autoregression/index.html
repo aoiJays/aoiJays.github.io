@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="看看其他工作">
+<title>TiDAR - Think in Diffusion, Talk in Autoregression</title>
+
+<link rel='canonical' href='https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="TiDAR - Think in Diffusion, Talk in Autoregression">
+<meta property='og:description' content="看看其他工作">
+<meta property='og:url' content='https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/'>
+<meta property='og:site_name' content='BiribiriBird'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='DLM' /><meta property='article:published_time' content='2025-11-14T16:11:00&#43;08:00'/><meta property='article:modified_time' content='2025-11-14T16:11:00&#43;08:00'/>
+<meta name="twitter:title" content="TiDAR - Think in Diffusion, Talk in Autoregression">
+<meta name="twitter:description" content="看看其他工作">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            localStorage.setItem(colorSchemeKey, "light");
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_bbc58a5457fc2680.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">BiribiriBird</a></h1>
+            <h2 class="site-description">Segmentation fault!</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/498088093'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648787418" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2107" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="2108" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:neworld1111@163.com'
+                        target="_blank"
+                        title="Email"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743649088353" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6924" width="24" height="24"><path d="M874.666667 181.333333H149.333333c-40.533333 0-74.666667 34.133333-74.666666 74.666667v512c0 40.533333 34.133333 74.666667 74.666666 74.666667h725.333334c40.533333 0 74.666667-34.133333 74.666666-74.666667V256c0-40.533333-34.133333-74.666667-74.666666-74.666667z m-725.333334 64h725.333334c6.4 0 10.666667 4.266667 10.666666 10.666667v25.6L512 516.266667l-373.333333-234.666667V256c0-6.4 4.266667-10.666667 10.666666-10.666667z m725.333334 533.333334H149.333333c-6.4 0-10.666667-4.266667-10.666666-10.666667V356.266667l356.266666 224c4.266667 4.266667 10.666667 4.266667 17.066667 4.266666s12.8-2.133333 17.066667-4.266666l356.266666-224V768c0 6.4-4.266667 10.666667-10.666666 10.666667z" fill="#666666" p-id="6925"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/aoiJays'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648734849" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5802" width="24" height="24"><path d="M511.957333 21.333333C241.024 21.333333 21.333333 240.981333 21.333333 512c0 216.832 140.544 400.725333 335.573334 465.664 24.490667 4.394667 32.256-10.069333 32.256-23.082667 0-11.690667 0.256-44.245333 0-85.205333-136.448 29.610667-164.736-64.64-164.736-64.64-22.314667-56.704-54.4-71.765333-54.4-71.765333-44.586667-30.464 3.285333-29.824 3.285333-29.824 49.194667 3.413333 75.178667 50.517333 75.178667 50.517333 43.776 75.008 114.816 53.333333 142.762666 40.789333 4.522667-31.658667 17.152-53.376 31.189334-65.536-108.970667-12.458667-223.488-54.485333-223.488-242.602666 0-53.546667 19.114667-97.322667 50.517333-131.669334-5.034667-12.330667-21.930667-62.293333 4.778667-129.834666 0 0 41.258667-13.184 134.912 50.346666a469.802667 469.802667 0 0 1 122.88-16.554666c41.642667 0.213333 83.626667 5.632 122.88 16.554666 93.653333-63.488 134.784-50.346667 134.784-50.346666 26.752 67.541333 9.898667 117.504 4.864 129.834666 31.402667 34.346667 50.474667 78.122667 50.474666 131.669334 0 188.586667-114.730667 230.016-224.042666 242.090666 17.578667 15.232 33.578667 44.672 33.578666 90.453334v135.850666c0 13.141333 7.936 27.605333 32.853334 22.869334C862.250667 912.597333 1002.666667 728.746667 1002.666667 512 1002.666667 240.981333 783.018667 21.333333 511.957333 21.333333z" p-id="5803" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About me</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/experience/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Experience</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friend/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>Friend</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#intro">Intro</a>
+      <ol>
+        <li><a href="#memory-bound">memory-bound</a></li>
+        <li><a href="#independence">independence</a></li>
+        <li><a href="#real-intro">real-intro</a></li>
+      </ol>
+    </li>
+    <li><a href="#method">Method</a>
+      <ol>
+        <li><a href="#fully-parallelizable-self-speculative-generation">Fully Parallelizable Self-Speculative Generation</a></li>
+        <li><a href="#diffusion-ar-dual-mode-backbone-training">Diffusion-AR Dual-mode Backbone Training</a></li>
+      </ol>
+    </li>
+    <li><a href="#experiment">Experiment</a></li>
+    <li><a href="#limitations">Limitations</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" >
+                论文笔记
+            </a>
+        
+            <a href="/categories/dlm/" >
+                DLM
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/tidar-think-in-diffusion-talk-in-autoregression/">TiDAR - Think in Diffusion, Talk in Autoregression</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            看看其他工作
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Nov 14, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 7 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p><a class="link" href="https://arxiv.org/abs/2502.09992"  target="_blank" rel="noopener"
+    >Large Language Diffusion Models</a></p>
+<p>[TOC]</p>
+<h2 id="intro">Intro
+</h2><h3 id="memory-bound">memory-bound
+</h3><ul>
+<li>AR模型的Latency：每次predict next token，模型权重、KV Cache需要从显存中加载到GPU核心
+<ul>
+<li>瓶颈是<strong>显存带宽</strong>，GPU计算密度远远不够</li>
+<li>因此单次decode越多的token，计算密度越高（在memory-bound的限制之下）</li>
+</ul>
+</li>
+</ul>
+<p>对于单次推理</p>
+<ul>
+<li>AR：</li>
+</ul>
+$$
+x_{t+1}=F(x_{< t};x_t)
+$$<ul>
+<li>dLMs：</li>
+</ul>
+$$
+x_{t+1},x_{t+2},...,x_{t+k+1} = F(x_{< t};M_{t+1},M_{t+2},...,M_{t+k+1})
+$$<p><strong>只要没有触发到compute-bound</strong></p>
+<p>两者时间开销是一致的</p>
+<p>意味着多预测的部分$x_{t+2},&hellip;,x_{t+k+1}$​是<strong>免费</strong>的，没有额外的时间开销</p>
+<p>论文将这部分多预测出来的部分（在不增加开销的情况下），命名为<strong>Free Token Slots</strong></p>
+<blockquote>
+<p>什么是slots？</p>
+<p>模型的输出是多个token，<strong>其中需要计算kv的部分认为是slots</strong></p>
+<p>剩余已经计算过kv的token，以下实验证明了影响不大</p>
+<p>因此paper主要聚焦于slots</p></blockquote>
+<hr>
+<p>这里做了一个基于qwen3-32B的实验（Flash Attention 2、H100、batch size=1）</p>
+<p>三条线分别是prefix=1024、2048、4096（<strong>kv cache提前计算好</strong>）</p>
+<p>输入：<code>token1 token2 ... token1023 token1024 [slots1] [slots2] ... [slotsn]</code></p>
+<p>输出：<code>logit1 logit2 ... logit1023 logit1024 logit1 logit2 ... logitn </code></p>
+<ul>
+<li>因此实际影响单次forward的是输入的slots的数量</li>
+</ul>
+<p><img src="/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251116143635413.png"
+	width="1240"
+	height="859"
+	srcset="/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251116143635413_hu_828a060f8e157568.png 480w, /p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251116143635413_hu_727a2630d7cf1aa2.png 1024w"
+	loading="lazy"
+	
+		alt="Free Token Slots"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="144"
+		data-flex-basis="346px"
+	
+></p>
+<ul>
+<li><strong>Free Token Slots</strong>：该区间（1 - 100）延迟基本不增加</li>
+<li><strong>Cheap Token Slots</strong>：该区间延迟增加的不多，比较cheap</li>
+<li>蓝色区间：触发了compute-bound</li>
+</ul>
+<h3 id="independence">independence
+</h3><ul>
+<li>AR是条件概率，按照从左到右依次生成</li>
+<li>dLMs从加噪序列中decode所有的token
+<ul>
+<li>我们通过策略选择采样$k$个token进行保留，其他进行remask</li>
+</ul>
+</li>
+</ul>
+<p>而被采样的token应该是多个边缘分布的乘积</p>
+$$
+\prod_i p_\theta^i(x^i\mid x_t)
+$$<p>
+这些token都是基于解码前的加噪序列得到的条件概率生成</p>
+<p>彼此可以看成独立的</p>
+<blockquote>
+<p>这里不太认可。生成的时候并不是模型独立生成每一个token，而是同时生成</p>
+<p>你要说完全独立没关系我觉得是不对的</p></blockquote>
+<ul>
+<li>省流，从概率建模的角度解释dLMs的生成质量与$k$高度相关
+<ul>
+<li>$k=1$时，从左到右（因果掩码），退化成AR LLM</li>
+<li>$k$越小，质量越高</li>
+</ul>
+</li>
+</ul>
+<h3 id="real-intro">real-intro
+</h3><ul>
+<li>
+<p><strong>Challenge</strong>：生成模型的<strong>质量-并行</strong>问题</p>
+<ul>
+<li>
+<p>AR LLM：生成质量高，但是苦于memory-bound无法提升性能</p>
+</li>
+<li>
+<p>dLMs：由于token间的独立性假设，生成质量受限于并发量</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Contribution</strong></p>
+<ul>
+<li>提出TiDAR架构，利用Free-token-slots，并行完成<strong>基于扩散的草稿</strong>和<strong>基于自回归的采样</strong></li>
+<li>提供完整训练方案，进行全面评估，证明架构的优势</li>
+<li>进行详细的消融实验，验证核心设计。同时从扩散模型、投机采样角度进行分析</li>
+</ul>
+</li>
+</ul>
+<h2 id="method">Method
+</h2><p>修改一下论文顺序，先写一下怎么推理</p>
+<ul>
+<li>为了利用<code>free-token-slots</code>，需要Diffusion和AR同时在一次forward中同时出现</li>
+</ul>
+<h3 id="fully-parallelizable-self-speculative-generation">Fully Parallelizable Self-Speculative Generation
+</h3><p><img src="/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251117162442502.png"
+	width="2031"
+	height="873"
+	srcset="/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251117162442502_hu_e5b07fb0e1bbecb8.png 480w, /p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251117162442502_hu_c78639f221d329ce.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="232"
+		data-flex-basis="558px"
+	
+></p>
+<p>整个过程类似投机采样，整体的思想如下：</p>
+<ul>
+<li>首先由Diffusion Model生成一个<strong>draft</strong></li>
+<li>由AR进行<strong>rejection sampling</strong>
+<ul>
+<li>如果和AR的prediction一致，则保留</li>
+<li>否则直接丢弃</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>In the each subsequent decoding step, draft tokens from the last step are rejectively sampled by checking <strong>whether they match the prediction</strong> from the autoregressive joint distribution computed at current step using causal attention.</p></blockquote>
+<p>概述整个算法（<strong>定义block_len为3（可调整）</strong>），即我们会以三个token三个token为一组进行讨论</p>
+<ul>
+<li>Step0：Draft初始化
+<ul>
+<li>输入Prefix Tokens（实质上就是Prompt）和block size（这里是3）个MASK</li>
+<li>为了兼容不同长度，同样调整了Attention Mask的顺序
+<ul>
+<li><code>(block_size + max_seq_len,block_size + max_seq_len)</code></li>
+<li>直接按照真实长度切出来</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118223504302.png"
+	width="761"
+	height="551"
+	srcset="/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118223504302_hu_3c3a6f2560ea2832.png 480w, /p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118223504302_hu_72e15dca633e49ef.png 1024w"
+	loading="lazy"
+	
+		alt="Prefill"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="138"
+		data-flex-basis="331px"
+	
+></p>
+<ul>
+<li>
+<p><strong>Step1: 输入</strong></p>
+<ul>
+<li><strong>Prefix Token</strong>：<code>ABC</code>，表示为之前已有（被成功采样）的token序列，提前计算好KV-Cache</li>
+<li><strong>Diffusion Draft</strong>：由Diffusion生成的草稿<code>DEF</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Step2: 并行处理两件事</strong>（实质上是一个Transformer模型的<strong>单次前向推理</strong>）</p>
+<ul>
+<li>
+<p>AR部分：基于Causal Attention，输出<strong>Diffusion Draft</strong>部分对应的logits（<strong>带有shift</strong>）</p>
+</li>
+<li>
+<p>DLMs部分：假设<strong>所有拒绝采样的结果</strong>，提前准备好对应的<code>[MASK]</code>让DLM独立预测（生成下一轮使用的草稿）</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251117212424712.png"
+	width="698"
+	height="297"
+	srcset="/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251117212424712_hu_868041ff93ce9f34.png 480w, /p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251117212424712_hu_6bed231ec807f8b1.png 1024w"
+	loading="lazy"
+	
+		alt="AR Shift"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="235"
+		data-flex-basis="564px"
+	
+></p>
+<p>因此我们本质上把<code>ABC DEF [M][M][M] [M][M][M] [M][M][M]</code>作为输入</p>
+<p>送入到TiDAR中，做了一次前向传播</p>
+<hr>
+<p>这里<strong>调整了Prefix的顺序</strong>，方便<strong>复用Attention Mask矩阵</strong>，<strong>新采样的token直接加到最后</strong></p>
+<p>也就是<code>DEF [M][M][M] [M][M][M] [M][M][M] ABC...</code></p>
+<p>注意这里只是Attention Mask的顺序，并不是输入序列</p>
+<p><img src="/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251117212940737.png"
+	width="1186"
+	height="687"
+	srcset="/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251117212940737_hu_50c5c79ca3fde991.png 480w, /p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251117212940737_hu_a36ef3f0139784d5.png 1024w"
+	loading="lazy"
+	
+		alt="Decode"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="172"
+		data-flex-basis="414px"
+	
+></p>
+<blockquote>
+<ul>
+<li>对于第一组<code>[M][M][M]</code>：Attention能看见的是<code>ABC D [M][M][M]</code></li>
+<li>对于第二组<code>[M][M][M]</code>：Attention能看见的是<code>ABC DE [M][M][M]</code></li>
+<li>对于第三组<code>[M][M][M]</code>：Attention能看见的是<code>ABC DEF [M][M][M]</code></li>
+</ul></blockquote>
+<ul>
+<li><strong>Step3:  Sampling</strong>
+<ul>
+<li>根据AR部分的logits输出，决定上一轮草稿保留的内容（例子是保留DE，舍去F）</li>
+<li>因此Prefix Token和KV-Cache会将<code>DE</code>加入，得到<code>ABC DE</code></li>
+<li>下一轮的草稿为第二组<code>[M][M][M]</code>的解码结果：<code>F&quot;G&quot;H&quot;</code></li>
+</ul>
+</li>
+<li><strong>Step4：输出</strong>
+<ul>
+<li><strong>Prefix Token</strong>：<code>ABC DE</code>及其KV-Cache</li>
+<li><strong>Diffusion Draft</strong>：由Diffusion生成的草稿<code>F&quot;G&quot;H&quot;</code></li>
+</ul>
+</li>
+</ul>
+<p>一些思考：</p>
+<ul>
+<li>显然<code>block_len</code>是不能无限大的，结合Figure1，通过单个Transformer架构的slots需要在<code>Free-Token-Slots</code>的范围内</li>
+<li>paper只为AR采样1、2、3个token做了准备草稿，<strong>默认接受至少一个</strong></li>
+</ul>
+<h3 id="diffusion-ar-dual-mode-backbone-training">Diffusion-AR Dual-mode Backbone Training
+</h3><blockquote>
+<p>论文其实是先讲的这一部分，但是先看完推理后再回来看train比较好</p></blockquote>
+<p>前期工作Block Diffusion提出了一种<strong>块内双向注意力，块间因果掩码</strong>的方法</p>
+<p>TiDAR进行了修改：<strong>保留最后一个块（双向注意力），其他内容（或者叫前缀）全部因果掩码</strong></p>
+<p>带来如下好处</p>
+<ul>
+<li>允许我们像AR一样计算链式的联合概率分布$p(x_i\mid x_{&lt;i})$，方便进行拒绝采样，保证高质量，并且计算似然和AR一样高效</li>
+<li>在预训练和微调过程中可以计算前缀部分的NTP损失，<strong>损失信号的密度更高</strong>，充分利用数据中每一个token</li>
+</ul>
+<hr>
+<ul>
+<li>AR部分：shifted by one position</li>
+<li>dLM部分：一一对齐</li>
+</ul>
+<p>TiDAR对于扩散部分的token，全部掩码为<code>[MASK]</code>，直接消除选择哪一种掩码策略的思考</p>
+<ul>
+<li>提高了扩散损失的密度（每一个token都参与）</li>
+<li>平衡了AR和扩散的损失：<strong>强制两者参与损失计算的token数量都是相等的（序列长度）</strong>
+<ul>
+<li>先前框架的不平衡：dLM的信号容易被AR淹没
+<ul>
+<li>AR：稠密的（len-1个token参与）</li>
+<li>dLMs：损失取决于多少token被掩码（远少于len）</li>
+</ul>
+</li>
+<li>平衡的好处：更容易通过一个简单的超参数（加权因子）进行控制</li>
+<li>允许在推理时<strong>一步扩散</strong>，避免多步迭代</li>
+</ul>
+</li>
+</ul>
+<p><img src="/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118015735020.png"
+	width="740"
+	height="747"
+	srcset="/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118015735020_hu_419e28ffa044b0e3.png 480w, /p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118015735020_hu_bf8733a3f8d1fc3.png 1024w"
+	loading="lazy"
+	
+		alt="Train Mask"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="99"
+		data-flex-basis="237px"
+	
+></p>
+<ul>
+<li>对于输入序列，扩充相同的长度掩码<code>ABC DEF</code> -&gt; <code>MMM MMM</code></li>
+<li>前一半序列的注意力就是Causal Attention</li>
+<li>对于Diffusion部分（后一半），按照block size逐块考虑（采用双向注意力）
+<ul>
+<li>第一组<code>MMM</code>恢复目标是<code>ABC</code>，前缀为空</li>
+<li>第二组<code>MMM</code>恢复目标是<code>DEF</code>，前缀为<code>ABC</code></li>
+<li>若后续还有别的组，前缀会继续累积</li>
+</ul>
+</li>
+</ul>
+<p>TiDAR的建模目标可以表示为：</p>
+$$
+\mathcal{L}_{TiDAR}(\theta) = \frac{1}{\alpha+1}\left( \sum_{i=1}^{S-1}\frac{\alpha}{S-1}\cdot\mathcal{L}_{AR}(x_i,x_{i+1};\theta)+ \sum_{i=1}^{S-1}\frac{1}{S-1}\cdot \mathcal{L}_{Diff}(\left[mask\right],x_i;\theta)\right )
+$$<ul>
+<li>$\alpha \in[0,1]$，损失函数的平衡项（paper里设为1）</li>
+<li>$\left{x_i\right}_S$是输入序列</li>
+<li>AR和Diffusion都是做对应的交叉熵</li>
+</ul>
+<h2 id="experiment">Experiment
+</h2><p>（这里笔记忘记保存了，补一些重点）</p>
+<p>由于AR部分的logits是带label shift的，Diffusion部分没有</p>
+<p><img src="/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118224652148.png"
+	width="1063"
+	height="332"
+	srcset="/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118224652148_hu_d600df02d3f6d42f.png 480w, /p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118224652148_hu_e1f37bc07406f7ce.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="320"
+		data-flex-basis="768px"
+	
+></p>
+<blockquote>
+<p>实质上是一个模型，没有切割</p></blockquote>
+<p>自回归部分根据ABCD会进行一个<code>E</code>的预测</p>
+<p>Diffusion部分的第一个Mask，也会根据attention得到相同的信息，预测<code>E''</code></p>
+<p>所以这里涉及到了相信自回归还是相信Diffusion、或是兼顾的思考</p>
+<p>作者顺手做了一个实验</p>
+$$
+\text{logits}_{\text{mix}} = \beta*\text{logits}_i^{\text{AR}} + (1-\beta)*\text{logits}_i^{\text{Diff}},i\in|\text{Vocab}|
+$$<p>
+通过$\beta$对齐了两个logits</p>
+<p><img src="/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118225438803.png"
+	width="788"
+	height="378"
+	srcset="/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118225438803_hu_fe1528daa70accea.png 480w, /p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118225438803_hu_21e4be9c18baf35a.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="208"
+		data-flex-basis="500px"
+	
+></p>
+<ul>
+<li>通过$\alpha$控制loss比例，横轴是$\beta$</li>
+<li>总体没有明显性能差距，<strong>因此质量来源是拒绝采样，而非AR比DLM好</strong></li>
+</ul>
+<h2 id="limitations">Limitations
+</h2><ul>
+<li>Batch_Size：paper只做了1的情况（毕竟贴近推理，而不是吞吐量测试）</li>
+<li>长上下文：翻了一倍文本，压力比较大</li>
+<li>free token slots的探索：需要更加系统化的视角
+<ul>
+<li>cuda</li>
+<li>调度</li>
+<li>……</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/dlm/">DLM</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/llada-rec-discrete-diffusion-for-parallel-semantic-id-generation-in-generative-recommendation/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">LLaDA-Rec - Discrete Diffusion for Parallel Semantic ID Generation in Generative Recommendation</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/awesome-llada/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Awesome LLaDA</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/llada-moe-asparse-moediffusion-language-model/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">LLaDA-MoE ASparse MoEDiffusion Language Model</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">UltraLLaDA Scaling the Context Length to 128K for Diffusion Large Language Models</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/diffusion-language-model-birdresearch-202510/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Diffusion Language Model · BirdResearch · 202510</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

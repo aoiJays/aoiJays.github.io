@@ -1,0 +1,3128 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>DLM on BiribiriBird</title>
+        <link>https://example.com/categories/dlm/</link>
+        <description>Recent content in DLM on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Fri, 21 Nov 2025 15:36:00 +0800</lastBuildDate><atom:link href="https://example.com/categories/dlm/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>LLaDA-Rec - Discrete Diffusion for Parallel Semantic ID Generation in Generative Recommendation</title>
+        <link>https://example.com/p/llada-rec-discrete-diffusion-for-parallel-semantic-id-generation-in-generative-recommendation/</link>
+        <pubDate>Fri, 21 Nov 2025 15:36:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/llada-rec-discrete-diffusion-for-parallel-semantic-id-generation-in-generative-recommendation/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;intro&#34;&gt;Intro
+&lt;/h2&gt;&lt;p&gt;Generative recommendation基于AR LLM，面临两个问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;unidirectional constraint：无法在建模item语义时，捕获全局依赖&lt;/li&gt;
+&lt;li&gt;error accumulation：错误累积&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;补充一些前置知识：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;RQ-VAE（Residual Quantized Variational Autoencoder）
+&lt;ul&gt;
+&lt;li&gt;需要把Item表示成一个离散的token序列（Semantic ID），使用类LLM的生成方式进行推荐&lt;/li&gt;
+&lt;li&gt;RQ-VAE把Item的embedding压缩成离散token
+&lt;ul&gt;
+&lt;li&gt;RA-VAE是多层级的，每一层会拟合一点，最后输出一个token序列&lt;/li&gt;
+&lt;li&gt;通过控制层数，控制token序列长度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;将生成式推荐运用到dLMs上也面临若干问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Mismatch between Residual Quantization (RQ) and Discrete Diffusion
+&lt;ul&gt;
+&lt;li&gt;多层级的方案与dlms的并行不是很契合，且dlms序列中所有token同等重要&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Beam Search is Not Directly Applicable to Discrete Diffusion
+&lt;ul&gt;
+&lt;li&gt;Beam Search比较适合自回归的top k，但是固定从左到右&lt;/li&gt;
+&lt;li&gt;dlms是双向的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Differences between Language Modeling and Recommendation&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Contribution&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Parallel Tokenization&lt;/strong&gt;：设计了多头VQ-VAE，将物品切分为多个子向量，每个向量并行查找独立的codebook，最终生成ID&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Discrete Diffusion Training&lt;/strong&gt;：使用两种mask机制
+&lt;ul&gt;
+&lt;li&gt;User-History Mask&lt;/li&gt;
+&lt;li&gt;Next-Item Mask&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Discrete Diffusion Inference&lt;/strong&gt;：适配了Beam Search&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;preliminaries&#34;&gt;Preliminaries
+&lt;/h2&gt;&lt;p&gt;推荐任务的问题定义：&lt;/p&gt;
+$$
+\mathcal{H} = \left [ i_1, i_2, ..., i_{n-1}\right] 
+$$&lt;ul&gt;
+&lt;li&gt;基于用户历史的物品信息，预测下一个可能的物品$i_n$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;生成式推荐将单个物品表示为&lt;strong&gt;定长&lt;/strong&gt;的若干个token&lt;/p&gt;
+$$
+\mathcal{S_H} = \left[c_{1,1},...,c_{1,M},...,c_{n-1,1},...,c_{n-1,M}\right]
+$$&lt;p&gt;
+我们需要找到一个最佳的模型$\theta$，使得：&lt;/p&gt;
+$$
+\theta^* = \arg \max_\theta  P_\theta(s_n\mid \mathcal{S_H})
+$$&lt;p&gt;
+这个转化为AR LLM的建模还是非常方便的&lt;/p&gt;
+&lt;p&gt;对于dLM：&lt;/p&gt;
+&lt;p&gt;$$
+P_\theta(s_n\mid \mathcal{S_H}) = \prod_{t=1}^T\prod_{m=1}^M\begin{cases}
+P_\theta(c_{n,m}\mid s_n^t,\mathcal{S_H}) &amp;amp; if \space [MASK]\
+1 &amp;amp; otherwise&lt;/p&gt;
+&lt;p&gt;\end{cases}
+$$&lt;/p&gt;
+&lt;h2 id=&#34;method&#34;&gt;Method
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/llada-rec-discrete-diffusion-for-parallel-semantic-id-generation-in-generative-recommendation/assets/image-20251127231720077.png&#34;
+	width=&#34;1360&#34;
+	height=&#34;636&#34;
+	srcset=&#34;https://example.com/p/llada-rec-discrete-diffusion-for-parallel-semantic-id-generation-in-generative-recommendation/assets/image-20251127231720077_hu_d91e9c45c767b211.png 480w, https://example.com/p/llada-rec-discrete-diffusion-for-parallel-semantic-id-generation-in-generative-recommendation/assets/image-20251127231720077_hu_ed7572c2e81d9356.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Method&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;213&#34;
+		data-flex-basis=&#34;513px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;parallel-tokenization-via-multi-head-vq-vae&#34;&gt;Parallel Tokenization via Multi-Head VQ-VAE
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;希望多个 token 之间是“完全平等”的，不应该存在 RQ-VAE 那种“前面的 token 更重要&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Embedding通过Bert、Sentence-T5等得到$v_i$&lt;/li&gt;
+&lt;li&gt;通过Encoder（MLP实现），得到潜在空间$z$&lt;/li&gt;
+&lt;li&gt;将向量切成多个子向量，每个向量送入不同的Head&lt;/li&gt;
+&lt;li&gt;每个子向量查codebook，并行得到token(code index)&lt;/li&gt;
+&lt;li&gt;将code index对应的向量（code embeddings），进行拼接&lt;/li&gt;
+&lt;li&gt;Decoder重建$\hat v_i$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;整个Tokenizer的损失由两部分组成：&lt;/p&gt;
+$$
+L_{Recon} = \left \| v_i-\hat v_i \right \|^2_2
+$$&lt;p&gt;
+（L2范数的平方）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Encoder：学习如何编码到合适的latent space&lt;/li&gt;
+&lt;li&gt;Codebook：学习到如何覆盖latent space&lt;/li&gt;
+&lt;li&gt;Decoder：重建&lt;/li&gt;
+&lt;/ul&gt;
+$$
+L_{VQ} = \sum_{m=1}^M \left (  \left\| sg[z_{i,m}] - e_{c_i,m}\right\|_2^2 + \alpha \left\|z_{i,m}-sg[e_{c_{i,m}}]\right\|^2_2 \right)
+$$&lt;ul&gt;
+&lt;li&gt;对于第一项
+&lt;ul&gt;
+&lt;li&gt;sg代表阻止接受梯度，只有$e$会接受梯度&lt;/li&gt;
+&lt;li&gt;这样只更新codebook，使得codebook更接近latent space向量$z$（请靠近encoder的输出）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;对于第二项
+&lt;ul&gt;
+&lt;li&gt;sg阻止codebook的梯度&lt;/li&gt;
+&lt;li&gt;更新encoder，贴近codebook&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;最终的损失：&lt;/p&gt;
+$$
+\mathcal{L_{\text{VQ-VAE}}} = \mathcal{L_\text{Recon}} + \mathcal{L_\text{VQ}}
+$$&lt;h3 id=&#34;discrete-diffusion-training&#34;&gt;Discrete Diffusion Training
+&lt;/h3&gt;&lt;h4 id=&#34;user-history-level-masking&#34;&gt;User-History Level Masking
+&lt;/h4&gt;&lt;p&gt;参考LLaDA的预训练&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;让模型学会用户序列内部的关系&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;next-item-level-masking&#34;&gt;Next-Item Level Masking
+&lt;/h4&gt;&lt;p&gt;参考LLaDA的SFT&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;理解同一 item 的 token 内部结构&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;但是LLaDA-Rec的训练没有分成两个阶段&lt;/p&gt;
+&lt;p&gt;提出了一个联合损失函数：&lt;/p&gt;
+$$
+L_{total} = L_{Item-Mask} + \lambda_{His-Mask}L_{His-mask} + \lambda_{Reg}\left\|\theta\right\|^2
+$$&lt;h3 id=&#34;discrete-diffusion-inference&#34;&gt;Discrete Diffusion Inference
+&lt;/h3&gt;&lt;p&gt;直接使用模型不太行，没法做到生成前k个推荐项目&lt;/p&gt;
+&lt;p&gt;所以如何把Beam-Search嵌入到dlms中&lt;/p&gt;
+&lt;p&gt;一开始我们会有一个全部都是&lt;code&gt;[MASK]&lt;/code&gt;的序列，长度为$M$​：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[MASK] [MASK] [MASK] ... [MASK] [MASK] 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;dlm可以预测所有位置的生成token的置信度&lt;/p&gt;
+&lt;p&gt;假设我们要迭代$T$次，因此$K = M/T$&lt;/p&gt;
+&lt;p&gt;每次依照置信度选择前$K$个token位置，其他位置remask&lt;/p&gt;
+&lt;p&gt;根据这些位置，以及超参数$B$，迭代出$B$条置信度最高的路径&lt;/p&gt;
+&lt;p&gt;做beam search&lt;/p&gt;
+&lt;p&gt;不断迭代&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>TiDAR - Think in Diffusion, Talk in Autoregression</title>
+        <link>https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/</link>
+        <pubDate>Fri, 14 Nov 2025 16:11:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/</guid>
+        <description>&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2502.09992&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Large Language Diffusion Models&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;intro&#34;&gt;Intro
+&lt;/h2&gt;&lt;h3 id=&#34;memory-bound&#34;&gt;memory-bound
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;AR模型的Latency：每次predict next token，模型权重、KV Cache需要从显存中加载到GPU核心
+&lt;ul&gt;
+&lt;li&gt;瓶颈是&lt;strong&gt;显存带宽&lt;/strong&gt;，GPU计算密度远远不够&lt;/li&gt;
+&lt;li&gt;因此单次decode越多的token，计算密度越高（在memory-bound的限制之下）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于单次推理&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;AR：&lt;/li&gt;
+&lt;/ul&gt;
+$$
+x_{t+1}=F(x_{&lt; t};x_t)
+$$&lt;ul&gt;
+&lt;li&gt;dLMs：&lt;/li&gt;
+&lt;/ul&gt;
+$$
+x_{t+1},x_{t+2},...,x_{t+k+1} = F(x_{&lt; t};M_{t+1},M_{t+2},...,M_{t+k+1})
+$$&lt;p&gt;&lt;strong&gt;只要没有触发到compute-bound&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;两者时间开销是一致的&lt;/p&gt;
+&lt;p&gt;意味着多预测的部分$x_{t+2},&amp;hellip;,x_{t+k+1}$​是&lt;strong&gt;免费&lt;/strong&gt;的，没有额外的时间开销&lt;/p&gt;
+&lt;p&gt;论文将这部分多预测出来的部分（在不增加开销的情况下），命名为&lt;strong&gt;Free Token Slots&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;什么是slots？&lt;/p&gt;
+&lt;p&gt;模型的输出是多个token，&lt;strong&gt;其中需要计算kv的部分认为是slots&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;剩余已经计算过kv的token，以下实验证明了影响不大&lt;/p&gt;
+&lt;p&gt;因此paper主要聚焦于slots&lt;/p&gt;&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;p&gt;这里做了一个基于qwen3-32B的实验（Flash Attention 2、H100、batch size=1）&lt;/p&gt;
+&lt;p&gt;三条线分别是prefix=1024、2048、4096（&lt;strong&gt;kv cache提前计算好&lt;/strong&gt;）&lt;/p&gt;
+&lt;p&gt;输入：&lt;code&gt;token1 token2 ... token1023 token1024 [slots1] [slots2] ... [slotsn]&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;输出：&lt;code&gt;logit1 logit2 ... logit1023 logit1024 logit1 logit2 ... logitn &lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;因此实际影响单次forward的是输入的slots的数量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251116143635413.png&#34;
+	width=&#34;1240&#34;
+	height=&#34;859&#34;
+	srcset=&#34;https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251116143635413_hu_828a060f8e157568.png 480w, https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251116143635413_hu_727a2630d7cf1aa2.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Free Token Slots&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;144&#34;
+		data-flex-basis=&#34;346px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Free Token Slots&lt;/strong&gt;：该区间（1 - 100）延迟基本不增加&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cheap Token Slots&lt;/strong&gt;：该区间延迟增加的不多，比较cheap&lt;/li&gt;
+&lt;li&gt;蓝色区间：触发了compute-bound&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;independence&#34;&gt;independence
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;AR是条件概率，按照从左到右依次生成&lt;/li&gt;
+&lt;li&gt;dLMs从加噪序列中decode所有的token
+&lt;ul&gt;
+&lt;li&gt;我们通过策略选择采样$k$个token进行保留，其他进行remask&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;而被采样的token应该是多个边缘分布的乘积&lt;/p&gt;
+$$
+\prod_i p_\theta^i(x^i\mid x_t)
+$$&lt;p&gt;
+这些token都是基于解码前的加噪序列得到的条件概率生成&lt;/p&gt;
+&lt;p&gt;彼此可以看成独立的&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这里不太认可。生成的时候并不是模型独立生成每一个token，而是同时生成&lt;/p&gt;
+&lt;p&gt;你要说完全独立没关系我觉得是不对的&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;省流，从概率建模的角度解释dLMs的生成质量与$k$高度相关
+&lt;ul&gt;
+&lt;li&gt;$k=1$时，从左到右（因果掩码），退化成AR LLM&lt;/li&gt;
+&lt;li&gt;$k$越小，质量越高&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;real-intro&#34;&gt;real-intro
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Challenge&lt;/strong&gt;：生成模型的&lt;strong&gt;质量-并行&lt;/strong&gt;问题&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;AR LLM：生成质量高，但是苦于memory-bound无法提升性能&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;dLMs：由于token间的独立性假设，生成质量受限于并发量&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Contribution&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;提出TiDAR架构，利用Free-token-slots，并行完成&lt;strong&gt;基于扩散的草稿&lt;/strong&gt;和&lt;strong&gt;基于自回归的采样&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;提供完整训练方案，进行全面评估，证明架构的优势&lt;/li&gt;
+&lt;li&gt;进行详细的消融实验，验证核心设计。同时从扩散模型、投机采样角度进行分析&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;method&#34;&gt;Method
+&lt;/h2&gt;&lt;p&gt;修改一下论文顺序，先写一下怎么推理&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;为了利用&lt;code&gt;free-token-slots&lt;/code&gt;，需要Diffusion和AR同时在一次forward中同时出现&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;fully-parallelizable-self-speculative-generation&#34;&gt;Fully Parallelizable Self-Speculative Generation
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251117162442502.png&#34;
+	width=&#34;2031&#34;
+	height=&#34;873&#34;
+	srcset=&#34;https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251117162442502_hu_e5b07fb0e1bbecb8.png 480w, https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251117162442502_hu_c78639f221d329ce.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;232&#34;
+		data-flex-basis=&#34;558px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;整个过程类似投机采样，整体的思想如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;首先由Diffusion Model生成一个&lt;strong&gt;draft&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;由AR进行&lt;strong&gt;rejection sampling&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;如果和AR的prediction一致，则保留&lt;/li&gt;
+&lt;li&gt;否则直接丢弃&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;In the each subsequent decoding step, draft tokens from the last step are rejectively sampled by checking &lt;strong&gt;whether they match the prediction&lt;/strong&gt; from the autoregressive joint distribution computed at current step using causal attention.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;概述整个算法（&lt;strong&gt;定义block_len为3（可调整）&lt;/strong&gt;），即我们会以三个token三个token为一组进行讨论&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Step0：Draft初始化
+&lt;ul&gt;
+&lt;li&gt;输入Prefix Tokens（实质上就是Prompt）和block size（这里是3）个MASK&lt;/li&gt;
+&lt;li&gt;为了兼容不同长度，同样调整了Attention Mask的顺序
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;(block_size + max_seq_len,block_size + max_seq_len)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;直接按照真实长度切出来&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118223504302.png&#34;
+	width=&#34;761&#34;
+	height=&#34;551&#34;
+	srcset=&#34;https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118223504302_hu_3c3a6f2560ea2832.png 480w, https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118223504302_hu_72e15dca633e49ef.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Prefill&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;138&#34;
+		data-flex-basis=&#34;331px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Step1: 输入&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Prefix Token&lt;/strong&gt;：&lt;code&gt;ABC&lt;/code&gt;，表示为之前已有（被成功采样）的token序列，提前计算好KV-Cache&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Diffusion Draft&lt;/strong&gt;：由Diffusion生成的草稿&lt;code&gt;DEF&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Step2: 并行处理两件事&lt;/strong&gt;（实质上是一个Transformer模型的&lt;strong&gt;单次前向推理&lt;/strong&gt;）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;AR部分：基于Causal Attention，输出&lt;strong&gt;Diffusion Draft&lt;/strong&gt;部分对应的logits（&lt;strong&gt;带有shift&lt;/strong&gt;）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;DLMs部分：假设&lt;strong&gt;所有拒绝采样的结果&lt;/strong&gt;，提前准备好对应的&lt;code&gt;[MASK]&lt;/code&gt;让DLM独立预测（生成下一轮使用的草稿）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251117212424712.png&#34;
+	width=&#34;698&#34;
+	height=&#34;297&#34;
+	srcset=&#34;https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251117212424712_hu_868041ff93ce9f34.png 480w, https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251117212424712_hu_6bed231ec807f8b1.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;AR Shift&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;235&#34;
+		data-flex-basis=&#34;564px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;因此我们本质上把&lt;code&gt;ABC DEF [M][M][M] [M][M][M] [M][M][M]&lt;/code&gt;作为输入&lt;/p&gt;
+&lt;p&gt;送入到TiDAR中，做了一次前向传播&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;这里&lt;strong&gt;调整了Prefix的顺序&lt;/strong&gt;，方便&lt;strong&gt;复用Attention Mask矩阵&lt;/strong&gt;，&lt;strong&gt;新采样的token直接加到最后&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;也就是&lt;code&gt;DEF [M][M][M] [M][M][M] [M][M][M] ABC...&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;注意这里只是Attention Mask的顺序，并不是输入序列&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251117212940737.png&#34;
+	width=&#34;1186&#34;
+	height=&#34;687&#34;
+	srcset=&#34;https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251117212940737_hu_50c5c79ca3fde991.png 480w, https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251117212940737_hu_a36ef3f0139784d5.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Decode&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;172&#34;
+		data-flex-basis=&#34;414px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;对于第一组&lt;code&gt;[M][M][M]&lt;/code&gt;：Attention能看见的是&lt;code&gt;ABC D [M][M][M]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;对于第二组&lt;code&gt;[M][M][M]&lt;/code&gt;：Attention能看见的是&lt;code&gt;ABC DE [M][M][M]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;对于第三组&lt;code&gt;[M][M][M]&lt;/code&gt;：Attention能看见的是&lt;code&gt;ABC DEF [M][M][M]&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Step3:  Sampling&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;根据AR部分的logits输出，决定上一轮草稿保留的内容（例子是保留DE，舍去F）&lt;/li&gt;
+&lt;li&gt;因此Prefix Token和KV-Cache会将&lt;code&gt;DE&lt;/code&gt;加入，得到&lt;code&gt;ABC DE&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;下一轮的草稿为第二组&lt;code&gt;[M][M][M]&lt;/code&gt;的解码结果：&lt;code&gt;F&amp;quot;G&amp;quot;H&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Step4：输出&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Prefix Token&lt;/strong&gt;：&lt;code&gt;ABC DE&lt;/code&gt;及其KV-Cache&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Diffusion Draft&lt;/strong&gt;：由Diffusion生成的草稿&lt;code&gt;F&amp;quot;G&amp;quot;H&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;一些思考：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;显然&lt;code&gt;block_len&lt;/code&gt;是不能无限大的，结合Figure1，通过单个Transformer架构的slots需要在&lt;code&gt;Free-Token-Slots&lt;/code&gt;的范围内&lt;/li&gt;
+&lt;li&gt;paper只为AR采样1、2、3个token做了准备草稿，&lt;strong&gt;默认接受至少一个&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;diffusion-ar-dual-mode-backbone-training&#34;&gt;Diffusion-AR Dual-mode Backbone Training
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;论文其实是先讲的这一部分，但是先看完推理后再回来看train比较好&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;前期工作Block Diffusion提出了一种&lt;strong&gt;块内双向注意力，块间因果掩码&lt;/strong&gt;的方法&lt;/p&gt;
+&lt;p&gt;TiDAR进行了修改：&lt;strong&gt;保留最后一个块（双向注意力），其他内容（或者叫前缀）全部因果掩码&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;带来如下好处&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;允许我们像AR一样计算链式的联合概率分布$p(x_i\mid x_{&amp;lt;i})$，方便进行拒绝采样，保证高质量，并且计算似然和AR一样高效&lt;/li&gt;
+&lt;li&gt;在预训练和微调过程中可以计算前缀部分的NTP损失，&lt;strong&gt;损失信号的密度更高&lt;/strong&gt;，充分利用数据中每一个token&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;ul&gt;
+&lt;li&gt;AR部分：shifted by one position&lt;/li&gt;
+&lt;li&gt;dLM部分：一一对齐&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;TiDAR对于扩散部分的token，全部掩码为&lt;code&gt;[MASK]&lt;/code&gt;，直接消除选择哪一种掩码策略的思考&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;提高了扩散损失的密度（每一个token都参与）&lt;/li&gt;
+&lt;li&gt;平衡了AR和扩散的损失：&lt;strong&gt;强制两者参与损失计算的token数量都是相等的（序列长度）&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;先前框架的不平衡：dLM的信号容易被AR淹没
+&lt;ul&gt;
+&lt;li&gt;AR：稠密的（len-1个token参与）&lt;/li&gt;
+&lt;li&gt;dLMs：损失取决于多少token被掩码（远少于len）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;平衡的好处：更容易通过一个简单的超参数（加权因子）进行控制&lt;/li&gt;
+&lt;li&gt;允许在推理时&lt;strong&gt;一步扩散&lt;/strong&gt;，避免多步迭代&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118015735020.png&#34;
+	width=&#34;740&#34;
+	height=&#34;747&#34;
+	srcset=&#34;https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118015735020_hu_419e28ffa044b0e3.png 480w, https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118015735020_hu_bf8733a3f8d1fc3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Train Mask&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;99&#34;
+		data-flex-basis=&#34;237px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于输入序列，扩充相同的长度掩码&lt;code&gt;ABC DEF&lt;/code&gt; -&amp;gt; &lt;code&gt;MMM MMM&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;前一半序列的注意力就是Causal Attention&lt;/li&gt;
+&lt;li&gt;对于Diffusion部分（后一半），按照block size逐块考虑（采用双向注意力）
+&lt;ul&gt;
+&lt;li&gt;第一组&lt;code&gt;MMM&lt;/code&gt;恢复目标是&lt;code&gt;ABC&lt;/code&gt;，前缀为空&lt;/li&gt;
+&lt;li&gt;第二组&lt;code&gt;MMM&lt;/code&gt;恢复目标是&lt;code&gt;DEF&lt;/code&gt;，前缀为&lt;code&gt;ABC&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;若后续还有别的组，前缀会继续累积&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;TiDAR的建模目标可以表示为：&lt;/p&gt;
+$$
+\mathcal{L}_{TiDAR}(\theta) = \frac{1}{\alpha+1}\left( \sum_{i=1}^{S-1}\frac{\alpha}{S-1}\cdot\mathcal{L}_{AR}(x_i,x_{i+1};\theta)+ \sum_{i=1}^{S-1}\frac{1}{S-1}\cdot \mathcal{L}_{Diff}(\left[mask\right],x_i;\theta)\right )
+$$&lt;ul&gt;
+&lt;li&gt;$\alpha \in[0,1]$，损失函数的平衡项（paper里设为1）&lt;/li&gt;
+&lt;li&gt;$\left{x_i\right}_S$是输入序列&lt;/li&gt;
+&lt;li&gt;AR和Diffusion都是做对应的交叉熵&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;experiment&#34;&gt;Experiment
+&lt;/h2&gt;&lt;p&gt;（这里笔记忘记保存了，补一些重点）&lt;/p&gt;
+&lt;p&gt;由于AR部分的logits是带label shift的，Diffusion部分没有&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118224652148.png&#34;
+	width=&#34;1063&#34;
+	height=&#34;332&#34;
+	srcset=&#34;https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118224652148_hu_d600df02d3f6d42f.png 480w, https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118224652148_hu_e1f37bc07406f7ce.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;320&#34;
+		data-flex-basis=&#34;768px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;实质上是一个模型，没有切割&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;自回归部分根据ABCD会进行一个&lt;code&gt;E&lt;/code&gt;的预测&lt;/p&gt;
+&lt;p&gt;Diffusion部分的第一个Mask，也会根据attention得到相同的信息，预测&lt;code&gt;E&#39;&#39;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;所以这里涉及到了相信自回归还是相信Diffusion、或是兼顾的思考&lt;/p&gt;
+&lt;p&gt;作者顺手做了一个实验&lt;/p&gt;
+$$
+\text{logits}_{\text{mix}} = \beta*\text{logits}_i^{\text{AR}} + (1-\beta)*\text{logits}_i^{\text{Diff}},i\in|\text{Vocab}|
+$$&lt;p&gt;
+通过$\beta$对齐了两个logits&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118225438803.png&#34;
+	width=&#34;788&#34;
+	height=&#34;378&#34;
+	srcset=&#34;https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118225438803_hu_fe1528daa70accea.png 480w, https://example.com/p/tidar-think-in-diffusion-talk-in-autoregression/assets/image-20251118225438803_hu_21e4be9c18baf35a.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;208&#34;
+		data-flex-basis=&#34;500px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通过$\alpha$控制loss比例，横轴是$\beta$&lt;/li&gt;
+&lt;li&gt;总体没有明显性能差距，&lt;strong&gt;因此质量来源是拒绝采样，而非AR比DLM好&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;limitations&#34;&gt;Limitations
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Batch_Size：paper只做了1的情况（毕竟贴近推理，而不是吞吐量测试）&lt;/li&gt;
+&lt;li&gt;长上下文：翻了一倍文本，压力比较大&lt;/li&gt;
+&lt;li&gt;free token slots的探索：需要更加系统化的视角
+&lt;ul&gt;
+&lt;li&gt;cuda&lt;/li&gt;
+&lt;li&gt;调度&lt;/li&gt;
+&lt;li&gt;……&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>Awesome LLaDA</title>
+        <link>https://example.com/p/awesome-llada/</link>
+        <pubDate>Thu, 13 Nov 2025 12:56:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/awesome-llada/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;content&#34;&gt;Content
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2511.06254&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2511.06254 LLaDA-Rec: Discrete Diffusion for Parallel Semantic ID Generation in Generative Recommendation&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;note&lt;/strong&gt;：&lt;a class=&#34;link&#34; href=&#34;https://aoijays.top/p/llada-rec-discrete-diffusion-for-parallel-semantic-id-generation-in-generative-recommendation/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;笔记&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;abstract&lt;/strong&gt;：生成式推荐与离散扩散模型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2510.10481&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2510.10481 UltraLLaDA: Scaling the Context Length to 128K for Diffusion Large Language Models&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;note&lt;/strong&gt;：&lt;a class=&#34;link&#34; href=&#34;https://aoijays.top/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;笔记&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;abstract&lt;/strong&gt;：扩充LLaDA的长上下文&lt;/li&gt;
+&lt;li&gt;ICLR 2026：6666&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2509.24389&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2509.24389 LLaDA-MoE: A Sparse MoE Diffusion Language Model&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;note&lt;/strong&gt;：&lt;a class=&#34;link&#34; href=&#34;https://aoijays.top/p/llada-moe-asparse-moediffusion-language-model/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;笔记&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;abstract&lt;/strong&gt;：修改了LLaDA的Dense Transformer为MoE架构&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2509.13866&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2509.13866 Masked Diffusion Models as Energy Minimization&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如何以理论可解释的方式为离散域的掩码扩散模型（MDM）设计最优采样调度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2505.19223&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2505.19223 LLaDA 1.5: Variance-Reduced Preference Optimization for Large Language Diffusion Models&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;note&lt;/strong&gt;：&lt;a class=&#34;link&#34; href=&#34;https://aoijays.top/p/diffusion-language-model-birdresearch-202510/#llada-15-variance-reduced-preference-optimization-for-large-language-diffusion-models&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;笔记（难度较高，未读完）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;abstract&lt;/strong&gt;：提出VRPO方法，对LLaDA进行强化学习&lt;/li&gt;
+&lt;li&gt;ICLR 2026：642&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2505.16933&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2505.16933 LLaDA-V: Large Language Diffusion Models with Visual Instruction Tuning&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;note&lt;/strong&gt;：&lt;a class=&#34;link&#34; href=&#34;https://aoijays.top/p/diffusion-language-model-birdresearch-202510/#llada-v-large-language-diffusion-models-with-visual-instruction-tuning&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;笔记&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;abstract&lt;/strong&gt;：实现了图片理解的多模态LLaDA模型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2502.09992&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2502.09992 Large Language Diffusion Models&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;note&lt;/strong&gt;：&lt;a class=&#34;link&#34; href=&#34;https://aoijays.top/p/diffusion-language-model-%e8%ae%ba%e6%96%87%e7%ac%94%e8%ae%b0%e4%b8%80/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;笔记&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;abstract&lt;/strong&gt;：LLaDA&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>LLaDA-MoE ASparse MoEDiffusion Language Model</title>
+        <link>https://example.com/p/llada-moe-asparse-moediffusion-language-model/</link>
+        <pubDate>Tue, 11 Nov 2025 13:54:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/llada-moe-asparse-moediffusion-language-model/</guid>
+        <description>&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2502.09992&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Large Language Diffusion Models&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;intro&#34;&gt;Intro
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/llada-moe-asparse-moediffusion-language-model/assets/image-20251112212631894.png&#34;
+	width=&#34;1088&#34;
+	height=&#34;573&#34;
+	srcset=&#34;https://example.com/p/llada-moe-asparse-moediffusion-language-model/assets/image-20251112212631894_hu_138266dd69e252e0.png 480w, https://example.com/p/llada-moe-asparse-moediffusion-language-model/assets/image-20251112212631894_hu_2d18d20e2a5afd97.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;189&#34;
+		data-flex-basis=&#34;455px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;LLaDA-MoE：激活1.4B参数的情况下，超过先前8B的DLMs性能，取得DLMs的SOTA，与Qwen2.5-3B-Instruct性能相当&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;llada-moe&#34;&gt;LLaDA-MoE
+&lt;/h2&gt;&lt;h3 id=&#34;architecture&#34;&gt;Architecture
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/llada-moe-asparse-moediffusion-language-model/assets/image-20251112214355137.png&#34;
+	width=&#34;1135&#34;
+	height=&#34;647&#34;
+	srcset=&#34;https://example.com/p/llada-moe-asparse-moediffusion-language-model/assets/image-20251112214355137_hu_180d8637e9b2a256.png 480w, https://example.com/p/llada-moe-asparse-moediffusion-language-model/assets/image-20251112214355137_hu_d25e444d5191aadc.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;LLaDA-MoE&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;175&#34;
+		data-flex-basis=&#34;421px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;RMSNorm、SwiGLU、RoPE、QK-LayerNorm&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;train&#34;&gt;Train
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/llada-moe-asparse-moediffusion-language-model/assets/image-20251113103025656.png&#34;
+	width=&#34;1896&#34;
+	height=&#34;204&#34;
+	srcset=&#34;https://example.com/p/llada-moe-asparse-moediffusion-language-model/assets/image-20251113103025656_hu_8e34c220d489d6dd.png 480w, https://example.com/p/llada-moe-asparse-moediffusion-language-model/assets/image-20251113103025656_hu_b33c90fba7bf100a.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Pipeline&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;929&#34;
+		data-flex-basis=&#34;2230px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Pretrain Stage 1：从头开始训练，10T&lt;/li&gt;
+&lt;li&gt;Pretrain Stage 2：从相同的底层数据重新采样10T（提高数学、代码的权重），继续训练&lt;/li&gt;
+&lt;li&gt;Annealing Stage 1：从Pretrain Stage 2中最好的checkpoint开始，训练500B的高质量文本&lt;/li&gt;
+&lt;li&gt;Annealing Stage 2：将RoPE的base从10000提高到50000（扩充4k到8k的上下文），500B&lt;/li&gt;
+&lt;li&gt;SFT&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Annealing：用更高质量的数据让模型“收敛得更好”&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;训练阶段（预训练+SFT）的损失函数同LLaDA&lt;/li&gt;
+&lt;li&gt;预训练1%是随机长度，99%是4096定长（同LLaDA）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;moe-routing&#34;&gt;MoE Routing
+&lt;/h4&gt;$$
+p_t = \text{Softmax}(\text{Router}(h_t))\\
+o_t = \sum_i p_{t,i}E_i(h_t), \quad \text{where }p_{t,i} \in\text{Topk}(p_t) 
+$$&lt;ul&gt;
+&lt;li&gt;$h_t$是hidden state&lt;/li&gt;
+&lt;li&gt;$E$是专家网络&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;MoE选取p最大的k个专家网络进行加权&lt;/p&gt;
+&lt;p&gt;为了平衡负载，采用了标准的MoE auxiliary loss&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Load Balancing Loss&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$P_i$：token级的专家$i$被分配的平均概率&lt;/li&gt;
+&lt;li&gt;$f_i$：经过所有token每个专家被选中的频率&lt;/li&gt;
+&lt;li&gt;$N$​：专家数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+\mathcal{L}_{LB} = N\sum_{i=1}^N f_iP_i
+$$&lt;p&gt;通过该损失避免某个专家被频繁选中&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Z-Loss
+&lt;ul&gt;
+&lt;li&gt;$z_t$表示$\text{Router}(h_t)$&lt;/li&gt;
+&lt;li&gt;$z_{t,j}$即为第$j$个专家的打分&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+\mathcal{L}_Z=\frac{1}{T}\sum_{i=1}^T\left(\log \sum_{j=1}^N e^{z_{t,j}}\right)^2
+$$&lt;p&gt;通过该损失抑制logits分布，防止softmax极端化&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;LLaDA-MoE为LB设置0.01权重，为Z-Loss设定0.001&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/llada-moe-asparse-moediffusion-language-model/assets/image-20251113121116877.png&#34;
+	width=&#34;961&#34;
+	height=&#34;287&#34;
+	srcset=&#34;https://example.com/p/llada-moe-asparse-moediffusion-language-model/assets/image-20251113121116877_hu_26c4e1f6b4f9a486.png 480w, https://example.com/p/llada-moe-asparse-moediffusion-language-model/assets/image-20251113121116877_hu_724a9d33bf924a8f.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;334&#34;
+		data-flex-basis=&#34;803px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;experiments&#34;&gt;Experiments
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/llada-moe-asparse-moediffusion-language-model/assets/image-20251113121209495.png&#34;
+	width=&#34;860&#34;
+	height=&#34;614&#34;
+	srcset=&#34;https://example.com/p/llada-moe-asparse-moediffusion-language-model/assets/image-20251113121209495_hu_6189f9ed1a7edf66.png 480w, https://example.com/p/llada-moe-asparse-moediffusion-language-model/assets/image-20251113121209495_hu_eb3f3b8def23f671.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;base&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;140&#34;
+		data-flex-basis=&#34;336px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/llada-moe-asparse-moediffusion-language-model/assets/image-20251113121225582.png&#34;
+	width=&#34;1074&#34;
+	height=&#34;584&#34;
+	srcset=&#34;https://example.com/p/llada-moe-asparse-moediffusion-language-model/assets/image-20251113121225582_hu_c121207b1204ea1a.png 480w, https://example.com/p/llada-moe-asparse-moediffusion-language-model/assets/image-20251113121225582_hu_36f1f7b89ca3b2db.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;SFT&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;183&#34;
+		data-flex-basis=&#34;441px&#34;
+	
+&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>UltraLLaDA Scaling the Context Length to 128K for Diffusion Large Language Models</title>
+        <link>https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/</link>
+        <pubDate>Tue, 11 Nov 2025 13:54:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/</guid>
+        <description>&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2502.09992&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Large Language Diffusion Models&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;intro&#34;&gt;Intro
+&lt;/h2&gt;&lt;h3 id=&#34;现象&#34;&gt;现象
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;扩散语言模型的Local perception&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/pdf/2506.14429&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LongLLaDA: Unlocking Long Context Capabilities in Diffusion LLMs&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111142128339.png&#34;
+	width=&#34;1951&#34;
+	height=&#34;1195&#34;
+	srcset=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111142128339_hu_b92255c0ca39e7db.png 480w, https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111142128339_hu_1c32c04fe496d8df.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;163&#34;
+		data-flex-basis=&#34;391px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://aoijays.top/p/diffusion-language-model-birdresearch-202510/#long-context-phenomenology-of-diffusion-llms&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LongLLaDA · 大海捞针实验&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;LongLLaDA观测到这个现象是&lt;strong&gt;RoPE+双向上下文&lt;/strong&gt;带来的&lt;/li&gt;
+&lt;li&gt;提出了一种Training Free的方法，调整了RoPE机制，提升上下文能力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;关键挑战&#34;&gt;关键挑战
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;如何将AR LLM的上下文扩展技术（不重新预训练）迁移到DLM&lt;/li&gt;
+&lt;li&gt;training-free在AR方面证明了效果不如post-training，是否对DLM也是一致的
+&lt;ul&gt;
+&lt;li&gt;希望模型通过后训练，调整内部机制&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;核心贡献&#34;&gt;核心贡献
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;a Diffusion-aware NTK method
+&lt;ul&gt;
+&lt;li&gt;无需从头训练&lt;/li&gt;
+&lt;li&gt;受神经切线核（Neural Tangent Kernel, NTK）理论启发，开发了一个适配DLM的NTK方法&lt;/li&gt;
+&lt;li&gt;能适应扩散模型的迭代去噪特性，使 RoPE 可以稳定外推到 128K tokens&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;比较了后训练过程中使用的mask策略，分析对优化稳定性和长程回忆的影响&lt;/li&gt;
+&lt;li&gt;UltraLLaDA，与LongLLaDA、LLaDA进行benchmark，证明是SOTA&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;preliminary-work&#34;&gt;Preliminary Work
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;RoPE&lt;/strong&gt;：通过旋转向量的方式引入位置信息，旋转角度与位置index是线性关系&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;为了增加上下文，RoPE需要外推到更远的Token&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;外插：直接应用到更大的index，但是会造成信号失真与混乱（模型没见过这么大的）&lt;/li&gt;
+&lt;li&gt;内插：等比例缩放index到小窗口内，但是会比较模糊&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+\cos(k\alpha^{\frac{-2i}{d}})\\
+\cos(\frac{k}{\lambda}\alpha^{\frac{-2i}{d}})
+$$&lt;p&gt;&lt;strong&gt;序列位置$k$的编码向量（维度为$d$）的第$i$个分量&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;NTK-Aware Scaling&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;定义如下：&lt;/p&gt;
+$$
+\lambda = \left(\frac{T_{target}}{T_{train}}\right)^{\frac{d}{d-2}}
+$$&lt;p&gt;
+将原本的底数$\alpha$转化为$\alpha\lambda$&lt;/p&gt;
+$$
+\cos(k(\alpha\lambda)^{\frac{-2i}{d}}) = \cos(k\alpha^{\frac{-2i}{d}}\left(\frac{T_{target}}{T_{train}}\right)^{\frac{-2i}{d-2}})
+$$&lt;ul&gt;
+&lt;li&gt;低维度：$i$比较小，频率高，$\frac{-2i}{d-2}$接近1，式子近似为$\cos(k\alpha ^ {\frac{-2i}{d}})$&lt;/li&gt;
+&lt;li&gt;高维度：$i$比较大，频率低，$\frac{-2i}{d-2}$接近-1，式子近似为$\cos(\frac{k}{\lambda}\alpha^{\frac{-2i}{d}})$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;省流：高频部分外插，低频部分内插&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;上面都是定性的理解&lt;/p&gt;
+&lt;p&gt;正确的公式实际是：&lt;/p&gt;
+$$
+\lambda_{baseline} = b^{-1}\cdot\left ( \frac{T_{target}}{2\pi} \right)^{\frac{d}{d_{crit}}},  
+d_{crit} = 2\left \lceil \frac{d}{2}\log_b \frac{T_{train}}{2\pi} \right \rceil
+$$&lt;blockquote&gt;
+&lt;p&gt;b通常是10000&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;输入：$T_{target}, T_{train}$&lt;/li&gt;
+&lt;li&gt;输出：$\lambda$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;LongLLaDA将此方法从AR LLM迁移到DLM，并且不进行后训练&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;method&#34;&gt;Method
+&lt;/h2&gt;&lt;p&gt;从最开始的现象已经说明，RoPE + 双向上下文是不可或缺的&lt;/p&gt;
+&lt;p&gt;但是LongLLaDA没有任何关于双向上下文的适配，潜力没有被开发完全&lt;/p&gt;
+&lt;h3 id=&#34;diffusion-aware-ntk-in-ultrallada&#34;&gt;Diffusion-aware NTK in UltraLLaDA
+&lt;/h3&gt;&lt;p&gt;AR和DLM能看见的上下文窗口是不一样的&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;AR LLM：$[-T_{train}-1,0]$&lt;/li&gt;
+&lt;li&gt;DLM：$[-(T_{train}-1), T_{train}-1]$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;DLM的真实上下文信息应该是2倍，因此需要对NTK的输入进行修正：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入：$T_{Ecap} \approx 2T_{target}, T_{cap} \approx 2T_{train}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111183735012.png&#34;
+	width=&#34;539&#34;
+	height=&#34;416&#34;
+	srcset=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111183735012_hu_b77c22bce8c79b7c.png 480w, https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111183735012_hu_d91afef18895f313.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;129&#34;
+		data-flex-basis=&#34;310px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;带来更小的频率，该缩放机制增加了所有维度上的RoPE周期&lt;/p&gt;
+&lt;p&gt;从而有效减缓 RoPE 旋转速度，并延长所有注意力维度上的位置波长&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;case-study-of-masking-for-diffusion-llm-context-extension&#34;&gt;Case Study of Masking for Diffusion LLM Context Extension
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;后训练数据准备&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;来源：PG19&lt;/li&gt;
+&lt;li&gt;处理：短文档通过拼接到达64k，长文档切割成64k的chunk&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;存在问题：&lt;strong&gt;跨文档干扰&lt;/strong&gt;，跨越文档边界进行注意力计算，错误吸收上下文信息&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;AR：由于Causal Mask，只能看见之前的文档，天然限制了部分干扰&lt;/li&gt;
+&lt;li&gt;DLM：能看见所有的文档，干扰非常强&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;处理策略（idea来自AR LLM）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;baseline：直接拼接，什么都不做&lt;/li&gt;
+&lt;li&gt;Adaptive Attention Masking：只计算文档内部的注意力&lt;/li&gt;
+&lt;li&gt;End-of-document：文档之间插入special token（并没有显式地禁止注意力跨文档），采用Full Attention&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111185846564.png&#34;
+	width=&#34;974&#34;
+	height=&#34;397&#34;
+	srcset=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111185846564_hu_1d6deb03ba28f546.png 480w, https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111185846564_hu_66dfca3e11b2ed50.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;245&#34;
+		data-flex-basis=&#34;588px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;对三种策略都进行了训练（结合前文所提NTK）&lt;/p&gt;
+&lt;p&gt;训练参数：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111190447991.png&#34;
+	width=&#34;945&#34;
+	height=&#34;397&#34;
+	srcset=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111190447991_hu_8499a077ed252911.png 480w, https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111190447991_hu_2b3a3f07530dfbc5.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;238&#34;
+		data-flex-basis=&#34;571px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对特定任务采用不同策略训练的UltraLLaDA模型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;后续的实验证明：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;采用直接拼接后训练的模型常产生不连贯结果，这可能是由于无关内容相互渗透所致&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;experiments&#34;&gt;Experiments
+&lt;/h2&gt;&lt;h3 id=&#34;train-free-ntk&#34;&gt;Train-Free NTK
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;目的：在Train-Free的情况下，修正NTK的上下文长度参数输入的作用&lt;/li&gt;
+&lt;li&gt;方法：未做后训练，只修改编码方式进行测试&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111184208987.png&#34;
+	width=&#34;364&#34;
+	height=&#34;127&#34;
+	srcset=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111184208987_hu_f5cdab02acb4203.png 480w, https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111184208987_hu_38ee98da8172c1fc.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;286&#34;
+		data-flex-basis=&#34;687px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111184247848.png&#34;
+	width=&#34;431&#34;
+	height=&#34;278&#34;
+	srcset=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111184247848_hu_cb0896b057c69228.png 480w, https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111184247848_hu_1e0ffc824f1ebd29.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;155&#34;
+		data-flex-basis=&#34;372px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;结论：引入&lt;strong&gt;双向覆盖&lt;/strong&gt;对于扩展DLM的上下文长度至关重要&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;niah&#34;&gt;NIAH
+&lt;/h3&gt;&lt;p&gt;Needle-in-a-haystack long-context retrieval task&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;该任务将单个相关语句嵌入长达 128K 标记的干扰文本中，要求模型准确检索目标语句&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111155906820.png&#34;
+	width=&#34;1846&#34;
+	height=&#34;773&#34;
+	srcset=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111155906820_hu_89aa3fc2ffca11cc.png 480w, https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111155906820_hu_e24da556f251259a.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;238&#34;
+		data-flex-basis=&#34;573px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;全部100%检索成功&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;由于模型缺陷，LongLLaDA 无法进行 32K 以上的评估&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;结论：后训练方法即使在极长上下文（128K）中仍能保持卓越的检索能力，而Train-Free会随上下文长度增加快速失效&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;ppl&#34;&gt;PPL
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;基于PG19中128K长度的文档的语言建模困惑度评估&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111190938213.png&#34;
+	width=&#34;718&#34;
+	height=&#34;147&#34;
+	srcset=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111190938213_hu_a51476eaaa67873e.png 480w, https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111190938213_hu_311910ab80f2cabd.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;488&#34;
+		data-flex-basis=&#34;1172px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;结论：UltraLLaDA的训练在超长序列建模中具有很强的鲁棒性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;longbench&#34;&gt;LongBench
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;截断在16K上下文长度（大部分任务只有这么长）
+&lt;ul&gt;
+&lt;li&gt;单/多文档问答、摘要、上下文学习、合成推理任务、代码补全&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111191347098.png&#34;
+	width=&#34;730&#34;
+	height=&#34;138&#34;
+	srcset=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111191347098_hu_d4f035a04a506e20.png 480w, https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111191347098_hu_5575a6a54efc253d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;528&#34;
+		data-flex-basis=&#34;1269px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;结论：长上下文训练不仅扩展了上下文长度，即使在 16K 范围内（基线模型能力范围内）也能在挑战性任务上&lt;strong&gt;实现质量增益&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;归因于后训练过程带来的长距离连贯性与理解能力的提升&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;ruler&#34;&gt;RULER
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;在4K至32K上下文长度下（涵盖检索、聚合、问答及多跳变量追踪任务）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111191700298.png&#34;
+	width=&#34;927&#34;
+	height=&#34;382&#34;
+	srcset=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111191700298_hu_b0e50245ee924e09.png 480w, https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111191700298_hu_90c35c7c37ac0654.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;242&#34;
+		data-flex-basis=&#34;582px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在检索（NIAH）和追踪（VT）类别中均展现出强劲的扩展性&lt;/li&gt;
+&lt;li&gt;在聚合（AGG）及部分问答任务（QA）上的提升相对有限&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;消融实验&#34;&gt;消融实验
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;针对NTK和跨文档策略进行消融实验&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111192035623.png&#34;
+	width=&#34;743&#34;
+	height=&#34;177&#34;
+	srcset=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111192035623_hu_b25f67a29a91e17a.png 480w, https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111192035623_hu_498e5b060ad7574c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;419&#34;
+		data-flex-basis=&#34;1007px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111192105448.png&#34;
+	width=&#34;922&#34;
+	height=&#34;360&#34;
+	srcset=&#34;https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111192105448_hu_1bb19d9f27b01aaa.png 480w, https://example.com/p/ultrallada-scaling-the-context-length-to-128k-for-diffusion-large-language-models/assets/image-20251111192105448_hu_decefa29b95b392d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;256&#34;
+		data-flex-basis=&#34;614px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;EOD 拼接策略在较短或中等长度下表现更优&lt;/li&gt;
+&lt;li&gt;在更长序列中，自适应掩码策略会反超EOD拼接&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>Multimodal Diffusion Language Model · BirdResearch · 202510</title>
+        <link>https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/</link>
+        <pubDate>Fri, 17 Oct 2025 13:39:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;mmada-multimodal-large-diffusion-language-models&#34;&gt;MMaDA: Multimodal Large Diffusion Language Models
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;问题&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;先前的多模态架构混合，不同模态需要不同组件、不同数据处理方式&lt;/li&gt;
+&lt;li&gt;扩散模型后训练策略欠缺研究&lt;/li&gt;
+&lt;li&gt;如何文本与视觉模态协同学习、各方面性能超过各领域现有模型&lt;/li&gt;
+&lt;li&gt;如何确保模型具有泛化能力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021144451915.png&#34;
+	width=&#34;1127&#34;
+	height=&#34;554&#34;
+	srcset=&#34;https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021144451915_hu_a5cdfff39a893f5f.png 480w, https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021144451915_hu_a6e35a99ffe8ad82.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;compared to other llms&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;203&#34;
+		data-flex-basis=&#34;488px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;核心贡献&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;统一Diffusion架构：消除模态专用组件，保持跨任务性能&lt;/li&gt;
+&lt;li&gt;混合Long-CoT的后训练：统一CoT格式，对齐跨模态推理过程，协同训练&lt;/li&gt;
+&lt;li&gt;UniGRPO：专用的强化学习方法&lt;/li&gt;
+&lt;li&gt;SOTA：文本推理、多模态理解、文生图三方面均是SOTA（AR、混合、扩散）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021150351731.png&#34;
+	width=&#34;987&#34;
+	height=&#34;772&#34;
+	srcset=&#34;https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021150351731_hu_7714d48219f97e9f.png 480w, https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021150351731_hu_c7254ad29497536a.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;TASKs&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;127&#34;
+		data-flex-basis=&#34;306px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;method&#34;&gt;Method
+&lt;/h3&gt;&lt;h4 id=&#34;pretrain&#34;&gt;Pretrain
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Data Tokenization
+&lt;ul&gt;
+&lt;li&gt;文本：采用&lt;strong&gt;LLaDA&lt;/strong&gt;的tokenizer&lt;/li&gt;
+&lt;li&gt;图像：采用&lt;strong&gt;Show-o&lt;/strong&gt;所使用的pretrained image quantizer
+&lt;ul&gt;
+&lt;li&gt;基于&lt;strong&gt;MAGVIT-v2&lt;/strong&gt;架构（一个图像离散化模型）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;MAGVIT-v2的输入与输出&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入：单张静态图片的像素阵列、由多帧图像组成的序列&lt;/li&gt;
+&lt;li&gt;输出：一个token序列&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;p&gt;论文中采用$F=16$的下采样因子&lt;/p&gt;
+&lt;p&gt;对于$H\times W$的图像，转化为一维的$\frac{H\times W}{F^2}$长度序列&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;统一的概率建模与目标
+&lt;ul&gt;
+&lt;li&gt;定义MMaDA为一个Mask Token Predictor，直接预测文本与图像的&lt;code&gt;[MASK]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;仅在&lt;code&gt;[MASK]&lt;/code&gt;的图像或文本Token上做统一交叉熵损失&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+$$
+L_{unity}(\theta) = -E_{t,x_0,x_t}\left[\frac{1}{t}\sum_{i=1}^L I(x_t^i = [MASK])\log p_\theta (x_0^i|x_t)\right]
+$$&lt;h4 id=&#34;post-training-with-mixed-long-cot-finetuning&#34;&gt;Post-Training with Mixed Long-CoT Finetuning
+&lt;/h4&gt;&lt;p&gt;MMaDA明确面向：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;推理密集型任务（例如数学）&lt;/li&gt;
+&lt;li&gt;具备World-knowledge-aware的文生图
+&lt;ul&gt;
+&lt;li&gt;事实一致性非常重要&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021161828920.png&#34;
+	width=&#34;1344&#34;
+	height=&#34;583&#34;
+	srcset=&#34;https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021161828920_hu_6214c2797a50c125.png 480w, https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021161828920_hu_4b28f5ab45f1859e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Long-CoT Finetuning&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;230&#34;
+		data-flex-basis=&#34;553px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;为进行稳定的后训练，论文整理了一个包含三类核心任务（文本推理、多模态推理、文本到图像生成）CoT数据集&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;利用这篇数据，在RL之前通过SFT做冷启动&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;统一的CoT格式：消除不同任务的输出异构性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;|&amp;lt;special_token&amp;gt;| &amp;lt;reasoning_process&amp;gt; |&amp;lt;special_token&amp;gt;| &amp;lt;result&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;后续证明了有益于跨模态的协同训练与对齐&lt;/p&gt;
+&lt;p&gt;希望文本推理逻辑指导图像生成&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;多样性、复杂性、准确性
+&lt;ul&gt;
+&lt;li&gt;通过已有的LLM、VLM，合成多样化的数据&lt;/li&gt;
+&lt;li&gt;使用模型过滤，只保留高质量、长形式的CoT样本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;MMaDA进行了混合任务的CoT微调&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;保留提示词，对response进行加噪&lt;/li&gt;
+&lt;li&gt;通过预训练得到的Predictor进行损失计算&lt;/li&gt;
+&lt;/ul&gt;
+$$
+L_{Mixed-SFT}(\theta) = -E_{t,p_0,r_0,r_t}\left[\frac{1}{t}\sum_{i=1}^{L&#39;} I(r_t^i = [MASK])\log p_\theta (r_0^i|p_0,r_t)\right]
+$$&lt;h4 id=&#34;post-training-with-unified-rl&#34;&gt;Post-Training with Unified RL
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021163518810.png&#34;
+	width=&#34;2085&#34;
+	height=&#34;1055&#34;
+	srcset=&#34;https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021163518810_hu_909d17c24076e0b.png 480w, https://example.com/p/multimodal-diffusion-language-model-birdresearch-202510/assets/image-20251021163518810_hu_a2527497ddba309b.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Training&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;197&#34;
+		data-flex-basis=&#34;474px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;自回归模型：每个Token的条件概率都非常好计算，适合RL&lt;/li&gt;
+&lt;li&gt;Diffusion：过程复杂，无法直接使用传统强化学习方法
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;局部掩码依赖&lt;/strong&gt;：只有&lt;code&gt;[MASK]&lt;/code&gt;处有预测概率，其他位置已知&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;掩码比例敏感&lt;/strong&gt;：训练必须兼容不同噪声程度的恢复
+&lt;ul&gt;
+&lt;li&gt;LLaDA采样大量样本，造成RL开销巨大&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;非自回归序列似然&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;AR模型：句子概率可以通过token概率乘积计算&lt;/li&gt;
+&lt;li&gt;Diffusion：很难计算&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;unigrpo&#34;&gt;UniGRPO
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;这部分搁置一下 后续补一下RL的知识&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;主要有三个关键点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;结构化加噪策略&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;序列对数似然近似为：被遮位置对数概率的平均&lt;/li&gt;
+&lt;li&gt;用&lt;strong&gt;旧策略&lt;/strong&gt;和&lt;strong&gt;当前策略&lt;/strong&gt;的“近似序列似然”做&lt;strong&gt;比值&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;UniGPRO的奖励是多样化的&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;文本推理奖励
+&lt;ul&gt;
+&lt;li&gt;答案正确奖励&lt;/li&gt;
+&lt;li&gt;格式奖励（&lt;code&gt;&amp;lt;think&amp;gt;&amp;lt;think&amp;gt;&lt;/code&gt;）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;多模态推理奖励
+&lt;ul&gt;
+&lt;li&gt;同上&lt;/li&gt;
+&lt;li&gt;CLIP奖励：使用原始 CLIP 分数衡量文本-图像的语义一致性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;文生图奖励
+&lt;ul&gt;
+&lt;li&gt;同上&lt;/li&gt;
+&lt;li&gt;图像奖励：反映人类偏好得分&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;inference&#34;&gt;Inference
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;文本生成：采用半自回归采样
+&lt;ul&gt;
+&lt;li&gt;Masking Schedule采用线性计划，与LLaDA一致&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;图像生成：采用低置信度重掩码
+&lt;ul&gt;
+&lt;li&gt;余弦噪声调度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;experiments&#34;&gt;Experiments
+&lt;/h3&gt;&lt;p&gt;一般的benchmark跳过&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Diffusion Language Model · BirdResearch · 202510</title>
+        <link>https://example.com/p/diffusion-language-model-birdresearch-202510/</link>
+        <pubDate>Wed, 01 Oct 2025 15:54:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/diffusion-language-model-birdresearch-202510/</guid>
+        <description>&lt;h2 id=&#34;ar-llm&#34;&gt;AR LLM
+&lt;/h2&gt;&lt;p&gt;对于自回归模型，假设输入是：&lt;code&gt;[你, 好, ！]&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;词汇表是：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0: &amp;lt;pad&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1: 你
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2: 好
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;3: 我
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;4: 很
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5: 好
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6: ！
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;7: &amp;lt;eos&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008181120131.png&#34;
+	width=&#34;966&#34;
+	height=&#34;655&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008181120131_hu_a8cad21da2d3ad7b.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008181120131_hu_7c248c0bc453526d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20251008181120131&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;147&#34;
+		data-flex-basis=&#34;353px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;dream-7b-diffusion-large-language-models&#34;&gt;Dream 7B: Diffusion Large Language Models
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2508.15487&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2508.15487 Dream 7B: Diffusion Large Language Models&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008113335209.png&#34;
+	width=&#34;1492&#34;
+	height=&#34;465&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008113335209_hu_640220d5a4a7936d.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008113335209_hu_ebb3f34c95380aba.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Performance&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;320&#34;
+		data-flex-basis=&#34;770px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;问题：
+&lt;ul&gt;
+&lt;li&gt;AR模型对于需要整体考虑的任务（长期规划、多约束）场景表现差&lt;/li&gt;
+&lt;li&gt;AR模型对于长文本的一致性较差&lt;/li&gt;
+&lt;li&gt;在各类通用任务中，要达到与Qwen2.5等顶尖自回归模型相当的性能仍存在显著差距&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;贡献：
+&lt;ul&gt;
+&lt;li&gt;基于&lt;strong&gt;自回归的LLM 初始化&lt;/strong&gt;和&lt;strong&gt;上下文自适应噪声调度技术&lt;/strong&gt;来实现扩散语言模型的规模化&lt;strong&gt;训练&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Dream 7B Base和Dream 7B Instruct&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;approach&#34;&gt;Approach
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008193402415.png&#34;
+	width=&#34;846&#34;
+	height=&#34;343&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008193402415_hu_62334379a41411ae.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008193402415_hu_287610e7745136e9.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Dream&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;246&#34;
+		data-flex-basis=&#34;591px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用Transformer以偏移方式，预测所有&lt;code&gt;[MASK]&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;常规的MDM是直接预测对应位置的&lt;code&gt;[MASK]&lt;/code&gt;，需要重新训练一个新的Transformer&lt;/p&gt;
+&lt;h4 id=&#34;ar-based-llm-initialization&#34;&gt;AR-based LLM Initialization
+&lt;/h4&gt;&lt;p&gt;自回归模型的训练目标就是使用第$i$个隐藏状态预测$i+1$的token&lt;/p&gt;
+&lt;p&gt;因此我们以偏移方式进行预测，没有打破这种位置关系&lt;/p&gt;
+&lt;p&gt;因此将已有的自回归模型参数作为初始值&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;保留AR模型的知识&lt;/li&gt;
+&lt;li&gt;加速收敛&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;context-adaptive-token-level-noise-rescheduling&#34;&gt;Context-Adaptive Token-Level Noise Rescheduling
+&lt;/h4&gt;&lt;p&gt;先前衡量噪声程度一般都是句子级别的：LLaDA衡量某个句子在$t$时刻的权重是$\frac{1}{t}$&lt;/p&gt;
+&lt;p&gt;本文发现不同token之间的上下文信息是不同的，因此需要对噪声的衡量更加精细，避免学习的不平衡&lt;/p&gt;
+&lt;p&gt;公式化地，定义损失函数：&lt;/p&gt;
+$$
+L(\theta) = -\mathbb{E}_{x_0,t,x_t}\sum_{i=1}^{L}1\left [x_t^i=M\right] \cdot w(t,x_t,i) \cdot \log p_\theta(x_0^i\mid x_t)
+$$&lt;p&gt;
+对于LLaDA，其$w(t,x_t,i) = \frac{1}{t}$&lt;/p&gt;
+&lt;p&gt;考虑对于某个token的上下文信息：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;距离越近的&lt;code&gt;unmask&lt;/code&gt;的token提供的信息越丰富&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因此论文定义为：&lt;/p&gt;
+$$
+w(t,x_t,i) = \frac{1}{2}\sum_{j=1}^L\left [x_t^j\neq M\right] Geo(p, |i-j|-1)
+$$&lt;p&gt;
+其中$Geo$表示几何分布核：&lt;/p&gt;
+$$
+Geo(p,d) = (1-p)^d\cdot p, \quad d\geq 0
+$$&lt;ul&gt;
+&lt;li&gt;距离$d$越大，贡献越小&lt;/li&gt;
+&lt;li&gt;超参数$p$：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008202642071.png&#34;
+	width=&#34;1139&#34;
+	height=&#34;602&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008202642071_hu_ad3745440641ea7f.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008202642071_hu_9cf88da2296088af.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;超参数p&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;189&#34;
+		data-flex-basis=&#34;454px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;train&#34;&gt;Train
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Dream-7B采用了与Qwen2.5-7B完全相同的Transformer架构配置&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Pretrain&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;SFT&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;采用了之前的技巧，训练上与LLaDA没什么不同（注意损失函数）&lt;/p&gt;
+&lt;h3 id=&#34;experiment&#34;&gt;Experiment
+&lt;/h3&gt;&lt;h4 id=&#34;base模型&#34;&gt;Base模型
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008211344486.png&#34;
+	width=&#34;1013&#34;
+	height=&#34;712&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008211344486_hu_530b344c72b58167.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008211344486_hu_e41e555b15c86c6f.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;benchmark&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;142&#34;
+		data-flex-basis=&#34;341px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;推理任务中（ARC-E、ARC-C）表现良好&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;规划任务中领先幅度巨大&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;训练数据量非常小&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;结论：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;初始化策略和上下文自适应噪声调度有效性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;dream-instruct&#34;&gt;Dream-Instruct
+&lt;/h4&gt;&lt;p&gt;180万条数据，进行3轮微调&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008212201828.png&#34;
+	width=&#34;1224&#34;
+	height=&#34;556&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008212201828_hu_215f137c20397b9a.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008212201828_hu_de627354d9bd135e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;220&#34;
+		data-flex-basis=&#34;528px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;论文中没做分析&lt;/li&gt;
+&lt;li&gt;这里和LLaDA一样，SFT之后效果落后，甚至出现了性能下降&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;扩散大语言模型在遵循指令任务中具备与基于自回归的大语言模型相匹敌的潜力，为未来高级扩散大语言模型后训练方案奠定了基础&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h4 id=&#34;ar-initialization的贡献&#34;&gt;AR Initialization的贡献
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;验证：AR LLM初始化是有效的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;实验设计：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;LLaMA3.2-1B参数初始化的Dream-1B和从头训练的Dream1B&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008213718155.png&#34;
+	width=&#34;1266&#34;
+	height=&#34;825&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008213718155_hu_e7ebe20ad61e1c37.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008213718155_hu_81eed865a386611d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Loss 对比&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;153&#34;
+		data-flex-basis=&#34;368px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Loss始终更低，证明了初始化是有效的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;同时在这个实验中，论文说明了学习率的影响非常大：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;大的学习率：破坏AR LLM的有益特性&lt;/li&gt;
+&lt;li&gt;小的学习率：阻碍学习扩散的过程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;（但似乎没写上下文自适应噪声调度机制的消融实验）&lt;/p&gt;
+&lt;h4 id=&#34;planning-ability&#34;&gt;Planning Ability
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008214118368.png&#34;
+	width=&#34;1535&#34;
+	height=&#34;458&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008214118368_hu_87ecdcf0260af463.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008214118368_hu_66b211674994c51b.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;规划能力对比&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;335&#34;
+		data-flex-basis=&#34;804px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Dream 模型在两项任务中始终优于其他同等规模的基线模型&lt;/li&gt;
+&lt;li&gt;扩散语言模型在解决涉及多重约束或特定目标优化的问题时具有天然优势（？）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;trade-off&#34;&gt;Trade-off
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008214402200.png&#34;
+	width=&#34;987&#34;
+	height=&#34;692&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008214402200_hu_8669f15f499a63cc.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008214402200_hu_34d18c98a9954339.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Trade-off&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;142&#34;
+		data-flex-basis=&#34;342px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Diffusion language models provide a unique advantage through their adjustable inference process&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;基于时间步长的方法为推理时缩放引入了新的维度，可与现有技术协同工作，例如 OpenAI o1和DeepSeek R1等大型语言模型中使用的思维链推理&lt;/li&gt;
+&lt;li&gt;这种可调节的计算质量权衡代表了扩散模型区别于传统自回归模型的关键优势。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;llada-15-variance-reduced-preference-optimization-for-large-language-diffusion-models&#34;&gt;LLaDA 1.5: Variance-Reduced Preference Optimization for Large Language Diffusion Models
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2505.19223&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2505.19223 LLaDA 1.5: Variance-Reduced Preference Optimization for Large Language Diffusion Models&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008221825427.png&#34;
+	width=&#34;1719&#34;
+	height=&#34;730&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008221825427_hu_d7188d0aed1b164.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008221825427_hu_6a39ec4afc25f7a1.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;LLaDA1.5&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;235&#34;
+		data-flex-basis=&#34;565px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;看不懂&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;大概就是通过VRPO这个方法，基于LLaDA的工作，对LLaDA-instruct进行RL&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008234343570.png&#34;
+	width=&#34;877&#34;
+	height=&#34;636&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008234343570_hu_66310da504c89ddc.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008234343570_hu_5e68522af6e9a73.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;LLaDA RL&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;137&#34;
+		data-flex-basis=&#34;330px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;longllada-unlocking-long-context-capabilities-in-diffusion-llms&#34;&gt;LongLLaDA: Unlocking Long Context Capabilities in Diffusion LLMs
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2506.14429&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2506.14429  LongLLaDA: Unlocking Long Context Capabilities in Diffusion LLMs&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008235711746.png&#34;
+	width=&#34;1304&#34;
+	height=&#34;432&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008235711746_hu_cdf13d8671fc9b92.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251008235711746_hu_37b525e60acea430.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;长上下文对比&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;301&#34;
+		data-flex-basis=&#34;724px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;核心问题：扩散型LLMs在长文本处理领域的研究空白&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;为什么扩散LLM在直接长度外推时保持稳定的困惑度并呈现&lt;strong&gt;局部感知特性&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;针对自回归 LLM 建立的长度扩展技术能否迁移至扩散架构&lt;/li&gt;
+&lt;li&gt;自回归基线相比，扩散 LLM 在长上下文基准测试中表现如何？会显现哪些独特能力或局限性？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;贡献：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;揭示了其在上下文外推过程中保持稳定困惑度和局部感知的独特特性，并通过RoPE机制进行了解释&lt;/li&gt;
+&lt;li&gt;基于 NTK 的 RoPE 外推法与缩放定律可无缝迁移至扩散 LLMs，实现 6 倍上下文扩展&lt;/li&gt;
+&lt;li&gt;benchmark表明：扩散 LLMs 在&lt;strong&gt;检索任务&lt;/strong&gt;中与自回归模型表现相当，在&lt;strong&gt;聚合任务&lt;/strong&gt;中稍显不足，但在&lt;strong&gt;问答任务&lt;/strong&gt;中表现卓越&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;long-context-phenomenology-of-diffusion-llms&#34;&gt;Long-Context Phenomenology of Diffusion LLMs
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;大海捞针测试（Needle-In-A-Haystack, NIAH）&lt;/p&gt;
+&lt;p&gt;在一个超长的上下文（haystack，干草堆）里，研究者会插入一小段关键信息（needle，针）&lt;/p&gt;
+&lt;p&gt;模型的任务是：在生成或问答过程中，能否准确地“找到”并使用这段信息。&lt;/p&gt;
+&lt;p&gt;这类测试会改变针的位置（例如放在靠前、中间或靠后部分）以及上下文的总长度，用来观察模型在不同深度和不同长度下的表现。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;实验目的：揭示扩散 LLM 在长上下文中出现的&lt;strong&gt;局部感知 (local perception)&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;实验设计：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;输入：在不同长度（最多32k）的长上下文中插入一个needle&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;输出：限定模型输出最多32个token&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;实验对象&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;DLM：block size = 32，采样步数 = 32&lt;/li&gt;
+&lt;li&gt;LLM：默认&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;评估指标&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;找到Needle的成功率&lt;/li&gt;
+&lt;li&gt;模型在不同深度（前文、中间、后文）找到Needle的能力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009004938065.png&#34;
+	width=&#34;1135&#34;
+	height=&#34;686&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009004938065_hu_335374cd5412e855.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009004938065_hu_befee1c766cd6b1e.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;LLaDA与LLaMA系列实验结果&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;165&#34;
+		data-flex-basis=&#34;397px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;附录中补充了其他DLM模型的实验&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;AR LLM在8K内的上下文表现完美，超过8K长度无法完成任何任务&lt;/li&gt;
+&lt;li&gt;DLM出现了类似**滑动窗口（窗口长度为4k）**的表现&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;DLM受采样步数影响较大，因此定量补充了实验：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009005810059.png&#34;
+	width=&#34;1169&#34;
+	height=&#34;749&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009005810059_hu_546e20570a7401cb.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009005810059_hu_181f5578c1ab51ce.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Sample Step&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;156&#34;
+		data-flex-basis=&#34;374px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;表明扩散 LLMs 的长上下文性能虽受采样步数影响，但仍受限于模型支持的最大上下文长度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;机制分析&#34;&gt;机制分析
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;自回归只能看见后续的：$[0, T_{train} - 1]$（LLaMA的$T_{train} = 8192$​）&lt;/li&gt;
+&lt;li&gt;DLM是双向注意力：$[1-T_{train},T_{train}-1]$（LLaDA的$T_{train}=4096$）
+&lt;ul&gt;
+&lt;li&gt;对于单个token，可以同时出现在左边的上下文窗口，也可以出现在右边的上下文窗口&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009100213544.png&#34;
+	width=&#34;1890&#34;
+	height=&#34;919&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009100213544_hu_57b583127a349bfd.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009100213544_hu_9380a40281cc2024.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;context&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;205&#34;
+		data-flex-basis=&#34;493px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;留坑：RoPE&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;LLaMA完全丢失了负相对位置的信息，外推能力受限&lt;/li&gt;
+&lt;li&gt;LLaDA虽然$T_{train}$比较小，但是能够接受到一个负正窗口&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;LLaMA：只学习了从头往后一个个token读取的能力&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;它可以知道，第2个token是第1个token的后一个……第1000个token是第999个token的后一个……&lt;/p&gt;
+&lt;p&gt;（像翻书一样可以一页一页翻）&lt;/p&gt;
+&lt;p&gt;但是一旦碰到第10000页，它推理不出这是9999页过来的（超出上下文，没有学习过这种关系）&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;LLaDA：双向上下文&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;可以推断出9999是10000的前一页&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;论文补充了t-SNE可视化实验&lt;/p&gt;
+&lt;p&gt;观察了两个模型最后的Q和K states&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009140617445.png&#34;
+	width=&#34;2054&#34;
+	height=&#34;955&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009140617445_hu_3136df464a2be127.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009140617445_hu_d78712eecfc63560.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;t-SNE&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;215&#34;
+		data-flex-basis=&#34;516px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;LLaDA随着上下文长度增加，仍然保持形状&lt;/li&gt;
+&lt;li&gt;LLaMA出现了明显的聚类分离，表示内部出现了&lt;code&gt;distribution shift&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;context-extension&#34;&gt;Context Extension
+&lt;/h3&gt;&lt;p&gt;将 &lt;strong&gt;NTK-based RoPE extrapolation&lt;/strong&gt;（一种在自回归 LLM 中已验证的旋转位置嵌入扩展方法）迁移到扩散式 LLM&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;缩放旋转基数 β0&lt;/strong&gt;，让正弦/余弦函数周期变长，相当于“拉伸坐标轴”，从而容纳更长的上下文&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009142455144.png&#34;
+	width=&#34;1226&#34;
+	height=&#34;718&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009142455144_hu_c1933c2297845371.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009142455144_hu_662f939c281b78cd.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;base&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;170&#34;
+		data-flex-basis=&#34;409px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009142511056.png&#34;
+	width=&#34;1223&#34;
+	height=&#34;702&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009142511056_hu_2f6517f50f9ebb35.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009142511056_hu_70ac19fca8c8e977.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;instruct&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;174&#34;
+		data-flex-basis=&#34;418px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;小幅扩展有效&lt;/strong&gt;： 8k 或 16k，几乎在所有深度下都保持接近 100% 的检索准确率。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;中等扩展出现性能下降&lt;/strong&gt;：24k ，出现lost-in-the-middle现象&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;自回归模型中同样有的现象&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;大规模扩展失败&lt;/strong&gt;：模型无法再有效外推，说明方法的实际上限已到达。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;附录中对同类的DLM做了相同的实验&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;experiment-1&#34;&gt;Experiment
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;SD、MD、Sum 和 Syn 分别代表单文档问答、多文档问答、摘要和合成任务&lt;/p&gt;
+&lt;p&gt;Avg 是所有子任务按评估数据数量加权的平均得分&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009145901304.png&#34;
+	width=&#34;2012&#34;
+	height=&#34;745&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009145901304_hu_309eb6e92ee1f29a.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009145901304_hu_99cab5b931fefe45.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;LongBench&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;270&#34;
+		data-flex-basis=&#34;648px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;平均得分媲美AR LLM&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;检索（NIAH）/聚合（AGG）/问答（QA)&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009150019639.png&#34;
+	width=&#34;1978&#34;
+	height=&#34;1185&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009150019639_hu_a472d06a9de10b3a.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009150019639_hu_b08d80dfb6e4d0da.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Ruler&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;166&#34;
+		data-flex-basis=&#34;400px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;检索任务：相当&lt;/li&gt;
+&lt;li&gt;聚合任务：不如AR LLM&lt;/li&gt;
+&lt;li&gt;问答任务：超过AR LLM&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;llada-v-large-language-diffusion-models-with-visual-instruction-tuning&#34;&gt;LLaDA-V: Large Language Diffusion Models with Visual Instruction Tuning
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/pdf/2505.16933&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LLaDA-V: Large Language Diffusion Models with Visual Instruction Tuning&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009155310087.png&#34;
+	width=&#34;1961&#34;
+	height=&#34;949&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009155310087_hu_73052e8f451b3af2.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009155310087_hu_31fdd1ed720a7b25.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;206&#34;
+		data-flex-basis=&#34;495px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;问题：完全基于扩散机制的多模态大语言模型能否达到与AR LLM相匹敌的性能？&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;论文贡献&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;首个完全基于扩散模型的多模态大语言模型&lt;/li&gt;
+&lt;li&gt;在多个基准测试中展现出卓越的可扩展性&lt;/li&gt;
+&lt;li&gt;在混合型及纯扩散式多模态大语言模型中均SOTA&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;visual-instruction-tuning&#34;&gt;Visual Instruction Tuning
+&lt;/h3&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Vison Tower（CLIP或SigLIP）：图像转视觉表征&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;MLP connector：嵌入LLM词空间&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Language Tower：LLM&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;主流的多模态大模型架构之一，只需要相对较少的数据（less than 100w 图文数据对）&lt;/p&gt;
+&lt;p&gt;本文主要研究如何在DLM中进行Visual Instruction Tuning&lt;/p&gt;
+&lt;h3 id=&#34;method&#34;&gt;Method
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Language Tower：LLaDA 8B（与LLaMA3-8B相当的语言模型）&lt;/li&gt;
+&lt;li&gt;Vison Tower：SigLIP&lt;/li&gt;
+&lt;li&gt;MLP Connector：a two-layer MLP&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;training&#34;&gt;Training
+&lt;/h4&gt;&lt;p&gt;训练阶段引入了含有多轮对话的数据&lt;/p&gt;
+&lt;p&gt;为了简化描述，文章以2轮对话的数据进行说明，定义符号：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\mathcal{v}$：Vison Tower和MLP Connector生成的视觉表征向量&lt;/li&gt;
+&lt;li&gt;$[M]$​：掩码标记&lt;/li&gt;
+&lt;li&gt;数据：$(\mathcal{v}, p_0^1,r_0^1,p_0^2,r_0^2)$&lt;/li&gt;
+&lt;li&gt;$p_0^1 = [ p_0^{1,i}]$：首轮提示文本&lt;/li&gt;
+&lt;li&gt;$p_0^2 = [ p_0^{2,i}]$ ：次轮提示文本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于一个二轮对话，训练目标定义为：&lt;/p&gt;
+$$
+L(\theta) = -\mathbb{E}_{\mathcal{v},t,p_0^1,r_0^1,r_t^1,p_0^2,r_0^2,r_t^2}\left[\frac{1}{t}\sum_{i=1}^{L_{p_1}}\sum_{j=1}^{L_{p_2}}1\left[r_t^{1,i}=M\wedge r_t^{2,j}=M\right] \cdot \log p_\theta(r_0^{1,i},r_0^{2,j}\mid \mathcal{v}, p_0^1,r_0^1,p_0^2,r_0^2 ) \right]
+$$&lt;blockquote&gt;
+&lt;p&gt;在多轮对话场景下，&lt;strong&gt;不同轮次的响应是强相关的&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用户的问题可能在第 1 轮，答案在第 2 轮&lt;/li&gt;
+&lt;li&gt;推理链条往往横跨多个回合，不能只看单独的 token&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;模型必须在预测某个 token 时，同时考虑另一轮对话中的掩码 token&lt;/p&gt;
+&lt;p&gt;这样就把 &lt;strong&gt;跨轮次的依赖关系&lt;/strong&gt; 学进去，而不是每轮单独学&lt;/p&gt;
+&lt;p&gt;联合约束迫使模型去捕捉 &lt;strong&gt;对话轮次之间的因果逻辑&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;理论上这个式子在先前工作中已经被证明为整个任务的负对数似然上界&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在多轮对话中似乎可以采用causal mask，阻止早期对话轮次访问了后期的对话轮次&lt;/li&gt;
+&lt;li&gt;后文消融实验证明双向注意力的效果更好（实现对整体对话语境的全面理解）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;该机制在近期&lt;strong&gt;视频扩散模型&lt;/strong&gt;中已证实可有效提升生成视频的时间连贯性&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;本身训练的流程和LLaDA的SFT流程比较相似，加噪只会在Response中，且同时对多轮对话中的Response进行加噪&lt;/p&gt;
+&lt;p&gt;一次性让模型恢复所有对话中的MASK&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009200659499.png&#34;
+	width=&#34;1569&#34;
+	height=&#34;545&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009200659499_hu_14f4dbdd112ab8a5.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009200659499_hu_55f6d0881c6145a4.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;AR &amp;#43; Train &amp;#43; Inference&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;287&#34;
+		data-flex-basis=&#34;690px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;training-strategies&#34;&gt;Training Strategies
+&lt;/h4&gt;&lt;p&gt;整个训练过程参考了LLaVA的训练策略&lt;/p&gt;
+&lt;p&gt;建立语言和视觉对齐关系并培养视觉指令跟随能力&lt;/p&gt;
+&lt;p&gt;训练目标函数与上文相同&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;阶段一：语言-图像对齐
+&lt;ul&gt;
+&lt;li&gt;目的：图像与语言的分布不一致，如果直接做指令调优，模型学习跨模态语义很困难&lt;/li&gt;
+&lt;li&gt;方法：&lt;strong&gt;将视觉表征与 LLaDA 的词向量进行对齐&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;冻结Vison Tower和Language Tower（这两个本身进行过预训练），只训练MLP Connector&lt;/li&gt;
+&lt;li&gt;数据集：LLaVA-Pretrain&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;阶段二：视觉指令调优Visual Instruction Tuning
+&lt;ul&gt;
+&lt;li&gt;目的：（单图像训练）建立基本的图像理解能力，（多图像训练）扩展到时序和跨图像推理&lt;/li&gt;
+&lt;li&gt;方法：（两个阶段）解冻所有层
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;单图像训练Single image&lt;/strong&gt;：在 &lt;strong&gt;1,000 万单图像样本&lt;/strong&gt;上训练，增强对单张图像的理解与响应能力。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;统一视觉训练阶段one vision&lt;/strong&gt;：在 &lt;strong&gt;约 200 万多模态样本&lt;/strong&gt;（包括单图、多图和视频）上训练，使模型具备处理复杂场景的能力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;数据集：&lt;strong&gt;MAmmoTH-VL&lt;/strong&gt; 数据集&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;阶段三：多模态推理增强 Multimodal Reasoning Enhancement
+&lt;ul&gt;
+&lt;li&gt;目的：增强模型处理复杂任务的多模态推理能力，加入reasoning data提升数学、跨图像和逻辑推理任务的表现&lt;/li&gt;
+&lt;li&gt;方法
+&lt;ul&gt;
+&lt;li&gt;推理训练：使用来自 VisualWebInstruct聚焦推理的多模态数据对 LLaDA-V 进行训练（90 万个问答对，详尽的推理链和最终答案）&lt;/li&gt;
+&lt;li&gt;平衡训练：参考qwen系列，融合VisualWebInstruct（其中50%添加&lt;code&gt;\think&lt;/code&gt;）和MAmmoTH-VL(one vison部分，全部添加&lt;code&gt;\no_think&lt;/code&gt;，鼓励直接回答)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;inference&#34;&gt;Inference
+&lt;/h4&gt;&lt;p&gt;推理时根据已有的对话记录，对当前的prompt进行单轮的response生成&lt;/p&gt;
+&lt;p&gt;重掩码策略采用low-confidence strategy&lt;/p&gt;
+&lt;h3 id=&#34;experiment-2&#34;&gt;Experiment
+&lt;/h3&gt;&lt;p&gt;可扩展性&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;LLaDA-V 随着&lt;strong&gt;训练数据&lt;/strong&gt;增加性能持续提升&lt;/li&gt;
+&lt;li&gt;在 &lt;strong&gt;多学科与数学推理任务&lt;/strong&gt; 上，LLaDA-V 扩展性明显优于 LLaMA3-V&lt;/li&gt;
+&lt;li&gt;但在 &lt;strong&gt;图表/文档理解&lt;/strong&gt; 和 &lt;strong&gt;真实场景理解&lt;/strong&gt; 任务上，LLaMA3-V 表现更优&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009221821275.png&#34;
+	width=&#34;1402&#34;
+	height=&#34;695&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009221821275_hu_2a1887244b431296.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009221821275_hu_3b1ccaa0b03d7012.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;scalability&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;201&#34;
+		data-flex-basis=&#34;484px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;Benchmark&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于已有的混合或扩散模型，LLaDA-V是SOTA&lt;/li&gt;
+&lt;li&gt;对比LLaMA3-V：6 个任务上超越&lt;/li&gt;
+&lt;li&gt;对比Qwen2-VL：整体仍落后&lt;/li&gt;
+&lt;li&gt;图表/文档理解和 RealWorldQA 上表现稍差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009222242556.png&#34;
+	width=&#34;1710&#34;
+	height=&#34;757&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009222242556_hu_16fbc19e2c4d96ea.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009222242556_hu_c8031429e440442.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;benchmark&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;225&#34;
+		data-flex-basis=&#34;542px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;消融实验&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对比了Causal Mask和无Mask（多轮对话）&lt;/li&gt;
+&lt;li&gt;12个benchmark中7个更优&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009222503983.png&#34;
+	width=&#34;953&#34;
+	height=&#34;567&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009222503983_hu_d09e07717de8958f.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251009222503983_hu_d4cffbcd05dc86ef.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;消融实验&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;168&#34;
+		data-flex-basis=&#34;403px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;图像接入SigLIP的方式比较简单，会丢失分辨率和信息，造成图表问题表现差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;llada-medv-exploring-large-language-diffusion-models-for-biomedical-image-understanding&#34;&gt;LLaDA-MedV: Exploring Large Language Diffusion Models for Biomedical Image Understanding
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2508.01617&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2508.01617 LLaDA-MedV: Exploring Large Language Diffusion Models for Biomedical Image Understanding&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;没怎么看，大概是把LLaDA-V的工作调整到了垂类领域&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;一些比较有趣的实验分析：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;DLM在一些垂类领域非常合适，可以&lt;strong&gt;显式地控制&lt;/strong&gt;一个大概的生成长度&lt;/li&gt;
+&lt;li&gt;模型可能出现重复 token（如 “the the the …”）的问题，尤其在&lt;strong&gt;采样步数较少&lt;/strong&gt;或&lt;strong&gt;长度设定较大&lt;/strong&gt;时&lt;/li&gt;
+&lt;li&gt;直接使用LLaDA-V的参数做微调的性能反而更差，需要从LLaDA-instruct出发，重新走3个步骤&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;lavida-a-large-diffusion-language-model-for-multimodal-understanding&#34;&gt;LaViDa: A Large Diffusion Language Model for Multimodal Understanding
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2505.16839&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://arxiv.org/abs/2505.16839&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;问题：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;AR LLM对强双向上下文要求的任务（文本填充、从图像中提取信息填充到json格式）很弱&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;视觉语言场景中对输出模式的要求特别严格&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;标准扩散模型训练的数据效率低下，未被遮盖的token不参与损失函数计算，容易遗失关键语义信息（关键词）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;现有的推理方式缺少了KV cache的支持（双向上下文固有的缺陷）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;短文本环境中是可容忍的&lt;/li&gt;
+&lt;li&gt;对于VLM任务无法接受，常常伴有数百个visual token&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;固定比例的&lt;code&gt;unmask&lt;/code&gt;在迭代次数较少时效果非常差&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;贡献：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;第一个DLM视觉语言模型&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;一种互补的mask方案，确保每个token都能参与到学习过程中，提高数据效率&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Prefix-DLM decoding：缓存多模态的提示词与图像输入，从而加速推理过程&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;受文生图技术的启发，采用了时间步偏移策略，自适应调整每次迭代的解码数量&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;method-1&#34;&gt;Method
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251018171520779.png&#34;
+	width=&#34;857&#34;
+	height=&#34;381&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251018171520779_hu_83db3a345a7595c6.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251018171520779_hu_e775b30abb7e0603.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20251018171520779&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;224&#34;
+		data-flex-basis=&#34;539px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Vision Encoder和DLM通过MLP进行连接&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;模型输入：图像$I$和文本$P$&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;vision-encoder&#34;&gt;Vision Encoder
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;$I \to_{resize} 768\times 768$&lt;/li&gt;
+&lt;li&gt;切分成四个不重叠的部分（$I_{1:4} = (384,384)$）；直接resize原图为$(384,384)$，得到$I_5$&lt;/li&gt;
+&lt;li&gt;每一个子图被独立地通过Vision Encoder（SigLIP-400M ）进行编码
+&lt;ul&gt;
+&lt;li&gt;$I_i \to V_i, \text{size} = 27 \times 27$，五个子图总共产生了3645个embeddings&lt;/li&gt;
+&lt;li&gt;$2\times 2$平均池化（缩短序列，提升训练效率）：$14\times 14$，总共980个embeddings&lt;/li&gt;
+&lt;li&gt;经过MLP构成的Projection Network，Flatten到1D&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这里是输出5个一维向量，还是拼在一起的1个一维向量？&lt;/p&gt;
+&lt;p&gt;暂时没去研究&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h4 id=&#34;dlm&#34;&gt;DLM
+&lt;/h4&gt;&lt;p&gt;DLM的输入：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;视觉嵌入向量&lt;/li&gt;
+&lt;li&gt;文本提示词$P$&lt;/li&gt;
+&lt;li&gt;带有掩码的$X_t$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;输出：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;概率分布，用于获取$X_0$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;论文采用LLaDA和Dream作为DLM&lt;/p&gt;
+&lt;h4 id=&#34;complementary-mask&#34;&gt;Complementary Mask
+&lt;/h4&gt;&lt;p&gt;文本中信息量非常密集，一般就是几个词&lt;/p&gt;
+&lt;p&gt;对于之前的加噪方法，不一定能恰好遮蔽需要的词&lt;/p&gt;
+&lt;p&gt;例如&lt;code&gt;The answer is dog.&lt;/code&gt;，加噪为：&lt;code&gt;The [MASK] [Mask] dog.&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;事实上我们只需要引入它的互补形式：&lt;code&gt;[MASK] answer is [MASK]&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020151759246.png&#34;
+	width=&#34;1264&#34;
+	height=&#34;883&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020151759246_hu_6bc6d2d986ad22ba.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020151759246_hu_3cdadd9f2c6fbffc.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;complementary&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;143&#34;
+		data-flex-basis=&#34;343px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;同时，这份数据会直接copy视觉以及提示词部分的嵌入&lt;/p&gt;
+&lt;p&gt;因此对实际训练开销的影响较小&lt;/p&gt;
+&lt;h4 id=&#34;prefix-dlm&#34;&gt;Prefix-DLM
+&lt;/h4&gt;&lt;p&gt;定义序列长度为$L$，推理的迭代次数$K$，我们有NFE（fraction of the number of functional evaluations）：&lt;/p&gt;
+$$
+\text{NFE} = \frac{K}{L}
+$$&lt;ul&gt;
+&lt;li&gt;NFE=100%时，每次迭代生成一个Token&lt;/li&gt;
+&lt;li&gt;NFE=50%时，每次迭代生成2个Token&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;但实际上由于毫无推理优化，DLM的速度比自回归慢&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020161428365.png&#34;
+	width=&#34;1423&#34;
+	height=&#34;417&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020161428365_hu_754ba3cf8053a3da.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020161428365_hu_4f0aa1432c96e31f.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Attention&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;341&#34;
+		data-flex-basis=&#34;818px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Causal Mask：可以不断复用之前的token的kv矩阵（之前的token没有变化，且之前的token对未来的token不感兴趣）&lt;/li&gt;
+&lt;li&gt;Full Mask：每个token都会看前后的内容，因此需要不断重新计算&lt;/li&gt;
+&lt;li&gt;Prefix-DLM：I和P部分不会发生变化，遮蔽了对未来answer的token&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;schedule-shift&#34;&gt;Schedule Shift
+&lt;/h4&gt;&lt;p&gt;喷了一下等步长的解码，提出了非线性的递推：&lt;/p&gt;
+$$
+t&#39;_i = \frac{\alpha t_i}{1+(\alpha -1)t_i}
+$$&lt;p&gt;
+设计一个时间重参数化的函数，要求满足：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$t_0 = 0,t_1 = 1$，仍然保持边界&lt;/li&gt;
+&lt;li&gt;单调递增&lt;/li&gt;
+&lt;li&gt;曲率可控，方便控制早晚阶段的速度&lt;/li&gt;
+&lt;li&gt;简单，防止数值不稳定或梯度爆炸&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;论文希望早期降噪快，后期降噪慢&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;希望先快速搭建一个骨架，后面慢慢填充&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;对这个式子求导：&lt;/p&gt;
+$$
+\frac{dt_i&#39;}{dt_i} =   \frac{\alpha}{(1+(\alpha-1)t)^2}
+$$&lt;p&gt;
+当$t=0$，导数为$\alpha$，$t=1$，导数为$\frac{1}{\alpha}$&lt;/p&gt;
+&lt;p&gt;可以通过$\alpha$​和1的大小关系，控制是先快后慢，还是先慢后快&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251021190931428.png&#34;
+	width=&#34;739&#34;
+	height=&#34;681&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251021190931428_hu_afa6e273813b0639.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251021190931428_hu_ba9745771f5c5b65.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;schedule&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;108&#34;
+		data-flex-basis=&#34;260px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;experiments&#34;&gt;Experiments
+&lt;/h3&gt;&lt;p&gt;略过benchmark部分&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251021202137371.png&#34;
+	width=&#34;1530&#34;
+	height=&#34;1237&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251021202137371_hu_43223d13feada0c0.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251021202137371_hu_2a6ba790d8bb9229.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;benchmark&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;123&#34;
+		data-flex-basis=&#34;296px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h4 id=&#34;reasoning-distillation&#34;&gt;Reasoning Distillation
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020211558087.png&#34;
+	width=&#34;519&#34;
+	height=&#34;219&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020211558087_hu_73460ab98d2fb011.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020211558087_hu_aa6c53100831621.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;reasoning&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;236&#34;
+		data-flex-basis=&#34;568px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;paper通过蒸馏VL-Rethinker-7B模型（19.2K CoT examples）&lt;/p&gt;
+&lt;p&gt;训练得到LaViDa-Reason&lt;/p&gt;
+&lt;p&gt;在MathVista、MathVerse和MathVision上均得到提升&lt;/p&gt;
+&lt;h4 id=&#34;text-infilling&#34;&gt;Text Infilling
+&lt;/h4&gt;&lt;p&gt;对于实际的文本填充任务，不需要生成所有内容，只需要填写需要填写的&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;任意时间步长开始生成&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;例如：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;There is a [M][M][M][M] in the image.&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;这里我们希望是&lt;code&gt;dog&lt;/code&gt;或者&lt;code&gt;traffic light&lt;/code&gt;，也是就是variable-length completions&lt;/p&gt;
+&lt;p&gt;因此利用了第二阶段（激活全部参数）的20%数据，进行第三阶段训练，得到LaViDa-FIM&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;文本中插入&lt;strong&gt;随机长度&lt;/strong&gt;的&lt;code&gt;[S][S]……[S][FIM]&lt;/code&gt;序列&lt;/li&gt;
+&lt;li&gt;推理时，在掩码段后面附加&lt;code&gt;[FIM]&lt;/code&gt;，得到&lt;code&gt;There is a [M][M][M][M][FIM] in the image.&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;模型自然可以生成：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;There is a dog[S][S][S][FIM] in the image.&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;There is a traffic light[S][S][FIM] in the image.&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;约束性诗歌生成：模型根据图像生成一首诗，每行以特定音节开头&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;强调了结构性约束和上下文一致性，测试双向生成能力&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020215449484.png&#34;
+	width=&#34;886&#34;
+	height=&#34;492&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020215449484_hu_7654eb8df0de9790.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020215449484_hu_540b0ba14a6cc84c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;诗歌补全&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;180&#34;
+		data-flex-basis=&#34;432px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020215153081.png&#34;
+	width=&#34;506&#34;
+	height=&#34;199&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020215153081_hu_6c166c051812bb1a.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020215153081_hu_f982c9463f0367e2.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;poem completion&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;254&#34;
+		data-flex-basis=&#34;610px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Sentence：满足行级别的约束的比例&lt;/li&gt;
+&lt;li&gt;Sample：满足样本级约束的比例&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;speed-vs-quality-trade-off&#34;&gt;Speed vs. Quality Trade off
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020224259620.png&#34;
+	width=&#34;557&#34;
+	height=&#34;572&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020224259620_hu_994630fc0b694545.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020224259620_hu_878a9a6de5bcea7.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Quality-Speed&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;97&#34;
+		data-flex-basis=&#34;233px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;设定长度固定32，通过调整迭代次数K，进行实验&lt;/p&gt;
+&lt;p&gt;（数据集COCO2017图像描述 500张，生成图像标题）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;NFE=100%，稍慢于AR LLM，但是性能更强&lt;/li&gt;
+&lt;li&gt;50-75%的性能和速度都很不错&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020225129247.png&#34;
+	width=&#34;560&#34;
+	height=&#34;278&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020225129247_hu_10c5f2cf2970a1ff.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020225129247_hu_1bf8e32d51acfc60.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Prefix-DLM&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;201&#34;
+		data-flex-basis=&#34;483px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;有效的加速推理，性能下降少&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020225349258.png&#34;
+	width=&#34;541&#34;
+	height=&#34;233&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020225349258_hu_fdf1729242ac0fa8.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020225349258_hu_48f7899bb17d908d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Timestep-shifting&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;232&#34;
+		data-flex-basis=&#34;557px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;先快后慢是对的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;消融实验部分&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;验证了互补掩码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020230652797.png&#34;
+	width=&#34;575&#34;
+	height=&#34;285&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020230652797_hu_c22d64ad30e12606.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020230652797_hu_a75bfb12c4f27585.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Comp. Mask&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;201&#34;
+		data-flex-basis=&#34;484px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;验证了图像分辨率的影响（输入分辨率）
+&lt;ul&gt;
+&lt;li&gt;OCR（上面四个）的提升更为明显&lt;/li&gt;
+&lt;li&gt;一般视觉理解任务（最后一个）提升不多&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020231154771.png&#34;
+	width=&#34;409&#34;
+	height=&#34;247&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020231154771_hu_240c4baf6b5065ba.png 480w, https://example.com/p/diffusion-language-model-birdresearch-202510/assets/image-20251020231154771_hu_69ac30fdc1178978.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image revolution&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;165&#34;
+		data-flex-basis=&#34;397px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;STOP，接下来需要进入any2any的调研&lt;/p&gt;
+&lt;p&gt;这部分内容另开一篇&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Diffusion Language Model · 论文笔记（一）</title>
+        <link>https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/</link>
+        <pubDate>Fri, 26 Sep 2025 15:46:00 +0800</pubDate>
+        
+        <guid>https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/</guid>
+        <description>&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2502.09992&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Large Language Diffusion Models&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h2 id=&#34;intro&#34;&gt;Intro
+&lt;/h2&gt;&lt;p&gt;理想情况下，无限数据+无限模型容量+正确训练 ，可以收敛到真实分布&lt;/p&gt;
+&lt;p&gt;因此不管是ARM还是DLM，只要是合格的条件生成模型，都能学到真实语言分布&lt;/p&gt;
+&lt;p&gt;因此指令跟随、上下文学习并不是ARM的专利&lt;/p&gt;
+&lt;h2 id=&#34;approach&#34;&gt;Approach
+&lt;/h2&gt;&lt;h3 id=&#34;概率公式&#34;&gt;概率公式
+&lt;/h3&gt;&lt;h4 id=&#34;前向过程forward-process&#34;&gt;前向过程Forward Process
+&lt;/h4&gt;&lt;p&gt;序列中逐渐添加mask，直到所有序列全部masked&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每个标记有一定概率masked，或者保持unmasked状态&lt;/li&gt;
+&lt;li&gt;给定原始数据$x_0$，随机采样的一个时间点$t \in [0,1]$
+&lt;ul&gt;
+&lt;li&gt;$t=0$表示起点，全部token都是unmasked&lt;/li&gt;
+&lt;li&gt;$t=1$表示终点，全部token都已经masked&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;序列中每个token的masked概率就是$t$&lt;/li&gt;
+&lt;li&gt;该时刻的序列被定义为$x_t$​&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Bert的mask比例是固定的&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h4 id=&#34;反向过程reverse-process&#34;&gt;反向过程Reverse Process
+&lt;/h4&gt;&lt;p&gt;参数为$\theta$的模型，生成序列$x_0$的概率$p_\theta(x_0)$就是我们需要训练的模型&lt;/p&gt;
+&lt;p&gt;我们希望其尽可能接近真实数据的分布$p_{data}(x_0)$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;反向过程的目标：$x_{t=1}$出发，恢复$x_0$&lt;/li&gt;
+&lt;li&gt;方法：通过&lt;code&gt;mask predictor&lt;/code&gt;，逐步填充&lt;code&gt;masked token&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;mask-predictor&#34;&gt;Mask Predictor
+&lt;/h4&gt;&lt;p&gt;LLaDA的核心是一个&lt;code&gt;mask predictor&lt;/code&gt;&lt;/p&gt;
+$$
+p_\theta\left (\cdot\mid x_t \right)
+$$&lt;p&gt;
+其中的&lt;code&gt;·&lt;/code&gt;表示一个占位符&lt;/p&gt;
+&lt;p&gt;例如：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;I [MASK] cats.
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;则$p_\theta(\cdot \mid [I,[MASK],cats])$ 就是一个基于词表的概率分布表&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;token&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;p&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;like&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;0.9&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;eat&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;0.1&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;此时&lt;code&gt;Mask Predictor&lt;/code&gt;会对所有&lt;code&gt;[MASK]&lt;/code&gt;进行预测&lt;/p&gt;
+&lt;p&gt;不像ARM只预测一个token&lt;/p&gt;
+&lt;p&gt;假设序列为：$(x_t^1, x_t^2,&amp;hellip;,x_t^L)$&lt;/p&gt;
+&lt;p&gt;我们的目标即为，对于&lt;code&gt;masked&lt;/code&gt;位置$i$，最大化概率：&lt;/p&gt;
+$$
+p_\theta(x_0^i\mid x_t)
+$$&lt;p&gt;其中$x_0^i$就是原序列的ground truth&lt;/p&gt;
+&lt;h4 id=&#34;损失函数&#34;&gt;损失函数
+&lt;/h4&gt;&lt;p&gt;对于单个&lt;code&gt;masked&lt;/code&gt;位置，我们希望概率尽可能大&lt;/p&gt;
+&lt;p&gt;因此需要使用交叉熵损失&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;补习一下交叉熵&lt;/p&gt;
+&lt;p&gt;假设真实分布是$q(y)$，模型分布是$p_\theta(y)$&lt;/p&gt;
+&lt;p&gt;交叉熵定义为：&lt;/p&gt;
+$$
+H(q,p_\theta) = -\sum_y  q(y)\log{p_\theta(y)}
+$$&lt;p&gt;
+在该任务下，$q(y)$​是一个独热分布&lt;/p&gt;
+$$
+q(y) = \left\{\begin{matrix}
+  1&amp;,y=x_0^i \\
+  0&amp;,otherwise
+\end{matrix}\right.
+$$&lt;p&gt;
+代入得&lt;/p&gt;
+$$
+\mathcal{L}(x_0^i,x_t) = -\log p_\theta(x_0^i\mid x_t)
+$$&lt;p&gt;
+故整体的损失就只需要对所有&lt;code&gt;masked&lt;/code&gt;位置求和&lt;/p&gt;
+$$
+\mathcal{L}(x_0,x_t) = -\sum_{i=1}^L1\left[ x^i_t=M\right] \log{p_\theta\left( x_0^i\mid x_t\right)}
+$$&lt;p&gt;
+其中$1\left[ x^i_t=M\right] $表示指示函数，确保代入计算的数值是&lt;code&gt;[MASK]&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;但是这样是不合理的，序列中&lt;code&gt;[MASK]&lt;/code&gt;越多，损失似乎会越大&lt;/p&gt;
+&lt;p&gt;因此需要做一下归一化&lt;/p&gt;
+&lt;p&gt;对于$x_t$，其在该时刻会有$tL$个token被&lt;code&gt;masked&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;因此需要代入一个$\frac{1}{t}$​（值得一提的是，$\frac{1}{t} \geq 1$）&lt;/p&gt;
+$$
+\mathcal{L}(x_0,x_t) = -\frac{1}{t}\sum_{i=1}^L1\left[ x^i_t=M\right] \log{p_\theta\left( x_0^i\mid x_t\right)}
+$$&lt;p&gt;
+建立关于模型参数$\theta$的损失函数则有：&lt;/p&gt;
+$$
+L(\theta) \triangleq
+ -\mathbb{E}_{t,x_0,x_t}\left[\frac{1}{t}\sum_{i=1}^L1\left[ x^i_t=M\right] \log{p_\theta\left( x_0^i\mid x_t\right)}\right]
+$$&lt;ul&gt;
+&lt;li&gt;$\triangleq$代表&lt;code&gt;定义为&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这里不是在陈述一个“事实”，而是在&lt;strong&gt;引入损失函数的定义&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;如果写$=$，读者可能会以为“这是某个推导得到的等式”；&lt;/p&gt;
+&lt;p&gt;如果写 $\triangleq$，读者一眼就知道：哦，这是“定义”，不是推导。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;从均匀分布$U(0,1)$采样的任意$t$，从数据集中采样的任意数据$x_0$，根据前向传播方法得到的$x_t$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;负对数似然的上界&#34;&gt;负对数似然的上界
+&lt;/h4&gt;&lt;p&gt;我们本身的目标是使得$p_\theta(x_0)$的分布接近$p_{data}(x_0)$&lt;/p&gt;
+&lt;p&gt;但是我们从未单独定义、训练$p_\theta(x)$这个模型&lt;/p&gt;
+&lt;p&gt;而是定义了一个$p_\theta(x_0^i\mid x_t)$，不断重复迭代，起到了$p_\theta(x)$的作用&lt;/p&gt;
+&lt;p&gt;因此我们上述内容得到的$L(\theta)$是作为模型$p_\theta(x_0^i\mid x_t)$的损失函数&lt;/p&gt;
+&lt;p&gt;我们如何保证训练出这个模型，可以使得$p_\theta(x_0)$的分布接近$p_{data}(x_0)$？&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;我们定义真实的似然函数是&lt;/p&gt;
+$$
+\mathcal{L}(\theta) = -\mathbb{E}_{p_{data}(x_0)}\left [\log{p_{\theta}(x_0)}\right]
+$$&lt;ul&gt;
+&lt;li&gt;按照真实分布，采样数据$x_0$，得到的似然函数期望&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们需要最小化这个式子&lt;/p&gt;
+&lt;p&gt;定义前向加噪分布$q$：&lt;/p&gt;
+$$
+q(x_t\mid x_0) = \prod_{i=1}^L \left [ (1-t)\times 1(x_t^i=x_0^i) + t\times 1(x_t^i=M) \right]
+$$&lt;p&gt;
+其描述了通过已知的前向过程，从$x_0$得到$x_t$的概率&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$q$是我们引入的噪声分布，并非需要训练的参数模型，不使用$p$定义&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;由于前向过程是已知的，我们考虑使用它表示$p_\theta$&lt;/p&gt;
+$$
+p_\theta(x_0) = \sum_{x_t}p_\theta(x_0\mid x_t)p_\theta(x_t)= \sum_{x_t}p_\theta(x_0, x_t) 
+$$&lt;blockquote&gt;
+&lt;p&gt;原始句子出现的总概率就是把所有可能路径的概率加起来。&lt;/p&gt;
+&lt;p&gt;（先得到$x_t$，再生成$x_0$）&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;引入已知的$q$&lt;/p&gt;
+$$
+p_\theta(x_0) = \sum_{x_t}q(x_t\mid x_0)\frac{p_\theta(x_0,x_t)}{q(x_t\mid x_0)}
+$$&lt;p&gt;
+其中$\sum_{x_t}q(x_t\mid x_0)] \times (\cdot)$，可以理解为对$q(x_t\mid x_0)$的期望&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;离散情况下：$\mathbb{E}_{x\sim r}(g(x)) = \sum_x r(x)g(x)$&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;此时$x_0$是当作固定值，所有都可以看作关于$x_t$的函数&lt;/p&gt;
+&lt;p&gt;因此则有：&lt;/p&gt;
+$$
+p_\theta(x_0) = \mathbb{E}_{ q(x_t\mid x_0)}\left[\frac{p_\theta(x_0,x_t)}{q(x_t\mid x_0)}\right]
+$$&lt;blockquote&gt;
+&lt;p&gt;任意从$q$分布中采样$x_t$&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;采样 Jensen不等式：&lt;/p&gt;
+$$
+\log \mathbb{E}(z) \geq \mathbb{E}(\log{z})
+$$&lt;p&gt;
+此时则有：&lt;/p&gt;
+$$
+\log{p_\theta}(x_0) = \log{\mathbb{E}_{ q(x_t\mid x_0)}\left[\frac{p_\theta(x_0,x_t)}{q(x_t\mid x_0)}\right]} \geq \mathbb{E}_{ q(x_t\mid x_0)}\left[\log{p_\theta(x_0,x_t)} - \log{q(x_t\mid x_0)} \right]
+$$$$
+-\log{p_\theta}(x_0) \leq -\mathbb{E}_{ q(x_t\mid x_0)}\log{p_\theta(x_0,x_t)} + \mathbb{E}_{ q(x_t\mid x_0)} \log{q(x_t\mid x_0)}
+$$&lt;p&gt;
+分解一下联合概率&lt;/p&gt;
+$$
+\log{p_\theta(x_0,x_t)} = \log{p_\theta(x_0\mid x_t)} + \log{p_\theta(x_t)}
+$$&lt;p&gt;
+代回则有：&lt;/p&gt;
+$$
+-\log{p_\theta}(x_0) \leq -\mathbb{E}_{ q(x_t\mid x_0)}\log{p_\theta(x_0\mid x_t)}-\mathbb{E}_{ q(x_t\mid x_0)}\log{p_\theta(x_t)} + \mathbb{E}_{ q(x_t\mid x_0)} \log{q(x_t\mid x_0)}
+$$&lt;ul&gt;
+&lt;li&gt;$p_\theta(x_t)$：其中$x_t$是前向过程人为生成的，因此与$\theta$无关&lt;/li&gt;
+&lt;li&gt;$q(x_t\mid x_0)$是噪声项，与$\theta$无关&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因此可以写成&lt;/p&gt;
+$$
+-\log{p_\theta}(x_0) \leq -\mathbb{E}_{ q(x_t\mid x_0)}\log{p_\theta(x_0\mid x_t)} + \text{const}
+$$&lt;p&gt;
+两边同时对真实数据计算期望&lt;/p&gt;
+$$
+-\mathbb{E}_{p_{data}(x_0)}(\log{p_\theta}(x_0) ) \leq -\mathbb{E}_{p_{data}(x_0)}(\mathbb{E}_{ q(x_t\mid x_0)}\log{p_\theta(x_0\mid x_t)}) + \text{const}
+$$&lt;p&gt;
+左边实质上就是我们需要优化的目标，命名为负对数似然$\text{NLL}$&lt;/p&gt;
+&lt;p&gt;根据&lt;/p&gt;
+$$
+\log {p_\theta(x_0\mid x_t)} = \sum_{i=1}^L 1\left [ x^i_t=M\right ] \log{p_\theta}(x_0^i\mid x_t)
+$$&lt;p&gt;
+代入得：&lt;/p&gt;
+$$
+-\mathbb{E}_{p_{data}(x_0)}(\log{p_\theta}(x_0) ) \leq -\mathbb{E}_{p_{data}(x_0)}\mathbb{E}_{ q(x_t\mid x_0)}\left[\sum_{i=1}^L 1\left [ x^i_t=M\right ] \log{p_\theta}(x_0^i\mid x_t)\right] + \text{const}
+$$&lt;p&gt;
+事实上右边就是：&lt;/p&gt;
+$$
+-\mathbb{E}_{p_{data}(x_0)}\mathbb{E}_{ q(x_t\mid x_0)}\left[\sum_{i=1}^L 1\left [ x^i_t=M\right ] \log{p_\theta}(x_0^i\mid x_t)\right] = 
+ -\mathbb{E}_{t,x_0,x_t}\left[\sum_{i=1}^L1\left[ x^i_t=M\right] \log{p_\theta\left( x_0^i\mid x_t\right)}\right] = tL(\theta)
+$$&lt;p&gt;
+上述内容都是正项（负概率对数），$t \in [0,1]$，因此满足&lt;/p&gt;
+$$
+-\mathbb{E}_{p_{data}(x_0)}\mathbb{E}_{ q(x_t\mid x_0)}\left[\sum_{i=1}^L 1\left [ x^i_t=M\right ] \log{p_\theta}(x_0^i\mid x_t)\right] + \text{const} \leq L(\theta) + \text{const}
+$$&lt;p&gt;
+则有：&lt;/p&gt;
+$$
+\text{NLL} = -\mathbb{E}_{p_{data}(x_0)}(\log{p_\theta}(x_0) ) \leq L(\theta) + \text{const}
+$$&lt;p&gt;
+至此，成功证明了$L(\theta)$决定了$\text{NLL}$​的上界（常数可以忽略）&lt;/p&gt;
+&lt;h3 id=&#34;pre-training&#34;&gt;Pre-Training
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/x2.png&#34;
+	width=&#34;1628&#34;
+	height=&#34;456&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/x2_hu_9a85fb3e2f02f873.png 480w, https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/x2_hu_3f7bfef69b5c6f92.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;A Conceptual Overview of LLaDA.&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;357&#34;
+		data-flex-basis=&#34;856px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入：&lt;code&gt;mask predictor&lt;/code&gt;$p_\theta$，训练数据$p_{data}$&lt;/li&gt;
+&lt;li&gt;输出：$p_{\theta}$（收敛）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007220922976.png&#34;
+	width=&#34;1570&#34;
+	height=&#34;385&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007220922976_hu_f227ce11f9ed9b16.png 480w, https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007220922976_hu_7a4e250f2607c545.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Pre-Train Algorithm&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;407&#34;
+		data-flex-basis=&#34;978px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;mask predictor&lt;/code&gt;采用Transformer架构
+&lt;ul&gt;
+&lt;li&gt;不采用&lt;code&gt;causal mask&lt;/code&gt;，能看见双向上下文&lt;/li&gt;
+&lt;li&gt;未使用KV Cache，采用标准的&lt;code&gt;Vanilla Multi-Head Attention&lt;/code&gt;，每个头单独一份&lt;code&gt;k,q,v&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Transformer架构尽量与LLaMA3对齐，从&lt;code&gt;attention&lt;/code&gt;和&lt;code&gt;FFN&lt;/code&gt;两个参数大头中，选择了减少&lt;code&gt;FFN&lt;/code&gt;的参数量，保持参数规模可以比较&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在自回归 LLM 生成时，生成新 token 时可以复用之前的 K/V 矩阵（不用重新算整个序列的注意力）。&lt;/p&gt;
+&lt;p&gt;这是 KV cache 的意义：极大加速推理，节省显存。&lt;/p&gt;
+&lt;p&gt;但 LLaDA 每一步预测的是 &lt;strong&gt;全局被 mask 的位置（不是单个 token）&lt;/strong&gt;，所以每一步输入分布会变，全序列 K/V 都要重新计算 → KV cache 无法使用。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;99%的数据固定长度4096&lt;/li&gt;
+&lt;li&gt;1%的数据随机采样长度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;sft&#34;&gt;SFT
+&lt;/h3&gt;&lt;p&gt;对于问答对$(p_0,r_0)$，我们不改变提问部分，只对&lt;strong&gt;回答部分&lt;/strong&gt;进行掩码加噪得到$r_t$&lt;/p&gt;
+&lt;p&gt;损失函数设计为：&lt;/p&gt;
+$$
+-\mathbb{E}_{t,p_0,r_0,r_t}\left[\frac{1}{t}\sum_{i=1}^{L&#39;}1[r^i_t = M]p_\theta(r_0^i\mid p_0,r_t)\right]
+$$&lt;ul&gt;
+&lt;li&gt;$r_0$的长度是天然动态的，使用&lt;code&gt;EOS&lt;/code&gt;填充&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;inference&#34;&gt;Inference
+&lt;/h3&gt;&lt;p&gt;给定$p_0$，我们从完全掩码的$r_1$开始&lt;/p&gt;
+&lt;p&gt;设定超参数如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;迭代次数（采样步骤总数）：a trade off between efficency and quality&lt;/li&gt;
+&lt;li&gt;生成长度：实质上是一个上界&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;假设我们从时间$t\in(0, 1]$转移到$s\in[0,t)$，需要做的事是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$p_0,r_t$作为模型的输入，预测$r_0$（模型会&lt;code&gt;unmask&lt;/code&gt;所有被掩码的token）&lt;/li&gt;
+&lt;li&gt;由于我们只转移到$s$，因此需要保留$sL$个掩码
+&lt;ul&gt;
+&lt;li&gt;对预测出的$r_0$，从中&lt;strong&gt;随机&lt;/strong&gt;&lt;code&gt;remask&lt;/code&gt;$\frac{s}{t}L$个token&lt;/li&gt;
+&lt;li&gt;得到$r_s$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;$s = t, r_t = r_s$重复迭代&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;默认将$|t-s|$​是一个定值，以定长的步长进行迭代&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007222150257.png&#34;
+	width=&#34;1647&#34;
+	height=&#34;627&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007222150257_hu_539b4cf9daaad9c4.png 480w, https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007222150257_hu_3153327713f2069d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Reverse Process&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;262&#34;
+		data-flex-basis=&#34;630px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;理论上remask策略是随机的&lt;/p&gt;
+&lt;p&gt;但是论文给出了两种基于&lt;code&gt;退火&lt;/code&gt;的remask策略&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在生成过程中，需要随机性逐步递减，冻结高确定性的部分、把随机性集中在不确定区域&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;low-confidence remasking&lt;/strong&gt;：取置信度最低的$\frac{s}{t}L$个预测token进行remask&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;semi-autoregressive&lt;/strong&gt; remasking：对序列进行分块，从左到右顺序生成&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007222344789.png&#34;
+	width=&#34;1473&#34;
+	height=&#34;558&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007222344789_hu_c595a78f46bb5a31.png 480w, https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007222344789_hu_8789f573c459aaef.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;semi-autoregressive&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;263&#34;
+		data-flex-basis=&#34;633px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;experiments&#34;&gt;Experiments
+&lt;/h2&gt;&lt;h3 id=&#34;实验1--scalability&#34;&gt;实验1 · Scalability
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;验证：LLaDA是否与自回归模型ARM具有相同的可拓展性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;目的：证明论文的核心论点：&lt;/p&gt;
+&lt;p&gt;​	理想情况下，无限数据+无限模型容量+正确训练 ，可以收敛到真实分布&lt;/p&gt;
+&lt;p&gt;​	因此不管是ARM还是DLM，只要是合格的条件生成模型，都能学到真实语言分布&lt;/p&gt;
+&lt;p&gt;​	因此指令跟随、上下文学习并不是ARM的专利&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h4 id=&#34;实验设计&#34;&gt;实验设计
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251003215457932.png&#34;
+	width=&#34;1568&#34;
+	height=&#34;583&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251003215457932_hu_4f064368af95b6bc.png 480w, https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251003215457932_hu_8bdc715fd4ddd50c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;架构&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;268&#34;
+		data-flex-basis=&#34;645px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;针对MDM和ARM两类语言模型，进行如下控制变量&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;模型结构：采样同一套Transformer架构（优化器、参数量……各种机制），只修改了mask&lt;/li&gt;
+&lt;li&gt;参数量：在1B规模下完全一致，在7B规模由于资源限制有一些不同
+&lt;ul&gt;
+&lt;li&gt;Transformer：causal mask&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;数据：预训练语料相同&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;唯一的实验的变量：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;FLOPs：使用6ND公式作为横轴
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;N&lt;/strong&gt; 是模型的非 embedding 参数量（固定，比如 1B 或 8B）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;D&lt;/strong&gt; 是训练过的 token 数量（数据量，可以变化）&lt;/li&gt;
+&lt;li&gt;实验通过改变 D ，计算出 6 × N × D （即训练 FLOPs）作为横轴的计算预算&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;实验指标：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;MMLU、ARC-C、CMMLU、PIQA、GSM8K、HumanEval&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;（多任务、推理、中文、物理、数学、代码）&lt;/p&gt;
+&lt;h4 id=&#34;实验结果&#34;&gt;实验结果
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251003214259678.png&#34;
+	width=&#34;1472&#34;
+	height=&#34;707&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251003214259678_hu_598efe4120660d9c.png 480w, https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251003214259678_hu_8ec2789b84388b8c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;实验结果&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;208&#34;
+		data-flex-basis=&#34;499px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;部分任务体现优势&lt;/li&gt;
+&lt;li&gt;对于性能稍逊的任务（PIQA），差距也在逐渐缩小&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;同时喷了先前的一篇工作的结论：&lt;code&gt;达到相同的似然需要16倍算力&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;似然是间接指标（LLaDA的lower bound）&lt;/li&gt;
+&lt;li&gt;先前的工作只有GPT2的参数量，本文提高到7-8B&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Nie, S., Zhu, F., Du, C., Pang, T., Liu, Q., Zeng, G., Lin, M., and Li, C. Scaling up masked diffusion models on text. arXiv preprint arXiv:2410.18514, 2024.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;结论：LLaDA 在相同训练规模与算力条件下，表现出与 ARM 相似甚至更强的可扩展性。&lt;/p&gt;
+&lt;h3 id=&#34;实验2--benchmark&#34;&gt;实验2 · Benchmark
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;验证：LLaDA经过预训练和SFT之后是否能够和已有的ARM在&lt;strong&gt;上下文学习&lt;/strong&gt;与&lt;strong&gt;指令遵循能力&lt;/strong&gt;上进行竞争&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;实验设计-1&#34;&gt;实验设计
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;实验对象：LLaDA、一系列参数相当的模型
+&lt;ul&gt;
+&lt;li&gt;Base阶段：比较了所有模型的预训练base模型&lt;/li&gt;
+&lt;li&gt;instruct阶段：LLaDA只进行了SFT，其他模型均完成了SFT+RL
+&lt;ul&gt;
+&lt;li&gt;原文：交给未来的工作&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;任务：通用、数学科学、代码、中文等常见benchmark&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;实验结果-1&#34;&gt;实验结果
+&lt;/h4&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007173251237.png&#34;
+	width=&#34;1208&#34;
+	height=&#34;717&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007173251237_hu_caa01b5802879200.png 480w, https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007173251237_hu_c7856aff322a4d51.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Base&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;168&#34;
+		data-flex-basis=&#34;404px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;在所有任务上超过LLaMA2 7B，与LLaMA3 8B相当&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;所有模型的训练数据存在差异&lt;/li&gt;
+&lt;li&gt;作者认为LLaDA的优势区间与劣势区间的主要原因在数据质量与分布上&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;GSM8K数据集上体现了显著的优势，论文针对这个情况做了补充实验，证明不存在数据泄露&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007173309440.png&#34;
+	width=&#34;1205&#34;
+	height=&#34;574&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007173309440_hu_db0f9cb7c5edf55e.png 480w, https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007173309440_hu_5dfaa65484da0854.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;SFT&amp;#43;RL&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;209&#34;
+		data-flex-basis=&#34;503px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SFT数据质量较差，出现了性能下降（MMLU）&lt;/li&gt;
+&lt;li&gt;没有采用RL，因此性能略微落后LLaMA3 8B&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;结论：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在数据集透明度不足的情况下，以丰富的标准化流程、多样化任务，足以证明LLaDA的性能卓越，是唯一具备竞争力的非自回归模型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;实验2--补充实验&#34;&gt;实验2 · 补充实验
+&lt;/h3&gt;&lt;p&gt;验证：LLaDA在GSM8K数据集中的优势不来源于数据泄露（data leakage），检测在全新数据集中仍然能保证推理能力&lt;/p&gt;
+&lt;p&gt;省流：找了一个2024年的新数据集，模仿GSM8K的形式做一遍实验&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007201005145.png&#34;
+	width=&#34;548&#34;
+	height=&#34;173&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007201005145_hu_ad845088f2d886d0.png 480w, https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007201005145_hu_8a04e4c9a021371f.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;iGSM Dataset&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;316&#34;
+		data-flex-basis=&#34;760px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;LLaDA在所有难度（解题步骤数）中均显著优势&lt;/li&gt;
+&lt;li&gt;两类模型随着难度上升准确度逐渐下降，但是LLaDA下降较慢&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;结论：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;LLaDA允许模型在每一步同时考虑全局 token 关系，因此在多变量方程、层次关系推理中优于单向自回归&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;实验3--reversal-reasoning-and-analyses&#34;&gt;实验3 · Reversal Reasoning and Analyses
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Reversal Curse（反向诅咒）：ARM从左到右生成序列，因此反向生成或逆序推理的表现很差&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;验证：LLaDA是否克服了反向诅咒&lt;/p&gt;
+&lt;h4 id=&#34;实验设计-2&#34;&gt;实验设计
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;数据：496对著名中文诗句（上下两句），每一句子（A,B）构成两个任务
+&lt;ul&gt;
+&lt;li&gt;Forward：给定A预测B&lt;/li&gt;
+&lt;li&gt;Backward：给定B预测A&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;窈窕淑女的下一句是什么？直接输出句子即可。 Answer: 君子好逑。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;不拘一格降人才的上一句是什么？直接输出句子即可。 Answer: 我劝天公重抖擞。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007205703318.png&#34;
+	width=&#34;990&#34;
+	height=&#34;401&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007205703318_hu_f6b1b119ec68bdcd.png 480w, https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007205703318_hu_9284f82611816e94.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Reversal Curse&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;246&#34;
+		data-flex-basis=&#34;592px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;GPT-4o 和 Qwen2.5 均有更大数据和RL优化，但仍失败&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;LLaDA 虽仅 SFT，无RL，仍在 reversal 上大幅领先&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;附录补充&#34;&gt;附录补充
+&lt;/h4&gt;&lt;p&gt;论文从三个角度补充了为什么LLaDA是无方向偏置的模型&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;理论证明：LLaDA本质上等价于在所有生成顺序上做平均，从而消除方向偏置
+&lt;ul&gt;
+&lt;li&gt;解释为什么 diffusion 结构在数学上是方向对称的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;实现机制：理论正确的情况下，需要确保算法实现不出现&lt;strong&gt;从左到右&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;确保生成算法本身不引入方向信息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;超参数层面：通过实验说明采样步数与效率不会干扰方向一致性
+&lt;ul&gt;
+&lt;li&gt;排除方向性差异由采样精度造成的可能性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;a2-inference&#34;&gt;A.2 Inference
+&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;目的：证明LLaDA训练和推理目标等价于&lt;strong&gt;对所有可能生成顺序的平均建模&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于训练时的核心目标函数：&lt;/p&gt;
+$$
+L(\theta) \triangleq
+ -\mathbb{E}_{t,x_0,x_t}\left[\frac{1}{t}\sum_{i=1}^L1\left[ x^i_t=M\right] \log{p_\theta\left( x_0^i\mid x_t\right)}\right]
+$$&lt;p&gt;
+训练目标是：模型在任意mask模式下，都能预测出原token&lt;/p&gt;
+&lt;p&gt;该训练模式不会看到任何固定方向的序列，故天然是双向建模的&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;推不动了，pass一下&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h5 id=&#34;remasking&#34;&gt;Remasking
+&lt;/h5&gt;&lt;p&gt;反向过程的核心：预测 - 重新掩码 - 继续预测&lt;/p&gt;
+&lt;p&gt;上文提到了三种不同的掩码策略&lt;/p&gt;
+&lt;p&gt;论文使用GSM8K进行了消融实验&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;生成长度固定512&lt;/li&gt;
+&lt;li&gt;采样步数固定256（长度的一半）&lt;/li&gt;
+&lt;li&gt;block：32&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007223806549.png&#34;
+	width=&#34;1329&#34;
+	height=&#34;223&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007223806549_hu_a185194ec8c04b53.png 480w, https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007223806549_hu_9209def52fe04210.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;remask&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;595&#34;
+		data-flex-basis=&#34;1430px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Base模型：最低置信度即可，半自回归是不需要的&lt;/li&gt;
+&lt;li&gt;Instruct模型：必须是最低置信度+半自回归
+&lt;ul&gt;
+&lt;li&gt;单独最低置信度会严重降低性能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;论文解释：SFT阶段引入了大量&lt;code&gt;EOS&lt;/code&gt;，模型一般会给&lt;code&gt;EOS&lt;/code&gt;较大的置信度。因此推理时&lt;code&gt;EOS&lt;/code&gt;会被大量生成，并且几乎不可能被&lt;code&gt;remask&lt;/code&gt;（置信度非常高）&lt;/p&gt;
+&lt;p&gt;因此需要引入半自回归，保证每个块内收敛出连续的内容，抑制&lt;code&gt;EOS&lt;/code&gt;早产&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;尽管引入半自回归，但是块内仍然是并行的（？）&lt;/p&gt;
+&lt;p&gt;补充一下，模型对生成长度这个超参数非常不敏感&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007225517980.png&#34;
+	width=&#34;1607&#34;
+	height=&#34;288&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007225517980_hu_496709f8b88b2255.png 480w, https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007225517980_hu_4144e169c1540880.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Length&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;557&#34;
+		data-flex-basis=&#34;1339px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;但对采样步数非常敏感（生成长度1024）&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007225835929.png&#34;
+	width=&#34;1472&#34;
+	height=&#34;508&#34;
+	srcset=&#34;https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007225835929_hu_afc64e86f9a1bafe.png 480w, https://example.com/p/diffusion-language-model-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E4%B8%80/assets/image-20251007225835929_hu_6b0c69ba2a7f9c56.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;采样&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;289&#34;
+		data-flex-basis=&#34;695px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;结论：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;LLaDA不受自回归方向性的约束，具有更平衡的前后向建模能力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;case-studies&#34;&gt;Case Studies
+&lt;/h3&gt;&lt;p&gt;附录中展示了一些其他例子，说明生成的对话是出色的（单轮、多轮）&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

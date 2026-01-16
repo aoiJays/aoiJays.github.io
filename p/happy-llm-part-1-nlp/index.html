@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="手搓大模型（基础入门版本）">
+<title>Happy-LLM · Part 1 · NLP</title>
+
+<link rel='canonical' href='https://example.com/p/happy-llm-part-1-nlp/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="Happy-LLM · Part 1 · NLP">
+<meta property='og:description' content="手搓大模型（基础入门版本）">
+<meta property='og:url' content='https://example.com/p/happy-llm-part-1-nlp/'>
+<meta property='og:site_name' content='BiribiriBird'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='LLM' /><meta property='article:published_time' content='2025-07-29T11:42:32&#43;08:00'/><meta property='article:modified_time' content='2025-07-29T11:42:32&#43;08:00'/><meta property='og:image' content='https://example.com/p/happy-llm-part-1-nlp/bg.png' />
+<meta name="twitter:title" content="Happy-LLM · Part 1 · NLP">
+<meta name="twitter:description" content="手搓大模型（基础入门版本）"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://example.com/p/happy-llm-part-1-nlp/bg.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            localStorage.setItem(colorSchemeKey, "light");
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_bbc58a5457fc2680.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">BiribiriBird</a></h1>
+            <h2 class="site-description">Segmentation fault!</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/498088093'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648787418" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2107" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="2108" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:neworld1111@163.com'
+                        target="_blank"
+                        title="Email"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743649088353" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6924" width="24" height="24"><path d="M874.666667 181.333333H149.333333c-40.533333 0-74.666667 34.133333-74.666666 74.666667v512c0 40.533333 34.133333 74.666667 74.666666 74.666667h725.333334c40.533333 0 74.666667-34.133333 74.666666-74.666667V256c0-40.533333-34.133333-74.666667-74.666666-74.666667z m-725.333334 64h725.333334c6.4 0 10.666667 4.266667 10.666666 10.666667v25.6L512 516.266667l-373.333333-234.666667V256c0-6.4 4.266667-10.666667 10.666666-10.666667z m725.333334 533.333334H149.333333c-6.4 0-10.666667-4.266667-10.666666-10.666667V356.266667l356.266666 224c4.266667 4.266667 10.666667 4.266667 17.066667 4.266666s12.8-2.133333 17.066667-4.266666l356.266666-224V768c0 6.4-4.266667 10.666667-10.666666 10.666667z" fill="#666666" p-id="6925"></path></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/aoiJays'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg t="1743648734849" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5802" width="24" height="24"><path d="M511.957333 21.333333C241.024 21.333333 21.333333 240.981333 21.333333 512c0 216.832 140.544 400.725333 335.573334 465.664 24.490667 4.394667 32.256-10.069333 32.256-23.082667 0-11.690667 0.256-44.245333 0-85.205333-136.448 29.610667-164.736-64.64-164.736-64.64-22.314667-56.704-54.4-71.765333-54.4-71.765333-44.586667-30.464 3.285333-29.824 3.285333-29.824 49.194667 3.413333 75.178667 50.517333 75.178667 50.517333 43.776 75.008 114.816 53.333333 142.762666 40.789333 4.522667-31.658667 17.152-53.376 31.189334-65.536-108.970667-12.458667-223.488-54.485333-223.488-242.602666 0-53.546667 19.114667-97.322667 50.517333-131.669334-5.034667-12.330667-21.930667-62.293333 4.778667-129.834666 0 0 41.258667-13.184 134.912 50.346666a469.802667 469.802667 0 0 1 122.88-16.554666c41.642667 0.213333 83.626667 5.632 122.88 16.554666 93.653333-63.488 134.784-50.346667 134.784-50.346666 26.752 67.541333 9.898667 117.504 4.864 129.834666 31.402667 34.346667 50.474667 78.122667 50.474666 131.669334 0 188.586667-114.730667 230.016-224.042666 242.090666 17.578667 15.232 33.578667 44.672 33.578666 90.453334v135.850666c0 13.141333 7.936 27.605333 32.853334 22.869334C862.250667 912.597333 1002.666667 728.746667 1002.666667 512 1002.666667 240.981333 783.018667 21.333333 511.957333 21.333333z" p-id="5803" fill="#8a8a8a"></path></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about-me/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About me</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/experience/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Experience</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/plan/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Plan</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#发展">发展</a>
+      <ol>
+        <li><a href="#符号主义与统计方法1970年代---1990年代">符号主义与统计方法（1970年代 - 1990年代）</a></li>
+        <li><a href="#机器学习与深度学习2000年代至今">机器学习与深度学习（2000年代至今）</a></li>
+      </ol>
+    </li>
+    <li><a href="#任务">任务</a>
+      <ol>
+        <li><a href="#分词tokenization">分词Tokenization</a></li>
+        <li><a href="#子词切分subword-segmentation">子词切分Subword Segmentation</a></li>
+        <li><a href="#词性标注part-of-speech-tagging">词性标注Part-of-Speech Tagging</a></li>
+        <li><a href="#文本分类text-classification">文本分类Text Classification</a></li>
+        <li><a href="#实体识别named-entity-recognition-ner">实体识别Named Entity Recognition, NER</a></li>
+        <li><a href="#关系抽取relation-extraction">关系抽取Relation Extraction</a></li>
+        <li><a href="#文本摘要text-summarization">文本摘要Text Summarization</a></li>
+        <li><a href="#机器翻译machine-translation">机器翻译Machine Translation</a></li>
+        <li><a href="#自动问答automatic-question-answering-qa">自动问答Automatic Question Answering, QA</a></li>
+      </ol>
+    </li>
+    <li><a href="#文本表示">文本表示</a>
+      <ol>
+        <li><a href="#one-hot-encoding">One-Hot Encoding</a></li>
+        <li><a href="#bag-of-words词袋模型bow">Bag-of-Words（词袋模型，BoW）</a></li>
+        <li><a href="#tf-idfterm-frequency-inverse-document-frequency">TF-IDF（Term Frequency-Inverse Document Frequency）</a></li>
+        <li><a href="#词向量word-vector">词向量Word Vector</a>
+          <ol>
+            <li><a href="#word2vec">Word2Vec</a></li>
+            <li><a href="#glove">Glove</a></li>
+            <li><a href="#杂谈">杂谈</a></li>
+          </ol>
+        </li>
+        <li><a href="#word2vec-1">Word2Vec</a>
+          <ol>
+            <li><a href="#关键词提取">关键词提取</a></li>
+          </ol>
+        </li>
+        <li><a href="#相似度">相似度</a></li>
+        <li><a href="#相关">相关</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/happy-llm-part-1-nlp/">
+                <img src="/p/happy-llm-part-1-nlp/bg_hu_1642d3d2c74c361e.png"
+                        srcset="/p/happy-llm-part-1-nlp/bg_hu_1642d3d2c74c361e.png 800w, /p/happy-llm-part-1-nlp/bg_hu_ae2be01e062d9d11.png 1600w"
+                        width="800" 
+                        height="267" 
+                        loading="lazy"
+                        alt="Featured image of post Happy-LLM · Part 1 · NLP" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/llm/" >
+                LLM
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/happy-llm-part-1-nlp/">Happy-LLM · Part 1 · NLP</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            手搓大模型（基础入门版本）
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 29, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 9 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>[TOC]</p>
+<p><a class="link" href="https://datawhalechina.github.io/happy-llm/#/"  target="_blank" rel="noopener"
+    >Happy-LLM</a></p>
+<p>被CS336橄榄了，先学个简单点的</p>
+<p>然后发现其实做的事情是差不多的，打算学完这个再过一遍cs336的课程</p>
+<p>没有完全按照本课程的顺序走，我进行了调整，方便推进</p>
+<h1 id="nlp">NLP
+</h1><blockquote>
+<p>溯源一下自然语言处理的前世与今生</p></blockquote>
+<p>大概看一下就好</p>
+<p>重点放在词嵌入部分，学的比较详细</p>
+<h2 id="发展">发展
+</h2><p>总体上的发展路线是：规则、统计、机器学习、深度学习</p>
+<p>图灵测试：</p>
+<ul>
+<li>
+<p>设定一个人类审问者（评判者），分别与一个人类和一个机器进行对话，但他不知道对面是哪一方。</p>
+</li>
+<li>
+<p>如果审问者无法准确区分哪个是人类、哪个是机器，那么就可以说这台机器“具备智能”——因为它在交流上“像人类一样”。</p>
+</li>
+</ul>
+<p>该阶段侧重语言能力，而忽略了理解、情感、动机等更复杂的智能表现</p>
+<p>该阶段主要工作是机器翻译，但是基于字典查找和词序规则，效果一般</p>
+<h3 id="符号主义与统计方法1970年代---1990年代">符号主义与统计方法（1970年代 - 1990年代）
+</h3><p>主要分为两个阵营</p>
+<ul>
+<li>
+<p>符号主义研究者关注于形式语言和生成语法，注重规则</p>
+</li>
+<li>
+<p>统计方法的研究者更加关注于统计和概率方法
+算力上升、机器学习的出现，后者逐渐占据上风</p>
+</li>
+</ul>
+<h3 id="机器学习与深度学习2000年代至今">机器学习与深度学习（2000年代至今）
+</h3><ul>
+<li>RNN、LSTM、Attention</li>
+<li>Word2Vec模型使用词向量进行文本表示</li>
+<li>以BERT为为起点的预训练模型</li>
+<li>Transformer架构的大语言模型</li>
+</ul>
+<h2 id="任务">任务
+</h2><p>NLP主要关心几个核心任务</p>
+<h3 id="分词tokenization">分词Tokenization
+</h3><p>英文单词之间使用空格隔开，因此分词是一件非常简单的事情</p>
+<p>但是这对中文非常困难</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">输入：雍和宫的荷花开的很好。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">正确切割：雍和宫 | 的 | 荷花 | 开 | 的 | 很 | 好 | 。
+</span></span><span class="line"><span class="cl">错误切割 1：雍 | 和 | 宫的 | 荷花 | 开的 | 很好 | 。 （地名被拆散）
+</span></span><span class="line"><span class="cl">错误切割 2：雍和 | 宫 | 的荷 | 花开 | 的很 | 好。 （词汇边界混乱）
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="子词切分subword-segmentation">子词切分Subword Segmentation
+</h3><p>是基于分词的一种更细粒度的分词，将词语进一步切分为更小的<strong>子词单元</strong>（subword units）</p>
+<p>子词切分特别适用于处理词汇稀疏问题，即当遇到罕见词或未见过的新词时，能够通过已知的子词单位来理解或生成这些词汇。</p>
+<ul>
+<li>BPE</li>
+<li>WordPiece</li>
+<li>Unigram</li>
+</ul>
+<p>示例（使用 BPE）：</p>
+<ul>
+<li>单词：<code>&quot;unhappiness&quot;</code></li>
+<li>子词切分：<code>[&quot;un&quot;, &quot;happi&quot;, &quot;ness&quot;]</code></li>
+</ul>
+<p>对于中文来说，一种极端的子词切分就是<strong>一个汉字一个单元</strong></p>
+<ul>
+<li>高效：子词词汇表通常 10k–30k，远小于全词词汇表（可能百万级）</li>
+<li>处理未登录词（Out-of-Vocabulary，OOV）能力强：新词可通过子词组合表示。</li>
+<li>提高泛化能力：不同词可能共享了相同的子词（词根）</li>
+</ul>
+<h3 id="词性标注part-of-speech-tagging">词性标注Part-of-Speech Tagging
+</h3><p>为文本中的每个单词分配一个词性标签，如名词、动词、形容词等</p>
+<p>常用机器学习方法：</p>
+<ul>
+<li>隐马尔可夫模型（Hidden Markov Model，HMM）</li>
+<li>条件随机场（Conditional Random Field，CRF）</li>
+<li>基于深度学习的循环神经网络 RNN 和长短时记忆网络 LSTM</li>
+</ul>
+<p>学习大量的标注数据来预测新句子中每个单词的词性</p>
+<h3 id="文本分类text-classification">文本分类Text Classification
+</h3><blockquote>
+<p>情感分析、垃圾邮件检测、新闻分类、主题识别</p>
+<p>理解文本的含义和上下文，并基于此将文本映射到特定的类别</p></blockquote>
+<p>数据质量很关键</p>
+<h3 id="实体识别named-entity-recognition-ner">实体识别Named Entity Recognition, NER
+</h3><p>自动识别文本中具有特定意义的实体，并将它们分类为预定义的类别，如人名、地点、组织、日期、时间等。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">输入：李雷和韩梅梅是北京市海淀区的居民，他们计划在2024年4月7日去上海旅行。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">输出：
+</span></span><span class="line"><span class="cl">[
+</span></span><span class="line"><span class="cl">	(&#34;李雷&#34;, &#34;人名&#34;), 
+</span></span><span class="line"><span class="cl">	(&#34;韩梅梅&#34;, &#34;人名&#34;), 
+</span></span><span class="line"><span class="cl">	(&#34;北京市海淀区&#34;, &#34;地名&#34;), 
+</span></span><span class="line"><span class="cl">	(&#34;2024年4月7日&#34;, &#34;日期&#34;), 
+</span></span><span class="line"><span class="cl">	(&#34;上海&#34;, &#34;地名&#34;)
+</span></span><span class="line"><span class="cl">]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="关系抽取relation-extraction">关系抽取Relation Extraction
+</h3><p>从文本中识别实体之间的语义关系</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">输入：比尔·盖茨是微软公司的创始人。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">输出：[(&#34;比尔·盖茨&#34;, &#34;创始人&#34;, &#34;微软公司&#34;)]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="文本摘要text-summarization">文本摘要Text Summarization
+</h3><p>生成一段简洁准确的摘要，来概括原文的主要内容</p>
+<p>有两种方式</p>
+<ul>
+<li>抽取式摘要（Extractive Summarization）：直接从原文中选取关键句子或短语来组成摘要。
+<ul>
+<li>优点：摘要中的信息完全来自原文，因此准确性较高</li>
+<li>缺点：拼接生成的摘要可能不够流畅</li>
+</ul>
+</li>
+<li>生成式摘要（Abstractive Summarization）
+<ul>
+<li>重新组织和改写，并生成新的内容</li>
+<li>需要理解文本的深层含义，并能够以新的方式表达相同的信息</li>
+<li>需要更复杂的模型，如基于注意力机制的序列到序列模型</li>
+</ul>
+</li>
+</ul>
+<h3 id="机器翻译machine-translation">机器翻译Machine Translation
+</h3><ul>
+<li>神经网络的Seq2Seq模型、Transformer模型等</li>
+</ul>
+<h3 id="自动问答automatic-question-answering-qa">自动问答Automatic Question Answering, QA
+</h3><p>自动问答任务模拟了人类理解和回答问题的能力，涵盖了从简单的事实查询到复杂的推理和解释。</p>
+<p>自动问答系统的构建涉及多个NLP子任务，如信息检索、文本理解、知识表示和推理等。</p>
+<h2 id="文本表示">文本表示
+</h2><p>需要将人类语言转化为计算机能够存储、使用的格式</p>
+<ul>
+<li>输入：文本中的语言单位（如字、词、短语、句子等）以及它们之间的关系和结构信息</li>
+<li>输出：向量、矩阵或其他数据结构</li>
+</ul>
+<h3 id="one-hot-encoding">One-Hot Encoding
+</h3><ul>
+<li>每个词用一个<strong>独热向量</strong>表示，向量长度 = 词汇表大小。</li>
+<li>只有对应位置为 1，其余为 0。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">词汇表：[&#34;猫&#34;, &#34;狗&#34;, &#34;跑&#34;, &#34;跳&#34;]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">-   “猫” → [1, 0, 0, 0]
+</span></span><span class="line"><span class="cl">-   “跑” → [0, 0, 1, 0]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>向量维度高、稀疏（大部分为 0）</li>
+<li>无法表示语义相似性（“猫”和“狗”距离与“猫”和“跳”一样远）</li>
+</ul>
+<p>有一种拓展方式是将1改为词频</p>
+<h3 id="bag-of-words词袋模型bow">Bag-of-Words（词袋模型，BoW）
+</h3><ul>
+<li>忽略词序，只统计词频。</li>
+<li><strong>每个文档表示为一个词频向量</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">句子：&#34;猫 跑 猫 跳&#34;
+</span></span><span class="line"><span class="cl">向量：[2, 0, 1, 1]（对应“猫:2”，“狗:0”，“跑:1”，“跳:1”）
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>丢失词序信息</li>
+<li>无法处理新词（OOV）</li>
+<li>无语义信息</li>
+</ul>
+<p>与one-hot的区别是，one-hot每个词一个向量，bow一个文档一个向量</p>
+<h3 id="tf-idfterm-frequency-inverse-document-frequency">TF-IDF（Term Frequency-Inverse Document Frequency）
+</h3><ul>
+<li>综合考虑词在<strong>文档中的频率（TF）<strong>和在</strong>整个语料中的稀有程度（IDF）</strong></li>
+</ul>
+$$
+TF-IDF(t,d)=TF(t,d)\times\log(\frac{N}{DF(t)})
+$$<ul>
+<li>$t$: 词</li>
+<li>$d$: 文档</li>
+<li>$N$: 总文档数</li>
+<li>$TF(t,d)$：$t$在$d$中的词频</li>
+<li>$DF(t)$ : 包含$t$​ 的文档数</li>
+</ul>
+<p>对于文档：某个词出现的越多，说明越重要</p>
+<p>对于语料：某个词出现的越少，说明越稀有，因此价值越高</p>
+<ul>
+<li>
+<p>优点</p>
+<ul>
+<li>能识别重要词（高频且稀有）</li>
+<li>广泛用于信息检索</li>
+</ul>
+</li>
+<li>
+<p>缺点</p>
+<ul>
+<li>
+<p>仍是词袋模型，无语义</p>
+</li>
+<li>
+<p>无法捕捉上下文</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="词向量word-vector">词向量Word Vector
+</h3><blockquote>
+<p>一个词的含义由其上下文决定</p></blockquote>
+<p>这个章节唯一有用的部分（</p>
+<p>来源：</p>
+<ul>
+<li>
+<p><a class="link" href="https://www.bilibili.com/video/BV1Km421u7uu"  target="_blank" rel="noopener"
+    >https://www.bilibili.com/video/BV1Km421u7uu</a></p>
+</li>
+<li>
+<p><a class="link" href="https://zhuanlan.zhihu.com/p/716883108"  target="_blank" rel="noopener"
+    >(79 封私信) 深度学习宝藏博客：对苏剑林博文的分类与精华摘录 - 知乎</a> 词嵌入部分</p>
+</li>
+</ul>
+<p>使用词嵌入（Word Embedding）方式，将词转化为词向量</p>
+<p>首先我们需要考虑到<strong>语义相似</strong></p>
+<p>上述方法都无法表示两个词是语义相似的，例如<code>好</code>和<code>棒</code>，他们只会处理为两个单独的字</p>
+<p>我们希望我们的向量表示能够有相似度、距离的度量</p>
+<blockquote>
+<p>学会<code>好</code>的使用，由于相似，因此能够泛化到<code>棒</code></p></blockquote>
+<p>同时一个词在不同语义中会含有不同的意思（积极的、消极的）</p>
+<p>因此我们需要词向量的表示足够丰富，并且来源于上下文</p>
+<h4 id="word2vec">Word2Vec
+</h4><ul>
+<li>CBOW：使用大量语料，选择周围的词，预测中间的词
+<ul>
+<li>输入是词汇表的01向量（周围的词为1，其他词为0），输出固定为预测词为1其他词为0的向量</li>
+<li>反向传播，最终得到每个词的权重即为词向量</li>
+</ul>
+</li>
+<li>Skip-Gram：选择中间的词，预测周围的词</li>
+</ul>
+<p>相比于传统的高维稀疏表示（如One-Hot编码）</p>
+<p>Word2Vec生成的是低维（通常几百维）的密集向量，有助于减少计算复杂度和存储需求</p>
+<p>但由于CBOW/Skip-Gram模型是基于局部上下文的，无法捕捉到长距离的依赖关系，缺乏整体的词与词之间的关系，因此在一些复杂的语义任务上表现不佳。</p>
+<h4 id="glove">Glove
+</h4><ul>
+<li>
+<p>统计词语共现频率</p>
+<ul>
+<li>
+<p>先统计整个语料中，每两个词一起出现的次数，形成一个“共现矩阵”</p>
+</li>
+<li>
+<p>然后让模型学习：<strong>向量之间的点积 ≈ 共现次数的对数</strong></p>
+</li>
+<li>
+<p>比如：“猫”和“抓”的共现次数多 → 它们的向量点积要大</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="杂谈">杂谈
+</h4><p><img src="/p/happy-llm-part-1-nlp/assets/image-20250730120108257.png"
+	width="832"
+	height="239"
+	srcset="/p/happy-llm-part-1-nlp/assets/image-20250730120108257_hu_876fa3a9ec076618.png 480w, /p/happy-llm-part-1-nlp/assets/image-20250730120108257_hu_b9a97eff86d21ce2.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="348"
+		data-flex-basis="835px"
+	
+></p>
+<p>Embedding似乎就是喂入一个one-hot矩阵，过几个全连接层</p>
+<p>但是对于one-hot的矩阵乘法来说，似乎本质上是一个<strong>查表</strong></p>
+<p>权重矩阵构成了一个词向量表，one-hot从中取出对应的向量</p>
+<p>（一种优化是这里冻结0的权重，直接查表，不做矩阵乘法）</p>
+<p>整个过程是一个自监督的</p>
+<blockquote>
+<p>我们输入one hot，然后连接一个全连接层，然后再连接若干个层，最后接一个softmax分类器，就可以得到语言模型了，然后将大批量文本输入训练就行了，最后得到第一个全连接层的参数，就是字、词向量表</p>
+<p>所谓语言模型，就是通过前n个字预测下一个字的概率</p></blockquote>
+<h3 id="word2vec-1">Word2Vec
+</h3><p>这个实在是过于深入人心了，我们来重点聊一聊</p>
+<p>word2vec最大的亮点是Word Analogy（词语类比），指的是两个词语之间的关系与另外两个词语之间的关系相似</p>
+<blockquote>
+<p>king - man + woman = queen</p></blockquote>
+<p><img src="/p/happy-llm-part-1-nlp/assets/image-20250730121634504.png"
+	width="1010"
+	height="608"
+	srcset="/p/happy-llm-part-1-nlp/assets/image-20250730121634504_hu_90d3724e4a5c8a55.png 480w, /p/happy-llm-part-1-nlp/assets/image-20250730121634504_hu_58c9ccf9f63cf2c6.png 1024w"
+	loading="lazy"
+	
+		alt="Word2Vec"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="166"
+		data-flex-basis="398px"
+	
+></p>
+$$
+P(w_t|Context)\space or \space P(w_{others} | w_t)
+$$<p>
+即通过上下文信息来估计某个词出现的概率</p>
+<p>实际训练中是非常慢的，词汇表一般巨大，假设为$|V|$，有以下提速方式</p>
+<ul>
+<li>层次Softmax
+<ul>
+<li>传统Softmax需要最后对所有词汇表的输出概率做归一化，代价为$O(|V|)$</li>
+<li>这里将词汇表组织成一颗二叉哈夫曼树，每个叶节点对应一个词</li>
+<li>计算某个词的概率需要沿着路径，代价为$O(\log_2|V|)$</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>构造哈夫曼树时使用 <strong>词频</strong> 作为权重</p>
+<p>每个结点本质上是一个sigmoid控制的二分类：向左/向右</p>
+<p>只更新路径上的权重</p></blockquote>
+<ul>
+<li>负样本采样
+<ul>
+<li>假设我们需要通过<code>dog</code>预测周围词<code>bark</code></li>
+<li>我们可以基于<code>dog</code>，采样$K$个负样本（语料中不与dog搭配的词）</li>
+<li><code>(dog, apple), (dog, table), ...</code></li>
+<li>本质上做了多组二分类：判断词对是否常见0/1</li>
+<li>目标是<code>bark</code>趋近于1，$K$个样本趋近0</li>
+<li>使用这些样本进行训练，并且只更新相关的权重，$O(K)$</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>需要更多细节：<a class="link" href="https://blog.csdn.net/itplus/article/details/37969519"  target="_blank" rel="noopener"
+    >word2vec 中的数学原理详解（一）目录和前言_数学中vec-CSDN博客</a></p></blockquote>
+<h4 id="关键词提取">关键词提取
+</h4><p>这里作者做了一个很有意思的应用，根据文章内容提取关键词</p>
+<p>TF-IDF当然是一个合适的做法，速度快$O(N)$，但是只考虑了相同词，而没有考虑相似词</p>
+<p>而且概率是离散值计算出来的</p>
+<p>这里认为，关键词可以尽可能获取文章的大意，因此数学上我们可以表示为：</p>
+$$
+p(s|w_{key})
+$$<p>我们需要最大化这个概率：由关键词$w_{key}$推出文本$s$</p>
+<p>基于<strong>朴素贝叶斯假设</strong></p>
+$$
+p(s|w_i) = p(w_1,w_2,...,w_n|w_i)=\prod_{i=j}^np(w_j|w_i)
+$$<p>所以我们用word2vec求出所有的$p(w_j|w_i)$，虽然是$O(N^2)$</p>
+<p>最后出来概率最高的几个就是关键词</p>
+<p>而且概率是神经网络出来的，自带平滑，处理近似词语效果更加合理</p>
+<h3 id="相似度">相似度
+</h3><p>从word2vec得到的词向量，可以使用<strong>余弦相似度</strong>比较两向量的方向</p>
+<ul>
+<li>-1：词义相反</li>
+<li>0：正交，无相关性</li>
+<li>1：词义相同</li>
+</ul>
+<p>余弦相似度大，事实上意味着这<strong>两个词经常跟同一批词搭配</strong></p>
+<p>也就是说基本可以直接替换</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&gt;&gt;&gt; s = u&#39;广州&#39;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">&gt;&gt;&gt; pd.Series(model.most_similar(s))
+</span></span><span class="line"><span class="cl">0 (东莞, 0.840889930725)
+</span></span><span class="line"><span class="cl">1 (深圳, 0.799216389656)
+</span></span><span class="line"><span class="cl">2 (佛山, 0.786817014217)
+</span></span><span class="line"><span class="cl">3 (惠州, 0.779960155487)
+</span></span><span class="line"><span class="cl">4 (珠海, 0.735232532024)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>城市名词之间替换是很合理的，因此相似度高</p>
+<h3 id="相关">相关
+</h3><p>可能会觉得东莞、广州好像没什么关系，不如广州和白云机场</p>
+<p>这个被称为相关</p>
+$$
+\log\frac{p(x,y)}{p(x)p(y)} = \log p(y|x)-\log p(y)
+$$<p>
+<strong>互信息越大，说明x,y两个词经常一起出现</strong></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/llm/">LLM</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/happy-llm-part-2-transformer/">
+        
+        
+            <div class="article-image">
+                <img src="/p/happy-llm-part-2-transformer/bg.49bb2cc7fda2ff97f4facfe1bbf6d004_hu_f7e352ef9b418b06.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Happy-LLM · Part 2 · Transformer"
+                        
+                        data-hash="md5-Sbssx/2i/5f0&#43;s/hu/bQBA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Happy-LLM · Part 2 · Transformer</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/cs336-part1-bpe/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CS336 · Part1 BPE</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2025 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

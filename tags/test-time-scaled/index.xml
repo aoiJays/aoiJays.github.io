@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Test-Time Scaled on BiribiriBird</title>
+        <link>https://example.com/tags/test-time-scaled/</link>
+        <description>Recent content in Test-Time Scaled on BiribiriBird</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Tue, 02 Sep 2025 20:46:34 +0800</lastBuildDate><atom:link href="https://example.com/tags/test-time-scaled/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>李宏毅机器学习2025 · 前言</title>
+        <link>https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/</link>
+        <pubDate>Tue, 02 Sep 2025 20:46:34 +0800</pubDate>
+        
+        <guid>https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/</guid>
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1aiADewEBC&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;李宏毅机器学习2025&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;被手搓大模型橄榄了，写BPE写的心态爆了&lt;/p&gt;
+&lt;p&gt;不如我们先停下来推一下一些比较有趣的课程&lt;/p&gt;
+&lt;h1 id=&#34;前言&#34;&gt;前言
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;Those token could be anything.&lt;/p&gt;
+&lt;p&gt;解析任何事物为若干有限的基本单位（token），你就可以使用生成式AI做任何事情&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;auto-regressive-generation&#34;&gt;Auto Regressive Generation
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;自回归生成（其实就是词语接龙）&lt;/li&gt;
+&lt;/ul&gt;
+$$
+x_1,x_2,...,x_j \to y_1\\
+x_1,x_2,...,x_j,y_1 \to y_2\\
+x_1,x_2,...,x_j,y_1,y_2 \to ...\\
+x_1,x_2,...,x_j,y_1,y_2,... \to \text{end token}\\
+$$&lt;p&gt;token作为文字时：语言模型&lt;/p&gt;
+&lt;p&gt;（但是不管是什么都会被称为语言模型，因为热度太大了）&lt;/p&gt;
+&lt;p&gt;本质上都是在有限的选择中做出选择完成输出&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902210520749.png&#34;
+	width=&#34;877&#34;
+	height=&#34;483&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902210520749_hu_c6d279eefb5346cf.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902210520749_hu_8732fdb1d4ca93a8.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;生成式AI&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;181&#34;
+		data-flex-basis=&#34;435px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通过Neural Network，得到的是各个token的概率分布
+&lt;ul&gt;
+&lt;li&gt;模型架构（超参数）：由人类确定&lt;/li&gt;
+&lt;li&gt;模型参数：由数据决定&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;thinking-mode&#34;&gt;Thinking Mode
+&lt;/h2&gt;&lt;p&gt;对于现实中的问题，往往足够复杂，哪怕模型足够巨大，层数足够多，可能也无法处理&lt;/p&gt;
+&lt;p&gt;而带有思考能力的LLM表现良好，可以从模型层数的角度进行解释&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902210943599.png&#34;
+	width=&#34;903&#34;
+	height=&#34;427&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902210943599_hu_6aee250c4eea9f13.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902210943599_hu_dc25cb538fafd38d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Thinking Mode&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;211&#34;
+		data-flex-basis=&#34;507px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;每次给定输入token集合，产生一个token的输出，模型会过一遍所有的Layer&lt;/p&gt;
+&lt;p&gt;所以只要不断思考，本质上是一直在重复这个模型Layer的堆积&lt;/p&gt;
+&lt;p&gt;因此思考长度足够，似乎是在使用一个&lt;strong&gt;巨深的模型&lt;/strong&gt;进行推理&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;训练时缩放（Training Time Scaling）&lt;/strong&gt;：通过训练来让模型变得更强大。这需要巨大的成本重新训练模型。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;增加模型参数量（scale up）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;增加训练数据&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;延长训练时间（增加计算量）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;测试时缩放（Testing Time Scaling）&lt;/strong&gt;：&lt;strong&gt;模型已经训练好了，参数固定不变。&lt;/strong&gt; 我们通过一些“技巧”，在&lt;strong&gt;使用&lt;/strong&gt;这个模型的时候投入更多的计算资源&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;生成多个答案然后挑最好的&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;更仔细地推理&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Testing Time Scaling：在不改变模型本身weights的情况下，仅通过改变inference或testing时的方法和计算量，就能显著提升模型性能的一种现象或技术集合。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902213913156.png&#34;
+	width=&#34;928&#34;
+	height=&#34;402&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902213913156_hu_492ada79126596e9.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902213913156_hu_6bb28dd1c56cb705.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;TTS&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;230&#34;
+		data-flex-basis=&#34;554px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;本质上是在叠加模型层数，如图，思考的token开销越多，性能确实越好&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;如何控制token？一个粗暴的方法，在结束的时候把end变成wait&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id=&#34;development&#34;&gt;Development
+&lt;/h2&gt;&lt;p&gt;模型的演变经历了专用模型到通用模型的趋势&lt;/p&gt;
+&lt;p&gt;而通用模型的演变也非常迅速&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902215817397.png&#34;
+	width=&#34;938&#34;
+	height=&#34;485&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902215817397_hu_4de31912bfc26bb8.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902215817397_hu_83cd7663fa05fbf4.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Encoder&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;193&#34;
+		data-flex-basis=&#34;464px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Encoder：将文本encode成向量
+&lt;ul&gt;
+&lt;li&gt;配套专用模型完成输出&lt;/li&gt;
+&lt;li&gt;架构不同&lt;/li&gt;
+&lt;li&gt;参数不同&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902220023151.png&#34;
+	width=&#34;923&#34;
+	height=&#34;486&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902220023151_hu_1a956035b96d2c2b.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902220023151_hu_8a168de1792f4caa.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Fine-tune&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;189&#34;
+		data-flex-basis=&#34;455px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Fine-Tune：通过微调适配不同任务
+&lt;ul&gt;
+&lt;li&gt;架构相同&lt;/li&gt;
+&lt;li&gt;参数不同&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902220142932.png&#34;
+	width=&#34;920&#34;
+	height=&#34;482&#34;
+	srcset=&#34;https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902220142932_hu_3f5c6b335bc46f46.png 480w, https://example.com/p/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A02025-%E5%89%8D%E8%A8%80/assets/image-20250902220142932_hu_79525b51f8b740bb.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Prompt&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;190&#34;
+		data-flex-basis=&#34;458px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Prompt：直接给指令做不同任务
+&lt;ul&gt;
+&lt;li&gt;架构相同&lt;/li&gt;
+&lt;li&gt;参数相同&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;Homework1就不做了，一个RAG任务，之前做过类似的&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
